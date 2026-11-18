@@ -102,9 +102,9 @@ export default function HomePage() {
 
   const featuredProducts = [
     products.find((p) => p.courseCode === 'FR'),
+    products.find((p) => p.courseCode === 'SBR'),
     products.find((p) => p.id === 'prod-ican-pq-skl'),
-    products.find((p) => p.id === 'prod-atswa-sp-1'),
-    products.find((p) => p.id === 'prod-atswa-sp-2'),
+    products.find((p) => p.id === 'prod-atswa-pq-2'),
   ].filter(Boolean);
 
   const visibleAnnouncements = announcements.filter((a) => {
@@ -999,13 +999,13 @@ export default function HomePage() {
                 <div>
                   <Link
                     to="/store"
-                    className="group relative block h-48 w-full bg-[#080A0D] overflow-hidden border-b border-white/[0.06]"
+                    className="group relative block h-60 w-full bg-[#080A0D] overflow-hidden border-b border-white/[0.06]"
                   >
                     <img
                       src={prod.imageUrl}
                       alt={`${prod.title} — ${prod.colourBadge}`}
                       loading="lazy"
-                      className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                      className="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E11] via-[#0B0E11]/15 to-transparent" />
                     <span className="absolute top-2.5 left-2.5 inline-flex items-center gap-1.5 rounded-full bg-[#0B0E11]/85 backdrop-blur-md border border-white/[0.14] px-2.5 py-0.5 text-[10px] font-semibold text-white">

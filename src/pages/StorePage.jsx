@@ -11,6 +11,7 @@ import {
   CheckCircle2,
   ZoomIn,
   X,
+  BookOpen,
 } from 'lucide-react';
 import { usePlatform } from '../context/PlatformContext';
 import { useToast } from '../context/ToastContext';
@@ -21,16 +22,16 @@ const CATEGORY_TABS = [
   { id: 'all', label: 'All Materials (24)' },
   { id: 'ican_study_pack', label: 'ICAN Study Packs (15)' },
   { id: 'ican_past_question', label: 'ICAN Pathfinder PQs (3)' },
-  { id: 'atswa_study_pack', label: 'ATSWA Compendiums (3)' },
+  { id: 'atswa_study_pack', label: 'ATSWA Study Packs (3)' },
   { id: 'atswa_past_question', label: 'ATSWA Insight PQs (3)' },
 ];
 
 const COLOUR_LEGEND = [
-  { label: 'ATS 1 (Pack & PQ)', colour: 'Blue Edition', hex: '#2563EB' },
-  { label: 'ATS 2 (Pack & PQ)', colour: 'Orange Edition', hex: '#EA580C' },
-  { label: 'ATS 3 (Pack & PQ)', colour: 'Dark Green Edition', hex: '#15803D' },
-  { label: 'All ICAN PQs', colour: 'Green Sealed Pathfinder', hex: '#16A34A' },
-  { label: 'All ICAN Study Packs', colour: 'White & Blue Study Text', hex: '#3B82F6' },
+  { label: 'ATS 1', colour: 'Blue Edition', hex: '#2563EB' },
+  { label: 'ATS 2', colour: 'Orange Edition', hex: '#EA580C' },
+  { label: 'ATS 3', colour: 'Dark Green Edition', hex: '#15803D' },
+  { label: 'ICAN PQs', colour: 'Green Sealed Pathfinder', hex: '#16A34A' },
+  { label: 'ICAN Study Packs', colour: 'Course-Specific White & Blue Study Texts', hex: '#3B82F6' },
 ];
 
 export default function StorePage() {
@@ -94,16 +95,16 @@ export default function StorePage() {
             <Badge variant="neutral">Authentic Hard-Copy Editions · Paystack Checkout</Badge>
           </div>
           <h1 className="font-display text-3xl sm:text-5xl font-bold text-white">
-            Study Packs, Compendiums & Pathfinder Past Questions
+            Study Packs & Pathfinder Past Questions
           </h1>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
             {[
               {
-                title: 'ICAN Study Texts (White & Blue)',
+                title: 'ICAN Study Packs (15 Courses)',
                 price: '₦10,000 – ₦15,500',
                 rule: '7% off 2+ distinct courses across Foundation, Skills & Pro',
-                thumb: '/materials/ican-study-pack.jpg',
+                thumb: '/materials/ican-sp-fr.jpg',
               },
               {
                 title: 'ICAN Pathfinder PQs (Green Sealed)',
@@ -112,10 +113,10 @@ export default function StorePage() {
                 thumb: '/materials/ican-past-question.jpg',
               },
               {
-                title: 'ATSWA Study Pack Compendiums',
-                price: '₦9,500 / compendium',
-                rule: '5% off 2+ packs · Blue (ATS 1), Orange (ATS 2), Green (ATS 3)',
-                thumb: '/materials/ats1-study-pack.jpg',
+                title: 'ATSWA Study Packs (ATS 1 – 3)',
+                price: '₦9,500 / pack',
+                rule: 'Automatic 5% off on 2 or more study packs',
+                thumb: null,
               },
               {
                 title: 'ATSWA Insight Past Questions',
@@ -125,12 +126,18 @@ export default function StorePage() {
               },
             ].map((card) => (
               <div key={card.title} className="v-card p-3.5 flex items-center gap-3">
-                <img
-                  src={card.thumb}
-                  alt={card.title}
-                  loading="lazy"
-                  className="h-16 w-12 shrink-0 rounded-lg object-cover border border-white/[0.1]"
-                />
+                {card.thumb ? (
+                  <img
+                    src={card.thumb}
+                    alt={card.title}
+                    loading="lazy"
+                    className="h-16 w-12 shrink-0 rounded-lg object-cover border border-white/[0.1]"
+                  />
+                ) : (
+                  <div className="h-16 w-12 shrink-0 rounded-lg bg-[#0B0E11] border border-white/[0.1] flex items-center justify-center text-[#16C784]">
+                    <BookOpen className="h-5 w-5" />
+                  </div>
+                )}
                 <div className="min-w-0 space-y-0.5">
                   <p className="text-[11px] font-semibold text-[#C2C9D4] truncate">{card.title}</p>
                   <p className="tabular-nums-display text-sm font-bold text-white">{card.price}</p>
@@ -228,53 +235,64 @@ export default function StorePage() {
                       className="v-card-hover overflow-hidden flex flex-col justify-between"
                     >
                       <div>
-                        {/* Cover Photo Header */}
-                        <button
-                          type="button"
-                          onClick={() => setPreviewProduct(prod)}
-                          className="group relative w-full h-52 bg-[#080A0D] overflow-hidden border-b border-white/[0.06] text-left focus:outline-none"
-                          aria-label={`Preview cover photo for ${prod.title}`}
-                        >
-                          <img
-                            src={prod.imageUrl}
-                            alt={`${prod.title} — ${prod.colourBadge}`}
-                            loading="lazy"
-                            className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E11] via-[#0B0E11]/20 to-transparent" />
+                        {/* Cover Photo Header (when image exists) OR Clean Study Pack Header (for ATSWA Study Packs awaiting photo) */}
+                        {prod.imageUrl ? (
+                          <button
+                            type="button"
+                            onClick={() => setPreviewProduct(prod)}
+                            className="group relative w-full h-64 bg-[#080A0D] overflow-hidden border-b border-white/[0.06] text-left focus:outline-none"
+                            aria-label={`Preview cover photo for ${prod.title}`}
+                          >
+                            <img
+                              src={prod.imageUrl}
+                              alt={`${prod.title} — ${prod.colourBadge}`}
+                              loading="lazy"
+                              className="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-105"
+                            />
+                            <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#0B0E11] to-transparent" />
 
-                          {/* Top Colour-Edition Pill */}
-                          <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
-                            <span
-                              className="inline-flex items-center gap-1.5 rounded-full bg-[#0B0E11]/85 backdrop-blur-md border border-white/[0.14] px-2.5 py-1 text-[10.5px] font-semibold text-white"
-                            >
+                            <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
+                              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#0B0E11]/85 backdrop-blur-md border border-white/[0.14] px-2.5 py-1 text-[10.5px] font-semibold text-white">
+                                <span
+                                  className="h-2 w-2 rounded-full shrink-0"
+                                  style={{ backgroundColor: prod.accentHex || '#16C784' }}
+                                />
+                                {prod.colourBadge}
+                              </span>
+                              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#0B0E11]/80 backdrop-blur-md border border-white/[0.12] text-[#C2C9D4] group-hover:text-[#16C784] transition-colors">
+                                <ZoomIn className="h-3.5 w-3.5" />
+                              </span>
+                            </div>
+
+                            <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2">
+                              <Badge variant="neutral">
+                                {prod.programme} · {prod.level}
+                              </Badge>
+                              {prod.courseCode ? (
+                                <span className="rounded-lg bg-[#16C784] px-2.5 py-0.5 font-display text-xs font-bold text-[#06130D] shadow">
+                                  {prod.courseCode}
+                                </span>
+                              ) : (
+                                <span className="rounded-lg bg-[#0B0E11]/85 border border-white/[0.12] px-2 py-0.5 text-[10px] font-semibold text-[#D5DBE3]">
+                                  {prod.editionLabel}
+                                </span>
+                              )}
+                            </div>
+                          </button>
+                        ) : (
+                          <div className="px-5 pt-5 flex items-center justify-between gap-2">
+                            <Badge variant="neutral">
+                              {prod.programme} · {prod.level}
+                            </Badge>
+                            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#0B0E11] border border-white/[0.1] px-2.5 py-1 text-[10.5px] font-semibold text-[#D5DBE3]">
                               <span
                                 className="h-2 w-2 rounded-full shrink-0"
                                 style={{ backgroundColor: prod.accentHex || '#16C784' }}
                               />
-                              {prod.colourBadge}
-                            </span>
-                            <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#0B0E11]/80 backdrop-blur-md border border-white/[0.12] text-[#C2C9D4] group-hover:text-[#16C784] transition-colors">
-                              <ZoomIn className="h-3.5 w-3.5" />
+                              Study Pack
                             </span>
                           </div>
-
-                          {/* Bottom Programme / Paper Code Badge */}
-                          <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2">
-                            <Badge variant="neutral">
-                              {prod.programme} · {prod.level}
-                            </Badge>
-                            {prod.courseCode ? (
-                              <span className="rounded-lg bg-[#16C784] px-2.5 py-0.5 font-display text-xs font-bold text-[#06130D] shadow">
-                                {prod.courseCode}
-                              </span>
-                            ) : (
-                              <span className="rounded-lg bg-[#0B0E11]/85 border border-white/[0.12] px-2 py-0.5 text-[10px] font-semibold text-[#D5DBE3]">
-                                {prod.editionLabel}
-                              </span>
-                            )}
-                          </div>
-                        </button>
+                        )}
 
                         {/* Product Details */}
                         <div className="p-5 pb-3 space-y-2">
