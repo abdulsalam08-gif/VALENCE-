@@ -48,7 +48,7 @@ export default function AboutPage() {
               “{settings.tagline}” ({settings.taglineTranslation})
             </p>
             <p className="text-sm sm:text-base leading-relaxed text-[#9AA4B2] max-w-3xl">
-              <strong className="text-white">VALENCE</strong> is Nigeria’s complete accounting education, professional networking, inter-school competition, marketplace, tuition-centre directory and career development ecosystem. Membership is free for students, professionals and learners, with a one-time ₦3,000 registration required only when applying for tuition and viewing personalised cost implications, and a verified <strong className="text-[#16C784]">₦50,000 cash reward</strong> celebrating top learners after every competition closes.
+              <strong className="text-white">VALENCE</strong> is Nigeria’s complete accounting education, professional networking, inter-school competition, marketplace, tuition-centre directory and career development ecosystem. Membership is free for students, professionals and learners, with a one-time ₦3,000 registration required only when applying for tuition and viewing personalised cost implications, and a verified <strong className="text-[#16C784]">₦220,000 podium prize pool</strong> celebrating top learners (1st ₦100,000 · 2nd ₦70,000 · 3rd ₦50,000) after every competition closes.
             </p>
           </div>
 
@@ -68,8 +68,8 @@ export default function AboutPage() {
                 </span>
               </div>
               <div className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-3">
-                <span className="text-[#667085] block text-[10px] uppercase">Merit Award</span>
-                <span className="tabular-nums-display font-bold text-[#16C784]">₦50,000</span>
+                <span className="text-[#667085] block text-[10px] uppercase">Podium Award</span>
+                <span className="tabular-nums-display font-bold text-[#16C784]">₦220,000</span>
               </div>
             </div>
           </div>

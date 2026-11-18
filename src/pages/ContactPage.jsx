@@ -206,7 +206,7 @@ export default function ContactPage() {
                   <option>VALENCE ADVERTISE: ₦10,000/Week Campaign (In-App)</option>
                   <option>Official ICAN Fee &amp; Exemption Assistance</option>
                   <option>Exam Timetable &amp; Result Release Notice</option>
-                  <option>National Competition &amp; ₦50,000 Merit Reward</option>
+                  <option>National Competition &amp; ₦220,000 Podium Prizes</option>
                   <option>Tutor / Professional Verification</option>
                 </select>
               </div>

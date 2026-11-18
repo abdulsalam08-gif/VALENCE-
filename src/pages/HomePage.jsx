@@ -169,7 +169,7 @@ export default function HomePage() {
                 </span>
                 <span className="inline-flex items-center gap-1.5 rounded-xl bg-[#16C784]/10 border border-[#16C784]/30 px-3 py-1.5 text-[#16C784] font-semibold">
                   <Banknote className="h-3.5 w-3.5" />
-                  ₦50,000 Competition Winner Reward
+                  ₦220,000 Competition Podium Prize Pool
                 </span>
               </div>
 
@@ -346,7 +346,7 @@ export default function HomePage() {
                 Seven Integrated Pillars. One Independent Accounting Ecosystem.
               </h2>
               <p className="text-sm sm:text-base text-[#9AA4B2]">
-                Guided by <span className="italic text-[#F4F6F9]">{settings.tagline}</span>, VALENCE unites professional exam tuition, intelligent AI assistance, academic networking, ₦50,000 merit competitions, verified tuition-centre discovery, study packs and finance careers across Nigeria.
+                Guided by <span className="italic text-[#F4F6F9]">{settings.tagline}</span>, VALENCE unites professional exam tuition, intelligent AI assistance, academic networking, ₦220,000 podium competitions, verified tuition-centre discovery, study packs and finance careers across Nigeria.
               </p>
             </div>
             <Link to="/about" className="v-btn-secondary self-start lg:self-auto shrink-0">
@@ -683,7 +683,7 @@ export default function HomePage() {
               Every University, Polytechnic & College in Nigeria Connected
             </h2>
             <p className="text-sm text-[#9AA4B2]">
-              Select your exact Nigerian university during registration to join campus study groups, compete for the <strong className="text-[#16C784]">₦50,000 competition reward</strong>, access practice questions, AI tutoring, ACA/FCA mentorship and internship opportunities, even if you are not yet writing ICAN or ATSWA.
+              Select your exact Nigerian university during registration to join campus study groups, compete for the <strong className="text-[#16C784]">₦100,000 / ₦70,000 / ₦50,000 podium prize pool</strong> (only 4 students can compete in each school), access practice questions, AI tutoring, ACA/FCA mentorship and internship opportunities, even if you are not yet writing ICAN or ATSWA.
             </p>
             <div className="flex flex-wrap gap-2">
               {tertiaryDisciplines.map((d) => (
@@ -837,26 +837,27 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 8. VALENCE NATIONAL INTER-SCHOOL CHALLENGE + ₦50,000 REWARD */}
+      {/* 8. VALENCE NATIONAL INTER-SCHOOL CHALLENGE + PODIUM PRIZE POOL */}
       <section className="py-16 sm:py-22 relative overflow-hidden">
         <div className="v-container space-y-8">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5">
             <div className="space-y-2 max-w-2xl">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="live">National Flagship Tournament</Badge>
-                <Badge variant="green">₦50,000 Reward Every Competition</Badge>
+                <Badge variant="green">₦220,000 Podium Pool Every Competition</Badge>
+                <Badge variant="neutral">Only 4 Competitors Per School</Badge>
               </div>
               <h2 className="font-display text-2xl sm:text-4xl font-bold text-white">
                 VALENCE National Inter-School Challenge
               </h2>
               <p className="text-sm text-[#9AA4B2]">
-                Uniting candidates across {universityCounts.total} Nigerian universities, polytechnics, colleges and ICAN/ATSWA divisions, featuring rigorous questions across <strong className="text-white">accounting and related fields</strong> (finance, taxation, auditing, economics, business law, costing &amp; management). Top learners earn a verified{' '}
-                <strong className="text-[#16C784]">₦50,000</strong> reward after every competition closes.
+                Uniting candidates across {universityCounts.total} Nigerian universities, polytechnics, colleges and ICAN/ATSWA divisions, featuring rigorous questions across <strong className="text-white">accounting and related fields</strong> (finance, taxation, auditing, economics, business law, costing &amp; management). Strictly only 4 students can compete in each school, and top podium winners earn verified{' '}
+                <strong className="text-[#16C784]">₦100,000 (1st), ₦70,000 (2nd) &amp; ₦50,000 (3rd)</strong> prizes · displayed on their school profiles as Top VALENCE Students · after every competition closes.
               </p>
             </div>
             <Link to="/competitions" className="v-btn-primary self-start lg:self-auto shrink-0">
               <Trophy className="h-4 w-4" />
-              Register & Compete for ₦50,000
+              Register & Compete for the Podium
             </Link>
           </div>
 
@@ -1441,7 +1442,7 @@ export default function HomePage() {
                   Join VALENCE Free Today
                 </h2>
                 <p className="text-sm text-[#9AA4B2] max-w-xl">
-                  Connect with peers across {universityCounts.total}+ Nigerian universities, prepare for ATSWA March 2027 or ICAN May 2027, compete for the ₦50,000 merit reward, or unlock tuition whenever you’re ready.
+                  Connect with peers across {universityCounts.total}+ Nigerian universities, prepare for ATSWA March 2027 or ICAN May 2027, compete for the ₦220,000 podium prize pool, or unlock tuition whenever you’re ready.
                 </p>
                 <div className="flex flex-wrap gap-4 text-xs text-[#C2C9D4] pt-1">
                   <span className="inline-flex items-center gap-1.5">

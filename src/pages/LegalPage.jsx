@@ -100,10 +100,10 @@ export default function LegalPage() {
               </div>
               <div className="space-y-2">
                 <h3 className="font-display text-base font-bold text-[#16C784]">
-                  1.4 National Inter-School Challenge &amp; ₦50,000 Merit Cash Reward
+                  1.4 National Inter-School Challenge &amp; ₦220,000 Podium Cash Prizes
                 </h3>
                 <p>
-                  The VALENCE National Inter-School Challenge and examination divisions (featuring questions drawn from accounting and related disciplines including finance, auditing, taxation, economics, business law, quantitative methods, and management) enforce timed submission rules, anti-malpractice verification, and moderator review. The ₦50,000 post-competition cash reward is disbursed to verified winning learners after official results and any appeals review close. Impersonation, collusion, or plagiarism leads to immediate disqualification.
+                  The VALENCE National Inter-School Challenge and examination divisions (featuring questions drawn from accounting and related disciplines including finance, auditing, taxation, economics, business law, quantitative methods, and management) enforce timed submission rules, anti-malpractice verification, and moderator review. Strictly only 4 students can compete in each school. The ₦220,000 post-competition podium cash prizes (₦100,000 for 1st position, ₦70,000 for 2nd position and ₦50,000 for 3rd position) are disbursed to verified winning learners after official results and any appeals review close, and winning students are displayed on their respective school’s official VALENCE profile as Top VALENCE Students. Impersonation, collusion, or plagiarism leads to immediate disqualification.
                 </p>
               </div>
               <div className="space-y-2">

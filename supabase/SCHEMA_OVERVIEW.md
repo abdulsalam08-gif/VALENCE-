@@ -5,8 +5,8 @@
 - **Region:** `eu-west-1`
 - **Project URL:** `https://gdgeogzmrvxtwdqtlwbu.supabase.co`
 - **Extensions:** `pgcrypto`, `citext`
-- **Total Public Tables:** `99` (`99 / 99` with Row Level Security enabled; `0` tables without RLS)
-- **Active RLS Policies:** `230` across `public` and `storage.objects`
+- **Total Public Tables:** `100` (`100 / 100` with Row Level Security enabled; `0` tables without RLS)
+- **Active RLS Policies:** `233` (`220` in `public` + `13` in `storage.objects`)
 - **Security Definer Helpers:** All pinned with `SET search_path = public` (`is_admin`, `has_admin_role`, `has_unlocked_level`, `is_blocked_between`, `is_study_group_member`, `can_view_announcement`, `is_conversation_participant`, `handle_new_auth_user`, `guard_profile_privileged_fields`, `set_updated_at`, `generate_ticket_ref`)
 
 ---
@@ -15,7 +15,7 @@
 
 1. **`v01_core_identity_rbac_and_settings`** (Tables 1 to 8 + 14 domain enums + triggers)
    - Enums: `user_account_type` (7 roles), `admin_role_type` (8 RBAC roles), `verification_status`, `programme_code`, `institution_category`, `payment_status`, `payment_purpose`, `order_fulfilment_status`, `advertiser_category`, `campaign_status`, `announcement_scope` (7 scopes), `ticket_status`, `call_status`, `competition_status`.
-   - Tables: `platform_settings`, `nigerian_institutions` (300 seeded), `profiles`, `admin_role_assignments`, `user_privacy_settings`, `user_gallery_photos`, `notifications`, `audit_logs`.
+   - Tables: `platform_settings`, `nigerian_institutions` (466 seeded: 206 universities + 156 polytechnics + 104 colleges), `profiles`, `admin_role_assignments`, `user_privacy_settings`, `user_gallery_photos`, `notifications`, `audit_logs`.
    - Anti-escalation trigger `guard_profile_privileged_fields()` stops non-admins from elevating `account_type`, `is_verified_tutor`, `is_verified_professional`, `is_verified_advertiser`, `is_school_rep` or `is_suspended`.
    - Auth signup trigger `on_auth_user_created` auto-provisions `profiles` + `user_privacy_settings`.
 
@@ -37,8 +37,15 @@
    - Professional Hub, Events & Opportunities: `professional_verifications`, `mentorship_profiles`, `mentorship_requests`, `platform_events` (4 seeded), `event_registrations`, `opportunities` (0 fake rows), `opportunity_bookmarks`.
 
 5. **`v05_competitions_advertise_storage_and_realtime`** (Tables 76 to 99 + Storage + Realtime)
-   - VALENCE National Inter-School Challenge (Accounting & Related Fields + ₦50,000 Merit Reward): `competition_divisions` (6), `competitions` (flagship 2027 edition seeded), `competition_schools`, `competition_teams`, `competition_registrations`, `competition_rounds` (5 official stages), `competition_questions` (answer keys protected), `competition_attempts`, `competition_answers`, `competition_leaderboard_entries`, `arena_matches`, `competition_certificates`, `competition_appeals`, `competition_rewards` (audited ₦50,000 payout ledger), `hall_of_fame_entries`.
+   - VALENCE National Inter-School Challenge (Accounting & Related Fields + ₦220,000 Podium Pool): `competition_divisions` (6), `competitions` (flagship 2027 edition seeded), `competition_schools`, `competition_teams`, `competition_registrations`, `competition_rounds` (5 official stages), `competition_questions` (answer keys protected), `competition_attempts`, `competition_answers`, `competition_leaderboard_entries`, `arena_matches`, `competition_certificates`, `competition_appeals`, `competition_rewards` (audited podium payout ledger: ₦100,000 1st / ₦70,000 2nd / ₦50,000 3rd), `hall_of_fame_entries`.
    - VALENCE ADVERTISE (₦10,000/week) & Option B Textbook Flow: `advertiser_profiles` (`physical_centre`, `textbook_author`, `textbook_vendor`), `tuition_centres` (physical venues only; 0 fake rows), `tuition_centre_fee_schedules` (RLS-gated behind `has_unlocked_level(level_id)` so centre cost implications are only readable by students who unlocked that level, the owning centre, or admins), `textbook_advertisers` (0 fake rows), `ad_placements` (9 slots at ₦10,000/week), `ad_campaigns`, `ad_analytics_events`, `partner_enquiries`, `partner_book_orders`.
+
+6. **`v06_competition_podium_top_students_and_school_cap`** (Tables 100 + competition rule engine)
+   - `platform_settings`: new podium fields `competition_first_prize` (₦100,000), `competition_second_prize` (₦70,000), `competition_third_prize` (₦50,000), `competition_max_competitors_per_school` (4). `competition_cash_reward` default updated to ₦100,000.
+   - `competition_rewards`: new `placement_rank` (`1`/`2`/`3` check) + unique `(competition_id, placement_rank)` podium constraint.
+   - New RLS-enabled table `school_top_valence_students` (Table 100): links a winning student (`winner_user_id` → `profiles`) to their `institution_id`, `competition_id` and `reward_id`, with `placement_rank`, `prize_amount_ngn`, `badge_label` (`Top VALENCE Student`) and `profile_spotlight`. Policies: admin manage, institution/profile spotlight read, winner self-read.
+   - `fn_sync_school_top_valence_students()` (`AFTER INSERT OR UPDATE` on `competition_rewards`) auto-enrolls winners on their school profile as Top VALENCE Students with the correct podium prize.
+   - `fn_enforce_max_competitors_per_school()` (`BEFORE INSERT OR UPDATE` on `competition_registrations`) raises an exception when a 5th non-disqualified registration is attempted for the same school + competition — strictly only 4 students can compete in each school.
 
 ---
 

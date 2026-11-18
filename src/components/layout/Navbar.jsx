@@ -27,7 +27,7 @@ const PROGRAMME_MENU = [
   { label: 'ICAN Professional Level', desc: 'SBR, CS, AAAF, A/TAX, SFM · Final ACA stage', to: '/programmes/ican/professional' },
   { label: 'ICAN Exemption & Entry Tool', desc: 'Find your starting level + Accredited & MCATI school checks', to: '/programmes/ican/exemptions' },
   { label: 'ICAN Candidate Guide (10 FAQs)', desc: 'Eligibility, ATSWA vs Graduate routes, reg steps & timelines', to: '/programmes/ican/guide' },
-  { label: 'Universities, Polytechnics & Colleges', desc: '300 accredited Nigerian institutions + 6 literacy tracks', to: '/programmes/tertiary' },
+  { label: 'Universities, Polytechnics & Colleges', desc: `${universityCounts.total} accredited Nigerian institutions + 6 literacy tracks`, to: '/programmes/tertiary' },
 ];
 
 const MORE_MENU = [
@@ -45,7 +45,7 @@ const PORTAL_ACTIONS = [
   { label: 'Professional Portal', desc: 'Verified ACA, FCA, ACCA & CPA Network', to: '/portal/professional', icon: Briefcase },
   { label: 'Join VALENCE Connect', desc: 'Community feed, study groups & messaging', to: '/connect', icon: Users },
   { label: 'Apply as a Tutor', desc: 'AAT (ATSWA) or AAT + ACA (ICAN) recruitment', to: '/portal/tutor', icon: Award },
-  { label: 'National Inter-School Challenge', desc: 'Accounting & related fields · ₦50,000 merit reward', to: '/competitions', icon: Trophy },
+  { label: 'National Inter-School Challenge', desc: 'Accounting & related fields · ₦220,000 podium pool', to: '/competitions', icon: Trophy },
   { label: 'Advertise (Centres, Authors & Vendors)', desc: '₦10,000/wk in-app · Publish centre tuition costs', to: '/advertise', icon: Megaphone },
   { label: 'Admin Portal Login', desc: 'Central Examination Authority & governance', to: '/portal/admin', icon: Shield },
 ];
@@ -73,7 +73,7 @@ const DROPDOWN_PANEL_CLASS =
   'rounded-2xl bg-[#0D1218] border border-white/[0.15] p-2.5 shadow-[0_24px_64px_rgba(0,0,0,0.95)] ring-1 ring-black z-[70] animate-fade-up';
 
 export default function Navbar() {
-  const { user, userRole, cartSummary, settings } = usePlatform();
+  const { user, userRole, cartSummary, settings, universityCounts } = usePlatform();
   const location = useLocation();
   const [openDropdown, setOpenDropdown] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -126,7 +126,7 @@ export default function Navbar() {
             <span className="italic text-[#16C784]">{settings.tagline}</span>
             <span className="text-white/15">•</span>
             <Link to="/competitions" className="hover:text-white transition-colors">
-              National Inter-School Challenge: <strong className="text-[#16C784]">₦50,000</strong> Merit Reward
+              National Inter-School Challenge: <strong className="text-[#16C784]">₦220,000 podium pool</strong> · only 4 competitors per school
             </Link>
           </div>
           <div className="flex items-center gap-4">

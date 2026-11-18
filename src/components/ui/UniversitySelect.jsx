@@ -38,6 +38,14 @@ export default function UniversitySelect({
     });
   }, [query, catFilter]);
 
+  const categoryCounts = useMemo(() => {
+    const counts = { ALL: NIGERIAN_UNIVERSITIES.length };
+    for (const u of NIGERIAN_UNIVERSITIES) {
+      counts[u.category] = (counts[u.category] || 0) + 1;
+    }
+    return counts;
+  }, []);
+
   const selectItem = (labelText) => {
     onChange(labelText);
     setOpen(false);
@@ -84,7 +92,14 @@ export default function UniversitySelect({
           </div>
 
           <div className="flex flex-wrap items-center gap-1">
-            {['ALL', 'Federal', 'State', 'Private', 'Polytechnic', 'College'].map((c) => (
+            {[
+              ['ALL', 'All Institutions'],
+              ['Federal', 'Federal'],
+              ['State', 'State'],
+              ['Private', 'Private'],
+              ['Polytechnic', 'Polytechnic'],
+              ['College', 'College'],
+            ].map(([c, label]) => (
               <button
                 key={c}
                 type="button"
@@ -95,7 +110,7 @@ export default function UniversitySelect({
                     : 'bg-[#0B0E11] text-[#9AA4B2] hover:text-white'
                 }`}
               >
-                {c === 'ALL' ? `All (${NIGERIAN_UNIVERSITIES.length})` : c}
+                {label} ({categoryCounts[c] || 0})
               </button>
             ))}
           </div>

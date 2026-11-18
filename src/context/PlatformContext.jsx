@@ -125,8 +125,18 @@ function mapSettingsRow(row) {
     atswaStudyPackPrice: Number(
       row.atswa_study_pack_price ?? PLATFORM_SETTINGS.atswaStudyPackPrice
     ),
-    competitionCashReward: Number(
-      row.competition_cash_reward ?? PLATFORM_SETTINGS.competitionCashReward
+    competitionFirstPrize: Number(
+      row.competition_first_prize ?? PLATFORM_SETTINGS.competitionFirstPrize
+    ),
+    competitionSecondPrize: Number(
+      row.competition_second_prize ?? PLATFORM_SETTINGS.competitionSecondPrize
+    ),
+    competitionThirdPrize: Number(
+      row.competition_third_prize ?? PLATFORM_SETTINGS.competitionThirdPrize
+    ),
+    competitionMaxCompetitorsPerSchool: Number(
+      row.competition_max_competitors_per_school ??
+        PLATFORM_SETTINGS.competitionMaxCompetitorsPerSchool
     ),
     resultReleaseWindowDays: Number(
       row.result_release_window_days ?? PLATFORM_SETTINGS.resultReleaseWindowDays
@@ -926,7 +936,18 @@ export function PlatformProvider({ children }) {
     exemptionRules: EXEMPTION_RULES,
     discussionCategories: DISCUSSION_CATEGORIES,
     competitionDivisions: COMPETITION_DIVISIONS,
-    competitionReward: COMPETITION_REWARD,
+    competitionReward: {
+      ...COMPETITION_REWARD,
+      amount: liveSettings.competitionFirstPrize,
+      firstPrize: liveSettings.competitionFirstPrize,
+      secondPrize: liveSettings.competitionSecondPrize,
+      thirdPrize: liveSettings.competitionThirdPrize,
+      totalPodiumPool:
+        liveSettings.competitionFirstPrize +
+        liveSettings.competitionSecondPrize +
+        liveSettings.competitionThirdPrize,
+      maxCompetitorsPerSchool: liveSettings.competitionMaxCompetitorsPerSchool,
+    },
     competitionStructures: COMPETITION_STRUCTURES,
     tertiaryDisciplines: TERTIARY_DISCIPLINES,
     generalLearnerTracks: GENERAL_LEARNER_TRACKS,

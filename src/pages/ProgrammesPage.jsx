@@ -412,7 +412,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
               University, Polytechnic & College Accounting Community
             </h2>
             <p className="text-sm text-[#9AA4B2]">
-              Join free even if you are not yet an ICAN or ATSWA candidate. Access general accounting lessons, study groups, 12 subject forums, AI tutor support, verified mentorship, internships and inter-school competitions with <strong className="text-[#16C784]">₦50,000 merit rewards</strong>.
+              Join free even if you are not yet an ICAN or ATSWA candidate. Access general accounting lessons, study groups, 12 subject forums, AI tutor support, verified mentorship, internships and inter-school competitions with the <strong className="text-[#16C784]">₦220,000 podium prize pool</strong> (₦100,000 / ₦70,000 / ₦50,000).
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {tertiaryDisciplines.map((disc) => (

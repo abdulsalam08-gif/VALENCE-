@@ -79,7 +79,7 @@ export default function Footer() {
               <li><Link to="/portal/student" className="hover:text-[#16C784] transition-colors">Student Portal (VALENCE LEARN)</Link></li>
               <li><Link to="/portal/professional" className="hover:text-[#16C784] transition-colors">Professional Portal (ACA/FCA/ACCA/CPA)</Link></li>
               <li><Link to="/connect" className="hover:text-[#16C784] transition-colors">Join VALENCE Connect</Link></li>
-              <li><Link to="/competitions" className="hover:text-[#16C784] transition-colors">National Challenge (₦50,000 Reward)</Link></li>
+              <li><Link to="/competitions" className="hover:text-[#16C784] transition-colors">National Challenge (₦220,000 Podium Pool)</Link></li>
               <li><Link to="/portal/tutor" className="hover:text-[#16C784] transition-colors">Apply as a Tutor</Link></li>
               <li><Link to="/opportunities" className="hover:text-[#16C784] transition-colors">Scholarships & Opportunities</Link></li>
               <li><Link to="/tuition-centres" className="hover:text-[#16C784] transition-colors">Physical Centres, Authors &amp; Vendors</Link></li>

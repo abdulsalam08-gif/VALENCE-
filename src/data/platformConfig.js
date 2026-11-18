@@ -19,7 +19,10 @@ export const PLATFORM_SETTINGS = {
   atswaPastQuestionPerCourse: 5500,
   icanPastQuestionPerCourse: 9000,
   atswaStudyPackPrice: 9500,
-  competitionCashReward: 50000,
+  competitionFirstPrize: 100000,
+  competitionSecondPrize: 70000,
+  competitionThirdPrize: 50000,
+  competitionMaxCompetitorsPerSchool: 4,
   resultReleaseWindowDays: 30,
   registrationCutoffDaysBeforeExam: 7,
   centralScheduleAuthority: 'VALENCE Central Examination Authority',
@@ -960,10 +963,10 @@ export const VALENCE_PILLARS = [
   {
     id: 'compete',
     code: 'VALENCE COMPETE',
-    title: 'National Inter-School Challenge & ₦50,000 Rewards',
-    description: 'Nigeria’s inter-school championship across universities, polytechnics, colleges and exam divisions, testing accounting and related fields (finance, tax, audit, economics, business law & management) with a ₦50,000 reward after every competition.',
+    title: 'National Inter-School Challenge & ₦220,000 Podium Pool',
+    description: 'Nigeria’s inter-school championship across universities, polytechnics, colleges and exam divisions, testing accounting and related fields (finance, tax, audit, economics, business law & management) with a ₦220,000 podium prize pool after every competition.',
     route: '/competitions',
-    metric: '₦50,000 Cash Reward',
+    metric: '₦100,000 / ₦70,000 / ₦50,000 Podium',
   },
   {
     id: 'professional',
@@ -1041,9 +1044,9 @@ export const UPCOMING_EVENTS = [
   },
   {
     id: 'evt-4',
-    type: '₦50,000 Prize Competition',
+    type: '₦220,000 Podium Prize Competition',
     programme: 'VALENCE COMPETE',
-    title: 'VALENCE National Inter-School Challenge: Qualifier & ₦50,000 Reward Briefing',
+    title: 'VALENCE National Inter-School Challenge: Qualifier & Podium Prize Briefing',
     date: '23 Jan 2027 · 4:00 PM WAT',
     mode: 'Live Inter-University Session',
     access: 'Verified Schools & Candidates',
@@ -1136,11 +1139,11 @@ export const PLATFORM_STATISTICS = [
   },
   {
     id: 'stat-2',
-    label: 'Competition Merit Reward',
-    value: 50000,
+    label: 'Podium Cash Prize Pool',
+    value: 220000,
     prefix: '₦',
     suffix: '',
-    detail: 'Awarded to top learners after every competition closes',
+    detail: '₦100,000 (1st) · ₦70,000 (2nd) · ₦50,000 (3rd) after every competition closes',
   },
   {
     id: 'stat-3',
@@ -1190,8 +1193,8 @@ export const FAQS = [
     a: 'Immediately after the final examination day of any ATSWA or ICAN diet concludes, VALENCE automatically starts a 30-day countdown to the expected result release date. Because official release can occasionally experience delays, the Central Examination Authority updates the timer and posts status notices whenever the Institute adjusts release timing.',
   },
   {
-    q: 'How does the VALENCE National Inter-School Challenge & ₦50,000 reward work?',
-    a: 'The VALENCE National Inter-School Challenge brings together students across universities, polytechnics, colleges and exam divisions, with questions grounded in accounting and related fields (financial & management accounting, audit, tax, finance, economics, business law, quantitative methods and management). Outstanding learners earn a verified ₦50,000 reward after every competition closes, alongside digital certificates and Hall of Fame recognition.',
+    q: 'How does the VALENCE National Inter-School Challenge & podium prize pool work?',
+    a: 'The VALENCE National Inter-School Challenge brings together students across universities, polytechnics, colleges and exam divisions, with questions grounded in accounting and related fields (financial & management accounting, audit, tax, finance, economics, business law, quantitative methods and management). Strictly only 4 students can compete in each school. After every competition closes, outstanding learners earn a verified ₦220,000 podium cash prize pool: ₦100,000 for 1st position, ₦70,000 for 2nd position and ₦50,000 for 3rd position, and the winning students are displayed on their respective school’s official VALENCE profile as Top VALENCE Students, alongside digital certificates and Hall of Fame recognition.',
   },
   {
     q: 'Are Nigerian universities, polytechnics and colleges supported on VALENCE?',
@@ -1414,24 +1417,30 @@ export const DISCUSSION_CATEGORIES = [
 ];
 
 export const COMPETITION_DIVISIONS = [
-  { id: 'div-atswa', name: 'ATSWA Challenge', level: 'ATS 1 – ATS 3', reward: '₦50,000 Merit Reward', format: '30 MCQ + 20 Short-Answer + Answer 4 of 6 Theory (12.5 marks each = 50m Section C)' },
-  { id: 'div-ican-fnd', name: 'ICAN Foundation Challenge', level: 'CBL · BE · MA · FA', reward: '₦50,000 Merit Reward', format: 'Section A: 30m compulsory · Section B: 2 of 3 (20m each = 40m) · Section C: 2 of 4 (15m each = 30m) = 100m' },
-  { id: 'div-ican-skl', name: 'ICAN Skills Challenge', level: 'FR · FM · PSAF · AAF · TAX · PM', reward: '₦50,000 Merit Reward', format: 'Section A: 30m compulsory · Section B: 2 of 3 (20m each = 40m) · Section C: 2 of 4 (15m each = 30m) = 100m' },
-  { id: 'div-ican-pro', name: 'ICAN Professional Challenge', level: 'SBR · CS · AAAF · A/TAX · SFM', reward: '₦50,000 Merit Reward', format: 'Section A: 30m compulsory · Section B: 2 of 3 (20m each = 40m) · Section C: 2 of 4 (15m each = 30m) = 100m' },
-  { id: 'div-uni', name: 'National Inter-School Challenge (Tertiary)', level: `${UNIVERSITY_COUNTS.total} Universities, Polytechnics & Colleges`, reward: '₦50,000 Merit Reward', format: 'Inter-school individual & team tournament across 5 national rounds covering accounting, finance, tax, audit, economics, business law & management' },
-  { id: 'div-pro', name: 'Professional Challenge', level: 'ACA · FCA · ACCA · CPA (Optional Division)', reward: '₦50,000 Merit Reward', format: 'Executive IFRS, corporate finance, tax strategy, forensic assurance & boardroom advisory showcase' },
+  { id: 'div-atswa', name: 'ATSWA Challenge', level: 'ATS 1 – ATS 3', reward: '₦100,000 / ₦70,000 / ₦50,000 Podium Pool', format: '30 MCQ + 20 Short-Answer + Answer 4 of 6 Theory (12.5 marks each = 50m Section C)' },
+  { id: 'div-ican-fnd', name: 'ICAN Foundation Challenge', level: 'CBL · BE · MA · FA', reward: '₦100,000 / ₦70,000 / ₦50,000 Podium Pool', format: 'Section A: 30m compulsory · Section B: 2 of 3 (20m each = 40m) · Section C: 2 of 4 (15m each = 30m) = 100m' },
+  { id: 'div-ican-skl', name: 'ICAN Skills Challenge', level: 'FR · FM · PSAF · AAF · TAX · PM', reward: '₦100,000 / ₦70,000 / ₦50,000 Podium Pool', format: 'Section A: 30m compulsory · Section B: 2 of 3 (20m each = 40m) · Section C: 2 of 4 (15m each = 30m) = 100m' },
+  { id: 'div-ican-pro', name: 'ICAN Professional Challenge', level: 'SBR · CS · AAAF · A/TAX · SFM', reward: '₦100,000 / ₦70,000 / ₦50,000 Podium Pool', format: 'Section A: 30m compulsory · Section B: 2 of 3 (20m each = 40m) · Section C: 2 of 4 (15m each = 30m) = 100m' },
+  { id: 'div-uni', name: 'National Inter-School Challenge (Tertiary)', level: `${UNIVERSITY_COUNTS.total} Universities, Polytechnics & Colleges · Max 4 per School`, reward: '₦100,000 / ₦70,000 / ₦50,000 Podium Pool', format: 'Inter-school individual & team tournament across 5 national rounds covering accounting, finance, tax, audit, economics, business law & management' },
+  { id: 'div-pro', name: 'Professional Challenge', level: 'ACA · FCA · ACCA · CPA (Optional Division)', reward: '₦100,000 / ₦70,000 / ₦50,000 Podium Pool', format: 'Executive IFRS, corporate finance, tax strategy, forensic assurance & boardroom advisory showcase' },
 ];
 
 export const COMPETITION_REWARD = {
-  amount: 50000,
+  amount: 100000,
   currency: 'NGN',
+  firstPrize: 100000,
+  secondPrize: 70000,
+  thirdPrize: 50000,
+  totalPodiumPool: 220000,
+  maxCompetitorsPerSchool: 4,
   summary:
-    'Learners who excel in the VALENCE National Inter-School Challenge and exam divisions (with questions grounded in accounting and related fields) receive a verified ₦50,000 cash reward after every competition closes and official results are confirmed.',
+    'Learners who excel in the VALENCE National Inter-School Challenge and exam divisions (with questions grounded in accounting and related fields) earn a podium cash prize pool of ₦220,000 after every competition closes: ₦100,000 for 1st position, ₦70,000 for 2nd position and ₦50,000 for 3rd position. Winning students are displayed on their respective school’s official VALENCE profile as Top VALENCE Students.',
   eligibilityRules: [
     'Open to verified ATSWA, ICAN, university, polytechnic, college and general accounting candidates.',
+    'Strictly only 4 students can compete in each school.',
     'Awarded after final scoring, anti-cheat audit and appeals review conclude at competition close.',
-    'Identity and candidate standing verified before audited ₦50,000 payout disbursement.',
-    'Accompanied by verifiable digital merit certificates and VALENCE Hall of Fame induction.',
+    'Identity and candidate standing verified before audited podium payout disbursement (₦100,000 / ₦70,000 / ₦50,000).',
+    'Top three winners are permanently featured on their school’s VALENCE profile as Top VALENCE Students, alongside verifiable digital merit certificates and VALENCE Hall of Fame induction.',
   ],
 };
 
@@ -1545,7 +1554,7 @@ export const PAGE_TICKER_NOTICES = {
       { id: 'tr-1', text: '300 accredited Nigerian universities, polytechnics and colleges across all 36 states and FCT Abuja are embedded right inside VALENCE.', tag: '300 Institutions' },
       { id: 'tr-2', text: 'Free membership for every undergraduate, ND, HND, NCE and general accounting learner; ATSWA and ICAN registration is ongoing.', tag: 'Join Free' },
       { id: 'tr-3', text: 'Start ATSWA or ICAN while in school, join campus study groups and master 6 practical financial literacy tracks.', tag: 'Early Advantage' },
-      { id: 'tr-4', text: 'Rally your campus team for the VALENCE National Inter-School Challenge (accounting & related fields) and compete for the ₦50,000 reward.', tag: 'Inter-School' },
+      { id: 'tr-4', text: 'Rally your campus team (only 4 students per school) for the VALENCE National Inter-School Challenge (accounting & related fields) and compete for the ₦100,000 / ₦70,000 / ₦50,000 podium prize pool.', tag: 'Inter-School' },
     ],
   },
   store: {
@@ -1579,10 +1588,11 @@ export const PAGE_TICKER_NOTICES = {
   competitions: {
     label: 'Challenge',
     items: [
-      { id: 'cp-1', text: 'The VALENCE National Inter-School Challenge brings together 300 accredited Nigerian universities, polytechnics, colleges and exam divisions.', tag: 'National Challenge' },
+      { id: 'cp-1', text: `The VALENCE National Inter-School Challenge brings together ${UNIVERSITY_COUNTS.total} accredited Nigerian universities, polytechnics, colleges and exam divisions.`, tag: 'National Challenge' },
       { id: 'cp-2', text: 'All competition questions test accounting and related fields: reporting, costing, audit, tax, finance, economics, business law, quantitative methods & management.', tag: 'Question Scope' },
-      { id: 'cp-3', text: 'Top learners earn a verified ₦50,000 merit cash reward after every competition closes, plus digital certificates and Hall of Fame recognition.', tag: '₦50,000 Reward' },
-      { id: 'cp-4', text: 'Five competitive rounds: Institution Verification, Individual CBT Qualifiers, Zonal Brackets, National Semi-Finals and the Grand Finale.', tag: '5 Rounds' },
+      { id: 'cp-3', text: 'Strictly only 4 students can compete in each school. The podium prize pool is ₦220,000 after every competition: ₦100,000 for 1st, ₦70,000 for 2nd and ₦50,000 for 3rd.', tag: 'Podium Pool' },
+      { id: 'cp-4', text: 'Winners are displayed on their respective school’s official VALENCE profile as Top VALENCE Students, plus digital certificates and Hall of Fame recognition.', tag: 'Top VALENCE Students' },
+      { id: 'cp-5', text: 'Five competitive rounds: Institution Verification, Individual CBT Qualifiers, Zonal Brackets, National Semi-Finals and the Grand Finale.', tag: '5 Rounds' },
     ],
   },
   opportunities: {

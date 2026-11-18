@@ -42,9 +42,9 @@ const SERVICES = [
   },
   {
     icon: Trophy,
-    title: 'National Inter-School Challenge (₦50,000 Reward)',
-    badge: '₦50,000 Cash Reward',
-    desc: 'Five-round national championships across 300 Nigerian universities, polytechnics, colleges and exam divisions, with questions drawn from accounting and related fields (finance, tax, audit, economics, business law & management) and a verified ₦50,000 reward.',
+    title: 'National Inter-School Challenge (₦220,000 Podium Pool)',
+    badge: '₦220,000 Podium Prizes',
+    desc: 'Five-round national championships across Nigerian universities, polytechnics, colleges and exam divisions, with questions drawn from accounting and related fields (finance, tax, audit, economics, business law & management) and a verified ₦220,000 podium prize pool (₦100,000 / ₦70,000 / ₦50,000) · strictly only 4 students can compete in each school.',
     cta: 'Enter Challenge',
     to: '/competitions',
   },
@@ -94,7 +94,7 @@ export default function ServicesPage() {
             Comprehensive Educational, Competition & Career Services
           </h1>
           <p className="text-sm sm:text-base text-[#9AA4B2] max-w-2xl">
-            Every academic, networking, examination timetable, ₦50,000 competition reward, bookstore and advertising capability integrated in one neutral platform.
+            Every academic, networking, examination timetable, ₦220,000 competition podium pool, bookstore and advertising capability integrated in one neutral platform.
           </p>
         </div>
       </section>

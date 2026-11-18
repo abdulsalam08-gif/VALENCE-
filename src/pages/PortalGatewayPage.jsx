@@ -35,7 +35,7 @@ const PORTAL_META = {
       'In-app ATSWA document checklist, upload & registration guidance + in-app study material & delivery enquiries',
       'Optional ₦3,000 per-level Paystack registration exclusively when applying for tuition & cost implication',
       'Per-course past question & study pack orders (buy 1 course or all applicable) with automatic discounts up to 9%',
-      '15 study tools, WebRTC voice/video calling & National Competitions with ₦50,000 cash rewards',
+      '15 study tools, WebRTC voice/video calling & National Competitions with ₦220,000 podium cash prizes',
     ],
     needsInstitution: true,
     registerFields: [
@@ -103,12 +103,12 @@ const PORTAL_META = {
     icon: Building2,
     headline: 'Register Your Nigerian University, Polytechnic, College or Tuition Centre',
     summary:
-      'Select your institution from the embedded directory of all Nigerian universities, manage candidate squads (1–5 members), appoint supervisors and track national rankings and ₦50,000 learner merit rewards.',
+      'Select your institution from the embedded directory of all Nigerian universities, polytechnics and colleges, manage candidate squads (strictly only 4 competitors per school), appoint supervisors and track national rankings, Top VALENCE Students and ₦220,000 podium reward tracking.',
     capabilities: [
       'Full Federal, State & Private Nigerian university directory + polytechnics & colleges',
       'Coordinator verification & official Verified Institution profile badge',
       'Multi-division competition team registration, roster locking & qualifying status',
-      'Realtime school leaderboard analytics, merit certificates & ₦50,000 reward tracking',
+      'Realtime school leaderboard analytics, merit certificates, Top VALENCE Students spotlight & podium reward tracking (₦100,000 / ₦70,000 / ₦50,000)',
     ],
     needsInstitution: true,
     registerFields: [
@@ -160,7 +160,7 @@ const PORTAL_META = {
       'Dynamic Platform & Pricing CMS: update per-course past question/study pack prices, discounts, delivery zones, tuition fees, ₦3,000 lock, ₦10,000/week ad rate, motivational quote pop-ups & FAQs anytime',
       'In-App Operations Queues: manage ATSWA document/registration guidance, study material & delivery enquiries, and VALENCE ADVERTISE campaign approvals & billing',
       'Central Examination Authority: update ATSWA (2-day) & ICAN (3-day) dates, paper timetables & 30-day result release / delay notices',
-      'Competition Manager: papers, timers, rubric grading, appeals & ₦50,000 post-competition reward disbursement logs',
+      'Competition Manager: papers, timers, rubric grading, appeals & ₦100,000 / ₦70,000 / ₦50,000 podium post-competition reward disbursement logs',
       'Verification, Finance & Moderation: tutor certificates (AAT / AAT + ACA), professionals, Nigerian institutions, Paystack audit logs & community safety',
     ],
     needsInstitution: false,
@@ -295,7 +295,7 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
                 <div>
                   <p className="font-semibold text-white">Supabase Auth & Database Binding Ready</p>
                   <p className="text-[#9AA4B2] mt-0.5">
-                    Live database provisioning (including all {universityCounts.total} accredited Nigerian universities, polytechnics &amp; colleges, Central Exam Authority tables, ₦3,000 tuition unlock records &amp; ₦50,000 reward ledgers) connects directly in Phase 2 &amp; Phase 3.
+                    Live database provisioning (including all {universityCounts.total} accredited Nigerian universities, polytechnics &amp; colleges, Central Exam Authority tables, ₦3,000 tuition unlock records &amp; ₦220,000 podium reward ledgers) connects directly in Phase 2 &amp; Phase 3.
                   </p>
                 </div>
               </div>
