@@ -20,6 +20,7 @@ import { useToast } from '../context/ToastContext';
 import Badge from '../components/ui/Badge';
 import BrandLogo from '../components/ui/BrandLogo';
 import UniversitySelect from '../components/ui/UniversitySelect';
+import { useNavigate } from 'react-router-dom';
 
 const PORTAL_META = {
   student: {
@@ -171,8 +172,9 @@ const PORTAL_META = {
 export default function PortalGatewayPage({ defaultPortal = 'student' }) {
   const { portalType } = useParams();
   const [searchParams] = useSearchParams();
-  const { universityCounts } = usePlatform();
+  const { universityCounts, handleSignIn, handleSignUp } = usePlatform();
   const toast = useToast();
+  const navigate = useNavigate();
 
   const routePortal = portalType || defaultPortal;
   const initialPortal = PORTAL_META[routePortal] ? routePortal : 'student';
@@ -207,7 +209,7 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
     if (key === 'admin') setMode('signin');
   };
 
-  const handleAuthSubmit = (e) => {
+  const handleAuthSubmit = async (e) => {
     e.preventDefault();
     if (!isSupabaseConfigured) {
       toast.info(
@@ -216,7 +218,39 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
       );
       return;
     }
-    toast.info('Authenticating...', `Connecting to ${meta.label}.`);
+
+    if (mode === 'signin') {
+      const result = await handleSignIn(email, password);
+      if (result.error) {
+        toast.error('Sign in failed', result.error);
+        return;
+      }
+      toast.success('Signed in', `Welcome to ${meta.label}.`);
+      navigate('/portal/student');
+    } else {
+      const accountType = selectedPortal === 'admin' ? 'admin' :
+        selectedPortal === 'school_rep' ? 'school_rep' :
+        selectedPortal === 'professional' ? 'professional' :
+        selectedPortal === 'tutor' ? 'tutor' :
+        selectedPortal === 'advertiser' ? 'advertiser' :
+        selectedPortal === 'general_learner' ? 'general_learner' : 'student';
+
+      const payload = {
+        email,
+        password,
+        full_name: fullName || email.split('@')[0],
+        account_type: accountType,
+        institution_id: selectedPortal === 'admin' ? null : university || null,
+        onboarding_completed: true,
+      };
+      const result = await handleSignUp(payload);
+      if (result.error) {
+        toast.error('Registration failed', result.error);
+        return;
+      }
+      toast.success('Account created', `Welcome to VALENCE.`);
+      navigate('/portal/student');
+    }
   };
 
   return (

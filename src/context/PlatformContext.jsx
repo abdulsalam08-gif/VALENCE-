@@ -43,6 +43,16 @@ import {
 } from '../data/nigerianUniversities';
 import { calculateStoreCart } from '../lib/pricing';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import {
+  signIn as authSignIn,
+  signUp as authSignUp,
+  signOut as authSignOut,
+  updateProfile as authUpdateProfile,
+  fetchNotifications as authFetchNotifications,
+  fetchPrivacySettings as authFetchPrivacy,
+  updatePrivacySettings as authUpdatePrivacy,
+  fetchGalleryPhotos as authFetchGallery,
+} from '../lib/auth';
 
 const PlatformContext = createContext(null);
 const CART_STORAGE_KEY = 'valence_cart_v1';
@@ -834,6 +844,66 @@ export function PlatformProvider({ children }) {
     }
   }, [cart]);
 
+  // Phase 3: Auth state
+  const [privacySettings, setPrivacySettings] = useState(null);
+  const [userNotifications, setUserNotifications] = useState([]);
+
+  const refreshUserData = useCallback(async (uid) => {
+    if (!supabase || !uid) return;
+    const [privacyRes, notifRes] = await Promise.all([
+      authFetchPrivacy(),
+      authFetchNotifications(),
+    ]);
+    if (privacyRes.data) setPrivacySettings(privacyRes.data);
+    if (Array.isArray(notifRes.data)) setUserNotifications(notifRes.data);
+  }, []);
+
+  const handleSignIn = useCallback(async (email, password) => {
+    const result = await authSignIn(email, password);
+    if (result.error) return { error: result.error };
+    if (result.data?.user) {
+      await hydrateAuthenticatedUser(result.data.user);
+      await refreshUserData(result.data.user.id);
+    }
+    return { error: null };
+  }, [hydrateAuthenticatedUser, refreshUserData]);
+
+  const handleSignUp = useCallback(
+    async (payload) => {
+      const result = await authSignUp(payload);
+      if (result.error) return { error: result.error };
+      if (result.data?.user) {
+        // Auto-sign in after registration
+        await supabase.auth.signInWithPassword({ email: payload.email, password: payload.password }).catch(() => {});
+      }
+      return { error: null };
+    },
+    []
+  );
+
+  const handleSignOut = useCallback(async () => {
+    await authSignOut();
+    setUser(null);
+    setProfile(null);
+    setUserRole(null);
+    setAdminRoles([]);
+    setUnlockedLevelIds([]);
+    setUnlockedCentreFees([]);
+    setUserNotifications([]);
+    setPrivacySettings(null);
+  }, []);
+
+  const handleUpdateProfile = useCallback(
+    async (updates) => {
+      const result = await authUpdateProfile(updates);
+      if (result.data && profile) {
+        setProfile({ ...profile, ...result.data });
+      }
+      return result;
+    },
+    [profile]
+  );
+
   const isLevelUnlocked = (levelKey) => unlockedLevelIds.includes(levelKey);
 
   const addToCart = (product, qty = 1) => {
@@ -970,6 +1040,16 @@ export function PlatformProvider({ children }) {
     closeWhatsAppModal,
     inAppTickets,
     submitInAppTicket,
+    // Phase 3 auth
+    handleSignIn,
+    handleSignUp,
+    handleSignOut,
+    handleUpdateProfile,
+    refreshUserData,
+    privacySettings,
+    setPrivacySettings,
+    userNotifications,
+    setUserNotifications,
   };
 
   return <PlatformContext.Provider value={value}>{children}</PlatformContext.Provider>;

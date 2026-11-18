@@ -161,7 +161,7 @@ export default function HomePage() {
                 {settings.heroSubcopy}
               </p>
 
-              {/* Free Signup + ₦50k Reward Callout Strip */}
+              {/* Free Signup + ₦220k Podium Pool Callout Strip */}
               <div className="flex flex-wrap gap-2 text-xs">
                 <span className="inline-flex items-center gap-1.5 rounded-xl bg-[#11161C] border border-white/[0.08] px-3 py-1.5 text-[#D5DBE3]">
                   <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784]" />

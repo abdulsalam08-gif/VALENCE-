@@ -5,6 +5,7 @@ import { PlatformProvider } from './context/PlatformContext';
 import PublicLayout from './components/layout/PublicLayout';
 import { RouteSkeleton } from './components/ui/Skeleton';
 import HomePage from './pages/HomePage';
+import { RequireAuth } from './components/guards/RequireAuth';
 
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const ProgrammesPage = lazy(() => import('./pages/ProgrammesPage'));
@@ -21,6 +22,9 @@ const AdvertisePage = lazy(() => import('./pages/AdvertisePage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 const LegalPage = lazy(() => import('./pages/LegalPage'));
 const PortalGatewayPage = lazy(() => import('./pages/PortalGatewayPage'));
+const OnboardingPage = lazy(() => import('./pages/OnboardingPage'));
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const StudentPortalPage = lazy(() => import('./pages/StudentPortalPage'));
 
 export default function App() {
   return (
@@ -49,6 +53,24 @@ export default function App() {
                 <Route path="/legal" element={<LegalPage />} />
                 <Route path="/legal/:section" element={<LegalPage />} />
                 <Route path="/portal/:portalType" element={<PortalGatewayPage />} />
+                <Route path="/signin" element={<PortalGatewayPage />} />
+                <Route path="/onboarding" element={<OnboardingPage />} />
+                <Route
+                  path="/profile"
+                  element={
+                    <RequireAuth>
+                      <ProfilePage />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/portal/student"
+                  element={
+                    <RequireAuth>
+                      <StudentPortalPage />
+                    </RequireAuth>
+                  }
+                />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Route>
             </Routes>
