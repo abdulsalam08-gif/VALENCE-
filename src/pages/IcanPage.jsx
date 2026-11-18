@@ -125,7 +125,7 @@ export default function IcanPage() {
     { label: 'ICAN Registration Enquiry', category: 'ICAN Official Registration Fee Assistance' },
     { label: 'Examination Fee Enquiry', category: 'ICAN Official Examination Fee Assistance' },
     { label: 'Subscription & Dev. Levy Enquiry', category: 'ICAN Official Annual Subscription & Levy Assistance' },
-    { label: 'Physical Tuition Application', category: 'Physical Tuition Application Enquiry' },
+    { label: 'Exemption Processing Enquiry', category: 'ICAN Official Exemption Processing Assistance' },
   ];
 
   const pageHeading =
@@ -418,14 +418,18 @@ export default function IcanPage() {
                 </div>
               </div>
 
-              {/* Official ICAN Fees & Physical Tuition via WhatsApp */}
+              {/* Official ICAN Fee & Exemption Assistance via WhatsApp */}
               <div className="v-card p-6 space-y-4">
-                <Badge variant="neutral">Dedicated WhatsApp Assistance · {settings.whatsappNumber}</Badge>
+                <Badge variant="neutral">24/7 WhatsApp Support · {settings.whatsappNumber}</Badge>
                 <h3 className="font-display text-lg font-bold text-white">
-                  Official ICAN Fees & Physical Tuition Enquiries
+                  Official ICAN Fee &amp; Exemption Assistance
                 </h3>
                 <p className="text-xs leading-relaxed text-[#9AA4B2]">
-                  Official ICAN student registration, annual subscription & one-time development levy, exemption processing, exam fee assistance and physical tuition applications are handled via prefilled WhatsApp enquiries. Online tuition and level unlocks run strictly via Paystack.
+                  Official ICAN student registration, annual subscription, one-time development levy, exemption processing, and examination fee assistance are handled via prefilled WhatsApp support. All online tuition and level unlocks run strictly in-app via Paystack, while independent verified physical tuition centres are listed in our{' '}
+                  <Link to="/tuition-centres" className="text-[#16C784] underline">
+                    Partner Directory
+                  </Link>
+                  .
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {whatsappEnquiryButtons.map((btn) => (

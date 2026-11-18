@@ -269,7 +269,7 @@ export function calculateAdCampaignCost(weeks = 1, weeklyRate = 10000, placement
 
 /**
  * Prefilled WhatsApp Enquiry Link Builder
- * Strictly for official ICAN fee assistance, physical tuition applications and general support.
+ * Strictly for official ICAN fee/exemption assistance and 24/7 general customer support.
  * ATSWA document & registration guidance, study materials & delivery enquiries, and
  * VALENCE ADVERTISE tuition-centre campaigns are all handled directly inside the VALENCE app.
  * NEVER used as an online payment checkout.

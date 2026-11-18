@@ -5,8 +5,8 @@ import { NIGERIAN_UNIVERSITIES } from '../../data/nigerianUniversities';
 export default function UniversitySelect({
   value,
   onChange,
-  label = 'Nigerian University / Institution',
-  placeholder = 'Search any Nigerian university (e.g. UNILAG, LASU, OAU, ABU, Covenant)...',
+  label = 'Nigerian University, Polytechnic or College',
+  placeholder = 'Search university, polytechnic or college (UNILAG, YABATECH, LASU, Auchi Poly, FCE)...',
   allowCustom = true,
   id = 'university-select',
 }) {
@@ -78,18 +78,18 @@ export default function UniversitySelect({
               autoFocus
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Filter by name, acronym (UNILAG, BUK, UNN) or state..."
+              placeholder="Filter by name, acronym (UNILAG, YABATECH, FPILARO, FCE) or state..."
               className="v-input pl-9 py-2 text-xs"
             />
           </div>
 
-          <div className="flex items-center gap-1">
-            {['ALL', 'Federal', 'State', 'Private'].map((c) => (
+          <div className="flex flex-wrap items-center gap-1">
+            {['ALL', 'Federal', 'State', 'Private', 'Polytechnic', 'College'].map((c) => (
               <button
                 key={c}
                 type="button"
                 onClick={() => setCatFilter(c)}
-                className={`rounded-lg px-2.5 py-1 text-[10.5px] font-semibold transition-colors ${
+                className={`rounded-lg px-2 py-1 text-[10px] font-semibold transition-colors ${
                   catFilter === c
                     ? 'bg-[#16C784] text-[#06130D]'
                     : 'bg-[#0B0E11] text-[#9AA4B2] hover:text-white'
@@ -121,7 +121,7 @@ export default function UniversitySelect({
                       <span className="font-display font-bold text-[#16C784]">({u.shortName})</span>
                     </p>
                     <p className="text-[10.5px] text-[#667085]">
-                      {u.category} University · {u.state} ({u.zone})
+                      {u.typeLabel || `${u.category} University`} · {u.state} ({u.zone})
                     </p>
                   </div>
                   {isSelected && <Check className="h-3.5 w-3.5 text-[#16C784] shrink-0" />}

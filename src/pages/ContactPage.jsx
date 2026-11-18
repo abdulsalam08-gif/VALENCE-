@@ -52,7 +52,7 @@ export default function ContactPage() {
             Reach the VALENCE Support Desk
           </h1>
           <p className="text-sm sm:text-base text-[#9AA4B2] max-w-2xl">
-            Academic guidance, physical tuition enquiries, official ICAN fee support, timetable notices, competition rewards, bookstore assistance and tuition-centre advertising enquiries.
+            24/7 academic support, official ICAN fee &amp; exemption guidance, timetable notices, competition rewards, in-app bookstore assistance, and partner advertising support.
           </p>
         </div>
       </section>
@@ -70,7 +70,7 @@ export default function ContactPage() {
                 {settings.whatsappNumber}
               </p>
               <p className="text-xs text-[#9AA4B2]">
-                Dedicated to official ICAN registration/exam/subscription fee assistance, physical tuition applications and general support. (Online checkouts run via Paystack; ATSWA guidance, store/delivery enquiries and advertising run directly in-app.)
+                Reserved for official ICAN registration, exam, subscription &amp; exemption assistance, plus 24/7 general customer support. (Online tuition, Paystack checkouts, ATSWA guidance, store enquiries, and advertising all run directly in-app.)
               </p>
               <button
                 type="button"
@@ -194,8 +194,7 @@ export default function ContactPage() {
                   <option>ATSWA Document &amp; Registration Guidance (In-App)</option>
                   <option>Study Materials &amp; Delivery Enquiry (In-App)</option>
                   <option>VALENCE ADVERTISE: ₦10,000/Week Campaign (In-App)</option>
-                  <option>Official ICAN Fee Assistance</option>
-                  <option>Physical Tuition Application</option>
+                  <option>Official ICAN Fee &amp; Exemption Assistance</option>
                   <option>Exam Timetable &amp; Result Release Notice</option>
                   <option>National Competition &amp; ₦50,000 Merit Reward</option>
                   <option>Tutor / Professional Verification</option>

@@ -8,7 +8,7 @@ const ENQUIRY_CATEGORIES = [
   'ICAN Official Registration Fee Assistance',
   'ICAN Official Examination Fee Assistance',
   'ICAN Official Annual Subscription & Levy Assistance',
-  'Physical Tuition Application Enquiry',
+  'ICAN Official Exemption Processing Assistance',
   'General Support Enquiry',
 ];
 
@@ -105,7 +105,7 @@ export default function WhatsAppWidget() {
             <div className="mt-4 flex items-start gap-2.5 rounded-xl bg-[#0B0E11] border border-white/[0.08] p-3 text-xs text-[#9AA4B2]">
               <ShieldAlert className="h-4 w-4 shrink-0 text-[#16C784] mt-0.5" />
               <p>
-                <strong className="text-[#F4F6F9]">In-App First + Paystack-Only Checkout:</strong> Online payments run exclusively via Paystack. ATSWA document & registration guidance, study materials & delivery enquiries, and VALENCE ADVERTISE (₦10,000/week) are all handled directly in-app. WhatsApp is reserved for official ICAN fee assistance, physical tuition and general support.
+                <strong className="text-[#F4F6F9]">In-App First &amp; Paystack-Only Checkout:</strong> Online tuition, ATSWA guidance, store &amp; delivery enquiries, and VALENCE ADVERTISE (₦10,000/week) all run directly inside VALENCE. WhatsApp is reserved strictly for official ICAN fee/exemption assistance and 24/7 general customer support.
               </p>
             </div>
 

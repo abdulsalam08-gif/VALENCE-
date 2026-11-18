@@ -130,15 +130,15 @@ export default function ServicesPage() {
           <div className="v-glass-card p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <h3 className="font-display text-lg font-bold text-white">
-                Need Physical Tuition or Official ICAN Registration / Exam Fee Assistance?
+                Need Official ICAN Registration, Exemption or Exam Fee Assistance?
               </h3>
               <p className="text-xs text-[#9AA4B2] mt-1">
-                Launch a prefilled WhatsApp message directly to the VALENCE academic support desk.
+                Launch a prefilled 24/7 WhatsApp message to the VALENCE support desk (all online tuition, ATSWA guidance, bookstore enquiries, and advertising run directly inside VALENCE).
               </p>
             </div>
             <button
               type="button"
-              onClick={() => openWhatsAppModal({ category: 'Physical Tuition & ICAN Fee Assistance' })}
+              onClick={() => openWhatsAppModal({ category: 'ICAN Official Registration Fee Assistance' })}
               className="v-btn-primary text-xs shrink-0"
             >
               <MessageCircle className="h-4 w-4" /> Start WhatsApp Enquiry

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Calendar, Building2, CheckCircle2, ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Calendar, Building2, ArrowUpRight, ArrowRight } from 'lucide-react';
 import { usePlatform } from '../context/PlatformContext';
 import { useToast } from '../context/ToastContext';
 import Badge from '../components/ui/Badge';
@@ -56,13 +57,22 @@ export default function OpportunitiesPage() {
           </div>
 
           {visible.length === 0 ? (
-            <div className="v-card p-10 text-center space-y-2">
-              <p className="text-sm font-semibold text-white">
-                No active listings in “{cat}” right now.
+            <div className="v-card p-8 sm:p-10 text-center space-y-3 max-w-2xl mx-auto">
+              <Badge variant="green">VERIFIED LISTINGS ONLY</Badge>
+              <p className="font-display text-lg font-bold text-white">
+                Verified {cat === 'All' ? 'Opportunities' : cat} Publish Here Live
               </p>
-              <p className="text-xs text-[#9AA4B2]">
-                New verified listings published by administrators appear here automatically with in-app notifications.
+              <p className="text-xs text-[#9AA4B2] leading-relaxed">
+                VALENCE never displays fake or expired placeholder jobs. Every scholarship, internship, audit trainee role, and workshop is verified by the Admin team before going live, with instant notifications to students and professionals.
               </p>
+              <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                <Link to="/portal/professional" className="v-btn-primary text-xs">
+                  Post a Verified Opportunity <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+                <Link to="/portal/student?mode=register" className="v-btn-secondary text-xs">
+                  Join Free for Opportunity Alerts
+                </Link>
+              </div>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">

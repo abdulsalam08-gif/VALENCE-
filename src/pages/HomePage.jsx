@@ -929,41 +929,58 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {tutors.map((t) => (
-                <div key={t.id} className="v-card-hover p-5 flex flex-col justify-between gap-4">
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <div className="h-11 w-11 rounded-2xl bg-[#16C784]/15 border border-[#16C784]/30 flex items-center justify-center font-display text-sm font-bold text-[#16C784]">
-                        {t.initials}
+            {tutors.length === 0 ? (
+              <div className="v-card p-6 sm:p-7 flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+                <div className="space-y-2 max-w-2xl">
+                  <Badge variant="green">FACULTY ONBOARDING OPEN</Badge>
+                  <h4 className="font-display text-lg font-bold text-white">
+                    Join VALENCE&apos;s Verified In-App Accounting Faculty
+                  </h4>
+                  <p className="text-xs text-[#9AA4B2] leading-relaxed">
+                    Only real, manually verified tutors appear here. ATSWA tutors upload at least an AAT certificate; ICAN tutors upload both AAT and ACA certificates to private storage and complete our 20-question, 45-minute qualifying test before teaching live in-app classes.
+                  </p>
+                </div>
+                <Link to="/portal/tutor?mode=register" className="v-btn-primary text-xs shrink-0 self-start lg:self-center">
+                  Apply as a Verified Tutor <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {tutors.map((t) => (
+                  <div key={t.id} className="v-card-hover p-5 flex flex-col justify-between gap-4">
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-3">
+                        <div className="h-11 w-11 rounded-2xl bg-[#16C784]/15 border border-[#16C784]/30 flex items-center justify-center font-display text-sm font-bold text-[#16C784]">
+                          {t.initials}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm font-bold text-white truncate">{t.name}</p>
+                          <p className="text-[11px] text-[#16C784]">{t.tier}</p>
+                        </div>
                       </div>
-                      <div className="min-w-0">
-                        <p className="text-sm font-bold text-white truncate">{t.name}</p>
-                        <p className="text-[11px] text-[#16C784]">{t.tier}</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {t.credentials.map((cred) => (
+                          <Badge key={cred} variant="verified">
+                            {cred}
+                          </Badge>
+                        ))}
                       </div>
+                      <p className="text-xs text-[#9AA4B2] leading-relaxed">{t.bio}</p>
                     </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {t.credentials.map((cred) => (
-                        <Badge key={cred} variant="verified">
-                          {cred}
-                        </Badge>
+                    <div className="flex flex-wrap gap-1.5 border-t border-white/[0.06] pt-3">
+                      {t.courses.map((c) => (
+                        <span
+                          key={c}
+                          className="rounded-md bg-[#0B0E11] border border-white/[0.08] px-2 py-0.5 text-[10.5px] font-display font-semibold text-[#D5DBE3]"
+                        >
+                          {c}
+                        </span>
                       ))}
                     </div>
-                    <p className="text-xs text-[#9AA4B2] leading-relaxed">{t.bio}</p>
                   </div>
-                  <div className="flex flex-wrap gap-1.5 border-t border-white/[0.06] pt-3">
-                    {t.courses.map((c) => (
-                      <span
-                        key={c}
-                        className="rounded-md bg-[#0B0E11] border border-white/[0.08] px-2 py-0.5 text-[10.5px] font-display font-semibold text-[#D5DBE3]"
-                      >
-                        {c}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -1089,51 +1106,87 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {tuitionCentres.map((centre) => (
-              <div key={centre.id} className="v-card-hover p-5 flex flex-col justify-between gap-4">
-                <div className="space-y-2.5">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      {centre.verified && <Badge variant="verified">Verified Physical Centre</Badge>}
-                      <Badge variant="neutral">{centre.schedule || centre.mode}</Badge>
-                    </div>
-                    {centre.sponsored && <Badge variant="sponsored">{centre.adLabel}</Badge>}
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#0B0E11] border border-white/[0.08] text-[#16C784]">
-                      <Building2 className="h-5 w-5" />
-                    </span>
-                    <div>
-                      <h3 className="font-display text-base font-bold text-white">{centre.name}</h3>
-                      <p className="text-xs text-[#9AA4B2] inline-flex items-center gap-1">
-                        <MapPin className="h-3 w-3 text-[#16C784]" /> {centre.location}
-                      </p>
-                    </div>
-                  </div>
-                  <p className="text-xs text-[#9AA4B2] leading-relaxed">{centre.description}</p>
-                </div>
-                <div className="flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.06] pt-3">
-                  <div className="flex flex-wrap gap-1.5">
-                    {centre.programmes.map((p) => (
-                      <span
-                        key={p}
-                        className="rounded-md bg-[#0B0E11] border border-white/[0.07] px-2 py-0.5 text-[10.5px] text-[#C2C9D4]"
-                      >
-                        {p}
-                      </span>
-                    ))}
+          {tuitionCentres.length === 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[
+                {
+                  badge: 'Physical Centres Only',
+                  title: 'Verified Physical Tuition Centres',
+                  desc: 'List your in-person classroom venue by city and state at ₦10,000/week with in-app student enquiries and live click analytics. (Online tuition stays in-app via verified tutors.)',
+                },
+                {
+                  badge: 'In-App Enquiry + Checkout',
+                  title: 'Accounting Textbook Authors',
+                  desc: 'Promote original ICAN, ATSWA, IFRS, tax, costing, and audit textbooks you publish at ₦10,000/week, with built-in in-app student enquiries and optional Paystack checkout.',
+                },
+                {
+                  badge: 'Genuine Editions Only',
+                  title: 'Verified Textbook Vendors & Bookshops',
+                  desc: 'Showcase authentic accounting textbooks to candidates nationwide at ₦10,000/week, backed by in-app buyer enquiries, optional Paystack checkout, and zero-piracy protection.',
+                },
+              ].map((slot) => (
+                <div key={slot.title} className="v-card-hover p-6 flex flex-col justify-between gap-4">
+                  <div className="space-y-2.5">
+                    <Badge variant="green">{slot.badge}</Badge>
+                    <h3 className="font-display text-lg font-bold text-white">{slot.title}</h3>
+                    <p className="text-xs leading-relaxed text-[#9AA4B2]">{slot.desc}</p>
                   </div>
                   <Link
-                    to="/tuition-centres"
-                    className="text-xs font-semibold text-[#16C784] hover:underline"
+                    to="/advertise"
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-[#16C784] hover:underline pt-2 border-t border-white/[0.06]"
                   >
-                    View Profile →
+                    Apply In-App (₦10,000/Week) <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {tuitionCentres.map((centre) => (
+                <div key={centre.id} className="v-card-hover p-5 flex flex-col justify-between gap-4">
+                  <div className="space-y-2.5">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        {centre.verified && <Badge variant="verified">Verified Physical Centre</Badge>}
+                        <Badge variant="neutral">{centre.schedule || centre.mode}</Badge>
+                      </div>
+                      {centre.sponsored && <Badge variant="sponsored">{centre.adLabel}</Badge>}
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#0B0E11] border border-white/[0.08] text-[#16C784]">
+                        <Building2 className="h-5 w-5" />
+                      </span>
+                      <div>
+                        <h3 className="font-display text-base font-bold text-white">{centre.name}</h3>
+                        <p className="text-xs text-[#9AA4B2] inline-flex items-center gap-1">
+                          <MapPin className="h-3 w-3 text-[#16C784]" /> {centre.location}
+                        </p>
+                      </div>
+                    </div>
+                    <p className="text-xs text-[#9AA4B2] leading-relaxed">{centre.description}</p>
+                  </div>
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-t border-white/[0.06] pt-3">
+                    <div className="flex flex-wrap gap-1.5">
+                      {centre.programmes.map((p) => (
+                        <span
+                          key={p}
+                          className="rounded-md bg-[#0B0E11] border border-white/[0.07] px-2 py-0.5 text-[10.5px] text-[#C2C9D4]"
+                        >
+                          {p}
+                        </span>
+                      ))}
+                    </div>
+                    <Link
+                      to="/tuition-centres"
+                      className="text-xs font-semibold text-[#16C784] hover:underline"
+                    >
+                      View Profile →
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -1155,19 +1208,39 @@ export default function HomePage() {
               </Link>
             </div>
             <div className="space-y-3">
-              {opportunities.map((opp) => (
-                <Link key={opp.id} to="/opportunities" className="v-card-hover p-4 block space-y-2">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <Badge variant="green">{opp.category}</Badge>
-                    <Badge variant="red">Deadline: {opp.deadline}</Badge>
-                  </div>
-                  <h3 className="font-display text-sm sm:text-base font-bold text-white">
-                    {opp.title}
+              {opportunities.length === 0 ? (
+                <div className="v-card p-6 space-y-3">
+                  <Badge variant="green">VERIFIED BOARD ONLY</Badge>
+                  <h3 className="font-display text-base font-bold text-white">
+                    Scholarships, Internships &amp; Graduate Audit Openings Publish Here Live
                   </h3>
-                  <p className="text-xs text-[#C2C9D4]">{opp.organisation}</p>
-                  <p className="text-[11.5px] text-[#9AA4B2] line-clamp-2">{opp.eligibility}</p>
-                </Link>
-              ))}
+                  <p className="text-xs leading-relaxed text-[#9AA4B2]">
+                    Every scholarship, undergraduate internship, NYSC placement, workshop, and graduate accounting role is reviewed by VALENCE administrators before publication, with instant in-app alerts for members.
+                  </p>
+                  <div className="flex flex-wrap gap-2.5 pt-1">
+                    <Link to="/opportunities" className="v-btn-secondary text-xs py-2 px-3">
+                      Explore Categories
+                    </Link>
+                    <Link to="/portal/professional" className="v-btn-primary text-xs py-2 px-3">
+                      Share a Verified Opportunity
+                    </Link>
+                  </div>
+                </div>
+              ) : (
+                opportunities.map((opp) => (
+                  <Link key={opp.id} to="/opportunities" className="v-card-hover p-4 block space-y-2">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <Badge variant="green">{opp.category}</Badge>
+                      <Badge variant="red">Deadline: {opp.deadline}</Badge>
+                    </div>
+                    <h3 className="font-display text-sm sm:text-base font-bold text-white">
+                      {opp.title}
+                    </h3>
+                    <p className="text-xs text-[#C2C9D4]">{opp.organisation}</p>
+                    <p className="text-[11.5px] text-[#9AA4B2] line-clamp-2">{opp.eligibility}</p>
+                  </Link>
+                ))
+              )}
             </div>
           </div>
 
@@ -1208,21 +1281,21 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 16. TESTIMONIALS */}
+      {/* 16. PLATFORM STANDARDS & GUARANTEES */}
       <section className="py-16 sm:py-20 bg-[#0D1116]">
         <div className="v-container space-y-8">
           <div className="max-w-xl">
             <span className="text-xs font-semibold uppercase tracking-widest text-[#16C784]">
-              COMMUNITY VOICES
+              THE VALENCE STANDARD
             </span>
             <h2 className="mt-1 font-display text-2xl sm:text-3xl font-bold text-white">
-              Trusted by Candidates, Mentors & Finalists
+              Built on Transparency, Verification &amp; Trust
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {testimonials.map((item) => (
               <div key={item.id} className="v-card p-6 flex flex-col justify-between gap-5">
-                <p className="text-sm leading-relaxed text-[#D5DBE3]">“{item.quote}”</p>
+                <p className="text-sm leading-relaxed text-[#D5DBE3]">{item.quote}</p>
                 <div className="border-t border-white/[0.06] pt-3.5">
                   <p className="font-display text-sm font-bold text-white">{item.name}</p>
                   <p className="text-xs text-[#16C784]">{item.role}</p>

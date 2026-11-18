@@ -1,0 +1,52 @@
+{
+  "name": "VALENCE: Learning, Connect, Compete & Marketplace",
+  "short_name": "VALENCE",
+  "description": "Complete accounting education, networking, inter-school competition, study materials marketplace and career ecosystem for ATSWA, ICAN, tertiary students and chartered accountants.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0B0E11",
+  "theme_color": "#0B0E11",
+  "categories": ["education", "finance", "books", "productivity"],
+  "icons": [
+    {
+      "src": "/pwa-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/pwa-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Student Portal",
+      "short_name": "Portal",
+      "url": "/portal/student",
+      "icons": [{ "src": "/pwa-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Study Materials Store",
+      "short_name": "Store",
+      "url": "/store",
+      "icons": [{ "src": "/pwa-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "ICAN Programme & Guide",
+      "short_name": "ICAN",
+      "url": "/programmes/ican",
+      "icons": [{ "src": "/pwa-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "ATSWA Programme",
+      "short_name": "ATSWA",
+      "url": "/programmes/atswa",
+      "icons": [{ "src": "/pwa-192.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ]
+}

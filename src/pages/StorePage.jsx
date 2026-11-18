@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import {
   ShoppingBag,
   Plus,
@@ -681,7 +681,11 @@ export default function StorePage() {
             </button>
 
             <p className="text-[10.5px] text-center text-[#667085]">
-              All orders verify server-side via Paystack; all material & delivery enquiries and order updates are managed right inside VALENCE.
+              All orders verify server-side via Paystack; see our{' '}
+              <Link to="/legal/refunds" className="text-[#16C784] hover:underline">
+                Refund &amp; Delivery Policy
+              </Link>
+              .
             </p>
           </aside>
         </div>

@@ -7,6 +7,10 @@ import { usePlatform } from '../../context/PlatformContext';
 export default function Footer() {
   const { settings, openWhatsAppModal, universityCounts } = usePlatform();
 
+  const activeSocials = Object.entries(settings.socialLinks || {}).filter(
+    ([, url]) => typeof url === 'string' && url.trim().length > 0
+  );
+
   return (
     <footer className="border-t border-white/[0.07] bg-[#080B0E] pb-24 lg:pb-10">
       <div className="v-container pt-16 pb-12">
@@ -14,8 +18,8 @@ export default function Footer() {
           <div className="lg:col-span-4 space-y-4">
             <BrandLogo size="lg" showSubtext />
             <p className="text-sm leading-relaxed text-[#9AA4B2] max-w-sm">
-              Nigeria’s complete accounting education, professional networking, inter-school competition, marketplace and career ecosystem connecting ATSWA & ICAN candidates,{' '}
-              <span className="text-[#F4F6F9] font-medium">{universityCounts.total}+ Nigerian universities</span>, verified tuition centres and chartered accountants.
+              Nigeria’s complete accounting education, professional networking, inter-school competition, marketplace and career ecosystem connecting ATSWA &amp; ICAN candidates,{' '}
+              <span className="text-[#F4F6F9] font-medium">{universityCounts.total}+ Nigerian universities, polytechnics &amp; colleges</span>, verified partners and chartered accountants.
             </p>
             <div className="inline-flex items-center gap-2 rounded-xl bg-[#11161C] border border-white/[0.08] px-3.5 py-2 text-xs text-[#C2C9D4]">
               <ShieldCheck className="h-4 w-4 text-[#16C784] shrink-0" />
@@ -23,6 +27,21 @@ export default function Footer() {
                 Online Checkout Secured Exclusively by <strong className="text-white">Paystack</strong>
               </span>
             </div>
+            {activeSocials.length > 0 && (
+              <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
+                {activeSocials.map(([platform, url]) => (
+                  <a
+                    key={platform}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-lg bg-[#11161C] border border-white/[0.08] px-2.5 py-1 capitalize text-[#C2C9D4] hover:text-[#16C784] hover:border-[#16C784]/40 transition-colors"
+                  >
+                    {platform}
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="lg:col-span-2 space-y-3">
@@ -129,14 +148,35 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-6 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[#667085]">
-          <p>
-            © {new Date().getFullYear()} <span className="text-[#9AA4B2] font-semibold">VALENCE</span> ·{' '}
-            <span className="italic text-[#16C784]/80">{settings.tagline}</span> All rights reserved.
-          </p>
-          <p className="text-center sm:text-right">
-            Exam schedules & result dates updated by Central Examination Authority. Paid ads are always labelled Sponsored.
-          </p>
+        <div className="mt-12 pt-6 border-t border-white/[0.06] space-y-4 text-[11px] text-[#667085]">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[#9AA4B2]">
+              <Link to="/legal/terms" className="hover:text-[#16C784] transition-colors">
+                Terms of Service
+              </Link>
+              <Link to="/legal/privacy" className="hover:text-[#16C784] transition-colors">
+                Privacy Policy (NDPA)
+              </Link>
+              <Link to="/legal/refunds" className="hover:text-[#16C784] transition-colors">
+                Refund &amp; Delivery Policy
+              </Link>
+              <Link to="/legal/advertising" className="hover:text-[#16C784] transition-colors">
+                Advertising &amp; Anti-Piracy Policy
+              </Link>
+            </div>
+            <span className="text-[#667085]">
+              Installable Web App (Android, iOS &amp; Desktop)
+            </span>
+          </div>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p>
+              © {new Date().getFullYear()} <span className="text-[#9AA4B2] font-semibold">VALENCE</span> ·{' '}
+              <span className="italic text-[#16C784]/80">{settings.tagline}</span> All rights reserved.
+            </p>
+            <p className="text-center sm:text-right">
+              Exam schedules &amp; result dates updated by Central Examination Authority. Paid ads are always labelled Sponsored.
+            </p>
+          </div>
         </div>
       </div>
     </footer>

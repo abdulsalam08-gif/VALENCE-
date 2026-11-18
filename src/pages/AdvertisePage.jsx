@@ -66,7 +66,8 @@ export default function AdvertisePage() {
   const [campaign, setCampaign] = useState({
     entityName: '',
     streetOrCoverage: '',
-    bookTitlesOrSchedule: '',
+    bookTitlesOrSchedule: 'Physical Walk-In & Nationwide Delivery',
+    studentPurchaseMode: 'In-App Student Enquiry + In-App Paystack Checkout',
     isbnOrPublisher: '',
     contactEmail: '',
     contactPhone: '',
@@ -171,7 +172,7 @@ export default function AdvertisePage() {
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784] shrink-0 mt-0.5" />
-                <span><strong>Textbook Vendors:</strong> Verified bookshops &amp; distributors selling authentic accounting titles</span>
+                <span><strong>Textbook Authors &amp; Vendors:</strong> Built-in in-app student enquiries plus optional in-app Paystack checkout so students stay inside VALENCE</span>
               </li>
             </ul>
           </div>
@@ -367,25 +368,50 @@ export default function AdvertisePage() {
             </div>
 
             {advertiserType !== 'physical_centre' && (
-              <div>
-                <label className="v-label" htmlFor="ad-isbn">
-                  {advertiserType === 'textbook_author'
-                    ? 'ISBN / Publisher & Syllabuses Covered'
-                    : 'Featured Textbooks, Authors & Publishers Stocked'}
-                </label>
-                <input
-                  id="ad-isbn"
-                  type="text"
-                  required
-                  value={campaign.isbnOrPublisher}
-                  onChange={(e) => setCampaign({ ...campaign, isbnOrPublisher: e.target.value })}
-                  placeholder={
-                    advertiserType === 'textbook_author'
-                      ? 'e.g. ISBN 978-978-... · Covers ICAN FR, SBR & University Financial Reporting'
-                      : 'e.g. IFRS, Taxation, Costing, IPSAS, Auditing & ATSWA/ICAN textbooks'
-                  }
-                  className="v-input text-xs"
-                />
+              <div className="space-y-3.5">
+                <div>
+                  <label className="v-label" htmlFor="ad-isbn">
+                    {advertiserType === 'textbook_author'
+                      ? 'ISBN / Publisher & Syllabuses Covered'
+                      : 'Featured Textbooks, Authors & Publishers Stocked'}
+                  </label>
+                  <input
+                    id="ad-isbn"
+                    type="text"
+                    required
+                    value={campaign.isbnOrPublisher}
+                    onChange={(e) => setCampaign({ ...campaign, isbnOrPublisher: e.target.value })}
+                    placeholder={
+                      advertiserType === 'textbook_author'
+                        ? 'e.g. ISBN 978-978-... · Covers ICAN FR, SBR & University Financial Reporting'
+                        : 'e.g. IFRS, Taxation, Costing, IPSAS, Auditing & ATSWA/ICAN textbooks'
+                    }
+                    className="v-input text-xs"
+                  />
+                </div>
+                <div>
+                  <label className="v-label" htmlFor="ad-buymode">
+                    How Students Enquire &amp; Buy Inside VALENCE
+                  </label>
+                  <select
+                    id="ad-buymode"
+                    value={campaign.studentPurchaseMode}
+                    onChange={(e) =>
+                      setCampaign({ ...campaign, studentPurchaseMode: e.target.value })
+                    }
+                    className="v-input text-xs"
+                  >
+                    <option>
+                      In-App Student Enquiry + In-App Paystack Checkout (Recommended)
+                    </option>
+                    <option>
+                      In-App Student Enquiry Only (Respond Directly Inside Advertiser Portal)
+                    </option>
+                  </select>
+                  <p className="mt-1 text-[10.5px] text-[#9AA4B2]">
+                    Every verified author and bookshop ad includes an in-app student enquiry button, with optional Paystack checkout right inside VALENCE.
+                  </p>
+                </div>
               </div>
             )}
 
@@ -554,6 +580,7 @@ export default function AdvertisePage() {
                 {[
                   'Open to 3 verified groups: (1) Physical Tuition Centres, (2) Accounting Textbook Authors, and (3) Verified Textbook Vendors / Bookshops.',
                   'External online tuition is never advertised; all online tuition runs strictly inside VALENCE with VALENCE-verified tutors (AAT for ATSWA; AAT + ACA for ICAN).',
+                  'Authors & textbook vendors get built-in in-app student enquiries plus optional in-app Paystack checkout so buyers stay safely inside VALENCE.',
                   'Strict anti-piracy protection: textbook authors & vendors must supply genuine, copyright-compliant editions only.',
                   `Transparent flat rate of ${formatNaira(weeklyRate)} per week (admin-editable via the Admin Portal) paid via server-verified Paystack checkout.`,
                   '100% in-app workflow with clear Sponsored / Advertisement badges and live impressions, clicks & CTR analytics.',
@@ -574,7 +601,11 @@ export default function AdvertisePage() {
                 <Link to="/portal/advertiser" className="text-[#16C784] font-semibold hover:underline">
                   VALENCE Advertiser Portal
                 </Link>{' '}
-                to extend running weeks, update creatives or download Paystack invoices.
+                to extend running weeks, update creatives or download Paystack invoices. Review our{' '}
+                <Link to="/legal/advertising" className="text-[#16C784] hover:underline">
+                  Advertising &amp; Anti-Piracy Policy
+                </Link>
+                .
               </p>
             </div>
           </div>

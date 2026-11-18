@@ -133,6 +133,7 @@ const PORTAL_META = {
     capabilities: [
       'Verified Physical Tuition Centres (in-person venues only), Textbook Authors & Verified Textbook Vendors',
       '100% in-app campaign booking at ₦10,000/week across 9 placements (incl. Bookstore & Syllabus spotlights)',
+      'Textbook Authors & Vendors: built-in in-app student enquiry inbox plus optional in-app Paystack checkout',
       'Strict zero-piracy verification for author textbooks & vendor stock, plus physical venue verification for centres',
       'Live impression counts, clicks, CTR analytics, Paystack receipts & one-click weekly renewals',
     ],
@@ -143,7 +144,7 @@ const PORTAL_META = {
         'Accounting Textbook Author',
         'Verified Textbook Vendor / Bookshop',
       ] },
-      { name: 'centreName', label: 'Centre, Author or Bookshop Name', type: 'text', placeholder: 'e.g. Prime Ledger Centre / Dr. K. Adeyemi, FCA / Scholar’s Bookshop' },
+      { name: 'centreName', label: 'Centre, Author or Bookshop Name', type: 'text', placeholder: 'Your registered centre, author or bookshop name' },
     ],
   },
   admin: {
@@ -293,7 +294,7 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
                 <div>
                   <p className="font-semibold text-white">Supabase Auth & Database Binding Ready</p>
                   <p className="text-[#9AA4B2] mt-0.5">
-                    Live database provisioning (including all {universityCounts.total} Nigerian universities, Central Exam Authority tables, ₦3,000 tuition unlock records & ₦50,000 reward ledgers) connects directly in Phase 2 & Phase 3.
+                    Live database provisioning (including all {universityCounts.total} accredited Nigerian universities, polytechnics &amp; colleges, Central Exam Authority tables, ₦3,000 tuition unlock records &amp; ₦50,000 reward ledgers) connects directly in Phase 2 &amp; Phase 3.
                   </p>
                 </div>
               </div>
@@ -442,6 +443,17 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
                   : `Create Free ${meta.label.replace(' Portal', '')} Account`}
                 <ArrowRight className="h-4 w-4" />
               </button>
+              <p className="text-[11px] text-center text-[#9AA4B2]">
+                By continuing, you agree to VALENCE&apos;s{' '}
+                <Link to="/legal/terms" className="text-[#16C784] hover:underline">
+                  Terms of Service
+                </Link>{' '}
+                and{' '}
+                <Link to="/legal/privacy" className="text-[#16C784] hover:underline">
+                  NDPA Privacy Policy
+                </Link>
+                .
+              </p>
             </form>
 
             <div className="border-t border-white/[0.07] pt-4 flex items-center justify-between gap-2 text-[11px] text-[#667085]">

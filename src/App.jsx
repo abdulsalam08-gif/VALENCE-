@@ -19,6 +19,7 @@ const OpportunitiesPage = lazy(() => import('./pages/OpportunitiesPage'));
 const TuitionCentresPage = lazy(() => import('./pages/TuitionCentresPage'));
 const AdvertisePage = lazy(() => import('./pages/AdvertisePage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
+const LegalPage = lazy(() => import('./pages/LegalPage'));
 const PortalGatewayPage = lazy(() => import('./pages/PortalGatewayPage'));
 
 export default function App() {
@@ -45,6 +46,8 @@ export default function App() {
                 <Route path="/tuition-centres" element={<TuitionCentresPage />} />
                 <Route path="/advertise" element={<AdvertisePage />} />
                 <Route path="/contact" element={<ContactPage />} />
+                <Route path="/legal" element={<LegalPage />} />
+                <Route path="/legal/:section" element={<LegalPage />} />
                 <Route path="/portal/:portalType" element={<PortalGatewayPage />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Route>
