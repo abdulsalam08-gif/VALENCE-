@@ -20,6 +20,11 @@ export default function StudyMaterialsPage() {
   const [query, setQuery] = useState('');
 
   const allSyllabusItems = useMemo(() => {
+    const atswaPackImg = {
+      'ATS 1': { packImg: '/materials/ats1-study-pack.jpg', pqImg: '/materials/ats1-past-question.jpg', colour: 'Blue Edition', hex: '#2563EB' },
+      'ATS 2': { packImg: '/materials/ats2-study-pack.jpg', pqImg: '/materials/ats2-past-question.jpg', colour: 'Orange Edition', hex: '#EA580C' },
+      'ATS 3': { packImg: '/materials/ats3-study-pack.jpg', pqImg: '/materials/ats3-past-question.jpg', colour: 'Dark Green Edition', hex: '#15803D' },
+    };
     const atswa = atswaLevels.flatMap((lvl) =>
       lvl.courses.map((c) => ({
         ...c,
@@ -27,6 +32,7 @@ export default function StudyMaterialsPage() {
         levelName: lvl.code,
         packPrice: 9500,
         pqPrice: 5500,
+        ...(atswaPackImg[lvl.code] || atswaPackImg['ATS 1']),
       }))
     );
     const ican = icanLevels.flatMap((lvl) =>
@@ -36,6 +42,10 @@ export default function StudyMaterialsPage() {
         levelName: lvl.shortName,
         packPrice: c.studyPackPrice,
         pqPrice: 9000,
+        packImg: '/materials/ican-study-pack.jpg',
+        pqImg: '/materials/ican-past-question.jpg',
+        colour: 'Study Text + Pathfinder',
+        hex: '#2563EB',
       }))
     );
     return [...atswa, ...ican];
@@ -177,7 +187,7 @@ export default function StudyMaterialsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {filtered.map((item) => (
                 <div key={item.id} className="v-card-hover p-5 flex flex-col justify-between gap-4">
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <Badge variant="green">
                         {item.programme} · {item.levelName}
@@ -186,20 +196,48 @@ export default function StudyMaterialsPage() {
                         {item.code}
                       </span>
                     </div>
-                    <h3 className="font-display text-base font-bold text-white">{item.title}</h3>
-                    <p className="text-xs text-[#9AA4B2]">
-                      {item.topics} structured topic trackers · Practice bank · Video & PDF library
-                    </p>
+                    <div className="flex items-start gap-3">
+                      <div className="flex -space-x-2 shrink-0">
+                        <img
+                          src={item.packImg}
+                          alt={`${item.title} Study Pack`}
+                          loading="lazy"
+                          className="h-14 w-11 rounded-lg object-cover border border-white/[0.15] shadow"
+                        />
+                        <img
+                          src={item.pqImg}
+                          alt={`${item.title} Past Questions`}
+                          loading="lazy"
+                          className="h-14 w-11 rounded-lg object-cover border border-white/[0.15] shadow translate-y-1"
+                        />
+                      </div>
+                      <div className="min-w-0 space-y-1">
+                        <h3 className="font-display text-sm sm:text-base font-bold text-white leading-snug">
+                          {item.title}
+                        </h3>
+                        <p className="text-[11px] text-[#9AA4B2] inline-flex items-center gap-1.5">
+                          <span
+                            className="h-2 w-2 rounded-full shrink-0"
+                            style={{ backgroundColor: item.hex }}
+                          />
+                          {item.colour} · {item.topics} topics
+                        </p>
+                      </div>
+                    </div>
                   </div>
                   <div className="flex items-center justify-between border-t border-white/[0.06] pt-3 text-xs">
                     <span className="text-[#9AA4B2]">
-                      Study Pack:{' '}
+                      Pack:{' '}
                       <strong className="tabular-nums-display text-white">
                         {formatNaira(item.packPrice)}
+                      </strong>{' '}
+                      · PQ:{' '}
+                      <strong className="tabular-nums-display text-white">
+                        {formatNaira(item.pqPrice)}
                       </strong>
                     </span>
-                    <Link to="/store" className="font-semibold text-[#16C784] hover:underline">
-                      Order in Store →
+                    <Link to="/store" className="font-semibold text-[#16C784] hover:underline shrink-0">
+                      Order →
                     </Link>
                   </div>
                 </div>

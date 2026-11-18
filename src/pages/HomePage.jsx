@@ -102,9 +102,9 @@ export default function HomePage() {
 
   const featuredProducts = [
     products.find((p) => p.courseCode === 'FR'),
-    products.find((p) => p.courseCode === 'SBR'),
     products.find((p) => p.id === 'prod-ican-pq-skl'),
     products.find((p) => p.id === 'prod-atswa-sp-1'),
+    products.find((p) => p.id === 'prod-atswa-sp-2'),
   ].filter(Boolean);
 
   const visibleAnnouncements = announcements.filter((a) => {
@@ -992,28 +992,63 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {featuredProducts.map((prod) => (
-              <div key={prod.id} className="v-card-hover p-5 flex flex-col justify-between gap-4">
-                <div className="space-y-2.5">
-                  <div className="flex items-center justify-between gap-2">
-                    <Badge variant="neutral">{prod.programme} · {prod.level}</Badge>
-                    <span className="text-[10.5px] font-semibold text-[#16C784]">{prod.discountHint}</span>
-                  </div>
-                  <h3 className="font-display text-base font-bold text-white leading-snug">
-                    {prod.title}
-                  </h3>
-                  <p className="text-xs text-[#9AA4B2] line-clamp-3">{prod.description}</p>
-                </div>
-                <div className="flex items-center justify-between border-t border-white/[0.06] pt-3.5">
-                  <span className="tabular-nums-display text-lg font-bold text-white">
-                    {formatNaira(prod.price)}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => handleQuickAdd(prod)}
-                    className="inline-flex items-center gap-1 rounded-xl bg-[#16C784]/15 border border-[#16C784]/35 px-3 py-1.5 text-xs font-semibold text-[#16C784] hover:bg-[#16C784] hover:text-[#06130D] transition-all"
+              <div
+                key={prod.id}
+                className="v-card-hover overflow-hidden flex flex-col justify-between"
+              >
+                <div>
+                  <Link
+                    to="/store"
+                    className="group relative block h-48 w-full bg-[#080A0D] overflow-hidden border-b border-white/[0.06]"
                   >
-                    <Plus className="h-3.5 w-3.5" /> Add
-                  </button>
+                    <img
+                      src={prod.imageUrl}
+                      alt={`${prod.title} — ${prod.colourBadge}`}
+                      loading="lazy"
+                      className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E11] via-[#0B0E11]/15 to-transparent" />
+                    <span className="absolute top-2.5 left-2.5 inline-flex items-center gap-1.5 rounded-full bg-[#0B0E11]/85 backdrop-blur-md border border-white/[0.14] px-2.5 py-0.5 text-[10px] font-semibold text-white">
+                      <span
+                        className="h-2 w-2 rounded-full shrink-0"
+                        style={{ backgroundColor: prod.accentHex || '#16C784' }}
+                      />
+                      {prod.colourBadge}
+                    </span>
+                    <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between gap-2">
+                      <Badge variant="neutral">
+                        {prod.programme} · {prod.level}
+                      </Badge>
+                      {prod.courseCode && (
+                        <span className="rounded-md bg-[#16C784] px-2 py-0.5 font-display text-[11px] font-bold text-[#06130D]">
+                          {prod.courseCode}
+                        </span>
+                      )}
+                    </div>
+                  </Link>
+                  <div className="p-5 pb-3 space-y-2">
+                    <span className="text-[10.5px] font-semibold text-[#16C784] block">
+                      {prod.discountHint}
+                    </span>
+                    <h3 className="font-display text-base font-bold text-white leading-snug">
+                      {prod.title}
+                    </h3>
+                    <p className="text-xs text-[#9AA4B2] line-clamp-2">{prod.description}</p>
+                  </div>
+                </div>
+                <div className="px-5 pb-5">
+                  <div className="flex items-center justify-between border-t border-white/[0.06] pt-3.5">
+                    <span className="tabular-nums-display text-lg font-bold text-white">
+                      {formatNaira(prod.price)}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => handleQuickAdd(prod)}
+                      className="inline-flex items-center gap-1 rounded-xl bg-[#16C784]/15 border border-[#16C784]/35 px-3 py-1.5 text-xs font-semibold text-[#16C784] hover:bg-[#16C784] hover:text-[#06130D] transition-all"
+                    >
+                      <Plus className="h-3.5 w-3.5" /> Add
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
