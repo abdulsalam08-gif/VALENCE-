@@ -130,7 +130,7 @@ export default function ContactPage() {
             <div className="v-card p-6 space-y-2">
               <div className="flex items-center gap-2 text-[#16C784]">
                 <Clock className="h-4 w-4" />
-                <span className="text-xs font-bold uppercase tracking-wider">Office Hours</span>
+                <span className="text-xs font-bold uppercase tracking-wider">Operating Hours</span>
               </div>
               <p className="font-display text-base font-bold text-white">{settings.operatingHours}</p>
               <p className="text-xs text-[#9AA4B2]">

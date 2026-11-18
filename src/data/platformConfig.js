@@ -9,8 +9,8 @@ export const PLATFORM_SETTINGS = {
   heroSubcopy:
     'VALENCE is your complete learning and professional development community for ICAN and ATSWA candidates, tertiary students, chartered accountants, accounting tutors and aspiring professionals. Access structured learning, intelligent study tools, professional networking, academic competitions, educational resources and career opportunities in one place.',
   whatsappNumber: '+234 915 434 4663',
-  email: 'axelacademyinfo@gmail.com',
-  operatingHours: 'By appointment',
+  email: 'atvalencecustomersupport@gmail.com',
+  operatingHours: '24/7',
   location: 'Lagos, Nigeria (Serving candidates & institutions nationwide)',
   paymentProvider: 'Paystack',
   tuitionUnlockFee: 3000,
