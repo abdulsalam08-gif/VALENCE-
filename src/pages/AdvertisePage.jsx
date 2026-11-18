@@ -319,10 +319,10 @@ export default function AdvertisePage() {
                   onChange={(e) => setCampaign({ ...campaign, entityName: e.target.value })}
                   placeholder={
                     advertiserType === 'physical_centre'
-                      ? 'e.g. Prime Ledger School of Accountancy'
+                      ? 'Registered physical tuition centre name'
                       : advertiserType === 'textbook_author'
-                      ? 'e.g. Dr. Kunle Adeyemi, FCA'
-                      : 'e.g. Scholar’s Ledger Academic Bookshop'
+                      ? 'Author full name & professional designation (e.g. FCA, ACA)'
+                      : 'Registered bookshop or academic vendor name'
                   }
                   className="v-input text-xs"
                 />
