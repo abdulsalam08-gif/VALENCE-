@@ -32,16 +32,16 @@ export default function AdvertisePage() {
         <div className="v-container space-y-5 max-w-4xl">
           <div className="flex flex-wrap items-center gap-2">
             <Badge variant="green">VALENCE ADVERTISE</Badge>
-            <Badge variant="neutral">Verified Educational Providers Only</Badge>
+            <Badge variant="neutral">Independent & Brand-Neutral Platform</Badge>
           </div>
           <h1 className="font-display text-3xl sm:text-5xl font-bold text-white">
             Reach Serious ATSWA, ICAN & University Accounting Candidates Nationwide
           </h1>
           <p className="text-sm sm:text-base text-[#9AA4B2]">
-            Designed for verified tuition centres, tutorial institutes and professional training providers across Nigeria — complete with audience targeting, server-verified Paystack billing, live impression/click/CTR analytics and strict academic advertising ethics.
+            An independent, neutral marketplace built for verified tuition centres, tutorial institutes and professional training providers across Nigeria — complete with audience targeting, server-verified Paystack billing, live impression/click/CTR analytics and strict academic advertising ethics.
           </p>
           <div className="flex flex-wrap gap-3">
-            <Link to="/portal/student?mode=advertiser" className="v-btn-primary text-xs">
+            <Link to="/portal/advertiser?mode=register" className="v-btn-primary text-xs">
               <Megaphone className="h-4 w-4" /> Register as an Advertiser
             </Link>
             <button

@@ -1,18 +1,23 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
-  Calendar,
   Scale,
   GraduationCap,
   BookOpen,
-  Briefcase,
   CheckCircle2,
   ExternalLink,
+  Search,
+  Building2,
+  Calendar,
+  Lock,
+  ShieldCheck,
+  ChevronDown,
 } from 'lucide-react';
 import { usePlatform } from '../context/PlatformContext';
 import Badge from '../components/ui/Badge';
 import CountdownTimer from '../components/ui/CountdownTimer';
+import { formatReadableDate, getSessionLifecycle } from '../lib/examSchedule';
 
 export default function ProgrammesPage({ focusTertiary = false }) {
   const {
@@ -21,22 +26,47 @@ export default function ProgrammesPage({ focusTertiary = false }) {
     icanLevels,
     tertiaryDisciplines,
     generalLearnerTracks,
+    universities,
+    nigerianStates,
+    universityCounts,
     settings,
   } = usePlatform();
 
+  const [openTimetableId, setOpenTimetableId] = useState('atswa-mar-2027');
+  const [uniSearch, setUniSearch] = useState('');
+  const [uniCategory, setUniCategory] = useState('ALL');
+  const [uniState, setUniState] = useState('ALL');
+  const [showAllUnis, setShowAllUnis] = useState(false);
+
+  const filteredUnis = useMemo(() => {
+    const q = uniSearch.trim().toLowerCase();
+    return universities.filter((u) => {
+      if (uniCategory !== 'ALL' && u.category !== uniCategory) return false;
+      if (uniState !== 'ALL' && u.state !== uniState) return false;
+      if (!q) return true;
+      return (
+        u.name.toLowerCase().includes(q) ||
+        u.shortName.toLowerCase().includes(q) ||
+        u.state.toLowerCase().includes(q)
+      );
+    });
+  }, [universities, uniSearch, uniCategory, uniState]);
+
+  const displayedUnis = showAllUnis ? filteredUnis : filteredUnis.slice(0, 18);
+
   return (
     <div className="divide-y divide-white/[0.06]">
-      {/* Header */}
       <section className="bg-grid-fintech py-14 sm:py-18">
         <div className="v-container space-y-5">
-          <Badge variant="green">VALENCE ACADEMIC PROGRAMMES</Badge>
+          <Badge variant="green">VALENCE PROGRAMMES & CENTRAL EXAM AUTHORITY</Badge>
           <h1 className="font-display text-3xl sm:text-5xl font-bold text-white max-w-3xl">
             {focusTertiary
-              ? 'University, Polytechnic & General Accounting Tracks'
-              : 'Structured Pathways for Every Stage of Accounting Mastery'}
+              ? `All ${universityCounts.total} Nigerian Universities, Polytechnics & General Tracks`
+              : 'Programmes, Official Diet Timetables & Result Countdowns'}
           </h1>
           <p className="text-sm sm:text-base text-[#9AA4B2] max-w-2xl">
-            Choose from full diet-aligned ATSWA and ICAN online tuition, our ICAN Exemption Guidance tool, tertiary undergraduate learning communities and general accounting literacy programmes.
+            Browse ATSWA and ICAN syllabuses, exam timetables and exemption rules for free. Students pay the one-time{' '}
+            <strong className="text-[#16C784]">₦3,000 registration</strong> per level only when applying for tuition and viewing their personalised cost implication.
           </p>
           <div className="flex flex-wrap gap-3 pt-1">
             <Link to="/programmes/atswa" className="v-btn-primary text-xs">
@@ -52,83 +82,144 @@ export default function ProgrammesPage({ focusTertiary = false }) {
         </div>
       </section>
 
-      {/* Examination Diet Calendar (ATSWA March/Sept vs ICAN May/Nov) */}
+      {/* Central Examination Authority Calendar, Timetables & 30-Day Result Countdowns */}
       {!focusTertiary && (
-        <section className="py-14 bg-[#0D1116]">
+        <section id="timetables" className="py-14 bg-[#0D1116]">
           <div className="v-container space-y-6">
-            <div className="max-w-2xl space-y-1.5">
-              <span className="text-xs font-semibold uppercase tracking-widest text-[#16C784]">
-                ADMINISTRATOR-MANAGED DIET CALENDAR
-              </span>
+            <div className="max-w-3xl space-y-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge variant="official">CENTRAL EXAMINATION AUTHORITY</Badge>
+                <Badge variant="neutral">Schedule & Timetable Feed</Badge>
+              </div>
               <h2 className="font-display text-2xl sm:text-3xl font-bold text-white">
-                Upcoming ATSWA (March/Sept) & ICAN (May/Nov) Sessions
+                ATSWA (2-Day) & ICAN (3-Day) Exam Schedule + 30-Day Result Tracker
               </h2>
               <p className="text-xs sm:text-sm text-[#9AA4B2]">
-                Enrolment into closed sessions is automatically restricted unless an authorised administrator grants an override.
+                <strong className="text-white">ATSWA (March & September):</strong> 2 days on the second-to-last Tuesday & Wednesday.{' '}
+                <strong className="text-white">ICAN (May & November):</strong> 3 days on the first Tuesday, Wednesday & Thursday. Exam registration closes <strong className="text-[#EA3943]">1 week before exams</strong>, and a <strong className="text-[#16C784]">30-day result countdown</strong> starts right after the final paper. Because the Institute occasionally adjusts exam or result dates, all entries below are managed live by VALENCE’s Central Examination Authority.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {sessions.map((s) => (
-                <div key={s.id} className="v-card p-6 space-y-4">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      <Badge variant="green">{s.programme}</Badge>
-                      <span className="text-xs font-semibold text-[#C2C9D4]">
-                        {s.diet} {s.year} Diet
-                      </span>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+              {sessions.map((s) => {
+                const lc = getSessionLifecycle(s);
+                const timetableOpen = openTimetableId === s.id;
+                return (
+                  <div
+                    key={s.id}
+                    className={`v-card p-6 space-y-4 ${
+                      lc.phase === 'awaiting_results' ? 'border-[#16C784]/40' : ''
+                    }`}
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <Badge variant="green">{s.programme}</Badge>
+                        <span className="text-xs font-semibold text-[#C2C9D4]">
+                          {s.durationDays} Exam Days
+                        </span>
+                      </div>
+                      <Badge variant={lc.badgeVariant}>{lc.badgeLabel}</Badge>
                     </div>
-                    <Badge variant={s.status === 'registration_open' ? 'green' : 'neutral'}>
-                      {s.status === 'registration_open' ? 'Registration Open' : 'Upcoming Session'}
-                    </Badge>
-                  </div>
 
-                  <div className="flex items-baseline justify-between">
-                    <h3 className="font-display text-xl font-bold text-white">{s.label}</h3>
-                    <span className="text-xs text-[#9AA4B2]">{s.examWindow}</span>
-                  </div>
+                    <div>
+                      <h3 className="font-display text-xl font-bold text-white">{s.label}</h3>
+                      <p className="text-xs text-[#9AA4B2] mt-0.5">{s.patternLabel}</p>
+                    </div>
 
-                  <CountdownTimer targetDate={s.examStartDate} compact />
+                    {lc.countdownTarget && (
+                      <div className="space-y-1.5">
+                        <p className="text-[11px] font-semibold text-[#16C784]">
+                          {lc.countdownLabel}
+                        </p>
+                        <CountdownTimer targetDate={lc.countdownTarget} compact />
+                      </div>
+                    )}
 
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs pt-1">
-                    <div className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-2.5">
-                      <span className="block text-[10px] text-[#667085]">Tuition Starts</span>
-                      <span className="font-semibold text-[#F4F6F9]">{s.tuitionCommencement}</span>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                      <div className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-2.5">
+                        <span className="block text-[10px] text-[#667085]">Exam Window</span>
+                        <span className="font-semibold text-[#F4F6F9]">{s.examWindow}</span>
+                      </div>
+                      <div className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-2.5">
+                        <span className="block text-[10px] text-[#667085]">Reg. Closes (−7 Days)</span>
+                        <span className="font-semibold text-[#EA3943]">
+                          {s.registrationCloseFormatted}
+                        </span>
+                      </div>
+                      <div className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-2.5">
+                        <span className="block text-[10px] text-[#667085]">Est. Results (+30 Days)</span>
+                        <span className="font-semibold text-[#16C784]">
+                          {s.expectedResultFormatted}
+                        </span>
+                      </div>
                     </div>
-                    <div className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-2.5">
-                      <span className="block text-[10px] text-[#667085]">Reg. Closes</span>
-                      <span className="font-semibold text-[#EA3943]">{s.registrationClose}</span>
-                    </div>
-                    <div className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-2.5 col-span-2 sm:col-span-1">
-                      <span className="block text-[10px] text-[#667085]">Mock Exam</span>
-                      <span className="font-semibold text-[#16C784]">{s.mockExamDate}</span>
+
+                    {/* Expandable Official Diet Timetable */}
+                    <div className="border-t border-white/[0.06] pt-3">
+                      <button
+                        type="button"
+                        onClick={() => setOpenTimetableId(timetableOpen ? null : s.id)}
+                        className="w-full flex items-center justify-between text-xs font-semibold text-[#F4F6F9] hover:text-[#16C784] transition-colors"
+                      >
+                        <span className="inline-flex items-center gap-1.5">
+                          <Calendar className="h-3.5 w-3.5 text-[#16C784]" />
+                          {timetableOpen ? 'Hide' : 'View'} {s.durationDays}-Day Examination Timetable
+                        </span>
+                        <ChevronDown
+                          className={`h-4 w-4 transition-transform ${
+                            timetableOpen ? 'rotate-180 text-[#16C784]' : ''
+                          }`}
+                        />
+                      </button>
+
+                      {timetableOpen && (
+                        <div className="mt-3 space-y-2">
+                          {s.timetable.map((slot) => (
+                            <div
+                              key={slot.dayLabel}
+                              className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-3 text-[11.5px] space-y-1"
+                            >
+                              <div className="flex justify-between font-semibold text-[#16C784]">
+                                <span>{slot.dayLabel}</span>
+                                <span>{formatReadableDate(s.examDays[slot.dateIndex], false)}</span>
+                              </div>
+                              <p className="text-[#D5DBE3]">
+                                <strong className="text-[#9AA4B2]">AM:</strong> {slot.morning}
+                              </p>
+                              <p className="text-[#D5DBE3]">
+                                <strong className="text-[#9AA4B2]">PM:</strong> {slot.afternoon}
+                              </p>
+                            </div>
+                          ))}
+                          <p className="text-[10.5px] text-[#667085]">{lc.subNote}</p>
+                        </div>
+                      )}
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>
       )}
 
-      {/* Programme Comparison Cards */}
+      {/* ATSWA vs ICAN Cards */}
       {!focusTertiary && (
         <section className="py-16">
           <div className="v-container grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* ATSWA Card */}
             <div className="v-card-hover p-7 flex flex-col justify-between gap-6">
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <Badge variant="green">March & September Diets</Badge>
-                  <span className="tabular-nums-display text-xs font-bold text-[#16C784]">
-                    ₦20,000 / course
+                <div className="flex items-center justify-between gap-2">
+                  <Badge variant="green">ATSWA · 2-Day Diet (Mar & Sep)</Badge>
+                  <span className="text-xs text-[#9AA4B2] inline-flex items-center gap-1">
+                    <Lock className="h-3 w-3 text-[#16C784]" /> ₦3,000 for Tuition
                   </span>
                 </div>
                 <h2 className="font-display text-2xl font-bold text-white">
                   ATSWA Programme (ATS 1, ATS 2 & ATS 3)
                 </h2>
                 <p className="text-sm text-[#9AA4B2]">
-                  12 courses across 3 levels leading to the AAT qualification. Enjoy an automatic 25% tuition discount when selecting 2+ courses (capped at ₦60,000 for all 4) and a one-time ₦3,000 per-level unlock credited as your tutorial registration fee.
+                  12 courses across 3 levels examined on the second-to-last Tuesday and Wednesday of March and September. Complete your one-time ₦3,000 level registration only when applying for tuition to unlock your full cost implication and 25% multi-course discount (2+ courses).
                 </p>
                 <div className="grid grid-cols-3 gap-2.5">
                   {atswaLevels.map((l) => (
@@ -144,7 +235,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
               </div>
               <div className="flex flex-wrap gap-3">
                 <Link to="/programmes/atswa" className="v-btn-primary text-xs">
-                  Open ATSWA Page & Calculator <ArrowRight className="h-4 w-4" />
+                  Apply for ATSWA Tuition <ArrowRight className="h-4 w-4" />
                 </Link>
                 <a
                   href={settings.officialLinks.atswaSoftCopy}
@@ -157,20 +248,19 @@ export default function ProgrammesPage({ focusTertiary = false }) {
               </div>
             </div>
 
-            {/* ICAN Card */}
             <div className="v-card-hover p-7 flex flex-col justify-between gap-6">
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <Badge variant="green">May & November Diets</Badge>
-                  <span className="tabular-nums-display text-xs font-bold text-[#16C784]">
-                    ₦40,000 / course
+                <div className="flex items-center justify-between gap-2">
+                  <Badge variant="green">ICAN · 3-Day Diet (May & Nov)</Badge>
+                  <span className="text-xs text-[#9AA4B2] inline-flex items-center gap-1">
+                    <Lock className="h-3 w-3 text-[#16C784]" /> ₦3,000 for Tuition
                   </span>
                 </div>
                 <h2 className="font-display text-2xl font-bold text-white">
-                  ICAN Professional Programme (Foundation, Skills & Professional)
+                  ICAN Programme (Foundation, Skills & Professional)
                 </h2>
                 <p className="text-sm text-[#9AA4B2]">
-                  15 syllabus papers across 3 separate levels. Save 25% automatically when enrolling in 3+ online courses in the same transaction (3 = ₦90k · 4 = ₦120k · 5 = ₦150k · 6 = ₦180k). One-time ₦3,000 unlock per level.
+                  15 syllabus papers examined on the first Tuesday, Wednesday and Thursday of May and November (updated by Central Examination Authority if revised). Pay ₦3,000 per level only when applying for tuition to view your cost implication and 25% discount on 3+ courses.
                 </p>
                 <div className="grid grid-cols-3 gap-2.5">
                   {icanLevels.map((l) => (
@@ -201,46 +291,32 @@ export default function ProgrammesPage({ focusTertiary = false }) {
         </section>
       )}
 
-      {/* University / Polytechnic & General Accounting Learners Section */}
+      {/* Tertiary Disciplines & General Accounting Tracks */}
       <section id="tertiary" className="py-16 bg-[#0D1116]">
         <div className="v-container grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-7 v-card p-7 space-y-5">
             <div className="flex items-center gap-2">
               <GraduationCap className="h-5 w-5 text-[#16C784]" />
               <span className="text-xs font-bold uppercase tracking-widest text-[#16C784]">
-                TERTIARY STUDENTS
+                TERTIARY STUDENTS · FREE REGISTRATION
               </span>
             </div>
             <h2 className="font-display text-2xl font-bold text-white">
               University, Polytechnic & College Accounting Community
             </h2>
             <p className="text-sm text-[#9AA4B2]">
-              Undergraduate and HND students can join VALENCE even without active ICAN or ATSWA registration. Gain access to general accounting lessons, academic discussion forums, campus study groups, the VALENCE National Accounting Challenge, practice banks, VALENCE AI Accounting Tutor, mentorship and internship pipelines.
+              Join free even if you are not yet an ICAN or ATSWA candidate. Access general accounting lessons, study groups, 12 subject forums, AI tutor support, verified mentorship, internships and inter-school competitions with <strong className="text-[#16C784]">₦50,000 merit rewards</strong>.
             </p>
-            <div>
-              <p className="text-xs font-semibold text-white mb-2.5">12 Eligible Academic Disciplines:</p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                {tertiaryDisciplines.map((disc) => (
-                  <div
-                    key={disc}
-                    className="flex items-center gap-2 rounded-xl bg-[#0B0E11] border border-white/[0.07] px-3 py-2 text-xs text-[#D5DBE3]"
-                  >
-                    <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784] shrink-0" />
-                    <span className="truncate">{disc}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="rounded-xl bg-[#0B0E11] border border-white/[0.08] p-3.5 text-xs text-[#9AA4B2]">
-              <strong className="text-white">Access Boundary Policy:</strong> Tertiary student accounts do not automatically unlock restricted paid ICAN or ATSWA tuition classes and level-gated exam resources; you can upgrade or unlock any examination level at any time.
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Link to="/portal/student" className="v-btn-primary text-xs">
-                Register as a Tertiary Student <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link to="/competitions" className="v-btn-secondary text-xs">
-                Join Your School Team
-              </Link>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {tertiaryDisciplines.map((disc) => (
+                <div
+                  key={disc}
+                  className="flex items-center gap-2 rounded-xl bg-[#0B0E11] border border-white/[0.07] px-3 py-2 text-xs text-[#D5DBE3]"
+                >
+                  <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784] shrink-0" />
+                  <span className="truncate">{disc}</span>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -252,22 +328,111 @@ export default function ProgrammesPage({ focusTertiary = false }) {
                   GENERAL ACCOUNTING LEARNERS
                 </span>
               </div>
-              <h3 className="font-display text-2xl font-bold text-white">
-                Accounting for Founders, Professionals & Everyday Learners
+              <h3 className="font-display text-xl font-bold text-white">
+                Six Practical Accounting Literacy Tracks
               </h3>
-              <div className="space-y-2.5">
+              <div className="space-y-2">
                 {generalLearnerTracks.map((t) => (
-                  <div key={t.title} className="rounded-xl bg-[#0B0E11] border border-white/[0.07] p-3.5">
+                  <div key={t.title} className="rounded-xl bg-[#0B0E11] border border-white/[0.07] p-3">
                     <h4 className="text-xs font-bold text-[#16C784]">{t.title}</h4>
-                    <p className="text-xs text-[#9AA4B2] mt-0.5">{t.desc}</p>
+                    <p className="text-[11px] text-[#9AA4B2] mt-0.5">{t.desc}</p>
                   </div>
                 ))}
               </div>
             </div>
-            <Link to="/portal/student" className="v-btn-secondary w-full text-xs">
-              Start as a General Learner <ArrowRight className="h-4 w-4" />
+            <Link to="/portal/student" className="v-btn-primary w-full text-xs">
+              Create Free Learner Account <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* Embedded Directory of ALL Universities in Nigeria */}
+      <section id="nigerian-universities" className="py-16">
+        <div className="v-container space-y-6">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+            <div className="space-y-1.5 max-w-2xl">
+              <Badge variant="green">EMBEDDED NATIONAL INSTITUTION DIRECTORY</Badge>
+              <h2 className="font-display text-2xl sm:text-3xl font-bold text-white">
+                All {universityCounts.total} Accredited Universities in Nigeria
+              </h2>
+              <p className="text-xs sm:text-sm text-[#9AA4B2]">
+                Covering {universityCounts.federal} Federal, {universityCounts.state} State and {universityCounts.private} Private universities across all 36 States and FCT Abuja for profiles, study groups, exemptions and competitions.
+              </p>
+            </div>
+          </div>
+
+          {/* Search + Category + State Filters */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="relative">
+              <Search className="h-4 w-4 text-[#667085] absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="search"
+                value={uniSearch}
+                onChange={(e) => setUniSearch(e.target.value)}
+                placeholder="Search university or acronym (UNILAG, LASU, ABU, CU)..."
+                className="v-input pl-10 text-xs"
+              />
+            </div>
+            <select
+              value={uniCategory}
+              onChange={(e) => setUniCategory(e.target.value)}
+              aria-label="Filter university category"
+              className="v-input text-xs"
+            >
+              <option value="ALL">All Categories ({universityCounts.total})</option>
+              <option value="Federal">Federal Universities ({universityCounts.federal})</option>
+              <option value="State">State Universities ({universityCounts.state})</option>
+              <option value="Private">Private Universities ({universityCounts.private})</option>
+            </select>
+            <select
+              value={uniState}
+              onChange={(e) => setUniState(e.target.value)}
+              aria-label="Filter by Nigerian state"
+              className="v-input text-xs"
+            >
+              <option value="ALL">All 36 States + FCT</option>
+              {nigerianStates.map((st) => (
+                <option key={st} value={st}>
+                  {st}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {displayedUnis.map((u) => (
+              <div
+                key={u.id}
+                className="v-card p-4 flex items-start justify-between gap-3 hover:border-white/[0.15]"
+              >
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold text-white leading-snug">{u.name}</p>
+                  <p className="text-[11px] text-[#9AA4B2] mt-1">
+                    {u.category} · {u.state} ({u.zone})
+                  </p>
+                </div>
+                <span className="rounded-lg bg-[#16C784]/10 border border-[#16C784]/25 px-2 py-0.5 font-display text-[10.5px] font-bold text-[#16C784] shrink-0">
+                  {u.shortName}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {filteredUnis.length > 18 && (
+            <div className="text-center pt-2">
+              <button
+                type="button"
+                onClick={() => setShowAllUnis((v) => !v)}
+                className="v-btn-secondary text-xs"
+              >
+                <Building2 className="h-4 w-4 text-[#16C784]" />
+                {showAllUnis
+                  ? 'Show Fewer Universities'
+                  : `Show All ${filteredUnis.length} Matching Universities`}
+              </button>
+            </div>
+          )}
         </div>
       </section>
     </div>

@@ -1,29 +1,43 @@
-# VALENCE — Master Implementation Roadmap & Status
+# VALENCE — Master Implementation Status & Phase Tracker
 
-**Operator:** AAG PROFESSIONAL SERVICES  
-**Official Tagline:** *Vita sine litteris mors est.*  
-**Visual System:** Dark Fintech (`#0B0E11` obsidian base, `#16C784` emerald primary, `#EA3943` crimson alert, `Space Grotesk` + `Inter`, rounded elevated surfaces, glassy navbar, responsive mobile bottom navigation, toasts, shimmer skeletons, animated counters, custom VALENCE emblem).  
-**Infrastructure:** React + Vite + JavaScript + Tailwind CSS + Lucide React · **Supabase** (fresh project: PostgreSQL, Auth, Storage, RLS, Realtime, Edge Functions) · **Vercel** (fresh project deployment & serverless routing) · **Paystack** (exclusive online checkout) · **OpenAI API** (server-side AI Tutor) · **Google Meet / Google Calendar** (authorised live classes).
+- **Platform:** VALENCE (*Vita sine litteris mors est.*) — Independent, brand-neutral national platform
+- **Theme:** Dark Fintech (`#0B0E11` bg, `#11161C` / `#161D26` surface, `#16C784` positive green, `#EA3943` loss/alert red, `Space Grotesk` + `Inter`)
+- **Stack:** React 18 + Vite + JavaScript + Tailwind CSS + Supabase (Auth, Postgres, RLS, Storage, Realtime, Edge Functions) + Vercel + Paystack (exclusive online checkout) + Google Workspace connectors + Server-Side OpenAI + WebRTC
 
 ---
 
-## 16-Phase Tracker
+## Phase Roadmap & Status
 
 | Phase | Scope | Status |
 |---|---|---|
-| **Phase 1** | Brand logo, dark-fintech design system, glassy navbar + mobile bottom nav, complete 19-section Homepage, About Us, Programmes hub, full ATSWA page & live tuition calculator, dedicated ICAN Foundation/Skills/Professional pages & live calculator + Exemption Guidance Tool, Services + 7-step AI sample, Study Materials, interactive Marketplace preview (all 24 products + exact discount & free-delivery engine), Connect, Competitions, Opportunities, Tuition Centres Directory, Advertise, Contact + prefilled WhatsApp widget, role-adaptive Portal Gateways | **Completed** |
-| **Phase 2** | Fresh Supabase project provisioning, core PostgreSQL schema & migrations, Supabase Auth, all 7 user categories, role-based access & RLS policies | Next (awaiting go-ahead) |
-| **Phase 3** | User profiles, client-side image crop/resize/WebP optimisation, Supabase Storage buckets, profile pictures & galleries, privacy settings, open community announcement composer, 7 audience scopes, likes/comments/replies/bookmarks/shares, reporting & moderation | Pending |
-| **Phase 4** | Database-backed ATSWA & ICAN academic programmes, admin-configurable fees/discounts, unique one-time ₦3,000 level unlocks, exam diet calendar (March/Sept vs May/Nov) & enrolments | Pending |
-| **Phase 5** | VALENCE LEARN Student Portal (dashboard, reading tracker, study-hour streaks, readiness index, authorised Google Meet classrooms, assignments, attendance, video playlists, PDF textbooks, notifications) | Pending |
-| **Phase 6** | Tutor recruitment & portal (AAT for ATSWA; compulsory AAT + ACA for ICAN, private certificate storage, manual verification, timed 20Q/45-min assessment, rate requests, strict financial data isolation) | Pending |
-| **Phase 7** | Master Administrative Dashboard (8+ granular admin roles, all admin modules, official announcements, reports, community moderation & immutable audit logs) | Pending |
-| **Phase 8** | Secure server-side Paystack integration (init, verify, HMAC webhook, idempotency, receipts, unlocks, tuition, store & ad payments — requires Paystack keys) | Pending |
-| **Phase 9** | VALENCE AI Accounting Tutor (secure server-side OpenAI Edge Function, 7-step exam workings format, quotas, usage logs & admin controls — requires OpenAI API key) | Pending |
-| **Phase 10** | VALENCE CONNECT full realtime features (user discovery, connection requests, Supabase Realtime 1:1 & group chat + attachments, study groups, 12 discussion forums, mentorship, professional events, WebRTC voice/video calls) | Pending |
-| **Phase 11** | VALENCE COMPETE — National Accounting Challenge (institution profiles, team management, 6 divisions, 5 rounds, server-timed autosave exam engine for ATSWA & ICAN formats, auto + rubric theory marking, moderator review, appeals, verified leaderboards & digital certificates) | Pending |
-| **Phase 12** | VALENCE PROFESSIONAL portal (verified ACA/FCA/ACCA/CPA profiles, CPD resources, mentorship workflows, webinars, speaking & collaboration) | Pending |
-| **Phase 13** | VALENCE MARKETPLACE backend completion (live DB inventory, PDF textbook management, order lifecycle `Unpaid → Delivered`, free & configurable delivery zones) | Pending |
-| **Phase 14** | VALENCE ADVERTISE platform (advertiser onboarding & verification, Tuition Centres Directory, packages, 9 placements, campaign lifecycle, impression/click/CTR analytics) | Pending |
-| **Phase 15** | Opportunities portal applications, National Accounting League, Battle Arena (1v1/2v2/daily puzzles), Campus Ambassador Programme & Accounting Hall of Fame | Pending |
-| **Phase 16** | Full QA across all business/security rules, accessibility & mobile performance audit, fresh Vercel production deployment, Admin Guide, User Guide & Testing Documentation | Pending |
+| **Phase 1** | **Project architecture, dark fintech design system, VALENCE logo integration, responsive layout, 12-item glassy navbar, mobile bottom nav, brand-neutral homepage (all 19 sections), full public multi-page tree (18 routes), gated ₦3,000 tuition-only cost implication rule, embedded NUC-accredited Nigerian universities directory (Federal, State & Private across all 36 states + FCT), ₦50,000 post-competition cash reward rule, Central Examination Authority diet schedule/timetable/7-day cutoff/30-day result countdown engine, WhatsApp enquiry widget, store cart engine & role portal gateways** | **Completed** |
+| **Phase 2** | **Fresh Supabase database provisioning (~95+ tables incl. `nigerian_universities`, `exam_diet_schedules`, `exam_timetables`, `exam_result_releases`, `competition_rewards`, `student_fee_unlocks`), enums, triggers, RLS policies, private/public Storage buckets & seed data** | Next |
+| **Phase 3** | **Authentication, onboarding for all 7 user types (with Nigerian university picker), student portal shell, avatar crop, storage-backed captioned photo gallery, privacy settings, notifications & role guards** | Pending |
+| **Phase 4** | **ATSWA & ICAN gated ₦3,000 tuition-only level unlocks, unlocked cost-implication calculator (25% off ≥2 ATSWA / ≥3 ICAN), Central Exam Authority timetables & live 30-day result countdowns, diet isolation & ICAN Exemption Guide DB wiring** | Pending |
+| **Phase 5** | **Bookstore & study materials ordering flow, server-synced cart, 9%/5%/6%/7% automatic discounts, 6 free Lagos pickups + state delivery zones, Paystack checkout & receipts** | Pending |
+| **Phase 6** | **Tutor application, private-storage certificate uploads (AAT for ATSWA; AAT + ACA for ICAN), manual verification, 20-Q / 45-min timed qualification exam & tutor workspace** | Pending |
+| **Phase 7** | **Study tools suite (all 15 student tools) & server-side AI Accounting Tutor (`OPENAI_API_KEY` server-only, 7-step response format, quotas & logs)** | Pending |
+| **Phase 8** | **Paystack payment engine, server-side verification, signed webhook handling, idempotency, receipts, level-unlock locks, tuition enrolment & Google Meet access control** | Pending |
+| **Phase 9** | **Community features: discovery, follows, study groups, 12 subject forums, mentorship & events** | Pending |
+| **Phase 10** | **Official vs Community Announcements system (drafts, uploads, links, 7 backend-enforced audience visibility scopes, likes, comments, reposts, bookmarks, reporting & admin moderation)** | Pending |
+| **Phase 11** | **Direct 1:1 & group messaging (Supabase Realtime, attachments, voice notes, read receipts, mute, block & report)** | Pending |
+| **Phase 12** | **Real WebRTC direct audio & video calling (ICE/STUN/TURN signaling, ring/accept/decline/end, permission checks, privacy controls & call logs)** | Pending |
+| **Phase 13** | **Competition system: school registration across all Nigerian universities/polytechnics/centres, 6 divisions, configurable ATSWA & ICAN timed exams, auto + human rubric grading, 6 leaderboards, Monthly League, 1v1/2v2 Arena, certificates, appeals, Hall of Fame & audited ₦50,000 post-competition learner reward disbursement** | Pending |
+| **Phase 14** | **Scholarships, internships, graduate jobs, CPE/CPD webinars & VALENCE PRO verified professional hub** | Pending |
+| **Phase 15** | **Approved Tuition Centres directory, VALENCE ADVERTISE self-serve packages, 9 `Sponsored`-labelled ad placements, approval queue & live impression/click/CTR analytics** | Pending |
+| **Phase 16** | **Full 8-role RBAC Admin Panel (incl. Central Examination Authority date/timetable/result-delay console & ₦50,000 competition payout ledger), verification queues, moderation, audit logs, security hardening, performance polish, Google Workspace automation & fresh Vercel production deployment** | Pending |
+
+---
+
+## Environment Variables (Required Across Backend Phases)
+
+### Client-Safe (Vite)
+- `VITE_SUPABASE_URL` — Provisioned automatically via Supabase connector in Phase 2
+- `VITE_SUPABASE_ANON_KEY` — Provisioned automatically via Supabase connector in Phase 2
+- `VITE_PAYSTACK_PUBLIC_KEY` — Supplied by project owner for Paystack inline/redirect checkout (Phase 5 & 8)
+
+### Server-Only (Supabase Edge Functions / Vercel Serverless — NEVER exposed in frontend)
+- `SUPABASE_SERVICE_ROLE_KEY` — Server-side privileged verification & webhook writes
+- `PAYSTACK_SECRET_KEY` — Server-side transaction verification & webhook HMAC validation
+- `OPENAI_API_KEY` — Server-side AI Accounting Tutor endpoint (Phase 7)
+- `TURN_SERVER_URL` / `TURN_USERNAME` / `TURN_CREDENTIAL` — Production NAT traversal relay for WebRTC voice/video calls (Phase 12)

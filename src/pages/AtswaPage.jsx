@@ -4,21 +4,24 @@ import {
   Check,
   CheckCircle2,
   Lock,
+  Unlock,
   ExternalLink,
   ArrowRight,
   FileText,
   ShieldCheck,
   Calendar,
-  Video,
   MessageCircle,
+  Clock,
 } from 'lucide-react';
 import { usePlatform } from '../context/PlatformContext';
 import { useToast } from '../context/ToastContext';
 import Badge from '../components/ui/Badge';
+import CountdownTimer from '../components/ui/CountdownTimer';
 import { calculateAtswaTuition, formatNaira } from '../lib/pricing';
+import { formatReadableDate, getSessionLifecycle } from '../lib/examSchedule';
 
 export default function AtswaPage() {
-  const { atswaLevels, sessions, settings, openWhatsAppModal } = usePlatform();
+  const { atswaLevels, sessions, settings, isLevelUnlocked, openWhatsAppModal } = usePlatform();
   const toast = useToast();
 
   const atswaSessions = useMemo(
@@ -37,6 +40,8 @@ export default function AtswaPage() {
 
   const activeLevel = atswaLevels.find((l) => l.id === selectedLevelId) || atswaLevels[0];
   const activeDiet = atswaSessions.find((s) => s.id === selectedDietId) || atswaSessions[0];
+  const dietLifecycle = getSessionLifecycle(activeDiet);
+  const unlocked = isLevelUnlocked(`atswa:${activeLevel.id}`);
 
   const handleSelectLevel = (lvl) => {
     setSelectedLevelId(lvl.id);
@@ -61,32 +66,32 @@ export default function AtswaPage() {
     [selectedCourseIds.length, activeLevel]
   );
 
-  const handleProceed = () => {
+  const handleUnlockRedirect = () => {
     if (selectedCourseIds.length === 0) {
-      toast.warning('Select at least one course', 'Choose 1 to 4 ATSWA courses to enrol.');
+      toast.warning('Select at least one course', 'Pick the ATSWA papers you intend to take.');
       return;
     }
     toast.info(
-      `${activeLevel.code} Selection Ready (${formatNaira(tuitionCalc.netTuition)})`,
-      `Diet: ${activeDiet.label}. Sign in via Student Portal to unlock level & complete Paystack checkout.`
+      `Unlock ${activeLevel.code} Cost Implication (₦3,000)`,
+      'Only required when applying for tuition. Sign in to complete your one-time Paystack unlock.'
     );
   };
 
   return (
     <div className="divide-y divide-white/[0.06]">
-      {/* Hero */}
       <section className="bg-grid-fintech py-14 sm:py-18">
         <div className="v-container flex flex-col lg:flex-row lg:items-end justify-between gap-6">
           <div className="space-y-4 max-w-3xl">
             <div className="flex flex-wrap items-center gap-2">
-              <Badge variant="green">ATSWA PROGRAMME · MARCH & SEPTEMBER DIETS</Badge>
-              <Badge variant="neutral">Initial Upcoming Diet: March 2027</Badge>
+              <Badge variant="green">ATSWA · MARCH & SEPTEMBER DIETS (2 EXAM DAYS)</Badge>
+              <Badge variant="neutral">2nd-to-Last Tuesday & Wednesday</Badge>
             </div>
             <h1 className="font-display text-3xl sm:text-5xl font-bold text-white">
               Accounting Technicians Scheme West Africa (ATS 1 – ATS 3)
             </h1>
             <p className="text-sm sm:text-base text-[#9AA4B2]">
-              Complete syllabus coverage, live authorised Google Meet classes, syllabus reading trackers and transparent tuition pricing: <strong className="text-white">₦20,000 per course</strong> with an automatic <strong className="text-[#16C784]">25% discount on 2 or more courses</strong> (maximum <strong className="text-white">₦60,000</strong> for all four courses).
+              Explore courses, required documents and the official 2-day diet timetable freely. You only pay the one-time{' '}
+              <strong className="text-[#16C784]">₦3,000 registration</strong> per level if you wish to apply for online tuition and unlock your complete cost implication (credited/waived as your tutorial registration fee).
             </p>
           </div>
           <a
@@ -100,10 +105,8 @@ export default function AtswaPage() {
         </div>
       </section>
 
-      {/* Interactive ATSWA Level Selector & Tuition Calculator */}
       <section className="py-14 sm:py-18">
         <div className="v-container space-y-8">
-          {/* Level Tabs */}
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="inline-flex rounded-2xl bg-[#11161C] border border-white/[0.08] p-1.5 gap-1">
               {atswaLevels.map((lvl) => (
@@ -122,7 +125,6 @@ export default function AtswaPage() {
               ))}
             </div>
 
-            {/* Diet Selector */}
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4 text-[#16C784]" />
               <span className="text-xs text-[#9AA4B2]">Intended Diet:</span>
@@ -142,7 +144,7 @@ export default function AtswaPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 items-start">
-            {/* Left: Course Picker + Official Fees + Documents */}
+            {/* Left: Courses, 2-Day Timetable & Required Docs */}
             <div className="lg:col-span-7 space-y-6">
               <div className="v-card p-6 space-y-5">
                 <div className="flex flex-wrap items-center justify-between gap-2">
@@ -203,222 +205,203 @@ export default function AtswaPage() {
                             </p>
                           </div>
                         </div>
-                        <div className="text-right shrink-0">
-                          {tuitionCalc.qualifiesForDiscount && checked ? (
-                            <>
-                              <span className="block tabular-nums-display text-sm font-bold text-[#16C784]">
-                                ₦15,000
-                              </span>
-                              <span className="block tabular-nums-display text-[11px] line-through text-[#667085]">
-                                ₦20,000
-                              </span>
-                            </>
-                          ) : (
-                            <span className="tabular-nums-display text-sm font-bold text-[#F4F6F9]">
-                              ₦20,000
+                        <span className="shrink-0 text-[11px] font-medium text-[#9AA4B2] inline-flex items-center gap-1">
+                          {unlocked ? (
+                            <span className="tabular-nums-display font-bold text-[#16C784]">
+                              {formatNaira(tuitionCalc.effectivePerCourse)}
                             </span>
+                          ) : (
+                            <>
+                              <Lock className="h-3 w-3 text-[#16C784]" /> Unlocked on apply
+                            </>
                           )}
-                        </div>
+                        </span>
                       </button>
                     );
                   })}
                 </div>
               </div>
 
-              {/* Official Applicable Fees & Required Documents */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="v-card p-5 space-y-3">
-                  <h3 className="font-display text-base font-bold text-white">
-                    {activeLevel.code} Official Fee Schedule
+              {/* Official 2-Day ATSWA Exam Schedule & Timetable */}
+              <div className="v-card p-6 space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h3 className="font-display text-lg font-bold text-white">
+                    {activeDiet.label} — 2-Day Schedule & Timetable
                   </h3>
-                  <p className="text-[11px] text-[#667085]">
-                    Paid according to official diet deadlines (tuition discounts do not apply to official fees):
-                  </p>
-                  <div className="space-y-2 text-xs">
+                  <Badge variant={dietLifecycle.badgeVariant}>{dietLifecycle.badgeLabel}</Badge>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+                  <div className="rounded-xl bg-[#0B0E11] p-3 border border-white/[0.06]">
+                    <span className="text-[10.5px] text-[#667085] block">2 Exam Days (Tue & Wed)</span>
+                    <span className="font-semibold text-white">{activeDiet.examWindow}</span>
+                  </div>
+                  <div className="rounded-xl bg-[#0B0E11] p-3 border border-white/[0.06]">
+                    <span className="text-[10.5px] text-[#667085] block">Exam Reg. Closes (−1 Wk)</span>
+                    <span className="font-semibold text-[#EA3943]">
+                      {activeDiet.registrationCloseFormatted}
+                    </span>
+                  </div>
+                  <div className="rounded-xl bg-[#0B0E11] p-3 border border-white/[0.06]">
+                    <span className="text-[10.5px] text-[#667085] block">Result Release (+30 Days)</span>
+                    <span className="font-semibold text-[#16C784]">
+                      {activeDiet.expectedResultFormatted}
+                    </span>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  {activeDiet.timetable.map((slot) => (
+                    <div
+                      key={slot.dayLabel}
+                      className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-3 text-xs space-y-1"
+                    >
+                      <div className="flex justify-between font-semibold text-[#16C784]">
+                        <span>{slot.dayLabel}</span>
+                        <span>{formatReadableDate(activeDiet.examDays[slot.dateIndex], false)}</span>
+                      </div>
+                      <p className="text-[#D5DBE3]">Morning: {slot.morning}</p>
+                      <p className="text-[#9AA4B2]">Afternoon: {slot.afternoon}</p>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[11px] text-[#667085]">{activeDiet.authorityNotice}</p>
+              </div>
+
+              {/* Required Documents */}
+              <div className="v-card p-5 space-y-3">
+                <h3 className="font-display text-base font-bold text-white flex items-center gap-2">
+                  <FileText className="h-4 w-4 text-[#16C784]" /> Required Documents ({activeLevel.code})
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-[#C2C9D4]">
+                  {activeLevel.requiredDocuments.map((doc) => (
+                    <div
+                      key={doc}
+                      className="flex items-center gap-2 rounded-lg bg-[#0B0E11] border border-white/[0.06] px-3 py-2.5"
+                    >
+                      <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784] shrink-0" />
+                      <span>{doc}</span>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={() =>
+                    openWhatsAppModal({
+                      category: 'ATSWA Document & Registration Guidance',
+                      level: `ATSWA — ${activeLevel.code}`,
+                    })
+                  }
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#16C784] hover:underline"
+                >
+                  <MessageCircle className="h-3.5 w-3.5" /> Ask about ATSWA document submission
+                </button>
+              </div>
+            </div>
+
+            {/* Right: Tuition Application & Gated Cost Implication Panel */}
+            <div className="lg:col-span-5 space-y-5 lg:sticky lg:top-28">
+              <div className="v-card p-6 space-y-5">
+                <div className="flex items-center justify-between gap-2">
+                  <h3 className="font-display text-lg font-bold text-white">
+                    Tuition Application & Cost Implication
+                  </h3>
+                  <Badge variant={unlocked ? 'green' : 'neutral'}>
+                    {unlocked ? 'Unlocked' : 'Locked'}
+                  </Badge>
+                </div>
+
+                {dietLifecycle.countdownTarget && (
+                  <div className="space-y-1.5">
+                    <p className="text-[11px] text-[#9AA4B2] flex items-center gap-1">
+                      <Clock className="h-3.5 w-3.5 text-[#16C784]" /> {dietLifecycle.countdownLabel}
+                    </p>
+                    <CountdownTimer targetDate={dietLifecycle.countdownTarget} compact />
+                  </div>
+                )}
+
+                <div className="rounded-xl bg-[#0B0E11] border border-white/[0.07] p-4 space-y-2 text-xs">
+                  <div className="flex justify-between">
+                    <span className="text-[#9AA4B2]">Selected Level</span>
+                    <span className="font-semibold text-white">{activeLevel.code}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-[#9AA4B2]">Selected Courses</span>
+                    <span className="font-semibold text-white">
+                      {selectedCourseIds.length} of {activeLevel.courses.length} papers
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-[#9AA4B2]">Multi-Course Benefit</span>
+                    <span className="font-semibold text-[#16C784]">
+                      {selectedCourseIds.length >= 2
+                        ? '25% Tuition Discount Eligible'
+                        : 'Select 2+ courses for 25% off'}
+                    </span>
+                  </div>
+                </div>
+
+                {unlocked ? (
+                  /* Unlocked View — shown ONLY after verified Paystack ₦3,000 unlock record exists */
+                  <div className="rounded-xl bg-[#0B0E11] border border-[#16C784]/35 p-4 space-y-2 text-xs">
+                    <div className="flex items-center gap-1.5 text-[#16C784] font-semibold">
+                      <Unlock className="h-3.5 w-3.5" /> {activeLevel.code} Cost Implication Unlocked
+                    </div>
+                    <div className="flex justify-between text-[#9AA4B2]">
+                      <span>Online Tuition ({tuitionCalc.courseCount} courses)</span>
+                      <span className="tabular-nums-display font-bold text-white">
+                        {formatNaira(tuitionCalc.netTuition)}
+                      </span>
+                    </div>
                     {activeLevel.officialFees.icanRegistration && (
-                      <div className="flex justify-between rounded-lg bg-[#0B0E11] px-3 py-2">
-                        <span className="text-[#9AA4B2]">ICAN Registration Fee</span>
-                        <span className="tabular-nums-display font-bold text-white">
+                      <div className="flex justify-between text-[#9AA4B2]">
+                        <span>ICAN Registration Fee</span>
+                        <span className="tabular-nums-display text-white">
                           {formatNaira(activeLevel.officialFees.icanRegistration)}
                         </span>
                       </div>
                     )}
-                    <div className="flex justify-between rounded-lg bg-[#0B0E11] px-3 py-2">
-                      <span className="text-[#9AA4B2]">Full Examination Fee</span>
-                      <span className="tabular-nums-display font-bold text-white">
-                        {formatNaira(activeLevel.officialFees.fullExamFee)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between rounded-lg bg-[#0B0E11] px-3 py-2">
-                      <span className="text-[#9AA4B2]">Annual Subscription</span>
-                      <span className="tabular-nums-display font-bold text-white">
+                    <div className="flex justify-between text-[#9AA4B2]">
+                      <span>Full Exam Fee · Annual Subscription</span>
+                      <span className="tabular-nums-display text-white">
+                        {formatNaira(activeLevel.officialFees.fullExamFee)} ·{' '}
                         {formatNaira(activeLevel.officialFees.annualSubscription)}
                       </span>
                     </div>
                   </div>
-                </div>
-
-                <div className="v-card p-5 space-y-3">
-                  <h3 className="font-display text-base font-bold text-white flex items-center gap-2">
-                    <FileText className="h-4 w-4 text-[#16C784]" /> Required Documents ({activeLevel.code})
-                  </h3>
-                  <ul className="space-y-2 text-xs text-[#C2C9D4]">
-                    {activeLevel.requiredDocuments.map((doc) => (
-                      <li
-                        key={doc}
-                        className="flex items-center gap-2 rounded-lg bg-[#0B0E11] px-3 py-2"
-                      >
-                        <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784] shrink-0" />
-                        <span>{doc}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      openWhatsAppModal({
-                        category: 'ATSWA Document & Registration Guidance',
-                        level: `ATSWA — ${activeLevel.code}`,
-                      })
-                    }
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#16C784] hover:underline pt-1"
-                  >
-                    <MessageCircle className="h-3.5 w-3.5" /> Ask about document submission
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Right: Sticky Live Tuition & Unlock Summary */}
-            <div className="lg:col-span-5 v-card p-6 space-y-5 lg:sticky lg:top-28">
-              <div className="flex items-center justify-between">
-                <h3 className="font-display text-lg font-bold text-white">
-                  Live Tuition Summary
-                </h3>
-                <Badge variant={tuitionCalc.qualifiesForDiscount ? 'green' : 'neutral'}>
-                  {tuitionCalc.qualifiesForDiscount ? '25% Discount Active' : 'Select 2+ for 25% Off'}
-                </Badge>
-              </div>
-
-              {/* Step 1: One-Time Level Unlock Box */}
-              <div className="rounded-xl bg-[#0B0E11] border border-[#16C784]/25 p-4 space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-[#16C784] inline-flex items-center gap-1.5">
-                    <Lock className="h-3.5 w-3.5" /> Step 1 · {activeLevel.code} Level Unlock
-                  </span>
-                  <span className="tabular-nums-display text-sm font-bold text-white">
-                    {formatNaira(tuitionCalc.unlockFee)}
-                  </span>
-                </div>
-                <p className="text-[11px] leading-relaxed text-[#9AA4B2]">
-                  Paid once per ATSWA level via Paystack. Permanently unlocks {activeLevel.code} fee details & enrolment (never charged twice) and is credited/waived as your tutorial registration fee under the ATSWA arrangement.
-                </p>
-              </div>
-
-              {/* Step 2: Online Tuition Breakdown */}
-              <div className="space-y-2.5 text-xs">
-                <div className="flex justify-between text-[#9AA4B2]">
-                  <span>Selected Level & Diet</span>
-                  <span className="text-white font-semibold">
-                    {activeLevel.code} · {activeDiet.diet} {activeDiet.year}
-                  </span>
-                </div>
-                <div className="flex justify-between text-[#9AA4B2]">
-                  <span>Courses Selected ({tuitionCalc.courseCount} × ₦20,000)</span>
-                  <span className="tabular-nums-display text-white">
-                    {formatNaira(tuitionCalc.grossTuition)}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-[#9AA4B2]">Multi-Course Tuition Discount (25%)</span>
-                  <span
-                    className={`tabular-nums-display font-semibold ${
-                      tuitionCalc.discountAmount > 0 ? 'text-[#16C784]' : 'text-[#667085]'
-                    }`}
-                  >
-                    −{formatNaira(tuitionCalc.discountAmount)}
-                  </span>
-                </div>
-                <div className="border-t border-white/[0.08] pt-3 flex items-baseline justify-between">
-                  <div>
-                    <span className="text-sm font-bold text-white block">Online Tuition Total</span>
-                    <span className="text-[10.5px] text-[#667085]">
-                      Capped at ₦60,000 max for all 4 courses
-                    </span>
+                ) : (
+                  /* Gated View — Students pay ₦3,000 ONLY if applying for tuition & viewing cost implication */
+                  <div className="rounded-2xl bg-gradient-to-b from-[#16C784]/[0.08] to-[#0B0E11] border border-[#16C784]/30 p-5 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#16C784]">
+                        <Lock className="h-4 w-4" /> Cost Implication Locked
+                      </span>
+                      <span className="tabular-nums-display text-xl font-bold text-white">₦3,000</span>
+                    </div>
+                    <p className="text-xs leading-relaxed text-[#C2C9D4]">
+                      Joining VALENCE is free. Pay the one-time <strong>₦3,000</strong> registration for{' '}
+                      <strong>{activeLevel.code}</strong> only when you want to apply for tuition and reveal your full cost implication (tuition, automatic 25% multi-course savings, examination and annual subscription breakdown).
+                    </p>
+                    <ul className="space-y-1 text-[11px] text-[#9AA4B2]">
+                      <li>• Permanently unlocks {activeLevel.code} — never charged twice</li>
+                      <li>• Credited/waived as your ATSWA tutorial registration fee</li>
+                      <li>• Verified server-side via Paystack; unlocks Google Meet enrolment</li>
+                    </ul>
                   </div>
-                  <span className="tabular-nums-display text-3xl font-bold text-[#16C784]">
-                    {formatNaira(tuitionCalc.netTuition)}
-                  </span>
-                </div>
-              </div>
+                )}
 
-              <div className="space-y-2.5">
                 <Link
-                  to={`/portal/student?programme=atswa&level=${activeLevel.id}&diet=${activeDiet.id}`}
-                  onClick={handleProceed}
+                  to={`/portal/student?programme=atswa&level=${activeLevel.id}&diet=${activeDiet.id}&apply=tuition`}
+                  onClick={handleUnlockRedirect}
                   className="v-btn-primary w-full py-3"
                 >
-                  Unlock & Enrol via Student Portal <ArrowRight className="h-4 w-4" />
+                  Apply for {activeLevel.code} Tuition & View Cost (₦3,000){' '}
+                  <ArrowRight className="h-4 w-4" />
                 </Link>
-                <div className="flex items-center justify-center gap-1.5 text-[11px] text-[#9AA4B2]">
+
+                <div className="flex items-center justify-center gap-1.5 text-[11px] text-[#667085]">
                   <ShieldCheck className="h-3.5 w-3.5 text-[#16C784]" />
-                  Paystack checkout only · Unlocks authorised Google Meet classes
+                  Paystack exclusive online checkout · Or join VALENCE free without tuition
                 </div>
               </div>
-
-              {/* Quick 1-4 Course Reference */}
-              <div className="grid grid-cols-4 gap-1.5 pt-2 border-t border-white/[0.06] text-center">
-                {[
-                  { n: 1, amt: '₦20k' },
-                  { n: 2, amt: '₦30k' },
-                  { n: 3, amt: '₦45k' },
-                  { n: 4, amt: '₦60k' },
-                ].map((tier) => (
-                  <div
-                    key={tier.n}
-                    className={`rounded-lg py-1.5 text-[11px] border ${
-                      tuitionCalc.courseCount === tier.n
-                        ? 'bg-[#16C784]/15 border-[#16C784]/40 text-[#16C784] font-bold'
-                        : 'bg-[#0B0E11] border-white/[0.05] text-[#9AA4B2]'
-                    }`}
-                  >
-                    <span className="block text-[10px] opacity-75">{tier.n} {tier.n === 1 ? 'Course' : 'Courses'}</span>
-                    <span className="tabular-nums-display">{tier.amt}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* All 3 Levels Side-by-Side Comparison */}
-          <div className="pt-6 space-y-4">
-            <h3 className="font-display text-xl font-bold text-white">
-              Complete ATSWA Three-Level Comparison
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {atswaLevels.map((lvl) => (
-                <div key={lvl.id} className="v-card p-5 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="font-display text-lg font-bold text-[#16C784]">{lvl.code}</span>
-                    <Badge variant="neutral">Max Tuition: ₦60,000</Badge>
-                  </div>
-                  <ul className="space-y-1.5 text-xs text-[#D5DBE3]">
-                    {lvl.courses.map((c, i) => (
-                      <li key={c.id}>
-                        {i + 1}. {c.title} ({c.code})
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="border-t border-white/[0.06] pt-2.5 text-[11px] text-[#9AA4B2] space-y-1">
-                    {lvl.officialFees.icanRegistration && (
-                      <p>ICAN Reg: {formatNaira(lvl.officialFees.icanRegistration)}</p>
-                    )}
-                    <p>Full Exam Fee: {formatNaira(lvl.officialFees.fullExamFee)}</p>
-                    <p>Annual Subscription: {formatNaira(lvl.officialFees.annualSubscription)}</p>
-                    <p className="text-[#16C784]">One-Time Level Unlock: ₦3,000</p>
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
         </div>

@@ -1,12 +1,8 @@
-/**
- * VALENCE Dynamic Platform Configuration & Seed Data
- * Mirrors Supabase tables so administrators control every section without redeployment.
- * In Phase 2+, PlatformContext hydrates directly from Supabase PostgreSQL with this as schema fallback.
- */
+import { buildDietSession } from '../lib/examSchedule.js';
+import { UNIVERSITY_COUNTS } from './nigerianUniversities.js';
 
 export const PLATFORM_SETTINGS = {
   brandName: 'VALENCE',
-  operatorName: 'AAG PROFESSIONAL SERVICES',
   tagline: 'Vita sine litteris mors est.',
   taglineTranslation: 'Life without learning is death.',
   heroHeadline: 'Your Learning. Your Connections. Your Competition. Your Professional Future.',
@@ -17,6 +13,11 @@ export const PLATFORM_SETTINGS = {
   operatingHours: 'By appointment',
   location: 'Lagos, Nigeria (Serving candidates & institutions nationwide)',
   paymentProvider: 'Paystack',
+  tuitionUnlockFee: 3000,
+  competitionCashReward: 50000,
+  resultReleaseWindowDays: 30,
+  registrationCutoffDaysBeforeExam: 7,
+  centralScheduleAuthority: 'VALENCE Central Examination Authority',
   officialLinks: {
     atswaSoftCopy: 'https://icanig.org/students/atswa',
     icanExamDockets: 'https://icanig.org/ican/students/professional-exam-dockets',
@@ -24,76 +25,139 @@ export const PLATFORM_SETTINGS = {
   },
 };
 
-// Admin-configurable examination diets (ATSWA = March/September | ICAN = May/November)
+/**
+ * Dynamic Examination Sessions & Timetables
+ * Governed & published by the Central Examination Authority in Admin Portal:
+ * - ATSWA (March & September): 2 days — second-to-last Tuesday & Wednesday of diet month
+ * - ICAN (May & November): 3 days — first Tuesday, Wednesday & Thursday of diet month (overridable when ICAN adjusts schedule)
+ * - Exam registration closes 1 week (7 days) prior to Day 1
+ * - After final exam day, automatic 30-day countdown to result release begins (overridable if delayed)
+ */
 export const EXAMINATION_SESSIONS = [
-  {
+  buildDietSession({
     id: 'atswa-mar-2027',
     programme: 'ATSWA',
     diet: 'March',
     year: 2027,
-    label: 'ATSWA March 2027 Diet',
-    status: 'registration_open',
-    isPublished: true,
-    registrationOpen: '2026-11-10',
-    registrationClose: '2027-02-19',
-    feePaymentDeadline: '2027-02-26',
     tuitionCommencement: '2026-12-07',
-    revisionPeriod: '2027-03-01 to 2027-03-14',
-    mockExamDate: '2027-03-13',
-    examStartDate: '2027-03-23T09:00:00+01:00',
-    examWindow: '23 – 25 March 2027',
-  },
-  {
+    timetable: [
+      {
+        dayLabel: 'Day 1 · Tuesday',
+        dateIndex: 0,
+        morning: 'ATS 1: BAPS · ATS 2: Financial Accounting · ATS 3: Cost Accounting',
+        afternoon: 'ATS 1: Economics · ATS 2: Public Sector Accounting · ATS 3: Audit',
+      },
+      {
+        dayLabel: 'Day 2 · Wednesday',
+        dateIndex: 1,
+        morning: 'ATS 1: Business Law · ATS 2: Quantitative Analysis · ATS 3: Taxation',
+        afternoon: 'ATS 1: Communication Skills · ATS 2: Information Technology · ATS 3: Management',
+      },
+    ],
+  }),
+  buildDietSession({
     id: 'ican-may-2027',
     programme: 'ICAN',
     diet: 'May',
     year: 2027,
-    label: 'ICAN May 2027 Diet',
-    status: 'registration_open',
-    isPublished: true,
-    registrationOpen: '2026-12-01',
-    registrationClose: '2027-04-16',
-    feePaymentDeadline: '2027-04-23',
     tuitionCommencement: '2027-01-11',
-    revisionPeriod: '2027-04-26 to 2027-05-10',
-    mockExamDate: '2027-05-08',
-    examStartDate: '2027-05-18T09:00:00+01:00',
-    examWindow: '18 – 20 May 2027',
-  },
-  {
+    timetable: [
+      {
+        dayLabel: 'Day 1 · Tuesday',
+        dateIndex: 0,
+        morning: 'Foundation: Financial Accounting (FA) · Skills: Financial Reporting (FR) · Pro: Strategic Business Reporting (SBR)',
+        afternoon: 'Foundation: Business Environment (BE) · Skills: Taxation (TAX) · Pro: Advanced Taxation (A/TAX)',
+      },
+      {
+        dayLabel: 'Day 2 · Wednesday',
+        dateIndex: 1,
+        morning: 'Foundation: Management Accounting (MA) · Skills: Performance Management (PM) · Pro: Strategic Financial Management (SFM)',
+        afternoon: 'Foundation: Corporate & Business Law (CBL) · Skills: Audit, Assurance & Forensics (AAF) · Pro: AAAF',
+      },
+      {
+        dayLabel: 'Day 3 · Thursday',
+        dateIndex: 2,
+        morning: 'Skills: Financial Management (FM) · Pro: Case Study (CS — Full Session)',
+        afternoon: 'Skills: Public Sector Accounting & Finance (PSAF)',
+      },
+    ],
+  }),
+  // Concluded November 2026 ICAN diet — demonstrates LIVE 30-day post-exam Result Release Countdown!
+  buildDietSession({
+    id: 'ican-nov-2026',
+    programme: 'ICAN',
+    diet: 'November',
+    year: 2026,
+    tuitionCommencement: '2026-07-06',
+    timetable: [
+      {
+        dayLabel: 'Day 1 · Tuesday',
+        dateIndex: 0,
+        morning: 'FA · FR · SBR (Completed)',
+        afternoon: 'BE · TAX · A/TAX (Completed)',
+      },
+      {
+        dayLabel: 'Day 2 · Wednesday',
+        dateIndex: 1,
+        morning: 'MA · PM · SFM (Completed)',
+        afternoon: 'CBL · AAF · AAAF (Completed)',
+      },
+      {
+        dayLabel: 'Day 3 · Thursday',
+        dateIndex: 2,
+        morning: 'FM · Case Study (Completed)',
+        afternoon: 'PSAF (Completed)',
+      },
+    ],
+  }),
+  buildDietSession({
     id: 'atswa-sep-2027',
     programme: 'ATSWA',
     diet: 'September',
     year: 2027,
-    label: 'ATSWA September 2027 Diet',
-    status: 'upcoming',
-    isPublished: true,
-    registrationOpen: '2027-04-12',
-    registrationClose: '2027-08-20',
-    feePaymentDeadline: '2027-08-27',
     tuitionCommencement: '2027-05-10',
-    revisionPeriod: '2027-09-06 to 2027-09-19',
-    mockExamDate: '2027-09-18',
-    examStartDate: '2027-09-28T09:00:00+01:00',
-    examWindow: '28 – 30 September 2027',
-  },
-  {
+    timetable: [
+      {
+        dayLabel: 'Day 1 · Tuesday',
+        dateIndex: 0,
+        morning: 'BAPS · Financial Accounting · Cost Accounting (Provisional — Central Authority)',
+        afternoon: 'Economics · Public Sector Accounting · Audit (Provisional)',
+      },
+      {
+        dayLabel: 'Day 2 · Wednesday',
+        dateIndex: 1,
+        morning: 'Business Law · Quantitative Analysis · Taxation (Provisional)',
+        afternoon: 'Communication Skills · Information Technology · Management (Provisional)',
+      },
+    ],
+  }),
+  buildDietSession({
     id: 'ican-nov-2027',
     programme: 'ICAN',
     diet: 'November',
     year: 2027,
-    label: 'ICAN November 2027 Diet',
-    status: 'upcoming',
-    isPublished: true,
-    registrationOpen: '2027-06-14',
-    registrationClose: '2027-10-15',
-    feePaymentDeadline: '2027-10-22',
     tuitionCommencement: '2027-07-05',
-    revisionPeriod: '2027-10-25 to 2027-11-08',
-    mockExamDate: '2027-11-06',
-    examStartDate: '2027-11-16T09:00:00+01:00',
-    examWindow: '16 – 18 November 2027',
-  },
+    timetable: [
+      {
+        dayLabel: 'Day 1 · Tuesday',
+        dateIndex: 0,
+        morning: 'FA · FR · SBR (Provisional — Subject to Institute Timetable)',
+        afternoon: 'BE · TAX · A/TAX (Provisional)',
+      },
+      {
+        dayLabel: 'Day 2 · Wednesday',
+        dateIndex: 1,
+        morning: 'MA · PM · SFM (Provisional)',
+        afternoon: 'CBL · AAF · AAAF (Provisional)',
+      },
+      {
+        dayLabel: 'Day 3 · Thursday',
+        dateIndex: 2,
+        morning: 'FM · Case Study (Provisional)',
+        afternoon: 'PSAF (Provisional)',
+      },
+    ],
+  }),
 ];
 
 export const ATSWA_LEVELS = [
@@ -230,6 +294,7 @@ export const ICAN_LEVELS = [
 
 export const ALL_ICAN_COURSES = ICAN_LEVELS.flatMap((lvl) => lvl.courses);
 
+// Used strictly inside verified/unlocked Student Portal & server-side Paystack checks
 export const ICAN_PRICING_TABLE = [
   { courses: 1, gross: 40000, total: 40000, savings: 0, discounted: false },
   { courses: 2, gross: 80000, total: 80000, savings: 0, discounted: false },
@@ -266,7 +331,7 @@ export const EXEMPTION_RULES = [
   {
     id: 'bsc_hnd_accounting_accredited',
     label: 'B.Sc. / HND Accounting (Standard ICAN-Accredited Institution)',
-    exemptedCodes: ['CBL', 'BE', 'MA', 'FA', 'AAF', 'FM', 'MA'],
+    exemptedCodes: ['CBL', 'BE', 'MA', 'FA', 'AAF', 'FM'],
     guidance:
       'Graduates of ICAN-accredited university and polytechnic accounting departments normally receive full Foundation Level exemptions plus selected Skills Level exemptions based on approved curriculum equivalence.',
     conditions: [
@@ -302,9 +367,7 @@ export const EXEMPTION_RULES = [
     exemptedCodes: ['BE', 'CBL'],
     guidance:
       'Graduates of Economics, Business Administration and Management typically qualify for Business Environment and Corporate & Business Law (where business law was passed at tertiary level).',
-    conditions: [
-      'Official transcript must reflect passed credits in equivalent modules.',
-    ],
+    conditions: ['Official transcript must reflect passed credits in equivalent modules.'],
   },
   {
     id: 'bsc_non_related_or_nd',
@@ -353,7 +416,6 @@ export const PROFESSIONAL_QUALIFICATIONS = [
 ];
 
 export const STORE_PRODUCTS = [
-  // ATSWA Past Questions & Study Packs
   {
     id: 'prod-atswa-pq-1',
     title: 'ATSWA ATS 1 Hard-Copy Past Questions & Solutions',
@@ -364,7 +426,7 @@ export const STORE_PRODUCTS = [
     courseCode: null,
     price: 5500,
     discountHint: '9% off 2+ copies',
-    description: 'Compiled ICAN-standard ATS 1 past questions with structured marking-scheme workings across BAPS, Economics, Communication Skills & Business Law.',
+    description: 'Compiled ATS 1 past questions with structured marking-scheme workings across BAPS, Economics, Communication Skills & Business Law.',
   },
   {
     id: 'prod-atswa-pq-2',
@@ -426,7 +488,6 @@ export const STORE_PRODUCTS = [
     discountHint: '5% off 2+ packs',
     description: 'Complete printed ATS 3 qualifying study pack with costing, auditing, management and taxation cases.',
   },
-  // ICAN Past Questions
   {
     id: 'prod-ican-pq-fnd',
     title: 'ICAN Foundation Past Questions Compendium',
@@ -463,7 +524,6 @@ export const STORE_PRODUCTS = [
     discountHint: '6% off 2+ copies',
     description: 'Multi-diet ICAN Professional past questions, Case Study dossiers and boardroom advisory solutions.',
   },
-  // All 15 ICAN Study Packs (Exact specified prices — 7% off 2+ distinct packs across all ICAN levels)
   ...ALL_ICAN_COURSES.map((course) => ({
     id: `prod-ican-sp-${course.code.toLowerCase().replace('/', '')}`,
     title: `${course.title} (${course.code}) Study Pack`,
@@ -496,7 +556,7 @@ export const VALENCE_PILLARS = [
     id: 'learn',
     code: 'VALENCE LEARN',
     title: 'Structured Tuition, AI Tutor & Exam Mastery',
-    description: 'Authorised Google Meet classes, syllabus reading trackers, study-hour streaks, exam readiness analytics, curated video lessons and our 7-step AI Accounting Tutor.',
+    description: 'Authorised Google Meet classes, syllabus reading trackers, study-hour streaks, exam readiness analytics, central diet timetables and our 7-step AI Accounting Tutor.',
     route: '/programmes',
     metric: '15 Learning Tools',
   },
@@ -504,17 +564,17 @@ export const VALENCE_PILLARS = [
     id: 'connect',
     code: 'VALENCE CONNECT',
     title: 'Academic & Professional Network',
-    description: 'Open community announcements, verified profiles & photo galleries, realtime private/group messaging, study groups, 12 subject forums, voice/video calls and mentorship.',
+    description: 'Free community membership, open announcements, verified profiles & photo galleries, realtime messaging, study groups, 12 subject forums, voice/video calls and mentorship.',
     route: '/connect',
     metric: '12 Subject Forums',
   },
   {
     id: 'compete',
     code: 'VALENCE COMPETE',
-    title: 'National Accounting Challenge & Battle Arena',
-    description: 'Nigeria’s premier inter-school accounting tournament across 6 divisions, configurable ATSWA & ICAN exam engines, National League, 1v1/2v2 Battle Arena and Hall of Fame.',
+    title: 'National Accounting Challenge & ₦50,000 Rewards',
+    description: 'Nigeria’s inter-school championship across all accredited universities, polytechnics and exam divisions — awarding ₦50,000 to outstanding learners after every competition closes.',
     route: '/competitions',
-    metric: '6 Divisions · 5 Rounds',
+    metric: '₦50,000 Cash Reward',
   },
   {
     id: 'professional',
@@ -535,8 +595,8 @@ export const VALENCE_PILLARS = [
   {
     id: 'advertise',
     code: 'VALENCE ADVERTISE',
-    title: 'Verified Tuition Centre Advertising',
-    description: 'Transparent, clearly-labelled promotional placements and Nigeria’s searchable Tuition Centres Directory with Paystack campaign billing and live CTR analytics.',
+    title: 'Independent Tuition Centre Advertising',
+    description: 'A neutral, transparent advertising platform and searchable Tuition Centres Directory for verified tutorial institutes nationwide with Paystack billing and live CTR analytics.',
     route: '/advertise',
     metric: '9 Ad Placements',
   },
@@ -544,7 +604,7 @@ export const VALENCE_PILLARS = [
     id: 'opportunities',
     code: 'VALENCE OPPORTUNITIES',
     title: 'Scholarships, Internships & Finance Careers',
-    description: 'Curated Big-4 and corporate audit internships, ICAN exam scholarships, graduate trainee intakes, tax fellowships, workshops and career advancement programmes.',
+    description: 'Curated audit internships, examination scholarships, graduate trainee intakes, tax fellowships, workshops and professional development opportunities across Nigeria.',
     route: '/opportunities',
     metric: 'Verified Listings',
   },
@@ -553,7 +613,7 @@ export const VALENCE_PILLARS = [
 export const FEATURED_TUITION_CENTRES = [
   {
     id: 'tc-1',
-    name: 'AAG Professional Tutorial Academy',
+    name: 'Apex Ledger School of Accountancy',
     location: 'Ojo & Yaba, Lagos',
     state: 'Lagos',
     programmes: ['ATSWA', 'ICAN Foundation', 'ICAN Skills', 'ICAN Professional'],
@@ -563,8 +623,8 @@ export const FEATURED_TUITION_CENTRES = [
     sponsored: true,
     adLabel: 'Sponsored',
     description: 'Intensive diet-focused ICAN and ATSWA lectures, weekend exam clinics, supervised mock diets and step-by-step syllabus mastery.',
-    website: 'https://valence.ng',
-    contact: '+234 915 434 4663',
+    website: 'https://example.com',
+    contact: 'Verified Advertiser Profile',
   },
   {
     id: 'tc-2',
@@ -583,7 +643,7 @@ export const FEATURED_TUITION_CENTRES = [
   },
   {
     id: 'tc-3',
-    name: 'Crestline School of Accountancy',
+    name: 'Crestline Professional Tutors',
     location: 'Ikeja, Lagos & Online Nationwide',
     state: 'Lagos',
     programmes: ['ATSWA', 'ICAN Foundation', 'University Accounting'],
@@ -598,7 +658,7 @@ export const FEATURED_TUITION_CENTRES = [
   },
   {
     id: 'tc-4',
-    name: 'Capital Ledger Professional Institute',
+    name: 'Capital Balance Tutorial Institute',
     location: 'Wuse II, Abuja',
     state: 'FCT Abuja',
     programmes: ['ICAN Skills', 'ICAN Professional', 'Professional Training'],
@@ -621,7 +681,6 @@ export const FEATURED_TUTORS = [
     credentials: ['AAT Verified', 'ACA / FCA Verified'],
     tier: 'ICAN & ATSWA Senior Tutor',
     courses: ['SBR', 'FR', 'FA'],
-    institution: '12+ Diets Teaching Experience',
     bio: 'Specialises in IFRS group consolidations, financial instruments and exam-standard reporting templates.',
   },
   {
@@ -631,7 +690,6 @@ export const FEATURED_TUTORS = [
     credentials: ['AAT Verified', 'ACA Verified'],
     tier: 'ICAN Skills & Professional Tutor',
     courses: ['SFM', 'FM', 'PM'],
-    institution: 'Corporate Finance & Valuation Lead',
     bio: 'Breaks down hedging, WACC, investment appraisal and variance analysis into repeatable step-by-step workings.',
   },
   {
@@ -641,7 +699,6 @@ export const FEATURED_TUTORS = [
     credentials: ['AAT Verified', 'ACA Verified'],
     tier: 'ICAN & ATSWA Tax/Public Sector Tutor',
     courses: ['TAX', 'A/TAX', 'PSAF', 'PSA'],
-    institution: 'Tax Advisory & IPSAS Specialist',
     bio: 'Focused on current Nigerian Finance Act provisions, capital allowances, petroleum profits and IPSAS accrual statements.',
   },
   {
@@ -651,7 +708,6 @@ export const FEATURED_TUTORS = [
     credentials: ['AAT Verified'],
     tier: 'ATSWA Lead Tutor',
     courses: ['BAPS', 'Cost Accounting', 'QA', 'Audit'],
-    institution: 'ATS 1 – ATS 3 Foundation Specialist',
     bio: 'Dedicated to building rock-solid double-entry accuracy, costing schedules and first-sitting ATSWA confidence.',
   },
 ];
@@ -672,7 +728,7 @@ export const LATEST_OPPORTUNITIES = [
     title: 'ICAN Foundation & ATSWA Merit Examination Scholarship',
     organisation: 'Accounting Education Trust Initiative',
     category: 'Scholarships',
-    eligibility: 'Registered ATS 2, ATS 3 and ICAN Foundation candidates in public Nigerian universities and polytechnics.',
+    eligibility: 'Registered ATS 2, ATS 3 and ICAN Foundation candidates in accredited Nigerian universities and polytechnics.',
     deadline: '2027-01-15',
     publishedAt: '2026-11-12',
     applyUrl: '#opportunity-detail',
@@ -703,8 +759,8 @@ export const UPCOMING_EVENTS = [
   {
     id: 'evt-1',
     type: 'Live Online Class',
-    programme: 'ATSWA · ATS 1 & ATS 2',
-    title: 'March 2027 Diet Orientation & Syllabus Study-Plan Clinic',
+    programme: 'ATSWA · March 2027 Diet',
+    title: 'March 2027 Diet Orientation (Exam: Tue 23 & Wed 24 Mar 2027)',
     date: '7 Dec 2026 · 6:00 PM WAT',
     mode: 'Authorised Google Meet',
     access: 'Enrolled ATSWA Students',
@@ -712,8 +768,8 @@ export const UPCOMING_EVENTS = [
   {
     id: 'evt-2',
     type: 'Revision Workshop',
-    programme: 'ICAN · Skills & Professional',
-    title: 'May 2027 Diet Kickoff: Mastering FR, SBR & SFM Exam Workings',
+    programme: 'ICAN · May 2027 Diet',
+    title: 'May 2027 Diet Kickoff (Exam: Tue 4 – Thu 6 May 2027)',
     date: '11 Jan 2027 · 7:00 PM WAT',
     mode: 'Authorised Google Meet',
     access: 'Enrolled ICAN Students',
@@ -725,43 +781,42 @@ export const UPCOMING_EVENTS = [
     title: 'From Student Candidate to ACA: Audit Careers, Ethics & Mentorship',
     date: '19 Dec 2026 · 5:00 PM WAT',
     mode: 'Online Webinar · 250 Seats',
-    access: 'Open Registration',
+    access: 'Free Member Registration',
   },
   {
     id: 'evt-4',
-    type: 'National Competition',
+    type: '₦50,000 Prize Competition',
     programme: 'VALENCE COMPETE',
-    title: 'VALENCE National Accounting Challenge — Institutional Qualifier Briefing',
+    title: 'VALENCE National Accounting Challenge — Qualifier & ₦50,000 Reward Briefing',
     date: '23 Jan 2027 · 4:00 PM WAT',
-    mode: 'Live Institutional Session',
-    access: 'Verified Schools & Captains',
+    mode: 'Live Inter-University Session',
+    access: 'Verified Schools & Candidates',
   },
 ];
 
-// Clearly distinguishes Official VALENCE admin notices from open Community announcements (Section 13B)
 export const ANNOUNCEMENTS_FEED = [
   {
     id: 'ann-official-1',
     isOfficial: true,
     pinned: true,
-    authorName: 'VALENCE Administration',
-    authorCategory: 'AAG PROFESSIONAL SERVICES · Official Notice',
-    verifiedBadge: 'Official Platform Notice',
+    authorName: 'VALENCE Central Examination Authority',
+    authorCategory: 'Official Examination Schedule & Timetable Desk',
+    verifiedBadge: 'Official Notice',
     category: 'Examination Updates',
     audience: 'Public · All Candidates',
-    title: 'ATSWA March 2027 & ICAN May 2027 Diet Enrolment Calendar Published',
+    title: '2027 Diet Dates, 7-Day Registration Cutoffs & Nov 2026 Result Countdown Active',
     content:
-      'Enrolment scheduling is now active for the ATSWA March 2027 diet (lectures commence 7 December 2026) and ICAN May 2027 diet (lectures commence 11 January 2027). All online level unlocks and tuition payments are processed exclusively via verified Paystack checkout.',
+      'ATSWA March 2027 holds Tue 23 & Wed 24 Mar 2027 (exam registration closes Tue 16 Mar). ICAN May 2027 holds Tue 4, Wed 5 & Thu 6 May 2027 (registration closes Tue 27 Apr), subject to official Institute updates posted here. Meanwhile, the 30-day provisional result countdown for ICAN November 2026 is now live.',
     timestamp: '2 hours ago',
-    likes: 184,
-    comments: 29,
+    likes: 214,
+    comments: 34,
   },
   {
     id: 'ann-comm-1',
     isOfficial: false,
     pinned: false,
     authorName: 'Temitope Adeyemi',
-    authorCategory: 'ICAN Skills Candidate · UNILAG',
+    authorCategory: 'ICAN Skills Candidate · University of Lagos (UNILAG)',
     verifiedBadge: null,
     category: 'Study Group Announcements',
     audience: 'Programme · ICAN Skills',
@@ -792,17 +847,17 @@ export const ANNOUNCEMENTS_FEED = [
     id: 'ann-comm-3',
     isOfficial: false,
     pinned: false,
-    authorName: 'LASU Accounting Students Representative',
-    authorCategory: 'University Student · LASU Ojo',
+    authorName: 'LASU Accounting Society Captain',
+    authorCategory: 'University Student · Lagos State University (LASU)',
     verifiedBadge: 'Verified Institution Rep',
     category: 'Competition Announcements',
     audience: 'Institution & Inter-School',
-    title: 'Campus Tryouts Open for the VALENCE Inter-School Accounting Challenge',
+    title: 'Campus Tryouts Open for the VALENCE Challenge — ₦50,000 Merit Cash Reward!',
     content:
-      'Calling 200L–400L Accounting and ATSWA students interested in representing our department across the ATSWA and University Accounting divisions. Trial speed-round holds this Friday.',
+      'Calling 200L–400L Accounting and ATSWA students ready to compete in the upcoming VALENCE National Accounting Challenge. Top performers earn the ₦50,000 post-competition cash reward plus Hall of Fame recognition.',
     timestamp: '2 days ago',
-    likes: 97,
-    comments: 31,
+    likes: 129,
+    comments: 41,
   },
 ];
 
@@ -810,67 +865,109 @@ export const TESTIMONIALS = [
   {
     id: 'test-1',
     quote:
-      'Having my ICAN Skills tuition classes, reading streak tracker, past-question store and fellow candidates from UNILAG and LASU inside one focused academic platform changed how consistently I prepare.',
+      'Having my ICAN Skills classes, central diet timetable, 30-day result tracker, past-question store and study partners from universities across Nigeria in one focused platform transformed my preparation.',
     name: 'Damilola Akinwale',
     role: 'ICAN Skills Candidate · Passed 4 Papers in One Sitting',
   },
   {
     id: 'test-2',
     quote:
-      'The step-by-step examination presentation structure — interpreting the requirement, citing the IFRS principle, showing clean workings and flagging common pitfalls — trains students the way real markers grade.',
+      'The 7-step examination working structure — interpreting the requirement, citing the IFRS principle, showing clean workings and flagging common traps — trains candidates the exact way markers grade.',
     name: 'Kelechi Eze, FCA, AAT',
     role: 'Practising Chartered Accountant & VALENCE Mentor',
   },
   {
     id: 'test-3',
     quote:
-      'Starting from ATS 1 with transparent 25% multi-course tuition discounts, free campus material delivery in Ojo and weekly study group accountability took away all the confusion around ATSWA.',
+      'Joining VALENCE for free, connecting with peers from my university, competing for the ₦50,000 competition reward and getting free book delivery in Ojo made ATSWA preparation seamless.',
     name: 'Zainab Abdullahi',
     role: 'ATS 3 Finalist · Lagos',
   },
 ];
 
 export const PLATFORM_STATISTICS = [
-  { id: 'stat-1', label: 'ATSWA & ICAN Courses Covered', value: 27, prefix: '', suffix: '', detail: '12 ATSWA + 15 ICAN Syllabus Papers' },
-  { id: 'stat-2', label: 'Multi-Course Tuition Savings', value: 25, prefix: '', suffix: '%', detail: 'On 2+ ATSWA or 3+ ICAN Courses' },
-  { id: 'stat-3', label: 'National Competition Divisions', value: 6, prefix: '', suffix: '', detail: 'ATSWA, ICAN (3 Levels), University & Pro' },
-  { id: 'stat-4', label: 'Academic Discussion Forums', value: 12, prefix: '', suffix: '', detail: 'Subject-Specific Peer & Mentor Spaces' },
-  { id: 'stat-5', label: 'Official Study Packs & Compendia', value: 24, prefix: '', suffix: '+', detail: '7% Cross-Level ICAN Study Pack Discount' },
-  { id: 'stat-6', label: 'Free Campus Delivery Zones', value: 6, prefix: '', suffix: '', detail: 'LASU, Ojo, UNILAG, YABATECH, FCE, Yaba' },
+  {
+    id: 'stat-1',
+    label: 'Nigerian Universities Embedded',
+    value: UNIVERSITY_COUNTS.total,
+    prefix: '',
+    suffix: '+',
+    detail: 'Federal, State & Private across 36 States + FCT',
+  },
+  {
+    id: 'stat-2',
+    label: 'Competition Merit Reward',
+    value: 50000,
+    prefix: '₦',
+    suffix: '',
+    detail: 'Awarded to top learners after every competition closes',
+  },
+  {
+    id: 'stat-3',
+    label: 'ATSWA & ICAN Papers',
+    value: 27,
+    prefix: '',
+    suffix: '',
+    detail: '12 ATSWA (2-Day Exam) · 15 ICAN (3-Day Exam)',
+  },
+  {
+    id: 'stat-4',
+    label: 'Result Countdown Window',
+    value: 30,
+    prefix: '',
+    suffix: ' Days',
+    detail: 'Auto-starts after last exam day (admin-adjustable)',
+  },
+  {
+    id: 'stat-5',
+    label: 'Academic Discussion Forums',
+    value: 12,
+    prefix: '',
+    suffix: '',
+    detail: 'Free VALENCE membership; ₦3k only for tuition',
+  },
+  {
+    id: 'stat-6',
+    label: 'Free Campus Delivery Zones',
+    value: 6,
+    prefix: '',
+    suffix: '',
+    detail: 'LASU, Ojo, UNILAG, YABATECH, FCE, Yaba',
+  },
 ];
 
 export const FAQS = [
   {
-    q: 'Who can join VALENCE?',
-    a: 'VALENCE serves ATSWA candidates (ATS 1–3), ICAN candidates (Foundation, Skills and Professional), university and polytechnic students in Accounting and 11+ related disciplines, chartered accountants (ACA, FCA, ACCA, CPA), general accounting learners, verified tutors, accredited institutions and verified tuition centres.',
+    q: 'Do I have to pay ₦3,000 just to sign up on VALENCE?',
+    a: 'No. Creating a VALENCE account is completely free across students, university undergraduates, general learners and professionals. The one-time ₦3,000 registration fee per level applies ONLY when you want to apply for tuition and unlock your personalised tuition cost implication for that specific ATSWA or ICAN level (and you are never charged twice for an already unlocked level).',
   },
   {
-    q: 'How does the ₦3,000 level unlock work for ATSWA versus ICAN?',
-    a: 'Each ATSWA and ICAN examination level has a one-time ₦3,000 unlock fee paid via Paystack that permanently unlocks that specific level (you are never charged twice for an already unlocked level, and unlocking one level does not unlock another). Under ATSWA, the ₦3,000 unlock fee is credited/waived as your tutorial registration fee. Under ICAN, the unlock fee never offsets official ICAN registration, annual subscription or examination fees.',
+    q: 'When do ATSWA and ICAN examinations hold, and when does registration close?',
+    a: 'ATSWA exams run for 2 days on the second-to-last Tuesday and Wednesday of March and September. ICAN exams span 3 days on the first Tuesday, Wednesday and Thursday of May and November. Exam registration closes 1 week (7 days) before Day 1 for both programmes. Because the Institute occasionally adjusts dates, VALENCE’s Central Examination Authority publishes and updates official exam dates and full paper timetables dynamically.',
   },
   {
-    q: 'How do the multi-course tuition discounts work?',
-    a: 'For ATSWA, online tuition is ₦20,000 per course with an automatic 25% discount when selecting 2 or more courses (₦30,000 for 2, ₦45,000 for 3, and capped at ₦60,000 for all 4). For ICAN online tuition, courses cost ₦40,000 each with a 25% discount when selecting 3 or more courses in the same transaction (3 = ₦90,000; 4 = ₦120,000; 5 = ₦150,000; 6 = ₦180,000). Discounts never apply to official ICAN fees, unlock fees, store items or delivery.',
+    q: 'How does the post-examination result release countdown work?',
+    a: 'Immediately after the final examination day of any ATSWA or ICAN diet concludes, VALENCE automatically starts a 30-day countdown to the expected result release date. Because official release can occasionally experience delays, the Central Examination Authority updates the timer and posts status notices whenever the Institute adjusts release timing.',
+  },
+  {
+    q: 'How does the ₦50,000 competition reward work?',
+    a: 'Outstanding learners who excel in VALENCE competitions are rewarded ₦50,000 after every competition closes and official results pass verification and moderator approval, alongside digital certificates and Accounting Hall of Fame recognition.',
+  },
+  {
+    q: 'Are all Nigerian universities supported on VALENCE?',
+    a: `Yes. VALENCE includes a built-in searchable directory of ${UNIVERSITY_COUNTS.total}+ NUC-accredited Federal, State and Private universities across all 36 states and FCT Abuja (plus support for polytechnics and colleges) for student profiles, study groups, exemption checks and inter-school competitions.`,
   },
   {
     q: 'How are online payments processed, and when is WhatsApp used?',
-    a: 'Paystack is the exclusive online checkout and payment processor across all of VALENCE (level unlocks, online tuition, store orders and advertising packages), verified server-side before access is granted. WhatsApp (+234 915 434 4663) is never used as an online payment checkout — it is reserved strictly for official ICAN registration/exam/subscription fee assistance, physical tuition applications, document guidance and customer support.',
-  },
-  {
-    q: 'What is the difference between ATSWA and ICAN examination diets?',
-    a: 'ATSWA examinations hold every March and September (starting with our March 2027 session), while ICAN professional examinations hold every May and November. Both calendars are dynamically managed by VALENCE administrators with live registration, fee payment, revision and mock exam countdowns.',
-  },
-  {
-    q: 'Can university students and community members publish announcements and photos?',
-    a: 'Yes. Every registered VALENCE user — students, professionals, tutors, general learners and verified school representatives — has a customisable profile with privacy controls, profile/gallery photo uploads and an announcement composer with targeted audiences. Official platform-wide notices are strictly reserved for VALENCE administrators and carry a distinct Official badge.',
+    a: 'Paystack is the exclusive online checkout and payment processor across all of VALENCE (tuition application unlocks, online tuition, store orders and advertising packages), verified server-side before access is granted. WhatsApp (+234 915 434 4663) is never used as an online checkout — it handles enquiries, official ICAN fee assistance, physical tuition applications and customer support.',
   },
   {
     q: 'How does the 7% ICAN study pack discount and free campus delivery work?',
-    a: 'When you buy two or more different ICAN study packs in one order — even combined across Foundation, Skills and Professional levels — an automatic 7% discount applies to those study packs. ATSWA past questions get 9% off (2+), ATSWA study packs 5% off (2+) and ICAN past questions 6% off (2+). Delivery is completely free to LASU, Ojo, UNILAG, YABATECH, FCE and Yaba.',
+    a: 'Purchasing two or more different ICAN study packs in the same transaction — even across Foundation, Skills and Professional levels — triggers an automatic 7% discount on those study packs. ATSWA past questions get 9% off (2+), ATSWA study packs 5% off (2+) and ICAN past questions 6% off (2+). Delivery is free to LASU, Ojo, UNILAG, YABATECH, FCE and Yaba.',
   },
   {
-    q: 'What qualifications are required to become a VALENCE tutor?',
-    a: 'ATSWA tutor applicants must hold at least an AAT (ATSWA) certificate or accepted higher qualification. ICAN tutor applicants must hold BOTH an AAT certificate AND an ACA certificate (both compulsory). Every applicant undergoes manual certificate verification in private storage plus a timed 20-question, 45-minute randomised competency assessment before approval.',
+    q: 'Can independent tuition centres advertise on VALENCE?',
+    a: 'Yes. VALENCE is an open, neutral ecosystem where verified accounting tuition centres and training providers across Nigeria can list in the public Tuition Centres Directory and run clearly labelled Sponsored campaigns with Paystack billing and live impression/click analytics.',
   },
 ];
 
@@ -890,10 +987,68 @@ export const DISCUSSION_CATEGORIES = [
 ];
 
 export const COMPETITION_DIVISIONS = [
-  { id: 'div-atswa', name: 'ATSWA Challenge', level: 'ATS 1 – ATS 3', format: '30 MCQ + 20 Short-Answer + Answer 4 of 6 Theory (12.5 marks each = 50m Section C)' },
-  { id: 'div-ican-fnd', name: 'ICAN Foundation Challenge', level: 'CBL · BE · MA · FA', format: 'Section A: 30m compulsory · Section B: 2 of 3 (20m each = 40m) · Section C: 2 of 4 (15m each = 30m) = 100m' },
-  { id: 'div-ican-skl', name: 'ICAN Skills Challenge', level: 'FR · FM · PSAF · AAF · TAX · PM', format: 'Section A: 30m compulsory · Section B: 2 of 3 (20m each = 40m) · Section C: 2 of 4 (15m each = 30m) = 100m' },
-  { id: 'div-ican-pro', name: 'ICAN Professional Challenge', level: 'SBR · CS · AAAF · A/TAX · SFM', format: 'Section A: 30m compulsory · Section B: 2 of 3 (20m each = 40m) · Section C: 2 of 4 (15m each = 30m) = 100m' },
-  { id: 'div-uni', name: 'University Accounting Challenge', level: 'Universities, Polytechnics & Colleges', format: 'Inter-school individual & team tournament across 5 national rounds — syllabus-reviewed before publication' },
-  { id: 'div-pro', name: 'Professional Accounting Challenge', level: 'ACA · FCA · ACCA · CPA (Optional Division)', format: 'Executive IFRS, tax strategy, forensic assurance & boardroom advisory showcase' },
+  { id: 'div-atswa', name: 'ATSWA Challenge', level: 'ATS 1 – ATS 3', reward: '₦50,000 Merit Reward', format: '30 MCQ + 20 Short-Answer + Answer 4 of 6 Theory (12.5 marks each = 50m Section C)' },
+  { id: 'div-ican-fnd', name: 'ICAN Foundation Challenge', level: 'CBL · BE · MA · FA', reward: '₦50,000 Merit Reward', format: 'Section A: 30m compulsory · Section B: 2 of 3 (20m each = 40m) · Section C: 2 of 4 (15m each = 30m) = 100m' },
+  { id: 'div-ican-skl', name: 'ICAN Skills Challenge', level: 'FR · FM · PSAF · AAF · TAX · PM', reward: '₦50,000 Merit Reward', format: 'Section A: 30m compulsory · Section B: 2 of 3 (20m each = 40m) · Section C: 2 of 4 (15m each = 30m) = 100m' },
+  { id: 'div-ican-pro', name: 'ICAN Professional Challenge', level: 'SBR · CS · AAAF · A/TAX · SFM', reward: '₦50,000 Merit Reward', format: 'Section A: 30m compulsory · Section B: 2 of 3 (20m each = 40m) · Section C: 2 of 4 (15m each = 30m) = 100m' },
+  { id: 'div-uni', name: 'University Accounting Challenge', level: `${UNIVERSITY_COUNTS.total}+ Nigerian Universities & Polytechnics`, reward: '₦50,000 Merit Reward', format: 'Inter-school individual & team tournament across 5 national rounds — syllabus-reviewed before publication' },
+  { id: 'div-pro', name: 'Professional Accounting Challenge', level: 'ACA · FCA · ACCA · CPA (Optional Division)', reward: '₦50,000 Merit Reward', format: 'Executive IFRS, tax strategy, forensic assurance & boardroom advisory showcase' },
 ];
+
+export const COMPETITION_REWARD = {
+  amount: 50000,
+  currency: 'NGN',
+  summary:
+    'Learners who demonstrate outstanding performance in VALENCE competitions receive a verified ₦50,000 cash reward immediately after every competition closes and official results are confirmed.',
+  eligibilityRules: [
+    'Open to verified ATSWA, ICAN, university, polytechnic, college and general accounting candidates.',
+    'Awarded after final scoring, anti-cheat audit and appeals review conclude at competition close.',
+    'Identity and candidate standing verified before audited ₦50,000 payout disbursement.',
+    'Accompanied by verifiable digital merit certificates and VALENCE Hall of Fame induction.',
+  ],
+};
+
+export const COMPETITION_STRUCTURES = {
+  atswa: {
+    name: 'ATSWA Competition Paper Structure',
+    totalMarks: 100,
+    sections: [
+      {
+        label: 'Section A — Multiple Choice Questions (Compulsory)',
+        detail: '30 objective questions × 1 mark each (auto-graded on submission)',
+        marks: 30,
+      },
+      {
+        label: 'Section B — Short-Answer Questions (Compulsory)',
+        detail: '20 short-answer items × 1 mark each (structured precision check)',
+        marks: 20,
+      },
+      {
+        label: 'Section C — Theory & Practical Workings',
+        detail: 'Answer any 4 out of 6 questions × 12.5 marks each (human rubric grading)',
+        marks: 50,
+      },
+    ],
+  },
+  ican: {
+    name: 'ICAN Competition Paper Structure',
+    totalMarks: 100,
+    sections: [
+      {
+        label: 'Section A — Compulsory Core Question(s)',
+        detail: 'Mandatory foundational / scenario calculation & reporting section',
+        marks: 30,
+      },
+      {
+        label: 'Section B — Applied Technical Scenarios',
+        detail: 'Answer any 2 out of 3 questions × 20 marks each (rubric graded)',
+        marks: 40,
+      },
+      {
+        label: 'Section C — Analytical & Advisory Questions',
+        detail: 'Answer any 2 out of 4 questions × 15 marks each (rubric graded)',
+        marks: 30,
+      },
+    ],
+  },
+};

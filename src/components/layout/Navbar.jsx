@@ -12,7 +12,6 @@ import {
   Trophy,
   Megaphone,
   Shield,
-  BookOpen,
   Scale,
   ArrowUpRight,
 } from 'lucide-react';
@@ -20,45 +19,45 @@ import BrandLogo from '../ui/BrandLogo';
 import { usePlatform } from '../../context/PlatformContext';
 
 const PROGRAMME_MENU = [
-  { label: 'All Programmes Overview', desc: 'Compare ATSWA, ICAN, Tertiary & General tracks', to: '/programmes' },
-  { label: 'ATSWA Programme (ATS 1 – 3)', desc: 'March & Sept diets · 25% off 2+ courses (max ₦60k)', to: '/programmes/atswa' },
-  { label: 'ICAN Foundation Level', desc: 'CBL, BE, MA, FA · ₦40k/course · 25% off 3+', to: '/programmes/ican/foundation' },
+  { label: 'Programmes & Diet Timetables', desc: 'Exam dates, 7-day cutoffs & 30-day result countdowns', to: '/programmes' },
+  { label: 'ATSWA Programme (ATS 1 – 3)', desc: '2-day March & Sept exams · ₦3k unlocks tuition & cost implication', to: '/programmes/atswa' },
+  { label: 'ICAN Foundation Level', desc: 'CBL, BE, MA, FA · 3-day May & Nov diets', to: '/programmes/ican/foundation' },
   { label: 'ICAN Skills Level', desc: 'FR, FM, PSAF, AAF, TAX, PM · 6 syllabus papers', to: '/programmes/ican/skills' },
   { label: 'ICAN Professional Level', desc: 'SBR, CS, AAAF, A/TAX, SFM · Final ACA stage', to: '/programmes/ican/professional' },
-  { label: 'ICAN Exemption Guidance Tool', desc: 'Check potential paper exemptions & conditions', to: '/programmes/ican/exemptions' },
-  { label: 'University & General Learners', desc: '12 eligible disciplines + 6 financial literacy tracks', to: '/programmes/tertiary' },
+  { label: 'ICAN Exemption Guidance Tool', desc: 'Check potential exemptions across all Nigerian universities', to: '/programmes/ican/exemptions' },
+  { label: 'Nigerian Universities & General Tracks', desc: 'All Federal, State & Private universities + 6 literacy tracks', to: '/programmes/tertiary' },
 ];
 
 const MORE_MENU = [
-  { label: 'Services', desc: 'All 7 VALENCE pillars & AI Accounting Tutor', to: '/services' },
+  { label: 'Services', desc: 'All 7 VALENCE pillars & 7-step AI Accounting Tutor', to: '/services' },
   { label: 'Study Materials', desc: 'Syllabus guides, videos, textbooks & soft-copy links', to: '/study-materials' },
   { label: 'Opportunities', desc: 'Scholarships, internships, audit & finance jobs', to: '/opportunities' },
-  { label: 'Tuition Centres', desc: 'Search verified Nigerian accounting tuition centres', to: '/tuition-centres' },
-  { label: 'Advertise on VALENCE', desc: 'Paid campaigns & placements for verified centres', to: '/advertise' },
-  { label: 'Contact', desc: 'Enquiries, ICAN fee assistance & support desk', to: '/contact' },
+  { label: 'Tuition Centres', desc: 'Compare verified Nigerian accounting tuition centres', to: '/tuition-centres' },
+  { label: 'Advertise on VALENCE', desc: 'Independent ad campaigns for verified tuition centres', to: '/advertise' },
+  { label: 'Contact', desc: 'Enquiries, ICAN official fee assistance & support', to: '/contact' },
 ];
 
 const PORTAL_ACTIONS = [
-  { label: 'Student Portal', desc: 'ATSWA, ICAN, Tertiary & General Learners', to: '/portal/student', icon: GraduationCap, accent: true },
-  { label: 'Professional Portal', desc: 'ACA, FCA, ACCA & CPA Network', to: '/portal/professional', icon: Briefcase },
+  { label: 'Student Portal', desc: 'Free signup · ₦3k only for tuition application', to: '/portal/student', icon: GraduationCap, accent: true },
+  { label: 'Professional Portal', desc: 'Verified ACA, FCA, ACCA & CPA Network', to: '/portal/professional', icon: Briefcase },
   { label: 'Join VALENCE Connect', desc: 'Community feed, study groups & messaging', to: '/connect', icon: Users },
   { label: 'Apply as a Tutor', desc: 'AAT (ATSWA) or AAT + ACA (ICAN) recruitment', to: '/portal/tutor', icon: Award },
-  { label: 'Register for Competitions', desc: 'National Accounting Challenge & Battle Arena', to: '/competitions', icon: Trophy },
+  { label: 'Register for Competitions', desc: '₦50,000 merit reward after every competition', to: '/competitions', icon: Trophy },
   { label: 'Advertise Your Tuition Centre', desc: 'VALENCE ADVERTISE verified onboarding', to: '/advertise', icon: Megaphone },
-  { label: 'Admin Portal Login', desc: 'Authorised AAG governance & operations', to: '/portal/admin', icon: Shield },
+  { label: 'Admin Portal Login', desc: 'Central Examination Authority & governance', to: '/portal/admin', icon: Shield },
 ];
 
 const ALL_MOBILE_LINKS = [
   { label: 'Home', to: '/' },
   { label: 'About Us', to: '/about' },
-  { label: 'Programmes', to: '/programmes' },
+  { label: 'Programmes & Timetables', to: '/programmes' },
   { label: 'ATSWA (ATS 1–3)', to: '/programmes/atswa' },
   { label: 'ICAN (Foundation / Skills / Pro)', to: '/programmes/ican' },
   { label: 'Services', to: '/services' },
   { label: 'Study Materials', to: '/study-materials' },
   { label: 'Store', to: '/store' },
   { label: 'VALENCE Connect', to: '/connect' },
-  { label: 'Competitions', to: '/competitions' },
+  { label: 'Competitions (₦50k Reward)', to: '/competitions' },
   { label: 'Opportunities', to: '/opportunities' },
   { label: 'Tuition Centres', to: '/tuition-centres' },
   { label: 'Advertise on VALENCE', to: '/advertise' },
@@ -96,15 +95,15 @@ export default function Navbar() {
 
   return (
     <header ref={navRef} className="sticky top-0 z-50 w-full v-glass border-b border-white/[0.07]">
-      {/* Slim institutional status ribbon */}
-      <div className="hidden lg:block border-b border-white/[0.05] bg-[#07090B]/70">
+      {/* Top Schedule & Competition Ribbon */}
+      <div className="hidden lg:block border-b border-white/[0.05] bg-[#07090B]/75">
         <div className="v-container flex h-8 items-center justify-between text-[11px] text-[#9AA4B2]">
           <div className="flex items-center gap-3">
-            <span className="font-semibold tracking-wider text-[#C2C9D4]">
-              {settings.operatorName}
-            </span>
+            <span className="italic text-[#16C784]">{settings.tagline}</span>
             <span className="text-white/15">•</span>
-            <span className="italic text-[#16C784]/90">{settings.tagline}</span>
+            <Link to="/competitions" className="hover:text-white transition-colors">
+              Competitions: <strong className="text-[#16C784]">₦50,000</strong> Merit Reward
+            </Link>
           </div>
           <div className="flex items-center gap-4">
             <Link
@@ -112,14 +111,14 @@ export default function Navbar() {
               className="inline-flex items-center gap-1.5 hover:text-white transition-colors"
             >
               <span className="h-1.5 w-1.5 rounded-full bg-[#16C784]" />
-              <span>ATSWA March 2027 Open</span>
+              <span>ATSWA: 23–24 Mar 2027</span>
             </Link>
             <Link
               to="/programmes/ican"
               className="inline-flex items-center gap-1.5 hover:text-white transition-colors"
             >
               <span className="h-1.5 w-1.5 rounded-full bg-[#16C784]" />
-              <span>ICAN May 2027 Enrolling</span>
+              <span>ICAN: 4–6 May 2027</span>
             </Link>
             <span className="text-white/15">|</span>
             <Link to="/advertise" className="hover:text-[#16C784] transition-colors">
@@ -136,11 +135,10 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Main navigation bar */}
+      {/* Main Navigation Bar */}
       <div className="v-container flex h-16 items-center justify-between gap-3">
         <BrandLogo size="md" showSubtext />
 
-        {/* Desktop links */}
         <nav className="hidden xl:flex items-center gap-0.5" aria-label="Primary Navigation">
           <NavLink to="/" end className={navLinkClass}>
             Home
@@ -149,7 +147,6 @@ export default function Navbar() {
             About Us
           </NavLink>
 
-          {/* Programmes dropdown */}
           <div className="relative">
             <button
               type="button"
@@ -169,7 +166,7 @@ export default function Navbar() {
               />
             </button>
             {openDropdown === 'prog' && (
-              <div className="absolute left-0 mt-2 w-[380px] rounded-2xl bg-[#11161C]/98 backdrop-blur-xl border border-white/[0.1] p-2.5 shadow-2xl animate-fade-up">
+              <div className="absolute left-0 mt-2 w-[390px] rounded-2xl bg-[#11161C]/98 backdrop-blur-xl border border-white/[0.1] p-2.5 shadow-2xl animate-fade-up">
                 {PROGRAMME_MENU.map((item) => (
                   <Link
                     key={item.to}
@@ -197,7 +194,6 @@ export default function Navbar() {
             Store
           </NavLink>
 
-          {/* Explore / More dropdown covering remaining public links cleanly */}
           <div className="relative">
             <button
               type="button"
@@ -237,7 +233,6 @@ export default function Navbar() {
           </div>
         </nav>
 
-        {/* Right Actions: Cart + Role-adaptive Portals + Primary CTA + Mobile Toggle */}
         <div className="flex items-center gap-2">
           <Link
             to="/store"
@@ -252,7 +247,6 @@ export default function Navbar() {
             )}
           </Link>
 
-          {/* Portals launcher (desktop) */}
           <div className="relative hidden sm:block">
             <button
               type="button"
@@ -310,7 +304,6 @@ export default function Navbar() {
             {user ? 'Open Portal' : 'Student Portal'}
           </Link>
 
-          {/* Mobile Drawer Trigger */}
           <button
             type="button"
             onClick={() => setMobileOpen((v) => !v)}
@@ -323,7 +316,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Full Navigation Drawer */}
+      {/* Mobile Drawer */}
       {mobileOpen && (
         <div className="xl:hidden border-t border-white/[0.08] bg-[#0B0E11]/98 backdrop-blur-2xl max-h-[calc(100vh-4rem)] overflow-y-auto pb-24">
           <div className="v-container py-5 space-y-6">

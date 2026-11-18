@@ -64,7 +64,6 @@ export default function WhatsAppWidget() {
 
   return (
     <>
-      {/* Floating WhatsApp Support Button — sits cleanly above mobile bottom nav */}
       <button
         type="button"
         onClick={() => openWhatsAppModal({ category: 'General Support Enquiry' })}
@@ -77,7 +76,6 @@ export default function WhatsAppWidget() {
         </span>
       </button>
 
-      {/* Prefilled WhatsApp Enquiry Modal */}
       {whatsAppModal.open && (
         <div
           className="fixed inset-0 z-[80] flex items-end sm:items-center justify-center bg-black/75 backdrop-blur-sm p-0 sm:p-4"
@@ -89,7 +87,7 @@ export default function WhatsAppWidget() {
             <div className="flex items-start justify-between gap-4">
               <div>
                 <span className="text-[11px] font-semibold uppercase tracking-widest text-[#16C784]">
-                  AAG PROFESSIONAL SERVICES · Support Desk
+                  VALENCE · Official Support Desk
                 </span>
                 <h3 id="wa-modal-title" className="mt-1 font-display text-xl font-bold text-[#F4F6F9]">
                   WhatsApp Enquiry & Official Fee Assistance
@@ -111,7 +109,7 @@ export default function WhatsAppWidget() {
             <div className="mt-4 flex items-start gap-2.5 rounded-xl bg-[#0B0E11] border border-white/[0.08] p-3 text-xs text-[#9AA4B2]">
               <ShieldAlert className="h-4 w-4 shrink-0 text-[#16C784] mt-0.5" />
               <p>
-                <strong className="text-[#F4F6F9]">Paystack-Only Online Checkout:</strong> Online tuition, level unlocks, store orders and advertising packages are paid exclusively via Paystack on VALENCE. WhatsApp is strictly for enquiries, official ICAN fee assistance and physical tuition applications.
+                <strong className="text-[#F4F6F9]">Paystack-Only Online Checkout:</strong> Tuition application unlocks (₦3,000), online tuition, store orders and advertising packages are paid exclusively via Paystack on VALENCE. WhatsApp is strictly for enquiries, official ICAN fee assistance and physical tuition applications.
               </p>
             </div>
 

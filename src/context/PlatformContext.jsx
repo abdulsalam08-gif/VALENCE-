@@ -19,22 +19,30 @@ import {
   EXEMPTION_RULES,
   DISCUSSION_CATEGORIES,
   COMPETITION_DIVISIONS,
+  COMPETITION_REWARD,
+  COMPETITION_STRUCTURES,
   TERTIARY_DISCIPLINES,
   GENERAL_LEARNER_TRACKS,
   PROFESSIONAL_QUALIFICATIONS,
 } from '../data/platformConfig';
+import {
+  NIGERIAN_UNIVERSITIES,
+  NIGERIAN_STATES,
+  GEOPOLITICAL_ZONES,
+  UNIVERSITY_COUNTS,
+} from '../data/nigerianUniversities';
 import { calculateStoreCart } from '../lib/pricing';
 
 const PlatformContext = createContext(null);
 const CART_STORAGE_KEY = 'valence_cart_v1';
 
 export function PlatformProvider({ children }) {
-  // Ready for Phase 2 live Supabase Auth + Realtime hydration
   const [user, setUser] = useState(null);
   const [userRole, setUserRole] = useState(null);
+  // Server-verified student_fee_unlocks records hydrate here in Phase 2/4/8
+  const [unlockedLevelIds, setUnlockedLevelIds] = useState([]);
   const [isHydrating, setIsHydrating] = useState(true);
 
-  // Shopping cart persisted across page navigation
   const [cart, setCart] = useState(() => {
     try {
       const saved = localStorage.getItem(CART_STORAGE_KEY);
@@ -45,7 +53,6 @@ export function PlatformProvider({ children }) {
   });
   const [selectedZoneId, setSelectedZoneId] = useState(DELIVERY_ZONES[0].id);
 
-  // Prefilled WhatsApp Assistance Modal (strictly enquiries / ICAN official fees / physical tuition)
   const [whatsAppModal, setWhatsAppModal] = useState({
     open: false,
     category: 'General Support Enquiry',
@@ -54,7 +61,7 @@ export function PlatformProvider({ children }) {
   });
 
   useEffect(() => {
-    const t = setTimeout(() => setIsHydrating(false), 240);
+    const t = setTimeout(() => setIsHydrating(false), 220);
     return () => clearTimeout(t);
   }, []);
 
@@ -65,6 +72,8 @@ export function PlatformProvider({ children }) {
       // ignore storage quota errors
     }
   }, [cart]);
+
+  const isLevelUnlocked = (levelKey) => unlockedLevelIds.includes(levelKey);
 
   const addToCart = (product, qty = 1) => {
     setCart((prev) => {
@@ -122,6 +131,9 @@ export function PlatformProvider({ children }) {
     setUser,
     userRole,
     setUserRole,
+    unlockedLevelIds,
+    setUnlockedLevelIds,
+    isLevelUnlocked,
     isHydrating,
     settings: PLATFORM_SETTINGS,
     sessions: EXAMINATION_SESSIONS,
@@ -142,9 +154,15 @@ export function PlatformProvider({ children }) {
     exemptionRules: EXEMPTION_RULES,
     discussionCategories: DISCUSSION_CATEGORIES,
     competitionDivisions: COMPETITION_DIVISIONS,
+    competitionReward: COMPETITION_REWARD,
+    competitionStructures: COMPETITION_STRUCTURES,
     tertiaryDisciplines: TERTIARY_DISCIPLINES,
     generalLearnerTracks: GENERAL_LEARNER_TRACKS,
     professionalQualifications: PROFESSIONAL_QUALIFICATIONS,
+    universities: NIGERIAN_UNIVERSITIES,
+    nigerianStates: NIGERIAN_STATES,
+    geopoliticalZones: GEOPOLITICAL_ZONES,
+    universityCounts: UNIVERSITY_COUNTS,
     cart,
     addToCart,
     updateCartQty,

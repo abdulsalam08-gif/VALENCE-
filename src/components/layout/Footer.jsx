@@ -5,27 +5,26 @@ import BrandLogo from '../ui/BrandLogo';
 import { usePlatform } from '../../context/PlatformContext';
 
 export default function Footer() {
-  const { settings, openWhatsAppModal } = usePlatform();
+  const { settings, openWhatsAppModal, universityCounts } = usePlatform();
 
   return (
     <footer className="border-t border-white/[0.07] bg-[#080B0E] pb-24 lg:pb-10">
       <div className="v-container pt-16 pb-12">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-12">
-          {/* Brand Column */}
           <div className="lg:col-span-4 space-y-4">
-            <BrandLogo size="lg" showSubtext subtextMode="operator" />
-            <p className="font-display text-sm italic text-[#16C784]">{settings.tagline}</p>
+            <BrandLogo size="lg" showSubtext />
             <p className="text-sm leading-relaxed text-[#9AA4B2] max-w-sm">
-              Nigeria’s complete accounting education, professional networking, inter-school competition, marketplace and career development ecosystem operated by{' '}
-              <span className="text-[#F4F6F9] font-medium">{settings.operatorName}</span>.
+              Nigeria’s complete accounting education, professional networking, inter-school competition, marketplace and career ecosystem connecting ATSWA & ICAN candidates,{' '}
+              <span className="text-[#F4F6F9] font-medium">{universityCounts.total}+ Nigerian universities</span>, verified tuition centres and chartered accountants.
             </p>
             <div className="inline-flex items-center gap-2 rounded-xl bg-[#11161C] border border-white/[0.08] px-3.5 py-2 text-xs text-[#C2C9D4]">
               <ShieldCheck className="h-4 w-4 text-[#16C784] shrink-0" />
-              <span>Online Checkout Secured Exclusively by <strong className="text-white">Paystack</strong></span>
+              <span>
+                Online Checkout Secured Exclusively by <strong className="text-white">Paystack</strong>
+              </span>
             </div>
           </div>
 
-          {/* Navigation Links */}
           <div className="lg:col-span-2 space-y-3">
             <h4 className="text-xs font-semibold uppercase tracking-widest text-[#F4F6F9]">
               Platform
@@ -33,7 +32,7 @@ export default function Footer() {
             <ul className="space-y-2 text-xs text-[#9AA4B2]">
               <li><Link to="/" className="hover:text-[#16C784] transition-colors">Home</Link></li>
               <li><Link to="/about" className="hover:text-[#16C784] transition-colors">About Us</Link></li>
-              <li><Link to="/programmes" className="hover:text-[#16C784] transition-colors">Programmes</Link></li>
+              <li><Link to="/programmes" className="hover:text-[#16C784] transition-colors">Programmes & Diets</Link></li>
               <li><Link to="/services" className="hover:text-[#16C784] transition-colors">Services</Link></li>
               <li><Link to="/study-materials" className="hover:text-[#16C784] transition-colors">Study Materials</Link></li>
               <li><Link to="/store" className="hover:text-[#16C784] transition-colors">Store (Marketplace)</Link></li>
@@ -41,7 +40,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Ecosystem & Community */}
           <div className="lg:col-span-3 space-y-3">
             <h4 className="text-xs font-semibold uppercase tracking-widest text-[#F4F6F9]">
               Ecosystem & Portals
@@ -50,7 +48,7 @@ export default function Footer() {
               <li><Link to="/portal/student" className="hover:text-[#16C784] transition-colors">Student Portal (VALENCE LEARN)</Link></li>
               <li><Link to="/portal/professional" className="hover:text-[#16C784] transition-colors">Professional Portal (ACA/FCA/ACCA/CPA)</Link></li>
               <li><Link to="/connect" className="hover:text-[#16C784] transition-colors">Join VALENCE Connect</Link></li>
-              <li><Link to="/competitions" className="hover:text-[#16C784] transition-colors">National Accounting Challenge</Link></li>
+              <li><Link to="/competitions" className="hover:text-[#16C784] transition-colors">National Challenge (₦50,000 Reward)</Link></li>
               <li><Link to="/portal/tutor" className="hover:text-[#16C784] transition-colors">Apply as a Tutor</Link></li>
               <li><Link to="/opportunities" className="hover:text-[#16C784] transition-colors">Scholarships & Opportunities</Link></li>
               <li><Link to="/tuition-centres" className="hover:text-[#16C784] transition-colors">Tuition Centres Directory</Link></li>
@@ -59,7 +57,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact & Official References */}
           <div className="lg:col-span-3 space-y-3">
             <h4 className="text-xs font-semibold uppercase tracking-widest text-[#F4F6F9]">
               Contact & Official Links
@@ -116,11 +113,11 @@ export default function Footer() {
 
         <div className="mt-12 pt-6 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[#667085]">
           <p>
-            © {new Date().getFullYear()} <span className="text-[#9AA4B2] font-medium">VALENCE</span> · Operated by{' '}
-            <span className="text-[#9AA4B2] font-medium">{settings.operatorName}</span>. All rights reserved.
+            © {new Date().getFullYear()} <span className="text-[#9AA4B2] font-semibold">VALENCE</span> ·{' '}
+            <span className="italic text-[#16C784]/80">{settings.tagline}</span> All rights reserved.
           </p>
           <p className="text-center sm:text-right">
-            ICAN retains final authority on official exemptions and exam results. Paid placements are always labelled Sponsored.
+            Exam schedules & result dates updated by Central Examination Authority. Paid ads are always labelled Sponsored.
           </p>
         </div>
       </div>

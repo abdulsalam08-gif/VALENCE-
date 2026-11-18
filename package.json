@@ -2,7 +2,7 @@
   "name": "valence-platform",
   "private": true,
   "version": "1.0.0",
-  "description": "VALENCE — Accounting Education, Professional Development, Networking, Competition and Learning Ecosystem by AAG PROFESSIONAL SERVICES",
+  "description": "VALENCE — Accounting Education, Professional Development, Networking, Competition and Learning Ecosystem. Vita sine litteris mors est.",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 5173",

@@ -1,223 +1,398 @@
-import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import {
   GraduationCap,
+  BookOpenCheck,
   Briefcase,
-  Award,
-  Shield,
+  Building2,
+  Megaphone,
+  ShieldCheck,
   Lock,
   CheckCircle2,
-  ArrowRight,
   Database,
+  ArrowRight,
+  LogIn,
+  UserPlus,
 } from 'lucide-react';
+import { isSupabaseConfigured } from '../lib/supabase';
+import { usePlatform } from '../context/PlatformContext';
 import { useToast } from '../context/ToastContext';
 import Badge from '../components/ui/Badge';
 import BrandLogo from '../components/ui/BrandLogo';
-import { isSupabaseConfigured } from '../lib/supabase';
+import UniversitySelect from '../components/ui/UniversitySelect';
 
-const PORTAL_CONFIG = {
+const PORTAL_META = {
   student: {
-    badge: 'STUDENT & LEARNER PORTAL',
-    title: 'VALENCE LEARN & Candidate Portal',
-    subtitle:
-      'Sign in or register as an ATSWA candidate, ICAN (Foundation / Skills / Professional) student, university/polytechnic student, general learner, institutional representative or advertiser.',
+    key: 'student',
+    label: 'Student & Learner Portal',
+    badge: 'FREE TO JOIN · ₦3,000 ONLY FOR TUITION',
     icon: GraduationCap,
-    highlights: [
-      'Exam diet countdowns (ATSWA March/Sept · ICAN May/Nov)',
-      'One-time ₦3,000 per-level unlocks & 25% multi-course discounts via Paystack',
-      'Authorised Google Meet classes, reading tracker, streaks & readiness score',
-      'Customisable profile, photo gallery & open VALENCE CONNECT publishing',
+    headline: 'Your Complete Accounting Study, Timetable, Connect & Competition Workspace',
+    summary:
+      'Free signup for ATSWA candidates, ICAN candidates, students across all Nigerian universities/polytechnics and general accounting learners. Pay ₦3,000 per level only when applying for tuition and viewing cost implications.',
+    capabilities: [
+      'Free access to profile, photo gallery, forums, study groups, AI tools & official diet timetables',
+      'Optional ₦3,000 per-level Paystack registration exclusively when applying for tuition & cost implication',
+      'Live Google Meet classroom links, diet registration cutoff alerts & 30-day result release countdowns',
+      '15 study tools + National Inter-School Competitions with ₦50,000 post-competition cash rewards',
+      'Direct & group messaging, real WebRTC voice/video calls, bookstore order & Paystack receipt history',
     ],
-  },
-  professional: {
-    badge: 'VALENCE PROFESSIONAL',
-    title: 'Chartered Accountants & Professionals Portal',
-    subtitle:
-      'Dedicated environment for ACA, FCA, ACCA, CPA and recognised finance professionals.',
-    icon: Briefcase,
-    highlights: [
-      'Credential upload & manual verification for official Verified Badges',
-      'Executive networking, industry discussions & CPD-related resources',
-      'Structured student mentorship profiles with configurable availability',
-      'Webinars, speaking invitations, career roles & verified tutor recruitment',
+    needsInstitution: true,
+    registerFields: [
+      { name: 'learnerCategory', label: 'Learner Type', type: 'select', options: [
+        'ATSWA Examination Student (ATS 1 – ATS 3)',
+        'ICAN Foundation / Skills / Professional Student',
+        'University / Polytechnic / College Student',
+        'General Accounting Learner',
+      ] },
     ],
   },
   tutor: {
-    badge: 'FACULTY RECRUITMENT & TUTOR PORTAL',
-    title: 'Apply as a Tutor / Faculty Sign-In',
-    subtitle:
-      'Structured credential verification, timed competency testing and classroom management.',
-    icon: Award,
-    highlights: [
-      'ATSWA Tutor minimum: verified AAT (or accepted higher qualification)',
-      'ICAN Tutor mandatory: BOTH AAT certificate AND ACA certificate required',
-      'Private Supabase Storage certificate review + 20-question (45-min) assessment',
-      'Strict data isolation: zero tutor access to student financial records',
+    key: 'tutor',
+    label: 'Tutor Portal',
+    badge: 'MANUAL APPROVAL + QUALIFYING TEST',
+    icon: BookOpenCheck,
+    headline: 'Apply or Sign In as an Approved VALENCE Accounting Tutor',
+    summary:
+      'ATSWA tutors require minimum AAT; ICAN tutors require BOTH AAT and ACA certificates uploaded to private storage, manually verified by Admin, plus passing the 20-question 45-minute qualifying test.',
+    capabilities: [
+      'ATSWA Tutors: Minimum AAT certificate upload + Admin authentication + 20-Q / 45-min timed test',
+      'ICAN Tutors: Mandatory AAT + ACA certificates uploaded & verified before ICAN subject assignment',
+      'Course assignment roster, live Google Meet delivery, assignments, grading queue & Q&A responses',
+      'Strict role isolation: zero access to platform finance or central schedule modifications',
+    ],
+    needsInstitution: true,
+    registerFields: [
+      { name: 'tutorTrack', label: 'Teaching Track Applied For', type: 'select', options: [
+        'ATSWA Tutor (Minimum AAT Certificate Required)',
+        'ICAN Tutor (Both AAT & ACA Certificates Required)',
+        'Both ATSWA & ICAN (AAT + ACA Required)',
+      ] },
+    ],
+  },
+  professional: {
+    key: 'professional',
+    label: 'Professional Portal',
+    badge: 'VALENCE PRO · VERIFIED CREDENTIALS',
+    icon: Briefcase,
+    headline: 'For Chartered Accountants, Finance Leaders & Practising Professionals',
+    summary:
+      'Join free as an ACA, FCA, ACCA, CPA, auditor, tax consultant, CFO or lecturer. Request official credential verification, mentor candidates, host CPD sessions and post opportunities.',
+    capabilities: [
+      'Verified Chartered Accountant & Verified Professional credential workflow',
+      'Mentor enrolment & structured mentee session approvals',
+      'Technical accounting discussions, standards commentary & CPE/CPD hosting',
+      'Community announcements with audience scoping, direct messaging & WebRTC calling',
+      'Publish verified internships, audit trainee openings & graduate accounting roles',
+    ],
+    needsInstitution: true,
+    registerFields: [
+      { name: 'credential', label: 'Primary Professional Designation', type: 'select', options: [
+        'ACA — Associate Chartered Accountant (ICAN)',
+        'FCA — Fellow Chartered Accountant (ICAN)',
+        'ACCA / FCCA',
+        'CPA / CIMA / CITN',
+        'Finance Manager / Auditor / Accounting Lecturer',
+      ] },
+    ],
+  },
+  school: {
+    key: 'school',
+    label: 'School & Institution Portal',
+    badge: 'ALL NIGERIAN UNIVERSITIES EMBEDDED',
+    icon: Building2,
+    headline: 'Register Your Nigerian University, Polytechnic, College or Tuition Centre',
+    summary:
+      'Select your institution from the embedded directory of all Nigerian universities, manage candidate squads (1–5 members), appoint supervisors and track national rankings and ₦50,000 learner merit rewards.',
+    capabilities: [
+      'Full Federal, State & Private Nigerian university directory + polytechnics & colleges',
+      'Coordinator verification & official Verified Institution profile badge',
+      'Multi-division competition team registration, roster locking & qualifying status',
+      'Realtime school leaderboard analytics, merit certificates & ₦50,000 reward tracking',
+    ],
+    needsInstitution: true,
+    registerFields: [
+      { name: 'institutionType', label: 'Institution Category', type: 'select', options: [
+        'Federal University',
+        'State University',
+        'Private University',
+        'Polytechnic / Monotechnic',
+        'College of Education',
+        'ATSWA / ICAN Tuition Centre',
+      ] },
+    ],
+  },
+  advertiser: {
+    key: 'advertiser',
+    label: 'Tuition Centre Advertiser Portal',
+    badge: 'VALENCE ADVERTISE · NEUTRAL PLATFORM',
+    icon: Megaphone,
+    headline: 'Promote Your Approved Accounting Tuition Centre Nationwide',
+    summary:
+      'Manage your independent centre profile, purchase Paystack-verified banner or featured listing packages, upload creatives for compliance review and monitor live impressions and CTR.',
+    capabilities: [
+      'Neutral, independent national platform — open equally to all approved tuition centres',
+      'Directory listing management (Lagos, Abuja, Port Harcourt, Ibadan, Kano, Enugu & all states)',
+      'Paystack-verified Starter, Featured, Banner, Spotlight, Season & Sponsored Directory purchases',
+      'Live impression counts, clicks, CTR performance, active windows & renewal reminders',
+    ],
+    needsInstitution: false,
+    registerFields: [
+      { name: 'centreName', label: 'Registered Tuition Centre Name', type: 'text', placeholder: 'e.g. Prime Ledger Academy' },
     ],
   },
   admin: {
-    badge: 'RESTRICTED GOVERNANCE ACCESS',
-    title: 'VALENCE Master Administration Portal',
-    subtitle:
-      'Role-based control centre for AAG PROFESSIONAL SERVICES — backend-enforced permissions only (never self-assignable).',
-    icon: Shield,
-    highlights: [
-      '8+ Roles: Master, Academic, Finance, Tutor, Competition, Moderator, Ads & Store',
-      'Dynamic control of diets, fees, discounts, products, delivery zones & banners',
-      'Certificate verification, competition marking/results & official announcements',
-      'Full Paystack audit logs, community moderation queue & platform settings',
+    key: 'admin',
+    label: 'Admin & Central Examination Authority',
+    badge: 'RBAC · AUDIT-LOGGED · RLS PROTECTED',
+    icon: ShieldCheck,
+    headline: 'VALENCE Administration & Central Examination Authority Console',
+    summary:
+      'Role-based command centre for Super Admin, Central Examination Authority (exam date overrides, timetables & 30-day result delay adjustments), Competition Manager (₦50,000 reward payouts), Finance, Store, Content, Moderation & Ad Managers.',
+    capabilities: [
+      'Central Examination Authority: update ATSWA (2-day) & ICAN (3-day) dates, paper timetables & 30-day result release / delay notices',
+      'Competition Manager: papers, timers, rubric grading, appeals & ₦50,000 post-competition reward disbursement logs',
+      'Verification queues: tutors (AAT / AAT + ACA private storage), professionals, Nigerian institutions & tuition centres',
+      'Finance, tuition fee locks (₦3,000), Paystack audit logs, bookstore inventory, ad approvals & community moderation',
     ],
+    needsInstitution: false,
+    registerFields: [],
   },
 };
 
-export default function PortalGatewayPage() {
+export default function PortalGatewayPage({ defaultPortal = 'student' }) {
   const { portalType } = useParams();
+  const [searchParams] = useSearchParams();
+  const { universityCounts } = usePlatform();
   const toast = useToast();
-  const key = PORTAL_CONFIG[portalType] ? portalType : 'student';
-  const cfg = PORTAL_CONFIG[key];
-  const Icon = cfg.icon;
 
-  const [authTab, setAuthTab] = useState(key === 'admin' ? 'signin' : 'register');
-  const [category, setCategory] = useState('ican_skills');
+  const routePortal = portalType || defaultPortal;
+  const initialPortal = PORTAL_META[routePortal] ? routePortal : 'student';
+  const [selectedPortal, setSelectedPortal] = useState(initialPortal);
+  const [mode, setMode] = useState(
+    selectedPortal === 'admin' ? 'signin' : searchParams.get('mode') || 'signin'
+  );
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [university, setUniversity] = useState(searchParams.get('institution') || '');
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const nextPortal = PORTAL_META[routePortal] ? routePortal : 'student';
+    setSelectedPortal(nextPortal);
+    if (nextPortal === 'admin') {
+      setMode('signin');
+    } else if (searchParams.get('mode') === 'register') {
+      setMode('register');
+    }
+    const inst = searchParams.get('institution');
+    if (inst) setUniversity(inst);
+  }, [routePortal, searchParams]);
+
+  const meta = PORTAL_META[selectedPortal];
+  const Icon = meta.icon;
+  const applyForTuition = searchParams.get('apply') === 'tuition';
+
+  const handlePortalSwitch = (key) => {
+    setSelectedPortal(key);
+    if (key === 'admin') setMode('signin');
+  };
+
+  const handleAuthSubmit = (e) => {
     e.preventDefault();
-    toast.info(
-      'Ready for Phase 2 Supabase Connection',
-      'Phase 1 Public Website is active. Live Supabase Authentication, PostgreSQL schema & RLS policies activate in Phase 2.'
-    );
+    if (!isSupabaseConfigured) {
+      toast.info(
+        'Database & Supabase Auth Activating in Phase 2–3',
+        `${meta.label} interface is wired and ready for live Supabase authentication and role-based RLS.`
+      );
+      return;
+    }
+    toast.info('Authenticating...', `Connecting to ${meta.label}.`);
   };
 
   return (
-    <section className="bg-grid-fintech py-12 sm:py-18">
+    <div className="bg-grid-fintech py-12 sm:py-16">
       <div className="v-container space-y-8">
-        {/* Portal Switcher */}
-        <div className="flex flex-wrap gap-2">
-          {[
-            { id: 'student', label: 'Student Portal' },
-            { id: 'professional', label: 'Professional Portal' },
-            { id: 'tutor', label: 'Tutor Portal' },
-            { id: 'admin', label: 'Admin Portal' },
-          ].map((p) => (
-            <Link
-              key={p.id}
-              to={`/portal/${p.id}`}
-              className={`rounded-xl px-4 py-2 text-xs font-semibold border transition-colors ${
-                key === p.id
-                  ? 'bg-[#16C784] text-[#06130D] border-[#16C784]'
-                  : 'bg-[#11161C] text-[#9AA4B2] border-white/[0.08] hover:text-white'
-              }`}
-            >
-              {p.label}
-            </Link>
-          ))}
+        {/* Portal Switcher Bar */}
+        <div className="flex flex-wrap items-center gap-2">
+          {Object.values(PORTAL_META).map((p) => {
+            const PIcon = p.icon;
+            const active = selectedPortal === p.key;
+            return (
+              <Link
+                key={p.key}
+                to={`/portal/${p.key}`}
+                onClick={() => handlePortalSwitch(p.key)}
+                className={`inline-flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold border transition-all ${
+                  active
+                    ? 'bg-[#16C784] text-[#06130D] border-[#16C784] shadow-glow-sm'
+                    : 'bg-[#11161C] text-[#C2C9D4] border-white/[0.08] hover:border-white/[0.2] hover:text-white'
+                }`}
+              >
+                <PIcon className="h-3.5 w-3.5" />
+                {p.label.replace(' Portal', '').replace(' & Central Examination Authority', '')}
+              </Link>
+            );
+          })}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Role Brief */}
-          <div className="lg:col-span-6 space-y-5">
-            <Badge variant="green">{cfg.badge}</Badge>
-            <div className="flex items-center gap-3">
-              <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#16C784]/15 border border-[#16C784]/30 text-[#16C784]">
-                <Icon className="h-6 w-6" />
-              </span>
-              <h1 className="font-display text-2xl sm:text-4xl font-bold text-white">{cfg.title}</h1>
+          {/* Left: Portal Overview */}
+          <div className="lg:col-span-6 space-y-6">
+            <div className="space-y-4">
+              <Badge variant="green">{meta.badge}</Badge>
+              <div className="flex items-center gap-3">
+                <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#16C784]/12 border border-[#16C784]/30 text-[#16C784]">
+                  <Icon className="h-6 w-6" />
+                </div>
+                <h1 className="font-display text-2xl sm:text-3xl font-bold text-white">
+                  {meta.label}
+                </h1>
+              </div>
+              <p className="font-display text-base sm:text-lg font-medium text-[#E5E9F0]">
+                {meta.headline}
+              </p>
+              <p className="text-xs sm:text-sm leading-relaxed text-[#9AA4B2]">{meta.summary}</p>
             </div>
-            <p className="text-sm leading-relaxed text-[#9AA4B2]">{cfg.subtitle}</p>
-            <div className="v-card p-6 space-y-3">
-              <p className="text-xs font-semibold uppercase tracking-wider text-[#9AA4B2]">
-                Portal Architecture & Access Controls
+
+            {applyForTuition && selectedPortal === 'student' && (
+              <div className="rounded-2xl bg-[#16C784]/10 border border-[#16C784]/35 p-4 text-xs text-[#E5E9F0] space-y-1">
+                <p className="font-bold text-[#16C784]">
+                  Tuition Application & Cost Implication Selected (₦3,000 One-Time Unlock)
+                </p>
+                <p className="text-[#C2C9D4]">
+                  Sign in or create your free account below to unlock your selected level’s personalised tuition cost implication via Paystack. (If you do not want tuition, no ₦3,000 payment is required.)
+                </p>
+              </div>
+            )}
+
+            <div className="v-card p-6 space-y-3.5">
+              <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">
+                Included Portal Capabilities
               </p>
               <ul className="space-y-2.5 text-xs sm:text-sm text-[#D5DBE3]">
-                {cfg.highlights.map((h) => (
-                  <li key={h} className="flex items-start gap-2.5">
+                {meta.capabilities.map((cap) => (
+                  <li key={cap} className="flex items-start gap-2.5">
                     <CheckCircle2 className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" />
-                    <span>{h}</span>
+                    <span>{cap}</span>
                   </li>
                 ))}
               </ul>
             </div>
-          </div>
 
-          {/* Right Auth Card */}
-          <div className="lg:col-span-6 v-glass-card p-6 sm:p-8 space-y-5">
-            <div className="flex items-center justify-between">
-              <BrandLogo size="sm" showSubtext subtextMode="tagline" to={null} />
-              <Badge variant={isSupabaseConfigured ? 'green' : 'neutral'}>
-                <Database className="h-3 w-3" />
-                {isSupabaseConfigured ? 'Supabase Live' : 'Phase 2 Auth Ready'}
-              </Badge>
-            </div>
-
-            {key !== 'admin' && (
-              <div className="grid grid-cols-2 rounded-xl bg-[#0B0E11] border border-white/[0.07] p-1 gap-1">
-                <button
-                  type="button"
-                  onClick={() => setAuthTab('signin')}
-                  className={`rounded-lg py-2 text-xs font-semibold ${
-                    authTab === 'signin' ? 'bg-[#16C784] text-[#06130D]' : 'text-[#9AA4B2]'
-                  }`}
-                >
-                  Sign In
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setAuthTab('register')}
-                  className={`rounded-lg py-2 text-xs font-semibold ${
-                    authTab === 'register' ? 'bg-[#16C784] text-[#06130D]' : 'text-[#9AA4B2]'
-                  }`}
-                >
-                  Create Account
-                </button>
+            {!isSupabaseConfigured && (
+              <div className="rounded-2xl bg-[#11161C] border border-[#16C784]/25 p-4 flex items-start gap-3 text-xs text-[#C2C9D4]">
+                <Database className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-semibold text-white">Supabase Auth & Database Binding Ready</p>
+                  <p className="text-[#9AA4B2] mt-0.5">
+                    Live database provisioning (including all {universityCounts.total} Nigerian universities, Central Exam Authority tables, ₦3,000 tuition unlock records & ₦50,000 reward ledgers) connects directly in Phase 2 & Phase 3.
+                  </p>
+                </div>
               </div>
             )}
+          </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {authTab === 'register' && key !== 'admin' && (
+          {/* Right: Sign In / Create Account Card */}
+          <div className="lg:col-span-6 v-glass-card p-6 sm:p-8 space-y-6">
+            <div className="flex items-center justify-between gap-3">
+              <BrandLogo size="sm" showTagline={false} />
+              {selectedPortal !== 'admin' ? (
+                <div className="inline-flex rounded-xl bg-[#0B0E11] border border-white/[0.08] p-1">
+                  <button
+                    type="button"
+                    onClick={() => setMode('signin')}
+                    className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
+                      mode === 'signin' ? 'bg-[#16C784] text-[#06130D]' : 'text-[#9AA4B2]'
+                    }`}
+                  >
+                    <LogIn className="h-3.5 w-3.5" /> Sign In
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setMode('register')}
+                    className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
+                      mode === 'register' ? 'bg-[#16C784] text-[#06130D]' : 'text-[#9AA4B2]'
+                    }`}
+                  >
+                    <UserPlus className="h-3.5 w-3.5" /> Register Free
+                  </button>
+                </div>
+              ) : (
+                <Badge variant="red">Restricted Admin Access</Badge>
+              )}
+            </div>
+
+            <form onSubmit={handleAuthSubmit} className="space-y-4">
+              {mode === 'register' && selectedPortal !== 'admin' && (
                 <>
-                  <div>
-                    <label className="v-label" htmlFor="pg-name">Full Name</label>
-                    <input
-                      id="pg-name"
-                      type="text"
-                      required
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      placeholder="Enter your full name"
-                      className="v-input"
-                    />
-                  </div>
-                  {key === 'student' && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="v-label" htmlFor="pg-cat">Account Category</label>
-                      <select
-                        id="pg-cat"
-                        value={category}
-                        onChange={(e) => setCategory(e.target.value)}
+                      <label className="v-label" htmlFor="p-name">Full Name</label>
+                      <input
+                        id="p-name"
+                        type="text"
+                        required
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        placeholder="Surname & First Name"
                         className="v-input"
-                      >
-                        <option value="atswa">ATSWA Examination Student (ATS 1 – 3)</option>
-                        <option value="ican_foundation">ICAN Foundation Student</option>
-                        <option value="ican_skills">ICAN Skills Student</option>
-                        <option value="ican_professional">ICAN Professional Student</option>
-                        <option value="tertiary">University / Polytechnic Student (12 Disciplines)</option>
-                        <option value="general">General Accounting Learner</option>
-                        <option value="advertiser">Tuition Centre / Advertiser (VALENCE ADVERTISE)</option>
-                        <option value="institution">Institution Official Representative</option>
-                      </select>
+                      />
                     </div>
+                    <div>
+                      <label className="v-label" htmlFor="p-phone">Phone / WhatsApp</label>
+                      <input
+                        id="p-phone"
+                        type="tel"
+                        required
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        placeholder="+234 800 000 0000"
+                        className="v-input"
+                      />
+                    </div>
+                  </div>
+
+                  {meta.registerFields.map((field) => (
+                    <div key={field.name}>
+                      <label className="v-label" htmlFor={`p-${field.name}`}>{field.label}</label>
+                      {field.type === 'select' ? (
+                        <select id={`p-${field.name}`} className="v-input">
+                          {field.options.map((opt) => (
+                            <option key={opt} value={opt}>{opt}</option>
+                          ))}
+                        </select>
+                      ) : (
+                        <input
+                          id={`p-${field.name}`}
+                          type="text"
+                          required
+                          placeholder={field.placeholder}
+                          className="v-input"
+                        />
+                      )}
+                    </div>
+                  ))}
+
+                  {meta.needsInstitution && (
+                    <UniversitySelect
+                      id="p-university"
+                      label={`Nigerian University / Institution (${universityCounts.total} Embedded)`}
+                      value={university}
+                      onChange={setUniversity}
+                    />
                   )}
                 </>
               )}
 
               <div>
-                <label className="v-label" htmlFor="pg-email">Email Address</label>
+                <label className="v-label" htmlFor="p-email">Email Address</label>
                 <input
-                  id="pg-email"
+                  id="p-email"
                   type="email"
                   required
+                  autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
@@ -226,34 +401,53 @@ export default function PortalGatewayPage() {
               </div>
 
               <div>
-                <label className="v-label" htmlFor="pg-pass">Password</label>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="text-xs font-medium text-[#C2C9D4]" htmlFor="p-pass">
+                    Password
+                  </label>
+                  {mode === 'signin' && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        toast.info('Password Reset', 'Email recovery activates with Supabase Auth in Phase 3.')
+                      }
+                      className="text-[11px] font-medium text-[#16C784] hover:underline"
+                    >
+                      Forgot password?
+                    </button>
+                  )}
+                </div>
                 <input
-                  id="pg-pass"
+                  id="p-pass"
                   type="password"
                   required
                   minLength={8}
+                  autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="Minimum 8 characters"
                   className="v-input"
                 />
               </div>
 
               <button type="submit" className="v-btn-primary w-full py-3">
-                <Lock className="h-4 w-4" />
-                {key === 'admin'
-                  ? 'Sign In to Admin Portal'
-                  : authTab === 'signin'
-                  ? 'Sign In to VALENCE'
-                  : 'Continue Registration'}
+                {mode === 'signin'
+                  ? `Sign In to ${meta.label}`
+                  : `Create Free ${meta.label.replace(' Portal', '')} Account`}
                 <ArrowRight className="h-4 w-4" />
               </button>
             </form>
 
-            <p className="text-[11px] text-center text-[#667085]">
-              Supabase Auth, email confirmation, role-based access & PostgreSQL Row Level Security connect live in <strong className="text-[#9AA4B2]">Phase 2</strong>.
-            </p>
+            <div className="border-t border-white/[0.07] pt-4 flex items-center justify-between gap-2 text-[11px] text-[#667085]">
+              <span className="inline-flex items-center gap-1.5">
+                <Lock className="h-3.5 w-3.5 text-[#16C784]" />
+                Encrypted Supabase Auth · Role-Isolated RLS
+              </span>
+              <span>Zero Secrets in Client</span>
+            </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

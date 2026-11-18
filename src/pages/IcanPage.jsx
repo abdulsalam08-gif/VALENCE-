@@ -3,25 +3,28 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   Check,
   Lock,
+  Unlock,
   MessageCircle,
   ExternalLink,
   ArrowRight,
   Scale,
   ShieldCheck,
   AlertTriangle,
-  Calendar,
   CheckCircle2,
   FileCheck2,
+  Clock,
 } from 'lucide-react';
 import { usePlatform } from '../context/PlatformContext';
 import { useToast } from '../context/ToastContext';
 import Badge from '../components/ui/Badge';
-import { ICAN_PRICING_TABLE } from '../data/platformConfig';
+import CountdownTimer from '../components/ui/CountdownTimer';
+import UniversitySelect from '../components/ui/UniversitySelect';
 import {
   calculateIcanTuition,
   evaluateIcanExemptions,
   formatNaira,
 } from '../lib/pricing';
+import { formatReadableDate, getSessionLifecycle } from '../lib/examSchedule';
 
 export default function IcanPage() {
   const { levelSlug } = useParams();
@@ -32,6 +35,7 @@ export default function IcanPage() {
     exemptionRules,
     sessions,
     settings,
+    isLevelUnlocked,
     openWhatsAppModal,
   } = usePlatform();
   const toast = useToast();
@@ -45,12 +49,10 @@ export default function IcanPage() {
     ? levelSlug
     : 'foundation';
 
-  const activeLevel =
-    icanLevels.find((l) => l.slug === activeTab) || icanLevels[0];
-
+  const activeLevel = icanLevels.find((l) => l.slug === activeTab) || icanLevels[0];
   const [selectedDietId, setSelectedDietId] = useState(icanSessions[0]?.id || 'ican-may-2027');
   const [selectedCourseIds, setSelectedCourseIds] = useState(() =>
-    activeLevel.courses.map((c) => c.id)
+    activeLevel.courses.slice(0, 3).map((c) => c.id)
   );
 
   useEffect(() => {
@@ -60,7 +62,6 @@ export default function IcanPage() {
     }
   }, [activeTab, icanLevels]);
 
-  // Exemption Guidance Tool state
   const [exInput, setExInput] = useState({
     qualificationKey: 'aat_atswa',
     institution: '',
@@ -73,6 +74,9 @@ export default function IcanPage() {
   const [exResult, setExResult] = useState(null);
 
   const activeDiet = icanSessions.find((s) => s.id === selectedDietId) || icanSessions[0];
+  const dietLifecycle = getSessionLifecycle(activeDiet);
+  const unlocked = isLevelUnlocked(`ican:${activeLevel.slug}`);
+
   const tuitionCalc = useMemo(
     () => calculateIcanTuition(selectedCourseIds.length),
     [selectedCourseIds.length]
@@ -112,24 +116,21 @@ export default function IcanPage() {
 
   return (
     <div className="divide-y divide-white/[0.06]">
-      {/* Header */}
       <section className="bg-grid-fintech py-14 sm:py-18">
         <div className="v-container space-y-6">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
             <div className="space-y-3 max-w-3xl">
               <div className="flex flex-wrap items-center gap-2">
-                <Badge variant="green">ICAN PROGRAMME · MAY & NOVEMBER DIETS</Badge>
-                <Badge variant="neutral">25% Off 3+ Online Courses</Badge>
+                <Badge variant="green">ICAN · MAY & NOVEMBER DIETS (3 EXAM DAYS)</Badge>
+                <Badge variant="neutral">1st Tue, Wed & Thu · Central Authority Updated</Badge>
               </div>
               <h1 className="font-display text-3xl sm:text-5xl font-bold text-white">
-                {activeTab === 'exemptions'
-                  ? 'ICAN Exemption Guidance Tool'
-                  : activeLevel.name}
+                {activeTab === 'exemptions' ? 'ICAN Exemption Guidance Tool' : activeLevel.name}
               </h1>
               <p className="text-sm sm:text-base text-[#9AA4B2]">
                 {activeTab === 'exemptions'
-                  ? 'Estimate potential ICAN paper exemptions, remaining syllabus courses and official documentary conditions before submitting your formal application to ICAN.'
-                  : activeLevel.tagline}
+                  ? 'Select your Nigerian university or technical qualification to estimate potential ICAN exemptions, remaining courses and official conditions.'
+                  : `${activeLevel.tagline} Join VALENCE free — pay the one-time ₦3,000 registration for this level only if applying for tuition and unlocking your cost implication.`}
               </p>
             </div>
 
@@ -153,7 +154,6 @@ export default function IcanPage() {
             </div>
           </div>
 
-          {/* Dedicated Sub-page Navigation Tabs */}
           <div className="flex flex-wrap gap-2 pt-1">
             {icanLevels.map((lvl) => (
               <button
@@ -187,248 +187,297 @@ export default function IcanPage() {
 
       {activeTab !== 'exemptions' ? (
         <section className="py-14 sm:py-18">
-          <div className="v-container space-y-10">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 items-start">
-              {/* Left: Course Selection & Official WhatsApp Assistance */}
-              <div className="lg:col-span-7 space-y-6">
-                <div className="v-card p-6 space-y-5">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <div>
-                      <h2 className="font-display text-xl font-bold text-white">
-                        Select {activeLevel.shortName} Level Courses
-                      </h2>
-                      <p className="text-xs text-[#9AA4B2] mt-0.5">
-                        ₦40,000 per online course · Automatic 25% discount when selecting 3 or more courses in one transaction.
-                      </p>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setSelectedCourseIds(
-                          selectedCourseIds.length === activeLevel.courses.length
-                            ? []
-                            : activeLevel.courses.map((c) => c.id)
-                        )
-                      }
-                      className="text-xs font-semibold text-[#16C784] hover:underline"
-                    >
-                      {selectedCourseIds.length === activeLevel.courses.length
-                        ? 'Clear all'
-                        : `Select all ${activeLevel.courses.length}`}
-                    </button>
+          <div className="v-container grid grid-cols-1 lg:grid-cols-12 gap-7 items-start">
+            {/* Left: Courses, 3-Day Timetable & WhatsApp Official Fee Desk */}
+            <div className="lg:col-span-7 space-y-6">
+              <div className="v-card p-6 space-y-5">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <h2 className="font-display text-xl font-bold text-white">
+                      {activeLevel.shortName} Level Syllabus Courses
+                    </h2>
+                    <p className="text-xs text-[#9AA4B2] mt-0.5">
+                      Tick your intended papers · Selecting 3 or more papers qualifies for an automatic 25% online tuition discount upon unlocking.
+                    </p>
                   </div>
-
-                  <div className="space-y-2.5">
-                    {activeLevel.courses.map((c, idx) => {
-                      const checked = selectedCourseIds.includes(c.id);
-                      return (
-                        <button
-                          key={c.id}
-                          type="button"
-                          onClick={() => toggleCourse(c.id)}
-                          className={`w-full flex items-center justify-between gap-4 rounded-xl border p-4 text-left transition-all ${
-                            checked
-                              ? 'bg-[#16C784]/[0.08] border-[#16C784]/45'
-                              : 'bg-[#0B0E11] border-white/[0.07] hover:border-white/[0.16]'
-                          }`}
-                        >
-                          <div className="flex items-center gap-3.5">
-                            <span
-                              className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border ${
-                                checked
-                                  ? 'bg-[#16C784] border-[#16C784] text-[#06130D]'
-                                  : 'border-white/20'
-                              }`}
-                            >
-                              {checked && <Check className="h-3.5 w-3.5 stroke-[3]" />}
-                            </span>
-                            <div>
-                              <p className="text-sm font-semibold text-white">
-                                {idx + 1}. {c.title}{' '}
-                                <span className="font-display text-xs text-[#16C784]">({c.code})</span>
-                              </p>
-                              <p className="text-[11px] text-[#9AA4B2]">
-                                {c.topics} syllabus modules · Study pack available ({formatNaira(c.studyPackPrice)})
-                              </p>
-                            </div>
-                          </div>
-                          <div className="text-right shrink-0">
-                            {tuitionCalc.qualifiesForDiscount && checked ? (
-                              <>
-                                <span className="block tabular-nums-display text-sm font-bold text-[#16C784]">
-                                  ₦30,000
-                                </span>
-                                <span className="block tabular-nums-display text-[11px] line-through text-[#667085]">
-                                  ₦40,000
-                                </span>
-                              </>
-                            ) : (
-                              <span className="tabular-nums-display text-sm font-bold text-white">
-                                ₦40,000
-                              </span>
-                            )}
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setSelectedCourseIds(
+                        selectedCourseIds.length === activeLevel.courses.length
+                          ? []
+                          : activeLevel.courses.map((c) => c.id)
+                      )
+                    }
+                    className="text-xs font-semibold text-[#16C784] hover:underline"
+                  >
+                    {selectedCourseIds.length === activeLevel.courses.length
+                      ? 'Clear all'
+                      : `Select all ${activeLevel.courses.length}`}
+                  </button>
                 </div>
 
-                {/* Official ICAN Fees & Physical Tuition via WhatsApp Assistance */}
-                <div className="v-card p-6 space-y-4">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <div>
-                      <Badge variant="neutral">Dedicated WhatsApp Assistance · {settings.whatsappNumber}</Badge>
-                      <h3 className="mt-2 font-display text-lg font-bold text-white">
-                        Official ICAN Fees & Physical Tuition Enquiries
-                      </h3>
-                    </div>
-                  </div>
-                  <p className="text-xs leading-relaxed text-[#9AA4B2]">
-                    Official ICAN registration, examination and annual subscription fees — as well as physical tuition applications — are coordinated through our dedicated WhatsApp advisory process with prefilled student details. (Online tuition checkout runs strictly through Paystack.)
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    {whatsappEnquiryButtons.map((btn) => (
+                <div className="space-y-2.5">
+                  {activeLevel.courses.map((c, idx) => {
+                    const checked = selectedCourseIds.includes(c.id);
+                    return (
                       <button
-                        key={btn.label}
+                        key={c.id}
                         type="button"
-                        onClick={() =>
-                          openWhatsAppModal({
-                            category: btn.category,
-                            level: `ICAN — ${activeLevel.shortName} Level`,
-                          })
-                        }
-                        className="flex items-center justify-between rounded-xl bg-[#0B0E11] border border-white/[0.09] hover:border-[#16C784]/45 px-4 py-3 text-xs font-semibold text-[#F4F6F9] transition-colors group"
+                        onClick={() => toggleCourse(c.id)}
+                        className={`w-full flex items-center justify-between gap-4 rounded-xl border p-4 text-left transition-all ${
+                          checked
+                            ? 'bg-[#16C784]/[0.08] border-[#16C784]/45'
+                            : 'bg-[#0B0E11] border-white/[0.07] hover:border-white/[0.16]'
+                        }`}
                       >
-                        <span className="inline-flex items-center gap-2">
-                          <MessageCircle className="h-4 w-4 text-[#16C784]" />
-                          {btn.label}
+                        <div className="flex items-center gap-3.5">
+                          <span
+                            className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border ${
+                              checked
+                                ? 'bg-[#16C784] border-[#16C784] text-[#06130D]'
+                                : 'border-white/20'
+                            }`}
+                          >
+                            {checked && <Check className="h-3.5 w-3.5 stroke-[3]" />}
+                          </span>
+                          <div>
+                            <p className="text-sm font-semibold text-white">
+                              {idx + 1}. {c.title}{' '}
+                              <span className="font-display text-xs text-[#16C784]">({c.code})</span>
+                            </p>
+                            <p className="text-[11px] text-[#9AA4B2]">
+                              {c.topics} syllabus modules · Store study pack: {formatNaira(c.studyPackPrice)}
+                            </p>
+                          </div>
+                        </div>
+                        <span className="shrink-0 text-[11px] text-[#9AA4B2] inline-flex items-center gap-1">
+                          {unlocked ? (
+                            <span className="tabular-nums-display font-bold text-[#16C784]">
+                              {formatNaira(tuitionCalc.effectivePerCourse)}
+                            </span>
+                          ) : (
+                            <>
+                              <Lock className="h-3 w-3 text-[#16C784]" /> Tuition locked
+                            </>
+                          )}
                         </span>
-                        <ArrowRight className="h-3.5 w-3.5 text-[#667085] group-hover:text-[#16C784]" />
                       </button>
-                    ))}
-                  </div>
+                    );
+                  })}
                 </div>
               </div>
 
-              {/* Right: Online Tuition Calculator & Pricing Schedule */}
-              <div className="lg:col-span-5 space-y-5 lg:sticky lg:top-28">
-                <div className="v-card p-6 space-y-5">
-                  <div className="flex items-center justify-between gap-2">
-                    <h3 className="font-display text-lg font-bold text-white">
-                      ICAN Online Tuition Checkout Summary
-                    </h3>
-                    <Badge variant={tuitionCalc.qualifiesForDiscount ? 'green' : 'neutral'}>
-                      {tuitionCalc.qualifiesForDiscount ? '25% Discount Applied' : 'Pick 3+ for 25% Off'}
-                    </Badge>
-                  </div>
+              {/* Central Examination Authority 3-Day ICAN Timetable & Result Schedule */}
+              <div className="v-card p-6 space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h3 className="font-display text-lg font-bold text-white">
+                    {activeDiet.label} — 3-Day Schedule & Timetable
+                  </h3>
+                  <Badge variant={dietLifecycle.badgeVariant}>{dietLifecycle.badgeLabel}</Badge>
+                </div>
 
-                  {/* Diet picker */}
-                  <div>
-                    <label className="v-label" htmlFor="ican-diet-select">
-                      Intended ICAN Diet (May / November)
-                    </label>
-                    <select
-                      id="ican-diet-select"
-                      value={selectedDietId}
-                      onChange={(e) => setSelectedDietId(e.target.value)}
-                      className="v-input text-xs"
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+                  <div className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-3">
+                    <span className="text-[10.5px] text-[#667085] block">3 Exam Days (Tue–Thu)</span>
+                    <span className="font-semibold text-white">{activeDiet.examWindow}</span>
+                  </div>
+                  <div className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-3">
+                    <span className="text-[10.5px] text-[#667085] block">Exam Reg. Closes (−1 Wk)</span>
+                    <span className="font-semibold text-[#EA3943]">
+                      {activeDiet.registrationCloseFormatted}
+                    </span>
+                  </div>
+                  <div className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-3">
+                    <span className="text-[10.5px] text-[#667085] block">Result Target (+30 Days)</span>
+                    <span className="font-semibold text-[#16C784]">
+                      {activeDiet.expectedResultFormatted}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  {activeDiet.timetable.map((slot) => (
+                    <div
+                      key={slot.dayLabel}
+                      className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-3 text-xs space-y-1"
                     >
-                      {icanSessions.map((s) => (
-                        <option key={s.id} value={s.id}>
-                          {s.label} — Exam: {s.examWindow}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Level unlock notice */}
-                  <div className="rounded-xl bg-[#0B0E11] border border-white/[0.08] p-3.5 space-y-1">
-                    <div className="flex justify-between text-xs font-semibold">
-                      <span className="text-[#16C784] inline-flex items-center gap-1.5">
-                        <Lock className="h-3.5 w-3.5" /> {activeLevel.shortName} Level Unlock (One-Time)
-                      </span>
-                      <span className="tabular-nums-display text-white">₦3,000</span>
+                      <div className="flex justify-between font-semibold text-[#16C784]">
+                        <span>{slot.dayLabel}</span>
+                        <span>{formatReadableDate(activeDiet.examDays[slot.dateIndex], false)}</span>
+                      </div>
+                      <p className="text-[#D5DBE3]">Morning: {slot.morning}</p>
+                      <p className="text-[#9AA4B2]">Afternoon: {slot.afternoon}</p>
                     </div>
-                    <p className="text-[11px] text-[#9AA4B2]">
-                      Recorded permanently for {activeLevel.shortName} Level only. Does not unlock other ICAN levels and does not offset official ICAN registration, subscription or exam fees.
-                    </p>
-                  </div>
+                  ))}
+                </div>
+                <p className="text-[11px] text-[#667085]">
+                  Published by VALENCE Central Examination Authority. Because ICAN may revise exam dates, paper slots or the 30-day result release date, updates post automatically here and to candidate notifications.
+                </p>
+              </div>
 
-                  <div className="space-y-2 text-xs">
+              {/* Official ICAN Fees & Physical Tuition via WhatsApp */}
+              <div className="v-card p-6 space-y-4">
+                <Badge variant="neutral">Dedicated WhatsApp Assistance · {settings.whatsappNumber}</Badge>
+                <h3 className="font-display text-lg font-bold text-white">
+                  Official ICAN Fees & Physical Tuition Enquiries
+                </h3>
+                <p className="text-xs leading-relaxed text-[#9AA4B2]">
+                  Official ICAN registration, examination and annual subscription fees — plus physical tuition applications — are handled via prefilled WhatsApp enquiries. Online tuition and level unlocks run strictly via Paystack.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {whatsappEnquiryButtons.map((btn) => (
+                    <button
+                      key={btn.label}
+                      type="button"
+                      onClick={() =>
+                        openWhatsAppModal({
+                          category: btn.category,
+                          level: `ICAN — ${activeLevel.shortName} Level`,
+                        })
+                      }
+                      className="flex items-center justify-between rounded-xl bg-[#0B0E11] border border-white/[0.09] hover:border-[#16C784]/45 px-4 py-3 text-xs font-semibold text-[#F4F6F9] transition-colors group"
+                    >
+                      <span className="inline-flex items-center gap-2">
+                        <MessageCircle className="h-4 w-4 text-[#16C784]" />
+                        {btn.label}
+                      </span>
+                      <ArrowRight className="h-3.5 w-3.5 text-[#667085] group-hover:text-[#16C784]" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Diet Selector + Countdown + Gated ₦3,000 Tuition Cost Implication */}
+            <div className="lg:col-span-5 space-y-5 lg:sticky lg:top-28">
+              <div className="v-card p-6 space-y-5">
+                <div className="flex items-center justify-between gap-2">
+                  <h3 className="font-display text-lg font-bold text-white">
+                    Tuition Application & Cost Implication
+                  </h3>
+                  <Badge variant={unlocked ? 'green' : 'neutral'}>
+                    {unlocked ? 'Unlocked' : 'Locked'}
+                  </Badge>
+                </div>
+
+                <div>
+                  <label className="v-label" htmlFor="ican-diet-select">
+                    Select ICAN Diet (Exam or Result Countdown)
+                  </label>
+                  <select
+                    id="ican-diet-select"
+                    value={selectedDietId}
+                    onChange={(e) => setSelectedDietId(e.target.value)}
+                    className="v-input text-xs"
+                  >
+                    {icanSessions.map((s) => {
+                      const lc = getSessionLifecycle(s);
+                      return (
+                        <option key={s.id} value={s.id}>
+                          {s.label} — {lc.badgeLabel}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+
+                {dietLifecycle.countdownTarget && (
+                  <div className="space-y-1.5">
+                    <p className="text-[11px] font-medium text-[#16C784] flex items-center gap-1">
+                      <Clock className="h-3.5 w-3.5" /> {dietLifecycle.countdownLabel}
+                    </p>
+                    <CountdownTimer targetDate={dietLifecycle.countdownTarget} compact />
+                  </div>
+                )}
+
+                <div className="rounded-xl bg-[#0B0E11] border border-white/[0.07] p-4 space-y-2 text-xs">
+                  <div className="flex justify-between">
+                    <span className="text-[#9AA4B2]">Level</span>
+                    <span className="font-semibold text-white">ICAN {activeLevel.shortName}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-[#9AA4B2]">Papers Selected</span>
+                    <span className="font-semibold text-white">
+                      {selectedCourseIds.length} of {activeLevel.courses.length}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-[#9AA4B2]">Multi-Course Tuition Rule</span>
+                    <span className="font-semibold text-[#16C784]">
+                      {selectedCourseIds.length >= 3
+                        ? '25% Discount Eligible (3+ papers)'
+                        : 'Select 3+ papers for 25% off'}
+                    </span>
+                  </div>
+                </div>
+
+                {unlocked ? (
+                  <div className="rounded-xl bg-[#0B0E11] border border-[#16C784]/35 p-4 space-y-2 text-xs">
+                    <div className="flex items-center gap-1.5 text-[#16C784] font-semibold">
+                      <Unlock className="h-3.5 w-3.5" /> {activeLevel.shortName} Cost Implication
+                    </div>
                     <div className="flex justify-between text-[#9AA4B2]">
-                      <span>Online Tuition ({tuitionCalc.courseCount} × ₦40,000)</span>
+                      <span>Gross Online Tuition</span>
                       <span className="tabular-nums-display text-white">
                         {formatNaira(tuitionCalc.grossTuition)}
                       </span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#9AA4B2]">25% Discount (3+ Courses Same Transaction)</span>
-                      <span
-                        className={`tabular-nums-display font-semibold ${
-                          tuitionCalc.discountAmount > 0 ? 'text-[#16C784]' : 'text-[#667085]'
-                        }`}
-                      >
+                    <div className="flex justify-between text-[#16C784]">
+                      <span>Multi-Course Discount (25%)</span>
+                      <span className="tabular-nums-display font-semibold">
                         −{formatNaira(tuitionCalc.discountAmount)}
                       </span>
                     </div>
-                    <div className="border-t border-white/[0.08] pt-3 flex items-baseline justify-between">
-                      <div>
-                        <span className="text-sm font-bold text-white block">Online Tuition Total</span>
-                        <span className="text-[10.5px] text-[#667085]">
-                          Excludes unlock, official fees, store & delivery
-                        </span>
-                      </div>
-                      <span className="tabular-nums-display text-3xl font-bold text-[#16C784]">
+                    <div className="border-t border-white/[0.08] pt-2 flex justify-between text-sm font-bold text-white">
+                      <span>Net Online Tuition</span>
+                      <span className="tabular-nums-display text-[#16C784]">
                         {formatNaira(tuitionCalc.netTuition)}
                       </span>
                     </div>
                   </div>
-
-                  <Link
-                    to={`/portal/student?programme=ican&level=${activeLevel.slug}&diet=${activeDiet.id}`}
-                    className="v-btn-primary w-full py-3"
-                  >
-                    Proceed to Student Portal (Paystack) <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </div>
-
-                {/* Official ICAN 1-6 Course Pricing Table */}
-                <div className="v-card p-5 space-y-3">
-                  <h4 className="font-display text-sm font-bold text-white">
-                    Standard ICAN Online Tuition Schedule
-                  </h4>
-                  <div className="divide-y divide-white/[0.06] text-xs">
-                    {ICAN_PRICING_TABLE.map((row) => (
-                      <div
-                        key={row.courses}
-                        className={`flex items-center justify-between py-2 px-2 rounded-lg ${
-                          tuitionCalc.courseCount === row.courses ? 'bg-[#16C784]/10' : ''
-                        }`}
-                      >
-                        <span className="text-[#C2C9D4]">
-                          {row.courses} {row.courses === 1 ? 'Course' : 'Courses'}
-                        </span>
-                        <div className="flex items-center gap-2.5">
-                          {row.discounted && (
-                            <span className="text-[10.5px] text-[#16C784] font-semibold">
-                              Save {formatNaira(row.savings)}
-                            </span>
-                          )}
-                          <span className="tabular-nums-display font-bold text-white">
-                            {formatNaira(row.total)}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
+                ) : (
+                  <div className="rounded-2xl bg-gradient-to-b from-[#16C784]/[0.08] to-[#0B0E11] border border-[#16C784]/30 p-5 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#16C784]">
+                        <Lock className="h-4 w-4" /> Tuition Cost Implication Locked
+                      </span>
+                      <span className="tabular-nums-display text-xl font-bold text-white">₦3,000</span>
+                    </div>
+                    <p className="text-xs leading-relaxed text-[#C2C9D4]">
+                      Students pay the <strong>₦3,000</strong> registration only when applying for{' '}
+                      <strong>ICAN {activeLevel.shortName}</strong> tuition and unlocking their exact cost implication (including automatic 25% savings on 3+ courses in a single transaction).
+                    </p>
+                    <ul className="space-y-1 text-[11px] text-[#9AA4B2]">
+                      <li>• Permanently recorded for {activeLevel.shortName} Level only (never charged twice)</li>
+                      <li>• Separate per ICAN level; does not offset official ICAN registration, subscription or exam fees</li>
+                    </ul>
                   </div>
-                </div>
+                )}
+
+                <Link
+                  to={`/portal/student?programme=ican&level=${activeLevel.slug}&diet=${activeDiet.id}&apply=tuition`}
+                  onClick={() =>
+                    toast.info(
+                      `ICAN ${activeLevel.shortName} Tuition Unlock (₦3,000)`,
+                      'Sign in to unlock your personalised cost implication via Paystack.'
+                    )
+                  }
+                  className="v-btn-primary w-full py-3"
+                >
+                  Apply for Tuition & View Cost (₦3,000) <ArrowRight className="h-4 w-4" />
+                </Link>
+
+                <p className="text-[11px] text-center text-[#667085] flex items-center justify-center gap-1.5">
+                  <ShieldCheck className="h-3.5 w-3.5 text-[#16C784]" />
+                  Verified Paystack checkout only · Free to join VALENCE without tuition
+                </p>
               </div>
             </div>
           </div>
         </section>
       ) : (
-        /* ICAN EXEMPTION GUIDANCE TOOL */
+        /* ICAN EXEMPTION GUIDANCE TOOL WITH ALL NIGERIAN UNIVERSITIES SELECTOR */
         <section className="py-14 sm:py-18">
           <div className="v-container grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <form onSubmit={runExemptionCheck} className="lg:col-span-6 v-card p-6 sm:p-7 space-y-4">
@@ -436,7 +485,7 @@ export default function IcanPage() {
                 <h2 className="font-display text-xl font-bold text-white">
                   Candidate Qualification Profile
                 </h2>
-                <Badge variant="green">Advisory Mapper</Badge>
+                <Badge variant="green">Free Advisory Tool</Badge>
               </div>
 
               <div>
@@ -455,20 +504,16 @@ export default function IcanPage() {
                 </select>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <UniversitySelect
+                id="ex-university"
+                label="Awarding Nigerian University / Institution"
+                value={exInput.institution}
+                onChange={(val) => setExInput({ ...exInput, institution: val })}
+              />
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="v-label" htmlFor="ex-inst">Awarding Institution</label>
-                  <input
-                    id="ex-inst"
-                    type="text"
-                    value={exInput.institution}
-                    onChange={(e) => setExInput({ ...exInput, institution: e.target.value })}
-                    placeholder="e.g. UNILAG, LASU, YABATECH"
-                    className="v-input"
-                  />
-                </div>
-                <div>
-                  <label className="v-label" htmlFor="ex-year">Graduation / Induction Year</label>
+                  <label className="v-label" htmlFor="ex-year">Graduation Year</label>
                   <input
                     id="ex-year"
                     type="number"
@@ -479,9 +524,6 @@ export default function IcanPage() {
                     className="v-input"
                   />
                 </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="v-label" htmlFor="ex-course">Course Studied</label>
                   <input
@@ -489,12 +531,12 @@ export default function IcanPage() {
                     type="text"
                     value={exInput.courseStudied}
                     onChange={(e) => setExInput({ ...exInput, courseStudied: e.target.value })}
-                    placeholder="e.g. B.Sc. Accounting"
+                    placeholder="e.g. Accounting"
                     className="v-input"
                   />
                 </div>
                 <div>
-                  <label className="v-label" htmlFor="ex-pro">Additional Professional Qualification</label>
+                  <label className="v-label" htmlFor="ex-pro">Prof. Credential</label>
                   <select
                     id="ex-pro"
                     value={exInput.professionalQualification}
@@ -504,15 +546,15 @@ export default function IcanPage() {
                     className="v-input"
                   >
                     <option value="NONE">None</option>
-                    <option value="ACCA_AFFILIATE_MEMBER">ACCA (Affiliate / Member)</option>
+                    <option value="ACCA_AFFILIATE_MEMBER">ACCA</option>
                     <option value="CITN_ACTI">CITN (ACTI)</option>
-                    <option value="CIMA_ACMA">CIMA (ACMA / CGMA)</option>
+                    <option value="CIMA_ACMA">CIMA</option>
                   </select>
                 </div>
               </div>
 
               <div>
-                <span className="v-label">Previous ICAN Examination History (Tick Already Passed Papers)</span>
+                <span className="v-label">Previous ICAN Examination History (Tick Passed Papers)</span>
                 <div className="flex flex-wrap gap-1.5 mt-1">
                   {allIcanCourses.map((c) => {
                     const active = exInput.priorPassedCodes.includes(c.code);
@@ -551,7 +593,6 @@ export default function IcanPage() {
               </button>
             </form>
 
-            {/* Output Panel */}
             <div className="lg:col-span-6 space-y-5">
               {!exResult ? (
                 <div className="v-card p-8 text-center space-y-4">
@@ -562,10 +603,10 @@ export default function IcanPage() {
                     Ready to Assess Your Qualification
                   </h3>
                   <p className="text-xs sm:text-sm text-[#9AA4B2] max-w-md mx-auto">
-                    Complete your academic qualification, institution and examination history on the left to view estimated ICAN paper exemptions, remaining papers, conditions and recommended next steps.
+                    Choose from our embedded directory of all Nigerian universities, enter your graduation details and view estimated ICAN paper exemptions, remaining papers and conditions.
                   </p>
                   <p className="text-[11px] text-[#667085]">
-                    Note: ICAN retains sole authority for final exemption approval. VALENCE never automatically removes a course from enrolment based on an estimate.
+                    ICAN holds sole authority for final exemption decisions. VALENCE never automatically removes a course from enrolment.
                   </p>
                 </div>
               ) : (
