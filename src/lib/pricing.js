@@ -4,10 +4,12 @@
  * Tuition Cost Implication Visibility Rule:
  * - General platform signup is free.
  * - Students pay the one-time ₦3,000 tuition registration/unlock fee per level ONLY when
- *   they wish to apply for tuition and unlock/view their full cost implication for that level.
- * - Once unlocked (verified server-side via Paystack), calculateAtswaTuition and
- *   calculateIcanTuition compute the student's exact tuition and multi-course discounts.
- * - All rates remain administrator-configurable in Supabase without code deployment.
+ *   they wish to apply for tuition and unlock/view full cost implications for that level:
+ *     (a) In-App Online Tuition (VALENCE-verified tutors: calculateAtswaTuition / calculateIcanTuition), AND
+ *     (b) Physical Tuition Cost Implications, which depend directly on the verified fee schedules
+ *         (per-course/per-level tuition, registration & multi-course discounts) published by the
+ *         verified physical tuition centres advertising on VALENCE (calculateCentrePhysicalTuition).
+ * - All rates remain administrator- and advertiser-configurable in Supabase without code deployment.
  */
 
 export function formatNaira(amount) {
@@ -84,6 +86,41 @@ export function calculateIcanTuition(courseCount, config = {}) {
     discountAmount,
     netTuition,
     unlockFee,
+  };
+}
+
+/**
+ * Advertising Tuition Centre Cost Implication Calculator
+ * Computes a student's unlocked tuition cost implication dynamically based on the
+ * verified per-course/per-level rates, discounts & registration fees submitted by
+ * each verified physical tuition centre advertising on VALENCE.
+ */
+export function calculateCentreTuitionCost(courseCount, centreSchedule = {}) {
+  const basePerCourse = Number(centreSchedule.perCourseFee || 0);
+  const fullLevelCap = centreSchedule.fullLevelFee ? Number(centreSchedule.fullLevelFee) : null;
+  const discountThreshold = Number(centreSchedule.discountMinCourses || 0);
+  const discountRate = Number(centreSchedule.discountRate || 0);
+  const centreRegFee = Number(centreSchedule.centreRegistrationFee || 0);
+  const count = Math.max(0, Number(courseCount) || 0);
+
+  const grossTuition = count * basePerCourse;
+  const qualifiesForDiscount =
+    discountThreshold > 0 && discountRate > 0 && count >= discountThreshold;
+  const rawNet = qualifiesForDiscount
+    ? Math.round(grossTuition * (1 - discountRate))
+    : grossTuition;
+  const netTuition = fullLevelCap && rawNet > fullLevelCap ? fullLevelCap : rawNet;
+  const discountAmount = Math.max(0, grossTuition - netTuition);
+
+  return {
+    courseCount: count,
+    basePerCourse,
+    grossTuition,
+    discountAmount,
+    netTuition,
+    centreRegFee,
+    totalCentrePayable: netTuition + centreRegFee,
+    notes: centreSchedule.notes || '',
   };
 }
 

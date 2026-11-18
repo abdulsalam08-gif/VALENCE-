@@ -135,11 +135,11 @@ export default function HomePage() {
       <section className="relative overflow-hidden bg-grid-fintech pt-10 pb-16 sm:pt-16 sm:pb-24">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -top-36 left-1/2 -translate-x-1/2 h-[420px] w-[780px] rounded-full bg-[#16C784]/12 blur-[130px]"
+          className="pointer-events-none absolute -top-36 left-1/2 -translate-x-1/2 h-[420px] w-[780px] rounded-full bg-[#16C784]/[0.12] blur-[130px]"
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute bottom-0 right-0 h-[260px] w-[380px] rounded-full bg-[#16C784]/6 blur-[110px]"
+          className="pointer-events-none absolute bottom-0 right-0 h-[260px] w-[380px] rounded-full bg-[#16C784]/[0.06] blur-[110px]"
         />
 
         <div className="v-container relative">
@@ -373,7 +373,7 @@ export default function HomePage() {
                   >
                     <div className="space-y-3">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#16C784]/12 border border-[#16C784]/25 text-[#16C784]">
+                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#16C784]/[0.12] border border-[#16C784]/25 text-[#16C784]">
                           <Icon className="h-5 w-5" />
                         </span>
                         <Badge variant="neutral">{pillar.metric}</Badge>
@@ -525,7 +525,7 @@ export default function HomePage() {
               </h2>
               <p className="text-sm text-[#9AA4B2]">
                 Explore Foundation, Skills and Professional syllabuses and timetables freely. Students pay the one-time{' '}
-                <strong className="text-[#16C784]">₦3,000 registration</strong> per level only when ready to apply for online tuition and unlock their full cost implication (including automatic 25% multi-course discounts on 3+ papers).
+                <strong className="text-[#16C784]">₦3,000 registration</strong> per level only when ready to apply for tuition and unlock full cost implications (in-app online tuition with 25% off 3+ papers, plus the verified physical tuition cost implications set by tuition centres advertising on VALENCE).
               </p>
             </div>
             <div className="flex flex-wrap gap-2.5">
@@ -823,7 +823,7 @@ export default function HomePage() {
                     onClick={() => handleBookmark(ann)}
                     className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 transition-colors ${
                       bookmarkedIds.includes(ann.id)
-                        ? 'text-[#16C784] bg-[#16C784]/12'
+                        ? 'text-[#16C784] bg-[#16C784]/[0.12]'
                         : 'hover:bg-white/[0.05] hover:text-white'
                     }`}
                   >
@@ -837,7 +837,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 8. VALENCE NATIONAL ACCOUNTING CHALLENGE + ₦50,000 REWARD */}
+      {/* 8. VALENCE NATIONAL INTER-SCHOOL CHALLENGE + ₦50,000 REWARD */}
       <section className="py-16 sm:py-22 relative overflow-hidden">
         <div className="v-container space-y-8">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5">
@@ -847,11 +847,11 @@ export default function HomePage() {
                 <Badge variant="green">₦50,000 Reward Every Competition</Badge>
               </div>
               <h2 className="font-display text-2xl sm:text-4xl font-bold text-white">
-                VALENCE National Accounting Challenge
+                VALENCE National Inter-School Challenge
               </h2>
               <p className="text-sm text-[#9AA4B2]">
-                Uniting candidates across {universityCounts.total}+ Nigerian universities, polytechnics, colleges and ICAN/ATSWA divisions. Learners who excel are rewarded{' '}
-                <strong className="text-[#16C784]">₦50,000</strong> after every competition closes and official results are verified.
+                Uniting candidates across {universityCounts.total} Nigerian universities, polytechnics, colleges and ICAN/ATSWA divisions, featuring rigorous questions across <strong className="text-white">accounting and related fields</strong> (finance, taxation, auditing, economics, business law, costing &amp; management). Top learners earn a verified{' '}
+                <strong className="text-[#16C784]">₦50,000</strong> reward after every competition closes.
               </p>
             </div>
             <Link to="/competitions" className="v-btn-primary self-start lg:self-auto shrink-0">
@@ -1110,9 +1110,9 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
                 {
-                  badge: 'Physical Centres Only',
+                  badge: 'Physical Centres · Custom Cost Schedule',
                   title: 'Verified Physical Tuition Centres',
-                  desc: 'List your in-person classroom venue by city and state at ₦10,000/week with in-app student enquiries and live click analytics. (Online tuition stays in-app via verified tutors.)',
+                  desc: 'List your in-person classroom venue by city and state at ₦10,000/week and publish your verified tuition cost implication so students who unlock a level see your exact rates directly.',
                 },
                 {
                   badge: 'In-App Enquiry + Checkout',

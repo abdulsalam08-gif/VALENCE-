@@ -551,11 +551,12 @@ export default function IcanPage() {
                       <span className="tabular-nums-display text-xl font-bold text-white">₦3,000</span>
                     </div>
                     <p className="text-xs leading-relaxed text-[#C2C9D4]">
-                      Students pay the <strong>₦3,000</strong> registration only when applying for{' '}
-                      <strong>ICAN {activeLevel.shortName}</strong> tuition and unlocking their exact cost implication (including automatic 25% savings on 3+ courses in a single transaction).
+                      Students pay the one-time <strong>₦3,000</strong> fee only when applying for{' '}
+                      <strong>ICAN {activeLevel.shortName}</strong> tuition and unlocking full cost implications: in-app online tuition (25% off 3+ papers) plus the exact physical tuition cost implications set by the verified tuition centres advertising on VALENCE.
                     </p>
                     <ul className="space-y-1 text-[11px] text-[#9AA4B2]">
                       <li>• Permanently recorded for {activeLevel.shortName} Level only (never charged twice)</li>
+                      <li>• Physical centre cost implications depend directly on each verified advertising centre&apos;s published rates</li>
                       <li>• Separate per ICAN level; does not offset official ICAN registration, subscription or exam fees</li>
                     </ul>
                   </div>
@@ -765,7 +766,7 @@ export default function IcanPage() {
                 {!exResult ? (
                   <div className="v-card p-7 space-y-5">
                     <div className="flex items-center gap-3">
-                      <div className="h-11 w-11 rounded-2xl bg-[#16C784]/12 border border-[#16C784]/25 flex items-center justify-center text-[#16C784] shrink-0">
+                      <div className="h-11 w-11 rounded-2xl bg-[#16C784]/[0.12] border border-[#16C784]/25 flex items-center justify-center text-[#16C784] shrink-0">
                         <FileCheck2 className="h-5 w-5" />
                       </div>
                       <div>
@@ -980,7 +981,7 @@ export default function IcanPage() {
                         className="w-full flex items-center justify-between gap-4 p-5 text-left"
                       >
                         <div className="flex items-center gap-3">
-                          <span className="tabular-nums-display inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#16C784]/12 border border-[#16C784]/30 text-xs font-bold text-[#16C784]">
+                          <span className="tabular-nums-display inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#16C784]/[0.12] border border-[#16C784]/30 text-xs font-bold text-[#16C784]">
                             {String(faq.num).padStart(2, '0')}
                           </span>
                           <span className="font-display text-sm sm:text-base font-bold text-white">

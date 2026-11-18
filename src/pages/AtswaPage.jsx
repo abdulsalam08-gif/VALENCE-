@@ -139,7 +139,7 @@ export default function AtswaPage() {
             </h1>
             <p className="text-sm sm:text-base text-[#9AA4B2]">
               Complete your ATSWA document checklist, registration guidance and 2-day diet timetable review directly inside VALENCE. You only pay the one-time{' '}
-              <strong className="text-[#16C784]">₦3,000 registration</strong> per level if applying for online tuition and unlocking your full cost implication (credited/waived as your tutorial registration fee).
+              <strong className="text-[#16C784]">₦3,000 registration</strong> per level when applying for tuition to unlock your full cost implication (in-app online tuition, the verified tuition fees of physical tuition centres advertising on VALENCE, and official exam/subscription breakdown).
             </p>
           </div>
           <div className="flex flex-wrap gap-2.5 self-start shrink-0">
@@ -377,7 +377,7 @@ export default function AtswaPage() {
                         onClick={() => toggleDoc(doc)}
                         className={`flex items-center gap-2 rounded-xl border px-3 py-3 text-left transition-all ${
                           ready
-                            ? 'bg-[#16C784]/12 border-[#16C784]/45 text-white'
+                            ? 'bg-[#16C784]/[0.12] border-[#16C784]/45 text-white'
                             : 'bg-[#0B0E11] border-white/[0.07] text-[#C2C9D4] hover:border-white/[0.18]'
                         }`}
                       >
@@ -592,13 +592,13 @@ export default function AtswaPage() {
                       <span className="tabular-nums-display text-xl font-bold text-white">₦3,000</span>
                     </div>
                     <p className="text-xs leading-relaxed text-[#C2C9D4]">
-                      Joining VALENCE is free. Pay the one-time <strong>₦3,000</strong> registration for{' '}
-                      <strong>{activeLevel.code}</strong> only when you want to apply for tuition and reveal your full cost implication (tuition, automatic 25% multi-course savings, examination and annual subscription breakdown).
+                      Joining VALENCE is free. Pay the one-time <strong>₦3,000</strong> fee for{' '}
+                      <strong>{activeLevel.code}</strong> only when applying for tuition to reveal full cost implications: VALENCE in-app online tuition (with 25% off 2+ courses), official examination &amp; annual subscription fees, and the verified physical tuition cost implications set directly by each tuition centre advertising on VALENCE.
                     </p>
                     <ul className="space-y-1 text-[11px] text-[#9AA4B2]">
                       <li>• Permanently unlocks {activeLevel.code}, never charged twice</li>
-                      <li>• Credited/waived as your ATSWA tutorial registration fee</li>
-                      <li>• Verified server-side via Paystack; unlocks Google Meet enrolment</li>
+                      <li>• Physical tuition cost implication reflects each verified advertising centre&apos;s published rates</li>
+                      <li>• Credited/waived as tutorial registration for in-app online classes; verified via Paystack</li>
                     </ul>
                   </div>
                 )}

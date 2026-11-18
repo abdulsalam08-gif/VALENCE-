@@ -49,12 +49,13 @@ export default function CompetitionsPage() {
               <Badge variant="verified">₦50,000 Merit Cash Reward Every Competition</Badge>
             </div>
             <h1 className="font-display text-3xl sm:text-5xl font-bold text-white leading-tight">
-              The VALENCE National Inter-School Accounting Challenge
+              The VALENCE National Inter-School Challenge
             </h1>
             <p className="text-sm sm:text-base text-[#9AA4B2]">
-              Nigeria’s premier academic accounting championship uniting all{' '}
-              <strong className="text-white">{universityCounts.total} accredited Nigerian universities</strong>, polytechnics, colleges, ATSWA centres, ICAN centres and private candidates, with a guaranteed{' '}
-              <strong className="text-[#16C784]">{formatNaira(competitionReward.amount)}</strong> cash reward paid to outstanding learners after every competition concludes.
+              Nigeria’s premier inter-school academic championship uniting all{' '}
+              <strong className="text-white">{universityCounts.total} accredited Nigerian universities, polytechnics and colleges</strong>, ATSWA candidates, ICAN candidates and private learners. Questions are rigorously structured across{' '}
+              <strong className="text-white">accounting and related fields</strong> (financial &amp; corporate reporting, cost &amp; management accounting, auditing, taxation, finance, economics, business law, public sector accounting, quantitative methods, management and business ethics), with a guaranteed{' '}
+              <strong className="text-[#16C784]">{formatNaira(competitionReward.amount)}</strong> cash reward paid to outstanding learners after every competition closes.
             </p>
             <div className="flex flex-wrap gap-3 pt-1">
               <Link to="/portal/school" className="v-btn-primary text-xs">
@@ -102,10 +103,10 @@ export default function CompetitionsPage() {
             <div className="lg:col-span-8">
               <UniversitySelect
                 id="compete-uni-check"
-                label={`Find Your Institution (${universityCounts.total} Federal, State & Private Nigerian Universities Embedded)`}
+                label={`Find Your Institution (${universityCounts.total} Nigerian Universities, Polytechnics & Colleges Embedded)`}
                 value={previewUniversity}
                 onChange={setPreviewUniversity}
-                placeholder="Search e.g. University of Lagos, Covenant, ABU Zaria, UNN, OAU, LASU, UNILORIN..."
+                placeholder="Search e.g. UNILAG, YABATECH, Covenant, ABU Zaria, Auchi Poly, LASU, FCE..."
               />
             </div>
             <div className="lg:col-span-4">
@@ -115,13 +116,13 @@ export default function CompetitionsPage() {
                   if (previewUniversity) {
                     toast.success(
                       'Institution Eligible',
-                      `${previewUniversity} is ready for VALENCE Inter-School Challenge registration.`
+                      `${previewUniversity} is ready for VALENCE National Inter-School Challenge registration.`
                     );
                   }
                 }}
                 className="v-btn-primary w-full py-3 text-xs"
               >
-                Register {previewUniversity ? 'Selected Institution' : 'Your University'}
+                Register {previewUniversity ? 'Selected Institution' : 'Your Institution'}
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
@@ -205,7 +206,7 @@ export default function CompetitionsPage() {
                       <p className="text-xs font-bold text-white">{sec.label}</p>
                       <p className="text-[11px] text-[#9AA4B2] mt-0.5">{sec.detail}</p>
                     </div>
-                    <span className="tabular-nums-display rounded-lg bg-[#16C784]/12 border border-[#16C784]/25 px-2.5 py-1 text-xs font-bold text-[#16C784] shrink-0">
+                    <span className="tabular-nums-display rounded-lg bg-[#16C784]/[0.12] border border-[#16C784]/25 px-2.5 py-1 text-xs font-bold text-[#16C784] shrink-0">
                       {sec.marks} mks
                     </span>
                   </div>
@@ -222,7 +223,7 @@ export default function CompetitionsPage() {
             <div className="space-y-3">
               {ROUNDS.map((r) => (
                 <div key={r.step} className="v-card p-4 flex items-start gap-4">
-                  <span className="tabular-nums-display inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#16C784]/12 border border-[#16C784]/30 text-xs font-bold text-[#16C784]">
+                  <span className="tabular-nums-display inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#16C784]/[0.12] border border-[#16C784]/30 text-xs font-bold text-[#16C784]">
                     {r.step}
                   </span>
                   <div>
@@ -264,7 +265,7 @@ export default function CompetitionsPage() {
             const Icon = item.icon;
             return (
               <div key={item.title} className="v-card p-5 space-y-3">
-                <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#16C784]/12 text-[#16C784]">
+                <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#16C784]/[0.12] text-[#16C784]">
                   <Icon className="h-4 w-4" />
                 </div>
                 <h3 className="font-display text-sm font-bold text-white">{item.title}</h3>

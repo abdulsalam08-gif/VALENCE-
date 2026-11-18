@@ -100,10 +100,10 @@ export default function LegalPage() {
               </div>
               <div className="space-y-2">
                 <h3 className="font-display text-base font-bold text-[#16C784]">
-                  1.4 Competitions &amp; ₦50,000 Merit Cash Reward
+                  1.4 National Inter-School Challenge &amp; ₦50,000 Merit Cash Reward
                 </h3>
                 <p>
-                  National inter-school and candidate competitions enforce timed submission rules, anti-malpractice verification, and moderator review. The ₦50,000 post-competition cash reward is disbursed to verified winning learners after official results and any appeals review close. Impersonation, collusion, or plagiarism leads to immediate disqualification.
+                  The VALENCE National Inter-School Challenge and examination divisions (featuring questions drawn from accounting and related disciplines including finance, auditing, taxation, economics, business law, quantitative methods, and management) enforce timed submission rules, anti-malpractice verification, and moderator review. The ₦50,000 post-competition cash reward is disbursed to verified winning learners after official results and any appeals review close. Impersonation, collusion, or plagiarism leads to immediate disqualification.
                 </p>
               </div>
               <div className="space-y-2">
@@ -179,7 +179,7 @@ export default function LegalPage() {
                   3.2 ₦3,000 Per-Level Tuition Application Unlock
                 </h3>
                 <p>
-                  The one-time ₦3,000 registration fee applies strictly when applying for in-app online tuition and unlocking full tuition cost implications for a specific ATSWA or ICAN level. Once unlocked, a level stays permanently unlocked for your account (you are never charged twice). Because digital cost-implication access is delivered immediately upon verification, completed level unlocks are non-refundable except in verified duplicate-debit errors, which are refunded in full within 5 to 7 business days.
+                  The one-time ₦3,000 fee applies strictly when unlocking tuition cost implications and applying for tuition for a specific ATSWA or ICAN level. Unlocking reveals VALENCE&apos;s verified in-app online tuition breakdown alongside the physical tuition cost implications set directly by verified physical tuition centres advertising on VALENCE (so physical tuition cost implications reflect each advertising centre&apos;s published fee structure), plus official examination and subscription breakdowns. Once unlocked, a level stays permanently unlocked for your account (never charged twice). Because digital access is delivered immediately upon verification, completed level unlocks are non-refundable except in verified duplicate-debit errors, which are refunded within 5 to 7 business days.
                 </p>
               </div>
               <div className="space-y-2">

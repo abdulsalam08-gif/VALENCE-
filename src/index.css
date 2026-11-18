@@ -129,6 +129,33 @@
   background-size: 48px 48px;
 }
 
+@keyframes wisdom-marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.v-wisdom-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: wisdom-marquee 240s linear infinite;
+}
+
+.v-wisdom-bar:hover .v-wisdom-track,
+.v-wisdom-bar:focus-within .v-wisdom-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v-wisdom-track {
+    animation-duration: 480s;
+  }
+}
+
 .safe-bottom {
   padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
 }

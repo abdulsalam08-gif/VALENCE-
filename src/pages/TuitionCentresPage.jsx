@@ -100,9 +100,9 @@ export default function TuitionCentresPage() {
               Physical Tuition Centres, Textbook Authors &amp; Book Vendors
             </h1>
             <p className="text-sm text-[#9AA4B2]">
-              Every listing here is a real, Admin-verified partner: <strong className="text-white">physical (in-person) tuition centres</strong>,{' '}
+              Every listing here is a real, Admin-verified partner: <strong className="text-white">physical (in-person) tuition centres</strong> (whose verified per-level/per-course fees drive the physical tuition cost implication students unlock with the one-time ₦3,000 level fee),{' '}
               <strong className="text-white">accounting textbook authors</strong>, and{' '}
-              <strong className="text-white">verified textbook vendors</strong> (with built-in in-app student enquiries and optional Paystack checkout). All online tuition runs strictly in-app with VALENCE-verified tutors.
+              <strong className="text-white">verified textbook vendors</strong> (with in-app student enquiries and optional Paystack checkout). All online tuition runs strictly in-app with VALENCE-verified tutors.
             </p>
           </div>
           <Link to="/advertise" className="v-btn-primary text-xs self-start shrink-0">
@@ -228,7 +228,7 @@ export default function TuitionCentresPage() {
                     Verified Physical Tuition Centre Slots Are Now Open Nationwide
                   </h2>
                   <p className="text-xs sm:text-sm text-[#9AA4B2] leading-relaxed">
-                    Operate a physical (in-person) ATSWA, ICAN, or accounting tutorial centre anywhere in Nigeria? Verify your lecture venue address inside VALENCE and feature your classes to candidates in your city at {formatNaira(weeklyRate)}/week, including in-app student enquiries and live click analytics.
+                    Operate a physical (in-person) ATSWA, ICAN, or accounting tutorial centre anywhere in Nigeria? Verify your lecture venue and publish your per-level/per-course tuition cost implication inside VALENCE at {formatNaira(weeklyRate)}/week. When students unlock a level&apos;s cost implication (₦3,000 one-time), your centre&apos;s exact verified fee structure and multi-paper discounts are displayed directly for comparison and in-app enquiry.
                   </p>
                 </div>
               ) : (
@@ -328,6 +328,19 @@ export default function TuitionCentresPage() {
                         </div>
                       </div>
                       <p className="text-xs leading-relaxed text-[#9AA4B2]">{item.description}</p>
+                      {directoryTab === 'centres' && (
+                        <div className="rounded-xl bg-[#0B0E11] border border-[#16C784]/25 p-3 flex items-center justify-between gap-2 text-[11px]">
+                          <span className="text-[#C2C9D4]">
+                            Centre Cost Implication (set directly by {item.name})
+                          </span>
+                          <Link
+                            to="/portal/student?apply=tuition"
+                            className="font-display font-bold text-[#16C784] hover:underline shrink-0"
+                          >
+                            Unlock (₦3,000) →
+                          </Link>
+                        </div>
+                      )}
                     </div>
                     <div className="border-t border-white/[0.06] pt-3.5 flex flex-wrap items-center justify-between gap-2 text-xs">
                       <button

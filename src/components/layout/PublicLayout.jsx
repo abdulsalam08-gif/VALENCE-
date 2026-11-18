@@ -4,7 +4,6 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import MobileBottomNav from './MobileBottomNav';
 import WhatsAppWidget from '../ui/WhatsAppWidget';
-import MotivationQuotePopup from '../ui/MotivationQuotePopup';
 
 export default function PublicLayout() {
   const { pathname, hash } = useLocation();
@@ -28,7 +27,6 @@ export default function PublicLayout() {
       </main>
       <Footer />
       <MobileBottomNav />
-      <MotivationQuotePopup />
       <WhatsAppWidget />
     </div>
   );

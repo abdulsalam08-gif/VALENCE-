@@ -133,6 +133,7 @@ const PORTAL_META = {
     capabilities: [
       'Verified Physical Tuition Centres (in-person venues only), Textbook Authors & Verified Textbook Vendors',
       '100% in-app campaign booking at ₦10,000/week across 9 placements (incl. Bookstore & Syllabus spotlights)',
+      'Verified Physical Tuition Centres: publish verified per-level/per-course tuition cost implications revealed to students who unlock a level',
       'Textbook Authors & Vendors: built-in in-app student enquiry inbox plus optional in-app Paystack checkout',
       'Strict zero-piracy verification for author textbooks & vendor stock, plus physical venue verification for centres',
       'Live impression counts, clicks, CTR analytics, Paystack receipts & one-click weekly renewals',
@@ -250,7 +251,7 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
             <div className="space-y-4">
               <Badge variant="green">{meta.badge}</Badge>
               <div className="flex items-center gap-3">
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#16C784]/12 border border-[#16C784]/30 text-[#16C784]">
+                <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#16C784]/[0.12] border border-[#16C784]/30 text-[#16C784]">
                   <Icon className="h-6 w-6" />
                 </div>
                 <h1 className="font-display text-2xl sm:text-3xl font-bold text-white">

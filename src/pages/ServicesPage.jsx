@@ -42,10 +42,10 @@ const SERVICES = [
   },
   {
     icon: Trophy,
-    title: 'National Inter-School Competitions (₦50,000 Reward)',
+    title: 'National Inter-School Challenge (₦50,000 Reward)',
     badge: '₦50,000 Cash Reward',
-    desc: 'Five-round national championships across all Nigerian universities, polytechnics and tutorial centres with a verified ₦50,000 cash reward paid to top learners after every competition.',
-    cta: 'Enter Competition',
+    desc: 'Five-round national championships across 300 Nigerian universities, polytechnics, colleges and exam divisions, with questions drawn from accounting and related fields (finance, tax, audit, economics, business law & management) and a verified ₦50,000 reward.',
+    cta: 'Enter Challenge',
     to: '/competitions',
   },
   {
@@ -107,7 +107,7 @@ export default function ServicesPage() {
               <div key={s.title} className="v-card-hover p-6 flex flex-col justify-between gap-5">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between gap-2">
-                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#16C784]/12 border border-[#16C784]/25 text-[#16C784]">
+                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#16C784]/[0.12] border border-[#16C784]/25 text-[#16C784]">
                       <Icon className="h-5 w-5" />
                     </div>
                     <Badge variant="neutral">{s.badge}</Badge>

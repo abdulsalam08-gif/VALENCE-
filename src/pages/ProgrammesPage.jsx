@@ -68,7 +68,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
           </h1>
           <p className="text-sm sm:text-base text-[#9AA4B2] max-w-2xl">
             Browse ATSWA and ICAN syllabuses, exam timetables and exemption rules for free. Students pay the one-time{' '}
-            <strong className="text-[#16C784]">₦3,000 registration</strong> per level only when applying for tuition and viewing their personalised cost implication.
+            <strong className="text-[#16C784]">₦3,000 fee</strong> per level only when applying for tuition and unlocking full cost implications (in-app online tuition plus the verified tuition cost implications published by each physical tuition centre advertising on VALENCE).
           </p>
           <div className="flex flex-wrap gap-3 pt-1">
             <Link to="/programmes/atswa" className="v-btn-primary text-xs">

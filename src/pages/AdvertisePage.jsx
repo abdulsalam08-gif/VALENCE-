@@ -67,6 +67,7 @@ export default function AdvertisePage() {
     entityName: '',
     streetOrCoverage: '',
     bookTitlesOrSchedule: 'Physical Walk-In & Nationwide Delivery',
+    centreCostImplication: '',
     studentPurchaseMode: 'In-App Student Enquiry + In-App Paystack Checkout',
     isbnOrPublisher: '',
     contactEmail: '',
@@ -225,7 +226,7 @@ export default function AdvertisePage() {
                       onClick={() => setAdvertiserType(cat.id)}
                       className={`rounded-xl border p-3.5 text-left transition-all space-y-1.5 ${
                         active
-                          ? 'bg-[#16C784]/12 border-[#16C784] text-white'
+                          ? 'bg-[#16C784]/[0.12] border-[#16C784] text-white'
                           : 'bg-[#0B0E11] border-white/[0.08] text-[#C2C9D4] hover:border-white/[0.2]'
                       }`}
                     >
@@ -287,7 +288,7 @@ export default function AdvertisePage() {
                       onClick={() => setSelectedPlacementId(pl.id)}
                       className={`flex items-center justify-between gap-2 rounded-xl border px-3.5 py-2.5 text-left transition-all ${
                         active
-                          ? 'bg-[#16C784]/12 border-[#16C784]/50 text-white'
+                          ? 'bg-[#16C784]/[0.12] border-[#16C784]/50 text-white'
                           : 'bg-[#0B0E11] border-white/[0.07] text-[#C2C9D4] hover:border-white/[0.18]'
                       }`}
                     >
@@ -367,7 +368,27 @@ export default function AdvertisePage() {
               />
             </div>
 
-            {advertiserType !== 'physical_centre' && (
+            {advertiserType === 'physical_centre' ? (
+              <div>
+                <label className="v-label" htmlFor="ad-centre-cost">
+                  Centre Tuition Cost Implication (Per Level / Per Course &amp; Discounts)
+                </label>
+                <textarea
+                  id="ad-centre-cost"
+                  rows={2}
+                  required
+                  value={campaign.centreCostImplication}
+                  onChange={(e) =>
+                    setCampaign({ ...campaign, centreCostImplication: e.target.value })
+                  }
+                  placeholder="Enter your physical tuition fee breakdown per level/course, registration fee & any multi-paper discounts (shown to students who unlock cost implication on VALENCE)"
+                  className="v-input text-xs resize-none"
+                />
+                <p className="mt-1 text-[10.5px] text-[#9AA4B2]">
+                  Students who pay the one-time ₦3,000 level unlock inside VALENCE see the verified tuition cost implication submitted by each physical tuition centre advertising on the app, and can update anytime in your Advertiser Portal.
+                </p>
+              </div>
+            ) : (
               <div className="space-y-3.5">
                 <div>
                   <label className="v-label" htmlFor="ad-isbn">
@@ -580,6 +601,7 @@ export default function AdvertisePage() {
                 {[
                   'Open to 3 verified groups: (1) Physical Tuition Centres, (2) Accounting Textbook Authors, and (3) Verified Textbook Vendors / Bookshops.',
                   'External online tuition is never advertised; all online tuition runs strictly inside VALENCE with VALENCE-verified tutors (AAT for ATSWA; AAT + ACA for ICAN).',
+                  'Physical tuition centres submit their verified per-level/per-course cost implication so students unlocking cost implications (₦3,000 per level) see accurate centre-specific fees.',
                   'Authors & textbook vendors get built-in in-app student enquiries plus optional in-app Paystack checkout so buyers stay safely inside VALENCE.',
                   'Strict anti-piracy protection: textbook authors & vendors must supply genuine, copyright-compliant editions only.',
                   `Transparent flat rate of ${formatNaira(weeklyRate)} per week (admin-editable via the Admin Portal) paid via server-verified Paystack checkout.`,

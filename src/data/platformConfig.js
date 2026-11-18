@@ -928,8 +928,8 @@ export const VALENCE_PILLARS = [
   {
     id: 'compete',
     code: 'VALENCE COMPETE',
-    title: 'National Accounting Challenge & ₦50,000 Rewards',
-    description: 'Nigeria’s inter-school championship across all accredited universities, polytechnics and exam divisions, awarding ₦50,000 to outstanding learners after every competition closes.',
+    title: 'National Inter-School Challenge & ₦50,000 Rewards',
+    description: 'Nigeria’s inter-school championship across universities, polytechnics, colleges and exam divisions, testing accounting and related fields (finance, tax, audit, economics, business law & management) with a ₦50,000 reward after every competition.',
     route: '/competitions',
     metric: '₦50,000 Cash Reward',
   },
@@ -1011,7 +1011,7 @@ export const UPCOMING_EVENTS = [
     id: 'evt-4',
     type: '₦50,000 Prize Competition',
     programme: 'VALENCE COMPETE',
-    title: 'VALENCE National Accounting Challenge: Qualifier & ₦50,000 Reward Briefing',
+    title: 'VALENCE National Inter-School Challenge: Qualifier & ₦50,000 Reward Briefing',
     date: '23 Jan 2027 · 4:00 PM WAT',
     mode: 'Live Inter-University Session',
     access: 'Verified Schools & Candidates',
@@ -1073,7 +1073,7 @@ export const TESTIMONIALS = [
   {
     id: 'std-1',
     quote:
-      'Create a student, undergraduate, polytechnic, college or professional account at zero cost. The one-time ₦3,000 fee applies only when you apply for in-app online tuition and unlock a level cost implication.',
+      'Create a student, undergraduate, polytechnic, college or professional account at zero cost. The one-time ₦3,000 per-level unlock reveals in-app online tuition alongside the verified cost implications set directly by physical tuition centres advertising on VALENCE.',
     name: 'Transparent Student-First Access',
     role: 'Free Membership · Paystack-Verified Checkout',
   },
@@ -1146,8 +1146,8 @@ export const PLATFORM_STATISTICS = [
 
 export const FAQS = [
   {
-    q: 'Do I have to pay ₦3,000 just to sign up on VALENCE?',
-    a: 'No. Creating a VALENCE account is completely free across students, university undergraduates, general learners and professionals. The one-time ₦3,000 registration fee per level applies ONLY when you want to apply for tuition and unlock your personalised tuition cost implication for that specific ATSWA or ICAN level (and you are never charged twice for an already unlocked level).',
+    q: 'Do I have to pay ₦3,000 just to sign up on VALENCE, and what determines the cost implication I unlock?',
+    a: 'No. Creating a VALENCE account is completely free across students, university/polytechnic/college learners and professionals. The one-time ₦3,000 fee per level applies only when applying for tuition and unlocking cost implications for that ATSWA or ICAN level (never charged twice). It reveals in-app online tuition alongside the verified physical tuition cost implications set directly by each physical tuition centre advertising on VALENCE, plus official exam and subscription fees.',
   },
   {
     q: 'When do ATSWA and ICAN examinations hold, and when does registration close?',
@@ -1158,8 +1158,8 @@ export const FAQS = [
     a: 'Immediately after the final examination day of any ATSWA or ICAN diet concludes, VALENCE automatically starts a 30-day countdown to the expected result release date. Because official release can occasionally experience delays, the Central Examination Authority updates the timer and posts status notices whenever the Institute adjusts release timing.',
   },
   {
-    q: 'How does the ₦50,000 competition reward work?',
-    a: 'Outstanding learners who excel in VALENCE competitions are rewarded ₦50,000 after every competition closes and official results pass verification and moderator approval, alongside digital certificates and Accounting Hall of Fame recognition.',
+    q: 'How does the VALENCE National Inter-School Challenge & ₦50,000 reward work?',
+    a: 'The VALENCE National Inter-School Challenge brings together students across universities, polytechnics, colleges and exam divisions, with questions grounded in accounting and related fields (financial & management accounting, audit, tax, finance, economics, business law, quantitative methods and management). Outstanding learners earn a verified ₦50,000 reward after every competition closes, alongside digital certificates and Hall of Fame recognition.',
   },
   {
     q: 'Are Nigerian universities, polytechnics and colleges supported on VALENCE?',
@@ -1386,15 +1386,15 @@ export const COMPETITION_DIVISIONS = [
   { id: 'div-ican-fnd', name: 'ICAN Foundation Challenge', level: 'CBL · BE · MA · FA', reward: '₦50,000 Merit Reward', format: 'Section A: 30m compulsory · Section B: 2 of 3 (20m each = 40m) · Section C: 2 of 4 (15m each = 30m) = 100m' },
   { id: 'div-ican-skl', name: 'ICAN Skills Challenge', level: 'FR · FM · PSAF · AAF · TAX · PM', reward: '₦50,000 Merit Reward', format: 'Section A: 30m compulsory · Section B: 2 of 3 (20m each = 40m) · Section C: 2 of 4 (15m each = 30m) = 100m' },
   { id: 'div-ican-pro', name: 'ICAN Professional Challenge', level: 'SBR · CS · AAAF · A/TAX · SFM', reward: '₦50,000 Merit Reward', format: 'Section A: 30m compulsory · Section B: 2 of 3 (20m each = 40m) · Section C: 2 of 4 (15m each = 30m) = 100m' },
-  { id: 'div-uni', name: 'University Accounting Challenge', level: `${UNIVERSITY_COUNTS.total}+ Nigerian Universities & Polytechnics`, reward: '₦50,000 Merit Reward', format: 'Inter-school individual & team tournament across 5 national rounds, syllabus-reviewed before publication' },
-  { id: 'div-pro', name: 'Professional Accounting Challenge', level: 'ACA · FCA · ACCA · CPA (Optional Division)', reward: '₦50,000 Merit Reward', format: 'Executive IFRS, tax strategy, forensic assurance & boardroom advisory showcase' },
+  { id: 'div-uni', name: 'National Inter-School Challenge (Tertiary)', level: `${UNIVERSITY_COUNTS.total} Universities, Polytechnics & Colleges`, reward: '₦50,000 Merit Reward', format: 'Inter-school individual & team tournament across 5 national rounds covering accounting, finance, tax, audit, economics, business law & management' },
+  { id: 'div-pro', name: 'Professional Challenge', level: 'ACA · FCA · ACCA · CPA (Optional Division)', reward: '₦50,000 Merit Reward', format: 'Executive IFRS, corporate finance, tax strategy, forensic assurance & boardroom advisory showcase' },
 ];
 
 export const COMPETITION_REWARD = {
   amount: 50000,
   currency: 'NGN',
   summary:
-    'Learners who demonstrate outstanding performance in VALENCE competitions receive a verified ₦50,000 cash reward immediately after every competition closes and official results are confirmed.',
+    'Learners who excel in the VALENCE National Inter-School Challenge and exam divisions (with questions grounded in accounting and related fields) receive a verified ₦50,000 cash reward after every competition closes and official results are confirmed.',
   eligibilityRules: [
     'Open to verified ATSWA, ICAN, university, polytechnic, college and general accounting candidates.',
     'Awarded after final scoring, anti-cheat audit and appeals review conclude at competition close.',
