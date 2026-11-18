@@ -83,6 +83,22 @@ export default function StudyMaterialsPage() {
               ICAN 2026 Official Syllabus PDF <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
             </a>
             <a
+              href={settings.officialLinks.icanAccreditedInstitutions}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="v-btn-secondary text-xs"
+            >
+              Accredited Institutions PDF <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
+            </a>
+            <a
+              href={settings.officialLinks.icanMcatiInstitutions}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="v-btn-secondary text-xs"
+            >
+              MCATI Institutions PDF <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
+            </a>
+            <a
               href={settings.officialLinks.icanExamDockets}
               target="_blank"
               rel="noopener noreferrer"

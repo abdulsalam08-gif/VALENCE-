@@ -21,7 +21,14 @@ import { calculateAtswaTuition, formatNaira } from '../lib/pricing';
 import { formatReadableDate, getSessionLifecycle } from '../lib/examSchedule';
 
 export default function AtswaPage() {
-  const { atswaLevels, sessions, settings, isLevelUnlocked, openWhatsAppModal } = usePlatform();
+  const {
+    atswaLevels,
+    atswaEntryPathways,
+    sessions,
+    settings,
+    isLevelUnlocked,
+    openWhatsAppModal,
+  } = usePlatform();
   const toast = useToast();
 
   const atswaSessions = useMemo(
@@ -264,6 +271,31 @@ export default function AtswaPage() {
                   ))}
                 </div>
                 <p className="text-[11px] text-[#667085]">{activeDiet.authorityNotice}</p>
+              </div>
+
+              {/* ATSWA Entry Route & Progression Rules */}
+              <div className="v-card p-5 space-y-3.5">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h3 className="font-display text-base font-bold text-white">
+                    Where Do I Start in ATSWA? (Undergraduate & ND Route)
+                  </h3>
+                  <Badge variant="green">~2.5 Yrs Full ATSWA → ACA</Badge>
+                </div>
+                <p className="text-xs text-[#9AA4B2]">
+                  You must pass all 4 courses in a level before advancing to the next. After clearing ATS 3, you earn the <strong className="text-white">AAT certificate</strong> and progress directly to the ICAN main levels (<strong className="text-[#16C784]">Skills & Professional</strong>).
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+                  {atswaEntryPathways.map((p) => (
+                    <div
+                      key={p.id}
+                      className="rounded-xl bg-[#0B0E11] border border-white/[0.07] p-3.5 space-y-1"
+                    >
+                      <p className="font-display font-bold text-[#16C784]">{p.startAt}</p>
+                      <p className="font-semibold text-white">{p.qualification}</p>
+                      <p className="text-[11px] text-[#9AA4B2]">{p.exemptions}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* Required Documents */}

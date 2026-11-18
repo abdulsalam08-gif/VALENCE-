@@ -221,6 +221,10 @@ export function evaluateIcanExemptions(input, allIcanCourses, exemptionRules) {
 
   return {
     ruleTitle: matchedRule.label,
+    startingLevel: matchedRule.startingLevel || 'ICAN Foundation Level',
+    estimatedDuration: matchedRule.estimatedDuration || '~1.5 years (without carryovers)',
+    atswaExemptedLevels: matchedRule.atswaExemptedLevels || [],
+    isAtswaRoute: String(matchedRule.startingLevel || '').startsWith('ATSWA'),
     potentialExemptions,
     remainingCourses,
     conditions: [
@@ -234,10 +238,10 @@ export function evaluateIcanExemptions(input, allIcanCourses, exemptionRules) {
     ],
     guidance: matchedRule.guidance,
     nextSteps: [
-      'Verify your institution’s current ICAN accreditation status against the 2026 ICAN Syllabus & Exemption Schedule.',
-      'Submit official academic transcripts directly from your awarding institution Registrar to ICAN alongside certified credential copies.',
-      'Pay official ICAN exemption fees only after receiving formal ICAN exemption confirmation (use our WhatsApp Official Fee Assistance button if you need support).',
-      'Apply for tuition on your confirmed remaining papers — VALENCE never automatically removes a course from your enrolment based on an estimated exemption.',
+      'Check if your school is on ICAN’s official Accredited Institutions PDF or MCATI List PDF (applicable to Accounting graduates).',
+      'Confirm your official exemption status on icanig.org/ican (Students → Exemptions → Professional → Professional Exemption Guide).',
+      'Complete Student Registration, Annual Subscription & one-time Development Levy, then process confirmed exemptions before Exam Registration (closes 1 week before Exam Day 1).',
+      'Apply for VALENCE tuition on your confirmed remaining papers — VALENCE never automatically removes a course from enrolment based on an estimated exemption.',
     ],
     disclaimer:
       'Important Advisory Notice: This output is an educational guidance estimate on VALENCE. The Institute of Chartered Accountants of Nigeria (ICAN) holds sole authority to approve, modify or decline exemptions.',

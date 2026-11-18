@@ -19,9 +19,14 @@ export const PLATFORM_SETTINGS = {
   registrationCutoffDaysBeforeExam: 7,
   centralScheduleAuthority: 'VALENCE Central Examination Authority',
   officialLinks: {
+    icanWebsite: 'https://icanig.org/ican/',
     atswaSoftCopy: 'https://icanig.org/students/atswa',
     icanExamDockets: 'https://icanig.org/ican/students/professional-exam-dockets',
     icanSyllabus2026: 'https://icanig.org/ican/assets/docs/ICAN_SYLLABUS_2026_Final_Updated_NEW.pdf',
+    icanAccreditedInstitutions:
+      'https://icanig.org/ican/assets/docs/documents/Accredited_institutions_0425.pdf',
+    icanMcatiInstitutions:
+      'https://icanig.org/ican/assets/docs/documents/MCATI_LIST_UPDATED_MAY_2024.pdf',
   },
 };
 
@@ -306,79 +311,373 @@ export const ICAN_PRICING_TABLE = [
 
 export const EXEMPTION_RULES = [
   {
-    id: 'aat_atswa',
-    label: 'AAT Certificate (ATSWA Graduate)',
-    exemptedCodes: ['CBL', 'BE', 'MA', 'FA', 'AAF', 'TAX'],
-    guidance:
-      'Qualified AAT (ATSWA) holders typically qualify for full Foundation Level exemptions plus selected Skills Level papers under the current ICAN syllabus mapping.',
-    conditions: [
-      'Valid AAT induction certificate and active membership standing required.',
-      'Subject-by-subject verification applies under the 2026 updated ICAN syllabus.',
-    ],
-  },
-  {
     id: 'bsc_hnd_accounting_mcati',
-    label: 'B.Sc. / HND Accounting (ICAN-Accredited MCATI Institution)',
-    exemptedCodes: ['CBL', 'BE', 'MA', 'FA', 'FR', 'AAF', 'TAX', 'PM', 'FM', 'PSAF'],
+    label: 'B.Sc. / HND Accounting — ICAN-Accredited Institution with MCATI Agreement',
+    startingLevel: 'ICAN Professional Level',
+    estimatedDuration: '~6 months – 1 year (without carryovers)',
+    exemptedCodes: ['CBL', 'BE', 'MA', 'FA', 'FR', 'FM', 'PSAF', 'AAF', 'TAX', 'PM'],
+    atswaExemptedLevels: [],
     guidance:
-      'Graduates of ICAN Mutual Cooperation Agreement with Tertiary Institutions (MCATI) accounting programmes may be eligible for exemptions across Foundation and Skills levels, advancing directly to Professional Level subject to year-of-graduation accreditation.',
+      'Accounting graduates from an ICAN-accredited institution with an active Mutual Cooperation Agreement with Tertiary Institutions (MCATI) start directly from the ICAN Professional Level — exempted from all Foundation and Skills Level papers, subject to graduation-year verification.',
     conditions: [
-      'Your institution must hold active MCATI accreditation covering your exact graduation year.',
-      'Official transcript sent directly from the institution Registrar to ICAN is mandatory.',
-      'NYSC discharge or exemption certificate is required where applicable.',
+      'Confirm your school appears on the official ICAN MCATI Institutions List (applies strictly to Accounting graduates).',
+      'Active MCATI status must cover your exact graduation cohort/session.',
+      'Official academic transcript sent directly from your Registrar to ICAN plus NYSC certificate/exemption required.',
+      'Progression requires clearing all 5 Professional papers (SBR, CS, AAAF, A/TAX, SFM) to qualify as ACA.',
     ],
   },
   {
     id: 'bsc_hnd_accounting_accredited',
-    label: 'B.Sc. / HND Accounting (Standard ICAN-Accredited Institution)',
-    exemptedCodes: ['CBL', 'BE', 'MA', 'FA', 'AAF', 'FM'],
+    label: 'B.Sc. / HND Accounting — ICAN-Accredited Institution (Non-MCATI)',
+    startingLevel: 'ICAN Skills Level',
+    estimatedDuration: '~1 year (without carryovers)',
+    exemptedCodes: ['CBL', 'BE', 'MA', 'FA', 'AAF'],
+    atswaExemptedLevels: [],
     guidance:
-      'Graduates of ICAN-accredited university and polytechnic accounting departments normally receive full Foundation Level exemptions plus selected Skills Level exemptions based on approved curriculum equivalence.',
+      'Accounting graduates from an ICAN-accredited university or polytechnic start from the ICAN Skills Level — exempted from all 4 Foundation Level courses and Audit, Assurance & Forensics (AAF). You clear the remaining Skills papers before advancing to Professional Level.',
     conditions: [
-      'Accreditation status must be valid for the graduation cohort.',
-      'Official academic transcript and certified degree/HND certificate required.',
+      'Confirm your institution appears on the official ICAN Accredited Institutions PDF (applies to Accounting graduates).',
+      'Accreditation status must be valid for your year of graduation.',
+      'Official academic transcript, certified B.Sc./HND certificate and formal ICAN exemption processing required.',
+      'All remaining Skills Level courses must be cleared before progressing to Professional Level.',
     ],
   },
   {
     id: 'bsc_hnd_accounting_unaccredited',
-    label: 'B.Sc. / HND Accounting (Non-Accredited / Foreign Institution)',
-    exemptedCodes: ['CBL', 'BE', 'MA'],
+    label: 'B.Sc. / HND Accounting — Non-Accredited Institution',
+    startingLevel: 'ICAN Foundation Level (Usually Management Accounting Only)',
+    estimatedDuration: '~1.5 years (without carryovers)',
+    exemptedCodes: ['CBL', 'BE', 'FA'],
+    atswaExemptedLevels: [],
     guidance:
-      'Accounting degrees from non-accredited or foreign universities undergo paper-by-paper transcript assessment against the 2026 ICAN syllabus.',
+      'Accounting graduates from a non-accredited institution commence from the ICAN Foundation Level — typically writing Management Accounting (MA) only at Foundation before advancing to Skills and Professional Levels, subject to official ICAN transcript verification.',
     conditions: [
-      'Detailed course syllabus and official academic transcript evaluation required by ICAN.',
-      'Financial Accounting (FA) and Skills papers depend on transcript review.',
+      'Official academic transcript evaluation by ICAN confirms exact Foundation paper exemptions.',
+      'Must clear Foundation stage completely before progressing to Skills Level.',
+    ],
+  },
+  {
+    id: 'aat_atswa',
+    label: 'AAT Certificate Holder (Completed ATSWA ATS 1 – ATS 3)',
+    startingLevel: 'ICAN Skills Level',
+    estimatedDuration: '~1 year from AAT to ACA (~2.5 years full ATSWA-to-ACA route)',
+    exemptedCodes: ['CBL', 'BE', 'MA', 'FA', 'AAF', 'TAX'],
+    atswaExemptedLevels: ['ATS 1', 'ATS 2', 'ATS 3 (Completed)'],
+    guidance:
+      'After passing ATS 1 to ATS 3 and earning the AAT certificate, candidates progress directly to the ICAN main stages (Skills and Professional Levels), receiving full Foundation exemption plus approved Skills exemptions under the current ICAN Exemption Guide.',
+    conditions: [
+      'Valid AAT certificate and active annual subscription standing required.',
+      'Formal exemption processing on the ICAN portal confirms exact Skills papers under the 2026 syllabus.',
     ],
   },
   {
     id: 'bsc_finance_banking',
     label: 'B.Sc. / HND Banking & Finance / Finance',
+    startingLevel: 'ICAN Foundation Level (With Subject Exemptions)',
+    estimatedDuration: '~1.5 years (without carryovers)',
     exemptedCodes: ['CBL', 'BE', 'FM'],
+    atswaExemptedLevels: [],
     guidance:
-      'Finance and Banking & Finance graduates commonly receive exemptions in Business Environment, Corporate & Business Law and Financial Management depending on transcript coverage.',
+      'Graduates from Banking & Finance or Finance transition via the Graduate Route starting from Foundation Level, with subject-by-subject exemptions (commonly CBL, BE and FM) confirmed through the official ICAN Professional Exemption Guide.',
     conditions: [
       'Recognised NUC/NBTE-approved institution transcript required.',
-      'Subject exemptions confirmed strictly upon ICAN transcript assessment.',
+      'Subject exemptions confirmed strictly upon official ICAN exemption processing.',
     ],
   },
   {
     id: 'bsc_economics_busadmin',
     label: 'B.Sc. / HND Economics, Business Administration or Management',
+    startingLevel: 'ICAN Foundation Level (With Subject Exemptions)',
+    estimatedDuration: '~1.5 years (without carryovers)',
     exemptedCodes: ['BE', 'CBL'],
+    atswaExemptedLevels: [],
     guidance:
-      'Graduates of Economics, Business Administration and Management typically qualify for Business Environment and Corporate & Business Law (where business law was passed at tertiary level).',
-    conditions: ['Official transcript must reflect passed credits in equivalent modules.'],
+      'Graduates of Economics, Business Administration and Management start from Foundation Level and typically qualify for Business Environment (BE) and Corporate & Business Law (CBL) where passed at tertiary level.',
+    conditions: [
+      'Official transcript must reflect passed credits in equivalent courses.',
+      'All remaining Foundation courses must be cleared before advancing to Skills Level.',
+    ],
   },
   {
-    id: 'bsc_non_related_or_nd',
-    label: 'OND / NCE Accounting or Non-Accounting Degree',
+    id: 'bsc_non_accounting',
+    label: 'B.Sc. / HND Non-Accounting Discipline (Transitioning to Accounting)',
+    startingLevel: 'ICAN Foundation Level (All 4 Papers)',
+    estimatedDuration: '~1.5 years (without carryovers)',
     exemptedCodes: [],
+    atswaExemptedLevels: [],
     guidance:
-      'Candidates commence from ICAN Foundation Level (all 4 papers) or, for OND holders, may consider the ATSWA accelerated pathway before transitioning to ICAN Skills/Professional.',
+      'Graduates from any non-accounting discipline (Sciences, Engineering, Arts, Social Sciences, Tech, Law, etc.) are fully eligible to enrol without starting from ATSWA — commencing directly at ICAN Foundation Level (MA, FA, CBL, BE) and progressing through Skills and Professional.',
     conditions: [
-      'Minimum 5 O’Level credits including English Language and Mathematics in not more than two sittings.',
-      'Recognised degree/HND for direct Foundation entry, or O’Level/OND for ATSWA entry.',
+      'Recognised bachelor’s degree or HND certificate from an approved institution.',
+      'Complete Student Registration, Annual Subscription & one-time Development Levy before Exam Registration.',
     ],
+  },
+  {
+    id: 'nd_accounting',
+    label: 'ND Accounting (ATSWA Undergraduate Entry Route)',
+    startingLevel: 'ATSWA — ATS 3 (Exempted from ATS 1 & ATS 2)',
+    estimatedDuration: '~1.5 – 2 years to full ACA (ATS 3 → AAT → Skills → Professional)',
+    exemptedCodes: [],
+    atswaExemptedLevels: ['ATS 1', 'ATS 2'],
+    guidance:
+      'ND Accounting holders start directly from ATS 3 (exempted from ATS 1 and ATS 2 — writing Cost Accounting, Taxation, Auditing and Management). Upon passing ATS 3 and earning the AAT certificate, you progress directly into ICAN Skills and Professional Levels.',
+    conditions: [
+      'Recognised NBTE-accredited National Diploma (ND) in Accounting plus 5 O’Level credits incl. English & Mathematics.',
+      'Apply for ATS 1 & ATS 2 exemption during ATSWA registration before sitting ATS 3 (March or September diet).',
+    ],
+  },
+  {
+    id: 'nd_banking_finance',
+    label: 'ND Banking & Finance (ATSWA Undergraduate Entry Route)',
+    startingLevel: 'ATSWA — ATS 2 (Exempted from ATS 1)',
+    estimatedDuration: '~2 years to full ACA (ATS 2 → ATS 3 → AAT → Skills → Professional)',
+    exemptedCodes: [],
+    atswaExemptedLevels: ['ATS 1'],
+    guidance:
+      'ND Banking & Finance holders start from ATS 2 (exempted from ATS 1). You pass all 4 ATS 2 courses, advance to ATS 3 to earn the AAT certificate, and then progress to ICAN Skills and Professional Levels.',
+    conditions: [
+      'Recognised NBTE-accredited ND in Banking & Finance plus required O’Level credits.',
+      'You must pass all courses in ATS 2 before progressing to ATS 3.',
+    ],
+  },
+  {
+    id: 'olevel_or_nd_non_accounting',
+    label: "O'Level (WAEC/NECO/NABTEB) or ND Non-Accounting (ATSWA Route)",
+    startingLevel: 'ATSWA — ATS 1',
+    estimatedDuration: '~2.5 years full ATSWA-to-ACA route (without carryovers)',
+    exemptedCodes: [],
+    atswaExemptedLevels: [],
+    guidance:
+      'Undergraduates, school leavers with an O’Level result, and non-accounting ND holders start their ICAN journey via ATSWA at ATS 1 (BAPS, Economics, Business Law, Communication Skills), progress through ATS 2 and ATS 3 to earn the AAT certificate, and then advance to ICAN Skills and Professional Levels.',
+    conditions: [
+      "Minimum 5 O'Level credits including English Language and Mathematics in not more than two sittings.",
+      'Required ATS 1 documents: Passport photograph, O’Level result and Birth certificate.',
+      'You must pass all 4 courses in each ATS level before progressing to the next level.',
+    ],
+  },
+];
+
+export const ATSWA_ENTRY_PATHWAYS = [
+  {
+    id: 'entry-ats1',
+    qualification: "O'Level Result or ND (Non-Accounting)",
+    startAt: 'Start from ATS 1',
+    exemptions: 'No exemption — complete ATS 1 → ATS 2 → ATS 3',
+    nextStep: 'Earn AAT certificate → progress to ICAN Skills & Professional (~2.5 yrs total)',
+  },
+  {
+    id: 'entry-ats2',
+    qualification: 'ND Banking & Finance',
+    startAt: 'Start from ATS 2',
+    exemptions: 'Exempted from ATS 1 (4 papers)',
+    nextStep: 'Complete ATS 2 → ATS 3 → earn AAT → ICAN Skills & Professional',
+  },
+  {
+    id: 'entry-ats3',
+    qualification: 'ND Accounting',
+    startAt: 'Start from ATS 3',
+    exemptions: 'Exempted from ATS 1 & ATS 2 (8 papers)',
+    nextStep: 'Pass ATS 3 → earn AAT → ICAN Skills & Professional',
+  },
+];
+
+export const GRADUATE_ENTRY_PATHWAYS = [
+  {
+    id: 'grad-non-acct',
+    qualification: 'Graduate (Non-Accounting Discipline)',
+    startAt: 'Foundation Level',
+    exemptions: 'Direct graduate entry — no ATSWA required (subject exemptions where applicable)',
+    duration: '~1.5 years (without carryovers)',
+  },
+  {
+    id: 'grad-unaccredited',
+    qualification: 'B.Sc. / HND Accounting (Non-Accredited Institution)',
+    startAt: 'Foundation Level',
+    exemptions: 'Usually writes Management Accounting (MA) only at Foundation',
+    duration: '~1.5 years (without carryovers)',
+  },
+  {
+    id: 'grad-accredited',
+    qualification: 'B.Sc. / HND Accounting (ICAN-Accredited Institution)',
+    startAt: 'Skills Level',
+    exemptions: 'Exempted from all Foundation courses + Audit & Assurance (AAF)',
+    duration: '~1 year (without carryovers)',
+  },
+  {
+    id: 'grad-mcati',
+    qualification: 'B.Sc. / HND Accounting (MCATI Partner Institution)',
+    startAt: 'Professional Level',
+    exemptions: 'Exempted from Foundation & Skills — starts directly at final stage',
+    duration: '~6 months – 1 year (without carryovers)',
+  },
+];
+
+export const ICAN_REGISTRATION_PROCESS = {
+  firstTime: [
+    {
+      step: '01',
+      title: 'Student Registration',
+      detail: 'Register officially with ICAN and obtain your unique ICAN student registration number.',
+    },
+    {
+      step: '02',
+      title: 'Subscription & Development Levy',
+      detail: 'Pay your annual student subscription plus the one-time development levy.',
+    },
+    {
+      step: '03',
+      title: 'Exemption Processing (If Applicable)',
+      detail: 'Apply for and confirm eligible paper exemptions before selecting examination papers.',
+    },
+    {
+      step: '04',
+      title: 'Examination Registration',
+      detail: 'Register for the diet based on your confirmed papers (closes 1 week before Exam Day 1).',
+    },
+  ],
+  returning: [
+    {
+      step: '01',
+      title: 'Annual Subscription Renewal',
+      detail: 'Settle your annual student subscription if not already paid for the current year.',
+    },
+    {
+      step: '02',
+      title: 'Proceed to Examination Registration',
+      detail: 'Register for your next diet papers before registration closes 1 week prior to Exam Day 1.',
+    },
+  ],
+};
+
+export const ICAN_COMPLETION_TIMELINES = [
+  {
+    route: 'ATSWA Route (O’Level → AAT → ACA)',
+    diets: 'ATSWA: Mar & Sep · ICAN: May & Nov',
+    estimate: '~2.5 Years',
+    note: 'ATS 1 → ATS 3 (earn AAT), then ICAN Skills & Professional without carryovers.',
+  },
+  {
+    route: 'Graduate Starting from Foundation',
+    diets: 'ICAN: May & November (Twice Yearly)',
+    estimate: '~1.5 Years',
+    note: '3 diets clearing Foundation → Skills → Professional without carryovers.',
+  },
+  {
+    route: 'Graduate Starting from Skills',
+    diets: 'ICAN: May & November (Twice Yearly)',
+    estimate: '~1 Year',
+    note: 'ICAN-accredited Accounting graduates & AAT holders clearing Skills → Professional.',
+  },
+  {
+    route: 'MCATI Accounting Graduate (Professional)',
+    diets: 'ICAN: May & November (Twice Yearly)',
+    estimate: '~6 – 12 Months',
+    note: 'Direct entry into the 5 final Professional Level papers without carryovers.',
+  },
+];
+
+export const ICAN_CANDIDATE_FAQS = [
+  {
+    num: 1,
+    q: 'What is ICAN?',
+    a: 'The Institute of Chartered Accountants of Nigeria (ICAN) is Nigeria’s foremost professional accounting body. It awards the prestigious ACA (Associate Chartered Accountant) qualification to successful candidates.',
+  },
+  {
+    num: 2,
+    q: 'Who is eligible to enrol for the ICAN programme?',
+    a: 'Anyone interested in building a career in accounting and finance can enrol, including:',
+    bullets: [
+      'Graduates or current tertiary students of Accounting',
+      'Graduates or students from non-accounting disciplines transitioning into accounting',
+      "Undergraduates and school leavers holding a valid O'Level result (via the ATSWA route)",
+    ],
+  },
+  {
+    num: 3,
+    q: 'What are the ways to start my ICAN journey?',
+    a: 'There are two major entry routes into becoming a Chartered Accountant:',
+    bullets: [
+      "a) Undergraduate / ATSWA Route: Start via ICAN’s subsidiary scheme — ATSWA (Accounting Technicians Scheme West Africa) — with just an O'Level result. Progress from ATS 1 → ATS 3, earn the AAT certificate, and advance directly to the ICAN main levels (Skills and Professional).",
+      'b) Graduate Route: Graduates do not need to start from ATSWA. Depending on your qualification, course and institution’s accreditation status, you begin directly at Foundation Level, Skills Level or Professional Level.',
+    ],
+  },
+  {
+    num: 4,
+    q: 'How many levels are there in ATSWA and ICAN?',
+    a: 'Both programmes have 3 structured stages, and you must pass all courses in a level/stage before progressing to the next:',
+    bullets: [
+      'ATSWA (3 Levels — 4 courses each): ATS 1 (Basic Accounting Processes & Systems, Economics, Business Law, Communication Skills) → ATS 2 (Financial Accounting, Public Sector Accounting, Quantitative Analysis, Information Technology) → ATS 3 (Cost Accounting, Taxation, Auditing, Management).',
+      'ICAN (3 Stages — 15 courses total): Foundation Level (Management Accounting, Financial Accounting, Corporate & Business Law, Business Environment) → Skills Level (Financial Reporting, Performance Management, Public Sector Accounting & Finance, Financial Management, Taxation, Audit, Assurance & Forensics) → Professional Level (Strategic Business Reporting, Strategic Financial Management, Advanced Taxation, Advanced Audit, Assurance & Forensics, Case Study).',
+    ],
+  },
+  {
+    num: 5,
+    q: 'How do I know the level I should start from?',
+    a: 'Your entry level depends on whether you are entering as an undergraduate/ND holder or as a B.Sc./HND graduate:',
+    bullets: [
+      "O'Level or ND (Non-Accounting): Start from ATS 1.",
+      'ND Banking & Finance: Start from ATS 2 (exempted from ATS 1).',
+      'ND Accounting: Start from ATS 3 (exempted from ATS 1 & ATS 2).',
+      'B.Sc./HND Accounting (Non-Accredited Institution): Start from Foundation Level (usually writing Management Accounting only).',
+      'B.Sc./HND Accounting (ICAN-Accredited Institution): Start from Skills Level (exempted from Foundation Level and Audit & Assurance).',
+      'B.Sc./HND Accounting (Accredited Institution with MCATI Agreement): Start directly from Professional Level.',
+      'B.Sc./HND Non-Accounting Discipline: Start from Foundation Level.',
+    ],
+  },
+  {
+    num: 6,
+    q: 'How do I check my official ICAN exemption status?',
+    a: 'Visit ICAN’s official website and follow these 4 simple steps (or preview your estimate using VALENCE’s Exemption Guidance Tool):',
+    bullets: [
+      '1. Go to Students on the ICAN website',
+      '2. Click Exemptions',
+      '3. Select Professional',
+      '4. Click Professional Exemption Guide',
+    ],
+    links: [
+      { label: 'Official ICAN Website (icanig.org/ican)', url: 'https://icanig.org/ican/' },
+    ],
+  },
+  {
+    num: 7,
+    q: 'How do I check if my school is ICAN-accredited or has an MCATI agreement?',
+    a: 'Open the official ICAN directory links below to check your institution’s name and accreditation status. Kindly note that Accredited and MCATI lists apply specifically to graduates of Accounting:',
+    links: [
+      {
+        label: 'Check ICAN Accredited Institutions List (PDF)',
+        url: 'https://icanig.org/ican/assets/docs/documents/Accredited_institutions_0425.pdf',
+      },
+      {
+        label: 'Check ICAN MCATI Partner Institutions List (PDF)',
+        url: 'https://icanig.org/ican/assets/docs/documents/MCATI_LIST_UPDATED_MAY_2024.pdf',
+      },
+    ],
+  },
+  {
+    num: 8,
+    q: 'What is the process for registering for ICAN exams?',
+    a: 'The registration sequence differs slightly for first-time and returning candidates (note: exam registration closes 1 week before Exam Day 1):',
+    bullets: [
+      'First-Time Students: (1) Student Registration to obtain your ICAN registration number → (2) Pay Annual Subscription & one-time Development Levy → (3) Complete Exemption Processing (if applicable) → (4) Exam Registration based on your confirmed number of papers.',
+      'Returning Students: (1) Pay your Annual Subscription (if not already paid) → (2) Proceed directly to Exam Registration.',
+    ],
+  },
+  {
+    num: 9,
+    q: 'How long does it take to complete the ICAN programme?',
+    a: 'Examinations hold twice every year — ATSWA in March & September (2 exam days: second-to-last Tue & Wed) and ICAN in May & November (3 exam days: first Tue, Wed & Thu). Estimated completion time without carryovers:',
+    bullets: [
+      'ATSWA Route (O’Level → AAT → ACA): ~2.5 years',
+      'Graduate starting from Foundation Level: ~1.5 years',
+      'Graduate starting from Skills Level: ~1 year',
+      'Accounting graduate from an MCATI institution (starting at Professional): ~6 months – 1 year',
+    ],
+  },
+  {
+    num: 10,
+    q: 'Is ICAN difficult?',
+    a: 'Yes and No. ICAN is rigorously examined, but with structured preparation, consistent daily study, strong interest and discipline, it is completely achievable.',
+    tagline: '“If I can, you CAN — that’s why it’s ICAN.”',
   },
 ];
 

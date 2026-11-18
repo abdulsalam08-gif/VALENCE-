@@ -107,6 +107,24 @@ export default function Footer() {
               >
                 ICAN 2026 Official Syllabus (PDF) <ExternalLink className="h-3 w-3" />
               </a>
+              <br />
+              <a
+                href={settings.officialLinks.icanAccreditedInstitutions}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-[11px] text-[#9AA4B2] hover:text-[#16C784] transition-colors"
+              >
+                ICAN Accredited Institutions (PDF) <ExternalLink className="h-3 w-3" />
+              </a>
+              <br />
+              <a
+                href={settings.officialLinks.icanMcatiInstitutions}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-[11px] text-[#9AA4B2] hover:text-[#16C784] transition-colors"
+              >
+                ICAN MCATI Institutions List (PDF) <ExternalLink className="h-3 w-3" />
+              </a>
             </div>
           </div>
         </div>

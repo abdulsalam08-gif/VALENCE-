@@ -13,6 +13,10 @@ import {
   CheckCircle2,
   FileCheck2,
   Clock,
+  HelpCircle,
+  ChevronDown,
+  ClipboardList,
+  Sparkles,
 } from 'lucide-react';
 import { usePlatform } from '../context/PlatformContext';
 import { useToast } from '../context/ToastContext';
@@ -33,6 +37,9 @@ export default function IcanPage() {
     icanLevels,
     allIcanCourses,
     exemptionRules,
+    candidateFaqs,
+    icanRegistrationProcess,
+    completionTimelines,
     sessions,
     settings,
     isLevelUnlocked,
@@ -45,25 +52,30 @@ export default function IcanPage() {
     [sessions]
   );
 
-  const activeTab = ['foundation', 'skills', 'professional', 'exemptions'].includes(levelSlug)
+  const activeTab = ['foundation', 'skills', 'professional', 'exemptions', 'guide'].includes(
+    levelSlug
+  )
     ? levelSlug
     : 'foundation';
 
+  const isLevelTab = ['foundation', 'skills', 'professional'].includes(activeTab);
   const activeLevel = icanLevels.find((l) => l.slug === activeTab) || icanLevels[0];
   const [selectedDietId, setSelectedDietId] = useState(icanSessions[0]?.id || 'ican-may-2027');
   const [selectedCourseIds, setSelectedCourseIds] = useState(() =>
     activeLevel.courses.slice(0, 3).map((c) => c.id)
   );
+  const [expandAllFaqs, setExpandAllFaqs] = useState(true);
+  const [openFaqNum, setOpenFaqNum] = useState(1);
 
   useEffect(() => {
-    if (activeTab !== 'exemptions') {
+    if (isLevelTab) {
       const lvl = icanLevels.find((l) => l.slug === activeTab) || icanLevels[0];
       setSelectedCourseIds(lvl.courses.slice(0, Math.min(3, lvl.courses.length)).map((c) => c.id));
     }
-  }, [activeTab, icanLevels]);
+  }, [activeTab, isLevelTab, icanLevels]);
 
   const [exInput, setExInput] = useState({
-    qualificationKey: 'aat_atswa',
+    qualificationKey: 'bsc_hnd_accounting_accredited',
     institution: '',
     graduationYear: '2025',
     courseStudied: 'Accounting',
@@ -102,17 +114,33 @@ export default function IcanPage() {
     const res = evaluateIcanExemptions(exInput, allIcanCourses, exemptionRules);
     setExResult(res);
     toast.success(
-      'Exemption Estimate Generated',
-      `${res.potentialExemptions.length} potential exemptions · ${res.remainingCourses.length} remaining papers.`
+      `Recommended Start: ${res.startingLevel}`,
+      res.isAtswaRoute
+        ? `${res.atswaExemptedLevels.length} ATSWA level(s) exempted · ${res.estimatedDuration}`
+        : `${res.potentialExemptions.length} potential exemptions · ${res.remainingCourses.length} remaining ICAN papers.`
     );
   };
 
   const whatsappEnquiryButtons = [
     { label: 'ICAN Registration Enquiry', category: 'ICAN Official Registration Fee Assistance' },
     { label: 'Examination Fee Enquiry', category: 'ICAN Official Examination Fee Assistance' },
-    { label: 'Annual Subscription Enquiry', category: 'ICAN Official Annual Subscription Assistance' },
+    { label: 'Subscription & Dev. Levy Enquiry', category: 'ICAN Official Annual Subscription & Levy Assistance' },
     { label: 'Physical Tuition Application', category: 'Physical Tuition Application Enquiry' },
   ];
+
+  const pageHeading =
+    activeTab === 'exemptions'
+      ? 'ICAN Exemption & Starting-Level Guide'
+      : activeTab === 'guide'
+      ? 'Prospective ICAN Candidate Guide — 10 FAQs'
+      : activeLevel.name;
+
+  const pageSubtitle =
+    activeTab === 'exemptions'
+      ? 'Find your exact entry stage across O’Level/ND (ATSWA), Non-Accredited, ICAN-Accredited and MCATI Accounting degrees — plus direct official ICAN accreditation & MCATI directory checks.'
+      : activeTab === 'guide'
+      ? 'Everything prospective candidates need to know about ACA eligibility, ATSWA vs Graduate entry routes, levels, Accredited & MCATI school checks, exam registration steps and completion timelines.'
+      : `${activeLevel.tagline} Progression requires clearing all papers in a stage before advancing. Join VALENCE free — pay the one-time ₦3,000 registration only if applying for tuition and unlocking your cost implication.`;
 
   return (
     <div className="divide-y divide-white/[0.06]">
@@ -122,26 +150,38 @@ export default function IcanPage() {
             <div className="space-y-3 max-w-3xl">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="green">ICAN · MAY & NOVEMBER DIETS (3 EXAM DAYS)</Badge>
-                <Badge variant="neutral">1st Tue, Wed & Thu · Central Authority Updated</Badge>
+                <Badge variant="neutral">ACA Qualification · Central Authority Updated</Badge>
               </div>
               <h1 className="font-display text-3xl sm:text-5xl font-bold text-white">
-                {activeTab === 'exemptions' ? 'ICAN Exemption Guidance Tool' : activeLevel.name}
+                {pageHeading}
               </h1>
-              <p className="text-sm sm:text-base text-[#9AA4B2]">
-                {activeTab === 'exemptions'
-                  ? 'Select your Nigerian university or technical qualification to estimate potential ICAN exemptions, remaining courses and official conditions.'
-                  : `${activeLevel.tagline} Join VALENCE free — pay the one-time ₦3,000 registration for this level only if applying for tuition and unlocking your cost implication.`}
-              </p>
+              <p className="text-sm sm:text-base text-[#9AA4B2]">{pageSubtitle}</p>
             </div>
 
-            <div className="flex flex-wrap gap-2.5">
+            <div className="flex flex-wrap gap-2">
               <a
                 href={settings.officialLinks.icanSyllabus2026}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="v-btn-secondary text-xs"
               >
-                2026 ICAN Syllabus PDF <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
+                2026 Syllabus PDF <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
+              </a>
+              <a
+                href={settings.officialLinks.icanAccreditedInstitutions}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="v-btn-secondary text-xs"
+              >
+                Accredited Schools <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
+              </a>
+              <a
+                href={settings.officialLinks.icanMcatiInstitutions}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="v-btn-secondary text-xs"
+              >
+                MCATI List <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
               </a>
               <a
                 href={settings.officialLinks.icanExamDockets}
@@ -149,11 +189,12 @@ export default function IcanPage() {
                 rel="noopener noreferrer"
                 className="v-btn-secondary text-xs"
               >
-                Official Exam Dockets <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
+                Exam Dockets <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
               </a>
             </div>
           </div>
 
+          {/* Sub-navigation Tabs */}
           <div className="flex flex-wrap gap-2 pt-1">
             {icanLevels.map((lvl) => (
               <button
@@ -179,16 +220,28 @@ export default function IcanPage() {
               }`}
             >
               <Scale className="h-4 w-4" />
-              Exemption Guidance Tool
+              Exemption & Entry Tool
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate('/programmes/ican/guide')}
+              className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-xs sm:text-sm font-display font-bold transition-all border ${
+                activeTab === 'guide'
+                  ? 'bg-[#16C784] text-[#06130D] border-[#16C784] shadow-glow-sm'
+                  : 'bg-[#11161C] text-[#C2C9D4] border-white/[0.08] hover:border-white/[0.2]'
+              }`}
+            >
+              <HelpCircle className="h-4 w-4" />
+              Candidate Guide (10 FAQs)
             </button>
           </div>
         </div>
       </section>
 
-      {activeTab !== 'exemptions' ? (
+      {isLevelTab && (
         <section className="py-14 sm:py-18">
           <div className="v-container grid grid-cols-1 lg:grid-cols-12 gap-7 items-start">
-            {/* Left: Courses, 3-Day Timetable & WhatsApp Official Fee Desk */}
+            {/* Left: Courses, 3-Day Timetable, Registration Process & WhatsApp Desk */}
             <div className="lg:col-span-7 space-y-6">
               <div className="v-card p-6 space-y-5">
                 <div className="flex flex-wrap items-center justify-between gap-3">
@@ -197,7 +250,7 @@ export default function IcanPage() {
                       {activeLevel.shortName} Level Syllabus Courses
                     </h2>
                     <p className="text-xs text-[#9AA4B2] mt-0.5">
-                      Tick your intended papers · Selecting 3 or more papers qualifies for an automatic 25% online tuition discount upon unlocking.
+                      Clear all papers in this stage to advance · Selecting 3+ papers qualifies for an automatic 25% online tuition discount upon unlocking.
                     </p>
                   </div>
                   <button
@@ -312,8 +365,57 @@ export default function IcanPage() {
                   ))}
                 </div>
                 <p className="text-[11px] text-[#667085]">
-                  Published by VALENCE Central Examination Authority. Because ICAN may revise exam dates, paper slots or the 30-day result release date, updates post automatically here and to candidate notifications.
+                  Published by VALENCE Central Examination Authority. Whenever ICAN revises exam dates, paper slots or the 30-day result release date, updates reflect automatically here and across candidate notifications.
                 </p>
+              </div>
+
+              {/* Official ICAN Exam Registration Process (First-Time vs Returning) */}
+              <div className="v-card p-6 space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h3 className="font-display text-lg font-bold text-white flex items-center gap-2">
+                    <ClipboardList className="h-4 w-4 text-[#16C784]" /> ICAN Exam Registration Process
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => navigate('/programmes/ican/guide')}
+                    className="text-xs font-semibold text-[#16C784] hover:underline"
+                  >
+                    Read Full 10-FAQ Guide →
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                  <div className="rounded-xl bg-[#0B0E11] border border-white/[0.07] p-4 space-y-2.5">
+                    <p className="font-display font-bold text-[#16C784]">For First-Time Students</p>
+                    <ol className="space-y-2 text-[#C2C9D4]">
+                      {icanRegistrationProcess.firstTime.map((s) => (
+                        <li key={s.step}>
+                          <strong className="text-white">{s.step}. {s.title}:</strong>{' '}
+                          <span className="text-[#9AA4B2]">{s.detail}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                  <div className="rounded-xl bg-[#0B0E11] border border-white/[0.07] p-4 flex flex-col justify-between gap-3">
+                    <div className="space-y-2.5">
+                      <p className="font-display font-bold text-white">For Returning Students</p>
+                      <ol className="space-y-2 text-[#C2C9D4]">
+                        {icanRegistrationProcess.returning.map((s) => (
+                          <li key={s.step}>
+                            <strong className="text-white">{s.step}. {s.title}:</strong>{' '}
+                            <span className="text-[#9AA4B2]">{s.detail}</span>
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+                    <p className="text-[11px] text-[#9AA4B2] border-t border-white/[0.06] pt-2.5">
+                      Typical completion without carryovers:{' '}
+                      <strong className="text-[#16C784]">~1.5 yrs</strong> from Foundation ·{' '}
+                      <strong className="text-[#16C784]">~1 yr</strong> from Skills ·{' '}
+                      <strong className="text-[#16C784]">~6–12 mos</strong> via MCATI.
+                    </p>
+                  </div>
+                </div>
               </div>
 
               {/* Official ICAN Fees & Physical Tuition via WhatsApp */}
@@ -323,7 +425,7 @@ export default function IcanPage() {
                   Official ICAN Fees & Physical Tuition Enquiries
                 </h3>
                 <p className="text-xs leading-relaxed text-[#9AA4B2]">
-                  Official ICAN registration, examination and annual subscription fees — plus physical tuition applications — are handled via prefilled WhatsApp enquiries. Online tuition and level unlocks run strictly via Paystack.
+                  Official ICAN student registration, annual subscription & one-time development levy, exemption processing and exam fee assistance — plus physical tuition applications — are handled via prefilled WhatsApp enquiries. Online tuition and level unlocks run strictly via Paystack.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {whatsappEnquiryButtons.map((btn) => (
@@ -476,220 +578,487 @@ export default function IcanPage() {
             </div>
           </div>
         </section>
-      ) : (
-        /* ICAN EXEMPTION GUIDANCE TOOL WITH ALL NIGERIAN UNIVERSITIES SELECTOR */
+      )}
+
+      {activeTab === 'exemptions' && (
+        /* ICAN EXEMPTION & STARTING-LEVEL GUIDANCE TOOL */
         <section className="py-14 sm:py-18">
-          <div className="v-container grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            <form onSubmit={runExemptionCheck} className="lg:col-span-6 v-card p-6 sm:p-7 space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className="font-display text-xl font-bold text-white">
-                  Candidate Qualification Profile
-                </h2>
-                <Badge variant="green">Free Advisory Tool</Badge>
-              </div>
-
-              <div>
-                <label className="v-label" htmlFor="ex-qual">Highest Academic / Technical Qualification</label>
-                <select
-                  id="ex-qual"
-                  value={exInput.qualificationKey}
-                  onChange={(e) => setExInput({ ...exInput, qualificationKey: e.target.value })}
-                  className="v-input"
-                >
-                  {exemptionRules.map((r) => (
-                    <option key={r.id} value={r.id}>
-                      {r.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <UniversitySelect
-                id="ex-university"
-                label="Awarding Nigerian University / Institution"
-                value={exInput.institution}
-                onChange={(val) => setExInput({ ...exInput, institution: val })}
-              />
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div>
-                  <label className="v-label" htmlFor="ex-year">Graduation Year</label>
-                  <input
-                    id="ex-year"
-                    type="number"
-                    min="1980"
-                    max="2030"
-                    value={exInput.graduationYear}
-                    onChange={(e) => setExInput({ ...exInput, graduationYear: e.target.value })}
-                    className="v-input"
-                  />
+          <div className="v-container space-y-8">
+            {/* Official ICAN Accreditation, MCATI & Exemption Verification Strip */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <a
+                href={settings.officialLinks.icanWebsite}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="v-card-hover p-5 space-y-2"
+              >
+                <div className="flex items-center justify-between">
+                  <Badge variant="green">Official Exemption Portal</Badge>
+                  <ExternalLink className="h-4 w-4 text-[#16C784]" />
                 </div>
-                <div>
-                  <label className="v-label" htmlFor="ex-course">Course Studied</label>
-                  <input
-                    id="ex-course"
-                    type="text"
-                    value={exInput.courseStudied}
-                    onChange={(e) => setExInput({ ...exInput, courseStudied: e.target.value })}
-                    placeholder="e.g. Accounting"
-                    className="v-input"
-                  />
+                <h3 className="font-display text-sm font-bold text-white">
+                  4-Step Official ICAN Exemption Check
+                </h3>
+                <p className="text-xs text-[#9AA4B2]">
+                  Visit <strong className="text-white">icanig.org/ican</strong> → Students → Exemptions → Professional → Professional Exemption Guide.
+                </p>
+              </a>
+
+              <a
+                href={settings.officialLinks.icanAccreditedInstitutions}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="v-card-hover p-5 space-y-2"
+              >
+                <div className="flex items-center justify-between">
+                  <Badge variant="verified">Skills Entry · Accounting</Badge>
+                  <ExternalLink className="h-4 w-4 text-[#16C784]" />
                 </div>
+                <h3 className="font-display text-sm font-bold text-white">
+                  Check ICAN-Accredited Institutions (PDF)
+                </h3>
+                <p className="text-xs text-[#9AA4B2]">
+                  For Accounting graduates only: accredited graduates start at <strong className="text-[#16C784]">Skills Level</strong> (exempted from Foundation + AAF).
+                </p>
+              </a>
+
+              <a
+                href={settings.officialLinks.icanMcatiInstitutions}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="v-card-hover p-5 space-y-2"
+              >
+                <div className="flex items-center justify-between">
+                  <Badge variant="verified">Professional Entry · MCATI</Badge>
+                  <ExternalLink className="h-4 w-4 text-[#16C784]" />
+                </div>
+                <h3 className="font-display text-sm font-bold text-white">
+                  Check MCATI Partner Institutions (PDF)
+                </h3>
+                <p className="text-xs text-[#9AA4B2]">
+                  For Accounting graduates only: MCATI graduates start directly at <strong className="text-[#16C784]">Professional Level</strong>.
+                </p>
+              </a>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              <form onSubmit={runExemptionCheck} className="lg:col-span-6 v-card p-6 sm:p-7 space-y-4">
+                <div className="flex items-center justify-between">
+                  <h2 className="font-display text-xl font-bold text-white">
+                    Qualification & Starting-Level Check
+                  </h2>
+                  <Badge variant="green">Free Advisory Tool</Badge>
+                </div>
+
                 <div>
-                  <label className="v-label" htmlFor="ex-pro">Prof. Credential</label>
+                  <label className="v-label" htmlFor="ex-qual">
+                    Entry Route & Academic / Technical Qualification
+                  </label>
                   <select
-                    id="ex-pro"
-                    value={exInput.professionalQualification}
-                    onChange={(e) =>
-                      setExInput({ ...exInput, professionalQualification: e.target.value })
-                    }
-                    className="v-input"
+                    id="ex-qual"
+                    value={exInput.qualificationKey}
+                    onChange={(e) => setExInput({ ...exInput, qualificationKey: e.target.value })}
+                    className="v-input text-xs"
                   >
-                    <option value="NONE">None</option>
-                    <option value="ACCA_AFFILIATE_MEMBER">ACCA</option>
-                    <option value="CITN_ACTI">CITN (ACTI)</option>
-                    <option value="CIMA_ACMA">CIMA</option>
+                    {exemptionRules.map((r) => (
+                      <option key={r.id} value={r.id}>
+                        {r.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
-              </div>
 
-              <div>
-                <span className="v-label">Previous ICAN Examination History (Tick Passed Papers)</span>
-                <div className="flex flex-wrap gap-1.5 mt-1">
-                  {allIcanCourses.map((c) => {
-                    const active = exInput.priorPassedCodes.includes(c.code);
-                    return (
-                      <button
-                        key={c.code}
-                        type="button"
-                        onClick={() => togglePriorPaper(c.code)}
-                        className={`rounded-lg px-2.5 py-1 text-xs font-display font-semibold border transition-colors ${
-                          active
-                            ? 'bg-[#16C784] text-[#06130D] border-[#16C784]'
-                            : 'bg-[#0B0E11] text-[#9AA4B2] border-white/[0.08] hover:text-white'
-                        }`}
-                      >
-                        {c.code}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div>
-                <label className="v-label" htmlFor="ex-docs">Supporting Documents Available</label>
-                <input
-                  id="ex-docs"
-                  type="text"
-                  value={exInput.supportingDocNote}
-                  onChange={(e) => setExInput({ ...exInput, supportingDocNote: e.target.value })}
-                  placeholder="e.g. Official transcript, AAT certificate, NYSC discharge"
-                  className="v-input"
+                <UniversitySelect
+                  id="ex-university"
+                  label="Awarding Nigerian University / Polytechnic / Institution"
+                  value={exInput.institution}
+                  onChange={(val) => setExInput({ ...exInput, institution: val })}
                 />
-              </div>
 
-              <button type="submit" className="v-btn-primary w-full py-3">
-                <Scale className="h-4 w-4" /> Evaluate Potential Exemptions
-              </button>
-            </form>
-
-            <div className="lg:col-span-6 space-y-5">
-              {!exResult ? (
-                <div className="v-card p-8 text-center space-y-4">
-                  <div className="mx-auto h-12 w-12 rounded-2xl bg-[#16C784]/12 border border-[#16C784]/25 flex items-center justify-center text-[#16C784]">
-                    <FileCheck2 className="h-6 w-6" />
-                  </div>
-                  <h3 className="font-display text-xl font-bold text-white">
-                    Ready to Assess Your Qualification
-                  </h3>
-                  <p className="text-xs sm:text-sm text-[#9AA4B2] max-w-md mx-auto">
-                    Choose from our embedded directory of all Nigerian universities, enter your graduation details and view estimated ICAN paper exemptions, remaining papers and conditions.
-                  </p>
-                  <p className="text-[11px] text-[#667085]">
-                    ICAN holds sole authority for final exemption decisions. VALENCE never automatically removes a course from enrolment.
-                  </p>
-                </div>
-              ) : (
-                <div className="v-card p-6 sm:p-7 space-y-5 animate-fade-up">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <Badge variant="green">Exemption Assessment Output</Badge>
-                    <span className="text-xs text-[#9AA4B2]">
-                      {exInput.institution || 'Candidate Assessment'} ({exInput.graduationYear})
-                    </span>
-                  </div>
-
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
-                    <h3 className="font-display text-lg font-bold text-white">
-                      {exResult.ruleTitle}
-                    </h3>
-                    <p className="mt-1 text-xs leading-relaxed text-[#9AA4B2]">
-                      {exResult.guidance}
-                    </p>
+                    <label className="v-label" htmlFor="ex-year">Graduation Year</label>
+                    <input
+                      id="ex-year"
+                      type="number"
+                      min="1980"
+                      max="2032"
+                      value={exInput.graduationYear}
+                      onChange={(e) => setExInput({ ...exInput, graduationYear: e.target.value })}
+                      className="v-input"
+                    />
                   </div>
+                  <div>
+                    <label className="v-label" htmlFor="ex-course">Course Studied</label>
+                    <input
+                      id="ex-course"
+                      type="text"
+                      value={exInput.courseStudied}
+                      onChange={(e) => setExInput({ ...exInput, courseStudied: e.target.value })}
+                      placeholder="e.g. Accounting"
+                      className="v-input"
+                    />
+                  </div>
+                  <div>
+                    <label className="v-label" htmlFor="ex-pro">Prof. Credential</label>
+                    <select
+                      id="ex-pro"
+                      value={exInput.professionalQualification}
+                      onChange={(e) =>
+                        setExInput({ ...exInput, professionalQualification: e.target.value })
+                      }
+                      className="v-input"
+                    >
+                      <option value="NONE">None</option>
+                      <option value="ACCA_AFFILIATE_MEMBER">ACCA</option>
+                      <option value="CITN_ACTI">CITN (ACTI)</option>
+                      <option value="CIMA_ACMA">CIMA</option>
+                    </select>
+                  </div>
+                </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="rounded-xl bg-[#0B0E11] border border-[#16C784]/25 p-4 space-y-2.5">
-                      <p className="text-xs font-bold text-[#16C784]">
-                        Potential Exemptions ({exResult.potentialExemptions.length})
-                      </p>
-                      {exResult.potentialExemptions.length === 0 ? (
+                <div>
+                  <span className="v-label">Previous ICAN Examination History (Tick Passed Papers)</span>
+                  <div className="flex flex-wrap gap-1.5 mt-1">
+                    {allIcanCourses.map((c) => {
+                      const active = exInput.priorPassedCodes.includes(c.code);
+                      return (
+                        <button
+                          key={c.code}
+                          type="button"
+                          onClick={() => togglePriorPaper(c.code)}
+                          className={`rounded-lg px-2.5 py-1 text-xs font-display font-semibold border transition-colors ${
+                            active
+                              ? 'bg-[#16C784] text-[#06130D] border-[#16C784]'
+                              : 'bg-[#0B0E11] text-[#9AA4B2] border-white/[0.08] hover:text-white'
+                          }`}
+                        >
+                          {c.code}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="v-label" htmlFor="ex-docs">Supporting Documents Available</label>
+                  <input
+                    id="ex-docs"
+                    type="text"
+                    value={exInput.supportingDocNote}
+                    onChange={(e) => setExInput({ ...exInput, supportingDocNote: e.target.value })}
+                    placeholder="e.g. Official transcript, ND/AAT/BSc certificate, NYSC discharge"
+                    className="v-input"
+                  />
+                </div>
+
+                <button type="submit" className="v-btn-primary w-full py-3">
+                  <Scale className="h-4 w-4" /> Check Starting Level & Potential Exemptions
+                </button>
+              </form>
+
+              <div className="lg:col-span-6 space-y-5">
+                {!exResult ? (
+                  <div className="v-card p-7 space-y-5">
+                    <div className="flex items-center gap-3">
+                      <div className="h-11 w-11 rounded-2xl bg-[#16C784]/12 border border-[#16C784]/25 flex items-center justify-center text-[#16C784] shrink-0">
+                        <FileCheck2 className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <h3 className="font-display text-lg font-bold text-white">
+                          Quick Starting-Level Summary
+                        </h3>
                         <p className="text-xs text-[#9AA4B2]">
-                          No standard automatic exemptions — commence from Foundation Level.
+                          Run the form on the left for your full paper-by-paper breakdown.
                         </p>
-                      ) : (
-                        <ul className="space-y-1 text-xs text-[#D5DBE3]">
-                          {exResult.potentialExemptions.map((c) => (
-                            <li key={c.code} className="flex items-center justify-between">
-                              <span>{c.title}</span>
-                              <span className="text-[#16C784] font-display font-semibold">{c.code}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
+                      </div>
                     </div>
 
-                    <div className="rounded-xl bg-[#0B0E11] border border-white/[0.08] p-4 space-y-2.5">
-                      <p className="text-xs font-bold text-white">
-                        Remaining Courses to Write ({exResult.remainingCourses.length})
+                    <div className="space-y-2 text-xs">
+                      {[
+                        { q: "O'Level or ND (Non-Accounting)", start: 'Start from ATS 1 (~2.5 yrs)' },
+                        { q: 'ND Banking & Finance', start: 'Start from ATS 2 (Exempt ATS 1)' },
+                        { q: 'ND Accounting', start: 'Start from ATS 3 (Exempt ATS 1 & 2)' },
+                        { q: 'B.Sc./HND Non-Accounting', start: 'Start from Foundation (~1.5 yrs)' },
+                        { q: 'Accounting (Non-Accredited School)', start: 'Foundation (usually MA only)' },
+                        { q: 'Accounting (ICAN-Accredited School)', start: 'Skills (Exempt Foundation + AAF · ~1 yr)' },
+                        { q: 'Accounting (MCATI Partner School)', start: 'Direct to Professional Level' },
+                      ].map((row) => (
+                        <div
+                          key={row.q}
+                          className="rounded-xl bg-[#0B0E11] border border-white/[0.07] px-3.5 py-2.5 flex flex-wrap items-center justify-between gap-2"
+                        >
+                          <span className="text-[#D5DBE3] font-medium">{row.q}</span>
+                          <span className="font-display font-bold text-[#16C784]">{row.start}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <p className="text-[11px] text-[#667085]">
+                      ICAN holds sole authority for final exemption approvals. VALENCE never automatically removes a course from enrolment.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="v-card p-6 sm:p-7 space-y-5 animate-fade-up">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <Badge variant="green">Exemption & Entry Output</Badge>
+                      <span className="text-xs text-[#9AA4B2]">
+                        {exInput.institution || 'Candidate Assessment'} ({exInput.graduationYear})
+                      </span>
+                    </div>
+
+                    {/* Recommended Starting Level & Completion Estimate */}
+                    <div className="rounded-2xl bg-[#16C784]/10 border border-[#16C784]/35 p-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                      <div>
+                        <span className="text-[10.5px] uppercase tracking-wider text-[#9AA4B2] block">
+                          Recommended Starting Stage
+                        </span>
+                        <span className="font-display text-sm font-bold text-[#16C784]">
+                          {exResult.startingLevel}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-[10.5px] uppercase tracking-wider text-[#9AA4B2] block">
+                          Estimated Time (No Carryovers)
+                        </span>
+                        <span className="font-display text-sm font-bold text-white">
+                          {exResult.estimatedDuration}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="font-display text-base font-bold text-white">
+                        {exResult.ruleTitle}
+                      </h3>
+                      <p className="mt-1 text-xs leading-relaxed text-[#9AA4B2]">
+                        {exResult.guidance}
                       </p>
-                      <ul className="space-y-1 text-xs text-[#9AA4B2]">
-                        {exResult.remainingCourses.map((c) => (
-                          <li key={c.code} className="flex items-center justify-between">
-                            <span className="text-[#D5DBE3]">{c.title}</span>
-                            <span className="text-[10.5px] text-[#9AA4B2]">{c.level}</span>
+                    </div>
+
+                    {exResult.isAtswaRoute ? (
+                      <div className="rounded-xl bg-[#0B0E11] border border-[#16C784]/25 p-4 space-y-2 text-xs">
+                        <p className="font-bold text-[#16C784]">ATSWA Entry Pathway</p>
+                        <p className="text-[#D5DBE3]">
+                          {exResult.atswaExemptedLevels.length > 0
+                            ? `Potential ATSWA Exemptions: ${exResult.atswaExemptedLevels.join(', ')}. Complete remaining ATSWA level(s) to earn your AAT certificate, then advance to ICAN Skills & Professional.`
+                            : 'Commence at ATS 1 → ATS 2 → ATS 3 to earn your AAT certificate, then advance directly to ICAN Skills & Professional.'}
+                        </p>
+                        <Link
+                          to="/programmes/atswa"
+                          className="inline-flex items-center gap-1 font-semibold text-[#16C784] hover:underline pt-1"
+                        >
+                          Go to ATSWA Programme Page <ArrowRight className="h-3.5 w-3.5" />
+                        </Link>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="rounded-xl bg-[#0B0E11] border border-[#16C784]/25 p-4 space-y-2.5">
+                          <p className="text-xs font-bold text-[#16C784]">
+                            Potential Exemptions ({exResult.potentialExemptions.length})
+                          </p>
+                          {exResult.potentialExemptions.length === 0 ? (
+                            <p className="text-xs text-[#9AA4B2]">
+                              No standard automatic exemptions — commence from Foundation Level (all 4 courses).
+                            </p>
+                          ) : (
+                            <ul className="space-y-1 text-xs text-[#D5DBE3]">
+                              {exResult.potentialExemptions.map((c) => (
+                                <li key={c.code} className="flex items-center justify-between gap-2">
+                                  <span className="truncate">{c.title}</span>
+                                  <span className="text-[#16C784] font-display font-semibold shrink-0">
+                                    {c.code}
+                                  </span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+
+                        <div className="rounded-xl bg-[#0B0E11] border border-white/[0.08] p-4 space-y-2.5">
+                          <p className="text-xs font-bold text-white">
+                            Remaining Papers to Write ({exResult.remainingCourses.length})
+                          </p>
+                          <ul className="space-y-1 text-xs text-[#9AA4B2]">
+                            {exResult.remainingCourses.map((c) => (
+                              <li key={c.code} className="flex items-center justify-between gap-2">
+                                <span className="text-[#D5DBE3] truncate">{c.title}</span>
+                                <span className="text-[10.5px] text-[#9AA4B2] shrink-0">{c.level}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="space-y-2">
+                      <p className="text-xs font-bold text-white">Relevant Conditions:</p>
+                      <ul className="space-y-1.5 text-xs text-[#9AA4B2]">
+                        {exResult.conditions.map((cond) => (
+                          <li key={cond} className="flex items-start gap-2">
+                            <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784] shrink-0 mt-0.5" />
+                            <span>{cond}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
-                  </div>
 
-                  <div className="space-y-2">
-                    <p className="text-xs font-bold text-white">Relevant Conditions:</p>
-                    <ul className="space-y-1.5 text-xs text-[#9AA4B2]">
-                      {exResult.conditions.map((cond) => (
-                        <li key={cond} className="flex items-start gap-2">
-                          <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784] shrink-0 mt-0.5" />
-                          <span>{cond}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                    <div className="space-y-2">
+                      <p className="text-xs font-bold text-white">Recommended Next Steps:</p>
+                      <ol className="space-y-1.5 text-xs text-[#9AA4B2] list-decimal list-inside">
+                        {exResult.nextSteps.map((st) => (
+                          <li key={st}>{st}</li>
+                        ))}
+                      </ol>
+                    </div>
 
-                  <div className="space-y-2">
-                    <p className="text-xs font-bold text-white">Recommended Next Steps:</p>
-                    <ol className="space-y-1.5 text-xs text-[#9AA4B2] list-decimal list-inside">
-                      {exResult.nextSteps.map((st) => (
-                        <li key={st}>{st}</li>
-                      ))}
-                    </ol>
+                    <div className="rounded-xl bg-[#EA3943]/10 border border-[#EA3943]/30 p-3.5 flex items-start gap-2.5 text-xs text-[#F4F6F9]">
+                      <AlertTriangle className="h-4 w-4 text-[#EA3943] shrink-0 mt-0.5" />
+                      <p>{exResult.disclaimer}</p>
+                    </div>
                   </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
-                  <div className="rounded-xl bg-[#EA3943]/10 border border-[#EA3943]/30 p-3.5 flex items-start gap-2.5 text-xs text-[#F4F6F9]">
-                    <AlertTriangle className="h-4 w-4 text-[#EA3943] shrink-0 mt-0.5" />
-                    <p>{exResult.disclaimer}</p>
-                  </div>
+      {activeTab === 'guide' && (
+        /* PROSPECTIVE ICAN CANDIDATE GUIDE — 10 FREQUENTLY ASKED QUESTIONS */
+        <section className="py-14 sm:py-18">
+          <div className="v-container space-y-10">
+            {/* Completion Timeline Strip */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {completionTimelines.map((item) => (
+                <div key={item.route} className="v-card p-5 space-y-2">
+                  <span className="font-display text-2xl font-bold text-[#16C784] tabular-nums-display">
+                    {item.estimate}
+                  </span>
+                  <h3 className="font-display text-sm font-bold text-white">{item.route}</h3>
+                  <p className="text-[11px] font-medium text-[#C2C9D4]">{item.diets}</p>
+                  <p className="text-[11px] text-[#9AA4B2] leading-relaxed">{item.note}</p>
                 </div>
-              )}
+              ))}
+            </div>
+
+            {/* All 10 Official ICAN Candidate FAQs */}
+            <div className="space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <h2 className="font-display text-2xl font-bold text-white">
+                    ICAN Programme — 10 Frequently Asked Questions
+                  </h2>
+                  <p className="text-xs text-[#9AA4B2] mt-0.5">
+                    A clear, step-by-step orientation guide for prospective ATSWA and ICAN (ACA) candidates.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setExpandAllFaqs((v) => !v)}
+                  className="v-btn-secondary text-xs"
+                >
+                  {expandAllFaqs ? 'Collapse to Accordion' : 'Expand All 10 Answers'}
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 gap-3">
+                {candidateFaqs.map((faq) => {
+                  const isOpen = expandAllFaqs || openFaqNum === faq.num;
+                  return (
+                    <div key={faq.num} className="v-card overflow-hidden">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (expandAllFaqs) setExpandAllFaqs(false);
+                          setOpenFaqNum(openFaqNum === faq.num && !expandAllFaqs ? 0 : faq.num);
+                        }}
+                        className="w-full flex items-center justify-between gap-4 p-5 text-left"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="tabular-nums-display inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#16C784]/12 border border-[#16C784]/30 text-xs font-bold text-[#16C784]">
+                            {String(faq.num).padStart(2, '0')}
+                          </span>
+                          <span className="font-display text-sm sm:text-base font-bold text-white">
+                            {faq.q}
+                          </span>
+                        </div>
+                        <ChevronDown
+                          className={`h-4 w-4 shrink-0 text-[#9AA4B2] transition-transform ${
+                            isOpen ? 'rotate-180 text-[#16C784]' : ''
+                          }`}
+                        />
+                      </button>
+
+                      {isOpen && (
+                        <div className="px-5 pb-5 pt-3 border-t border-white/[0.06] space-y-3 text-xs sm:text-sm text-[#C2C9D4]">
+                          <p className="text-[#9AA4B2] leading-relaxed">{faq.a}</p>
+
+                          {faq.bullets && (
+                            <ul className="space-y-1.5">
+                              {faq.bullets.map((b) => (
+                                <li key={b} className="flex items-start gap-2 text-xs sm:text-sm">
+                                  <CheckCircle2 className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" />
+                                  <span>{b}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+
+                          {faq.links && (
+                            <div className="flex flex-wrap gap-2.5 pt-1">
+                              {faq.links.map((lnk) => (
+                                <a
+                                  key={lnk.url}
+                                  href={lnk.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1.5 rounded-xl bg-[#0B0E11] border border-[#16C784]/35 hover:border-[#16C784] px-3.5 py-2 text-xs font-semibold text-[#16C784] transition-colors"
+                                >
+                                  {lnk.label} <ExternalLink className="h-3.5 w-3.5" />
+                                </a>
+                              ))}
+                            </div>
+                          )}
+
+                          {faq.tagline && (
+                            <p className="font-display text-sm sm:text-base font-bold italic text-[#16C784] pt-1">
+                              {faq.tagline}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Closing Motivational Action Banner */}
+            <div className="v-glass-card p-6 sm:p-8 border-[#16C784]/35 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5">
+              <div className="space-y-1.5">
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#16C784]">
+                  <Sparkles className="h-4 w-4" /> Start Your ACA Journey on VALENCE
+                </span>
+                <h3 className="font-display text-xl sm:text-2xl font-bold text-white">
+                  “If I can, you CAN — that’s why it’s ICAN.”
+                </h3>
+                <p className="text-xs sm:text-sm text-[#9AA4B2]">
+                  Check your exact entry level, create a free learner account, or apply for structured ATSWA & ICAN online tuition.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-3 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => navigate('/programmes/ican/exemptions')}
+                  className="v-btn-secondary text-xs"
+                >
+                  <Scale className="h-4 w-4 text-[#16C784]" /> Check My Starting Level
+                </button>
+                <Link to="/portal/student?mode=register" className="v-btn-primary text-xs">
+                  Join VALENCE Free <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
             </div>
           </div>
         </section>

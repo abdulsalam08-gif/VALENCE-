@@ -6,14 +6,17 @@ import {
   Send,
   ShieldCheck,
   ChevronDown,
+  ExternalLink,
+  CheckCircle2,
 } from 'lucide-react';
 import { usePlatform } from '../context/PlatformContext';
 import { useToast } from '../context/ToastContext';
 import Badge from '../components/ui/Badge';
 
 export default function ContactPage() {
-  const { settings, faqs, openWhatsAppModal } = usePlatform();
+  const { settings, faqs, candidateFaqs, openWhatsAppModal } = usePlatform();
   const toast = useToast();
+  const [faqTab, setFaqTab] = useState('candidate');
   const [openFaq, setOpenFaq] = useState(0);
   const [form, setForm] = useState({
     fullName: '',
@@ -192,12 +195,47 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* FAQ Section */}
+      {/* Dual-Tab FAQ Section: 10 Prospective ICAN Candidate FAQs + Platform FAQs */}
       <section className="py-16 bg-[#0D1116]">
         <div className="v-container max-w-4xl space-y-6">
-          <h2 className="font-display text-2xl font-bold text-white">Frequently Asked Questions</h2>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <h2 className="font-display text-2xl font-bold text-white">
+              Frequently Asked Questions
+            </h2>
+            <div className="inline-flex rounded-xl bg-[#11161C] border border-white/[0.08] p-1 self-start">
+              <button
+                type="button"
+                onClick={() => {
+                  setFaqTab('candidate');
+                  setOpenFaq(0);
+                }}
+                className={`rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-colors ${
+                  faqTab === 'candidate'
+                    ? 'bg-[#16C784] text-[#06130D]'
+                    : 'text-[#9AA4B2] hover:text-white'
+                }`}
+              >
+                ICAN Candidate Guide (10)
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setFaqTab('platform');
+                  setOpenFaq(0);
+                }}
+                className={`rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-colors ${
+                  faqTab === 'platform'
+                    ? 'bg-[#16C784] text-[#06130D]'
+                    : 'text-[#9AA4B2] hover:text-white'
+                }`}
+              >
+                VALENCE Platform ({faqs.length})
+              </button>
+            </div>
+          </div>
+
           <div className="space-y-3">
-            {faqs.map((f, idx) => {
+            {(faqTab === 'candidate' ? candidateFaqs : faqs).map((f, idx) => {
               const isOpen = openFaq === idx;
               return (
                 <div key={f.q} className="v-card overflow-hidden">
@@ -206,7 +244,9 @@ export default function ContactPage() {
                     onClick={() => setOpenFaq(isOpen ? -1 : idx)}
                     className="w-full flex items-center justify-between gap-4 p-5 text-left"
                   >
-                    <span className="font-display text-sm font-semibold text-white">{f.q}</span>
+                    <span className="font-display text-sm font-semibold text-white">
+                      {f.num ? `${f.num}. ${f.q}` : f.q}
+                    </span>
                     <ChevronDown
                       className={`h-4 w-4 shrink-0 text-[#9AA4B2] transition-transform ${
                         isOpen ? 'rotate-180 text-[#16C784]' : ''
@@ -214,8 +254,38 @@ export default function ContactPage() {
                     />
                   </button>
                   {isOpen && (
-                    <div className="px-5 pb-5 text-xs sm:text-sm text-[#9AA4B2] border-t border-white/[0.05] pt-3">
-                      {f.a}
+                    <div className="px-5 pb-5 text-xs sm:text-sm text-[#9AA4B2] border-t border-white/[0.05] pt-3 space-y-2.5">
+                      <p>{f.a}</p>
+                      {f.bullets && (
+                        <ul className="space-y-1.5 text-[#D5DBE3]">
+                          {f.bullets.map((b) => (
+                            <li key={b} className="flex items-start gap-2 text-xs">
+                              <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784] shrink-0 mt-0.5" />
+                              <span>{b}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      {f.links && (
+                        <div className="flex flex-wrap gap-2 pt-1">
+                          {f.links.map((lnk) => (
+                            <a
+                              key={lnk.url}
+                              href={lnk.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 rounded-lg bg-[#0B0E11] border border-[#16C784]/35 px-3 py-1.5 text-xs font-semibold text-[#16C784] hover:border-[#16C784]"
+                            >
+                              {lnk.label} <ExternalLink className="h-3 w-3" />
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                      {f.tagline && (
+                        <p className="font-display text-sm font-bold italic text-[#16C784]">
+                          {f.tagline}
+                        </p>
+                      )}
                     </div>
                   )}
                 </div>

@@ -24,6 +24,8 @@ export default function ProgrammesPage({ focusTertiary = false }) {
     sessions,
     atswaLevels,
     icanLevels,
+    atswaEntryPathways,
+    graduateEntryPathways,
     tertiaryDisciplines,
     generalLearnerTracks,
     universities,
@@ -76,7 +78,10 @@ export default function ProgrammesPage({ focusTertiary = false }) {
               ICAN (Foundation · Skills · Professional)
             </Link>
             <Link to="/programmes/ican/exemptions" className="v-btn-secondary text-xs">
-              <Scale className="h-4 w-4 text-[#16C784]" /> ICAN Exemption Guide
+              <Scale className="h-4 w-4 text-[#16C784]" /> ICAN Exemption & Entry Tool
+            </Link>
+            <Link to="/programmes/ican/guide" className="v-btn-secondary text-xs">
+              Candidate Guide (10 FAQs)
             </Link>
           </div>
         </div>
@@ -284,6 +289,108 @@ export default function ProgrammesPage({ focusTertiary = false }) {
                 </Link>
                 <Link to="/programmes/ican/exemptions" className="v-btn-secondary text-xs">
                   Check Exemptions
+                </Link>
+                <Link to="/programmes/ican/guide" className="v-btn-secondary text-xs">
+                  10 Candidate FAQs
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Entry Route Matrix: Where Should I Start? (ATSWA vs Graduate + Accredited / MCATI Checks) */}
+          <div className="v-container mt-10">
+            <div className="v-card p-6 sm:p-8 space-y-6">
+              <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+                <div className="space-y-1.5 max-w-2xl">
+                  <Badge variant="green">PROSPECTIVE CANDIDATE ENTRY GUIDE</Badge>
+                  <h2 className="font-display text-xl sm:text-2xl font-bold text-white">
+                    Which Level Should You Start From?
+                  </h2>
+                  <p className="text-xs sm:text-sm text-[#9AA4B2]">
+                    Anyone interested in accounting — Accounting or non-accounting students and graduates — can become an ACA. Clear all courses in each stage to advance.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <a
+                    href={settings.officialLinks.icanAccreditedInstitutions}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="v-btn-secondary text-xs"
+                  >
+                    Accredited Schools PDF <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
+                  </a>
+                  <a
+                    href={settings.officialLinks.icanMcatiInstitutions}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="v-btn-secondary text-xs"
+                  >
+                    MCATI Schools PDF <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
+                  </a>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 text-xs">
+                <div className="rounded-2xl bg-[#0B0E11] border border-white/[0.07] p-5 space-y-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="font-display text-sm font-bold text-white">
+                      a) Undergraduate & ND Route (ATSWA)
+                    </p>
+                    <Badge variant="neutral">~2.5 Yrs to ACA</Badge>
+                  </div>
+                  <div className="space-y-2">
+                    {atswaEntryPathways.map((item) => (
+                      <div
+                        key={item.id}
+                        className="rounded-xl bg-[#11161C] border border-white/[0.06] p-3 flex flex-wrap items-center justify-between gap-2"
+                      >
+                        <div>
+                          <p className="font-semibold text-white">{item.qualification}</p>
+                          <p className="text-[11px] text-[#9AA4B2]">{item.exemptions}</p>
+                        </div>
+                        <span className="font-display font-bold text-[#16C784]">{item.startAt}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="rounded-2xl bg-[#0B0E11] border border-white/[0.07] p-5 space-y-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="font-display text-sm font-bold text-white">
+                      b) Graduate Route (B.Sc. / HND — Direct ICAN)
+                    </p>
+                    <Badge variant="neutral">~6 Mos – 1.5 Yrs</Badge>
+                  </div>
+                  <div className="space-y-2">
+                    {graduateEntryPathways.map((item) => (
+                      <div
+                        key={item.id}
+                        className="rounded-xl bg-[#11161C] border border-white/[0.06] p-3 flex flex-wrap items-center justify-between gap-2"
+                      >
+                        <div className="min-w-0">
+                          <p className="font-semibold text-white">{item.qualification}</p>
+                          <p className="text-[11px] text-[#9AA4B2]">
+                            {item.exemptions} · {item.duration}
+                          </p>
+                        </div>
+                        <span className="font-display font-bold text-[#16C784] shrink-0">
+                          {item.startAt}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-white/[0.06] text-xs">
+                <p className="font-display italic text-[#16C784]">
+                  “If I can, you CAN — that’s why it’s ICAN.”
+                </p>
+                <Link
+                  to="/programmes/ican/guide"
+                  className="inline-flex items-center gap-1.5 font-semibold text-[#F4F6F9] hover:text-[#16C784] transition-colors"
+                >
+                  Read all 10 Prospective ICAN Candidate FAQs <ArrowRight className="h-3.5 w-3.5 text-[#16C784]" />
                 </Link>
               </div>
             </div>

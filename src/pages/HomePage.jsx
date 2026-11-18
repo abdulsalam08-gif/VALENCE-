@@ -78,6 +78,7 @@ export default function HomePage() {
     testimonials,
     statistics,
     faqs,
+    candidateFaqs,
     competitionDivisions,
     tertiaryDisciplines,
     generalLearnerTracks,
@@ -91,6 +92,7 @@ export default function HomePage() {
   // Sessions 0 (ATSWA Mar 2027), 1 (ICAN May 2027), 2 (ICAN Nov 2026 - live 30-day result countdown!)
   const heroSessions = sessions.slice(0, 3);
   const [activeSessionIdx, setActiveSessionIdx] = useState(0);
+  const [faqTab, setFaqTab] = useState('candidate');
   const [openFaq, setOpenFaq] = useState(0);
   const [bookmarkedIds, setBookmarkedIds] = useState([]);
   const [announcementFilter, setAnnouncementFilter] = useState('all');
@@ -1188,20 +1190,50 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 18. FAQ */}
+      {/* 18. FAQ — PROSPECTIVE ICAN CANDIDATE GUIDE (10 FAQS) & PLATFORM FAQS */}
       <section id="faq" className="py-16 sm:py-22">
         <div className="v-container max-w-4xl space-y-8">
-          <div className="text-center space-y-2">
+          <div className="text-center space-y-3">
             <span className="text-xs font-semibold uppercase tracking-widest text-[#16C784]">
               FREQUENTLY ASKED QUESTIONS
             </span>
             <h2 className="font-display text-2xl sm:text-4xl font-bold text-white">
-              Exam Schedules, Tuition Unlock, Rewards & Governance
+              Prospective ICAN Candidate Guide & Platform FAQs
             </h2>
+            <div className="inline-flex flex-wrap justify-center rounded-2xl bg-[#11161C] border border-white/[0.08] p-1.5 gap-1">
+              <button
+                type="button"
+                onClick={() => {
+                  setFaqTab('candidate');
+                  setOpenFaq(0);
+                }}
+                className={`rounded-xl px-4 py-2 text-xs font-display font-bold transition-all ${
+                  faqTab === 'candidate'
+                    ? 'bg-[#16C784] text-[#06130D] shadow-glow-sm'
+                    : 'text-[#9AA4B2] hover:text-white'
+                }`}
+              >
+                ICAN Programme — 10 Candidate FAQs
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setFaqTab('platform');
+                  setOpenFaq(0);
+                }}
+                className={`rounded-xl px-4 py-2 text-xs font-display font-bold transition-all ${
+                  faqTab === 'platform'
+                    ? 'bg-[#16C784] text-[#06130D] shadow-glow-sm'
+                    : 'text-[#9AA4B2] hover:text-white'
+                }`}
+              >
+                VALENCE Platform, Schedules & Rewards ({faqs.length})
+              </button>
+            </div>
           </div>
 
           <div className="space-y-3">
-            {faqs.map((item, idx) => {
+            {(faqTab === 'candidate' ? candidateFaqs : faqs).map((item, idx) => {
               const isOpen = openFaq === idx;
               return (
                 <div key={item.q} className="v-card overflow-hidden">
@@ -1212,7 +1244,7 @@ export default function HomePage() {
                     className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left hover:bg-white/[0.02] transition-colors"
                   >
                     <span className="font-display text-sm sm:text-base font-semibold text-[#F4F6F9]">
-                      {item.q}
+                      {item.num ? `${item.num}. ${item.q}` : item.q}
                     </span>
                     <ChevronDown
                       className={`h-4 w-4 shrink-0 text-[#16C784] transition-transform duration-200 ${
@@ -1221,13 +1253,52 @@ export default function HomePage() {
                     />
                   </button>
                   {isOpen && (
-                    <div className="px-5 pb-4 text-xs sm:text-sm leading-relaxed text-[#9AA4B2] border-t border-white/[0.05] pt-3">
-                      {item.a}
+                    <div className="px-5 pb-5 text-xs sm:text-sm leading-relaxed text-[#9AA4B2] border-t border-white/[0.05] pt-3 space-y-2.5">
+                      <p>{item.a}</p>
+                      {item.bullets && (
+                        <ul className="space-y-1.5 text-[#D5DBE3]">
+                          {item.bullets.map((b) => (
+                            <li key={b} className="flex items-start gap-2 text-xs sm:text-sm">
+                              <CheckCircle2 className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" />
+                              <span>{b}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      {item.links && (
+                        <div className="flex flex-wrap gap-2.5 pt-1">
+                          {item.links.map((lnk) => (
+                            <a
+                              key={lnk.url}
+                              href={lnk.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 rounded-xl bg-[#0B0E11] border border-[#16C784]/35 hover:border-[#16C784] px-3.5 py-2 text-xs font-semibold text-[#16C784] transition-colors"
+                            >
+                              {lnk.label} <ExternalLink className="h-3.5 w-3.5" />
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                      {item.tagline && (
+                        <p className="font-display text-sm sm:text-base font-bold italic text-[#16C784] pt-1">
+                          {item.tagline}
+                        </p>
+                      )}
                     </div>
                   )}
                 </div>
               );
             })}
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
+            <Link to="/programmes/ican/guide" className="v-btn-secondary text-xs">
+              Open Full Candidate Guide Page <ArrowRight className="h-3.5 w-3.5 text-[#16C784]" />
+            </Link>
+            <Link to="/programmes/ican/exemptions" className="v-btn-secondary text-xs">
+              Check My Starting Level & Exemptions
+            </Link>
           </div>
         </div>
       </section>

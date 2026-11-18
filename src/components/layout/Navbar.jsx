@@ -24,7 +24,8 @@ const PROGRAMME_MENU = [
   { label: 'ICAN Foundation Level', desc: 'CBL, BE, MA, FA · 3-day May & Nov diets', to: '/programmes/ican/foundation' },
   { label: 'ICAN Skills Level', desc: 'FR, FM, PSAF, AAF, TAX, PM · 6 syllabus papers', to: '/programmes/ican/skills' },
   { label: 'ICAN Professional Level', desc: 'SBR, CS, AAAF, A/TAX, SFM · Final ACA stage', to: '/programmes/ican/professional' },
-  { label: 'ICAN Exemption Guidance Tool', desc: 'Check potential exemptions across all Nigerian universities', to: '/programmes/ican/exemptions' },
+  { label: 'ICAN Exemption & Entry Tool', desc: 'Find your starting level + Accredited & MCATI school checks', to: '/programmes/ican/exemptions' },
+  { label: 'ICAN Candidate Guide (10 FAQs)', desc: 'Eligibility, ATSWA vs Graduate routes, reg steps & timelines', to: '/programmes/ican/guide' },
   { label: 'Nigerian Universities & General Tracks', desc: 'All Federal, State & Private universities + 6 literacy tracks', to: '/programmes/tertiary' },
 ];
 
