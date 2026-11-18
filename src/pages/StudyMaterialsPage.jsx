@@ -119,6 +119,9 @@ export default function StudyMaterialsPage() {
             >
               ICAN Exam Dockets <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
             </a>
+            <Link to="/store?enquiry=open" className="v-btn-secondary text-xs">
+              In-App Material &amp; Delivery Enquiry <ArrowRight className="h-3.5 w-3.5 text-[#16C784]" />
+            </Link>
           </div>
         </div>
       </section>
@@ -242,9 +245,13 @@ export default function StudyMaterialsPage() {
                       <strong className="tabular-nums-display text-white">
                         {formatNaira(item.pqPrice)}
                       </strong>
+                      <span className="text-[10.5px] text-[#667085]">/course</span>
                     </span>
-                    <Link to="/store" className="font-semibold text-[#16C784] hover:underline shrink-0">
-                      Order →
+                    <Link
+                      to={`/store?q=${encodeURIComponent(item.code)}`}
+                      className="font-semibold text-[#16C784] hover:underline shrink-0"
+                    >
+                      Order Course →
                     </Link>
                   </div>
                 </div>

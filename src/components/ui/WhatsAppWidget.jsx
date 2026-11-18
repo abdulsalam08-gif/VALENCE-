@@ -7,24 +7,20 @@ import { buildWhatsAppEnquiryUrl } from '../../lib/pricing';
 const ENQUIRY_CATEGORIES = [
   'ICAN Official Registration Fee Assistance',
   'ICAN Official Examination Fee Assistance',
-  'ICAN Official Annual Subscription Assistance',
+  'ICAN Official Annual Subscription & Levy Assistance',
   'Physical Tuition Application Enquiry',
-  'ATSWA Document & Registration Guidance',
-  'Study Material & Delivery Enquiry',
-  'VALENCE ADVERTISE — Tuition Centre Enquiry',
   'General Support Enquiry',
 ];
 
 const LEVEL_OPTIONS = [
-  'ATSWA — ATS 1',
-  'ATSWA — ATS 2',
-  'ATSWA — ATS 3',
   'ICAN — Foundation Level',
   'ICAN — Skills Level',
   'ICAN — Professional Level',
+  'ATSWA — ATS 1',
+  'ATSWA — ATS 2',
+  'ATSWA — ATS 3',
   'University / Polytechnic Student',
   'Chartered Accountant / Professional',
-  'Tuition Centre / Advertiser',
   'Not Applicable',
 ];
 
@@ -109,7 +105,7 @@ export default function WhatsAppWidget() {
             <div className="mt-4 flex items-start gap-2.5 rounded-xl bg-[#0B0E11] border border-white/[0.08] p-3 text-xs text-[#9AA4B2]">
               <ShieldAlert className="h-4 w-4 shrink-0 text-[#16C784] mt-0.5" />
               <p>
-                <strong className="text-[#F4F6F9]">Paystack-Only Online Checkout:</strong> Tuition application unlocks (₦3,000), online tuition, store orders and advertising packages are paid exclusively via Paystack on VALENCE. WhatsApp is strictly for enquiries, official ICAN fee assistance and physical tuition applications.
+                <strong className="text-[#F4F6F9]">In-App First + Paystack-Only Checkout:</strong> Online payments run exclusively via Paystack. ATSWA document & registration guidance, study materials & delivery enquiries, and VALENCE ADVERTISE (₦10,000/week) are all handled directly in-app. WhatsApp is reserved for official ICAN fee assistance, physical tuition and general support.
               </p>
             </div>
 

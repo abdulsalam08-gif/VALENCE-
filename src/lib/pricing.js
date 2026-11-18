@@ -89,12 +89,13 @@ export function calculateIcanTuition(courseCount, config = {}) {
 
 /**
  * VALENCE Marketplace Cart & Discount Engine
- * - ATSWA hard-copy past questions: ₦5,500/copy; 9% off 2+ copies
- * - ATSWA study packs: ₦9,500/pack; 5% off 2+ packs
- * - ICAN past questions: ₦9,000/copy; 6% off 2+ copies
- * - ICAN study packs: individual course prices; 7% off when purchasing 2+ DIFFERENT
+ * - ATSWA hard-copy past questions: ₦5,500 PER COURSE; automatic 9% off 2+ courses/copies
+ * - ATSWA study packs: ₦9,500/pack; automatic 5% off 2+ packs
+ * - ICAN Pathfinder past questions: ₦9,000 PER COURSE; automatic 6% off 2+ courses/copies
+ * - ICAN study packs: individual per-course prices; automatic 7% off when purchasing 2+ DIFFERENT
  *   ICAN study packs in the same transaction across Foundation, Skills & Professional.
  * - Free delivery zones: LASU, Ojo, UNILAG, YABATECH, FCE, Yaba
+ * All prices, discounts and delivery fees are admin-editable via the Admin Portal.
  */
 export function calculateStoreCart(cartItems = [], deliveryZone = null, discountConfig = {}) {
   const rules = {
@@ -146,7 +147,7 @@ export function calculateStoreCart(cartItems = [], deliveryZone = null, discount
     totalDiscount += amt;
     appliedDiscounts.push({
       id: 'atswa_pq',
-      label: `ATSWA Past Questions (${Math.round(rules.atswaPastQuestionsRate * 100)}% off 2+ copies)`,
+      label: `ATSWA Past Questions (${Math.round(rules.atswaPastQuestionsRate * 100)}% off ${atswaPqQty} courses/copies)`,
       amount: amt,
     });
   }
@@ -155,7 +156,7 @@ export function calculateStoreCart(cartItems = [], deliveryZone = null, discount
     totalDiscount += amt;
     appliedDiscounts.push({
       id: 'atswa_sp',
-      label: `ATSWA Study Packs (${Math.round(rules.atswaStudyPackRate * 100)}% off 2+ packs)`,
+      label: `ATSWA Study Packs (${Math.round(rules.atswaStudyPackRate * 100)}% off ${atswaSpQty} packs)`,
       amount: amt,
     });
   }
@@ -164,7 +165,7 @@ export function calculateStoreCart(cartItems = [], deliveryZone = null, discount
     totalDiscount += amt;
     appliedDiscounts.push({
       id: 'ican_pq',
-      label: `ICAN Past Questions (${Math.round(rules.icanPastQuestionsRate * 100)}% off 2+ copies)`,
+      label: `ICAN Past Questions (${Math.round(rules.icanPastQuestionsRate * 100)}% off ${icanPqQty} courses/copies)`,
       amount: amt,
     });
   }
@@ -249,9 +250,28 @@ export function evaluateIcanExemptions(input, allIcanCourses, exemptionRules) {
 }
 
 /**
+ * VALENCE ADVERTISE — Weekly Tuition Centre Advertisement Rate Calculator
+ * Default official rate: ₦10,000 per week (admin-editable from the Admin Portal).
+ * All campaign applications, approvals, creative management & Paystack payments run in-app.
+ */
+export function calculateAdCampaignCost(weeks = 1, weeklyRate = 10000, placementCount = 1) {
+  const safeWeeks = Math.max(1, Math.min(52, Math.floor(Number(weeks) || 1)));
+  const safeSlots = Math.max(1, Math.min(9, Math.floor(Number(placementCount) || 1)));
+  const safeRate = Math.max(0, Number(weeklyRate) || 10000);
+  const totalAmount = safeWeeks * safeSlots * safeRate;
+  return {
+    weeks: safeWeeks,
+    placementCount: safeSlots,
+    weeklyRate: safeRate,
+    totalAmount,
+  };
+}
+
+/**
  * Prefilled WhatsApp Enquiry Link Builder
- * Strictly for enquiries, physical tuition applications, ICAN official fee assistance,
- * study material questions, document submission guidance, and advertising enquiries.
+ * Strictly for official ICAN fee assistance, physical tuition applications and general support.
+ * ATSWA document & registration guidance, study materials & delivery enquiries, and
+ * VALENCE ADVERTISE tuition-centre campaigns are all handled directly inside the VALENCE app.
  * NEVER used as an online payment checkout.
  */
 export function buildWhatsAppEnquiryUrl({

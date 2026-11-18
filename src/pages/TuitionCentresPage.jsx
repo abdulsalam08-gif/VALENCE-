@@ -42,7 +42,7 @@ export default function TuitionCentresPage() {
             </p>
           </div>
           <Link to="/advertise" className="v-btn-primary text-xs self-start shrink-0">
-            <Megaphone className="h-4 w-4" /> List & Advertise Your Centre
+            <Megaphone className="h-4 w-4" /> Advertise In-App (₦10,000/Week)
           </Link>
         </div>
       </section>

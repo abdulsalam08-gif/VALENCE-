@@ -50,9 +50,9 @@ const SERVICES = [
   },
   {
     icon: ShoppingBag,
-    title: 'Accounting Study Materials Store',
-    badge: 'Up to 9% Auto Discount',
-    desc: 'All 24 ATSWA & ICAN textbooks, study packs and past question sets with transparent delivery rules, free Lagos pickup and Paystack receipts.',
+    title: 'Accounting Study Materials Store (In-App)',
+    badge: 'Per-Course · Up to 9% Off',
+    desc: '45 catalogue items — buy a single course or all applicable courses (ATSWA PQs ₦5,500/course, ICAN PQs ₦9,000/course & study packs) with Paystack checkout and in-app material & delivery enquiries.',
     cta: 'Shop Materials',
     to: '/store',
   },
@@ -67,9 +67,9 @@ const SERVICES = [
   {
     icon: Building2,
     title: 'Verified Tuition Centres & VALENCE ADVERTISE',
-    badge: 'Neutral National Directory',
-    desc: 'Independent verification, directory placement and Paystack-verified banner packages for approved accounting tuition centres across Nigeria.',
-    cta: 'Advertise Centre',
+    badge: '₦10,000/Week · In-App',
+    desc: '100% in-app advertising at ₦10,000/week, independent directory verification, Paystack billing and live CTR analytics for approved accounting tuition centres across Nigeria.',
+    cta: 'Advertise In-App',
     to: '/advertise',
   },
   {

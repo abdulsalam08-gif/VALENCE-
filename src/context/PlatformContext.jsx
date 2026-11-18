@@ -3,6 +3,8 @@ import {
   PLATFORM_SETTINGS,
   EXAMINATION_SESSIONS,
   ATSWA_LEVELS,
+  ALL_ATSWA_COURSES,
+  ATSWA_APP_REGISTRATION_GUIDE,
   ICAN_LEVELS,
   ALL_ICAN_COURSES,
   STORE_PRODUCTS,
@@ -51,12 +53,32 @@ export function PlatformProvider({ children }) {
   const [cart, setCart] = useState(() => {
     try {
       const saved = localStorage.getItem(CART_STORAGE_KEY);
-      return saved ? JSON.parse(saved) : [];
+      if (!saved) return [];
+      const parsed = JSON.parse(saved);
+      // Filter out any legacy pre-course-split IDs so every cart item matches current catalogue
+      const validIds = new Set(STORE_PRODUCTS.map((p) => p.id));
+      return Array.isArray(parsed) ? parsed.filter((item) => validIds.has(item.id)) : [];
     } catch {
       return [];
     }
   });
   const [selectedZoneId, setSelectedZoneId] = useState(DELIVERY_ZONES[0].id);
+
+  // In-app submissions (wired directly to Supabase tables & Admin Portal queues in Phase 2+)
+  const [inAppTickets, setInAppTickets] = useState([]);
+
+  const submitInAppTicket = (type, payload) => {
+    const ref = `VAL-${type.toUpperCase()}-${String(Date.now()).slice(-6)}`;
+    const record = {
+      id: ref,
+      type,
+      status: 'Submitted · Pending Admin Review',
+      createdAt: new Date().toISOString(),
+      ...payload,
+    };
+    setInAppTickets((prev) => [record, ...prev]);
+    return record;
+  };
 
   const [whatsAppModal, setWhatsAppModal] = useState({
     open: false,
@@ -143,6 +165,8 @@ export function PlatformProvider({ children }) {
     settings: PLATFORM_SETTINGS,
     sessions: EXAMINATION_SESSIONS,
     atswaLevels: ATSWA_LEVELS,
+    allAtswaCourses: ALL_ATSWA_COURSES,
+    atswaRegistrationGuide: ATSWA_APP_REGISTRATION_GUIDE,
     icanLevels: ICAN_LEVELS,
     allIcanCourses: ALL_ICAN_COURSES,
     products: STORE_PRODUCTS,
@@ -185,6 +209,8 @@ export function PlatformProvider({ children }) {
     whatsAppModal,
     openWhatsAppModal,
     closeWhatsAppModal,
+    inAppTickets,
+    submitInAppTicket,
   };
 
   return <PlatformContext.Provider value={value}>{children}</PlatformContext.Provider>;

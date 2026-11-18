@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   MessageCircle,
   Mail,
@@ -8,13 +9,14 @@ import {
   ChevronDown,
   ExternalLink,
   CheckCircle2,
+  ArrowRight,
 } from 'lucide-react';
 import { usePlatform } from '../context/PlatformContext';
 import { useToast } from '../context/ToastContext';
 import Badge from '../components/ui/Badge';
 
 export default function ContactPage() {
-  const { settings, faqs, candidateFaqs, openWhatsAppModal } = usePlatform();
+  const { settings, faqs, candidateFaqs, openWhatsAppModal, submitInAppTicket } = usePlatform();
   const toast = useToast();
   const [faqTab, setFaqTab] = useState('candidate');
   const [openFaq, setOpenFaq] = useState(0);
@@ -31,13 +33,14 @@ export default function ContactPage() {
     e.preventDefault();
     setSubmitting(true);
     setTimeout(() => {
+      const ticket = submitInAppTicket('support', form);
       setSubmitting(false);
       toast.success(
-        'Enquiry Logged',
-        'Thank you for contacting VALENCE. You can also launch instant WhatsApp assistance anytime.'
+        `In-App Ticket Logged (${ticket.id})`,
+        'Stored directly in VALENCE for response by the assigned Admin team.'
       );
       setForm({ ...form, message: '' });
-    }, 350);
+    }, 250);
   };
 
   return (
@@ -67,7 +70,7 @@ export default function ContactPage() {
                 {settings.whatsappNumber}
               </p>
               <p className="text-xs text-[#9AA4B2]">
-                For support, physical tuition, official ICAN registration/exam/subscription fees, document guidance, material delivery and advertising enquiries. (All online checkouts use Paystack.)
+                Dedicated to official ICAN registration/exam/subscription fee assistance, physical tuition applications and general support. (Online checkouts run via Paystack; ATSWA guidance, store/delivery enquiries and advertising run directly in-app.)
               </p>
               <button
                 type="button"
@@ -76,6 +79,36 @@ export default function ContactPage() {
               >
                 <MessageCircle className="h-4 w-4" /> Open Prefilled WhatsApp Chat
               </button>
+            </div>
+
+            {/* Dedicated In-App Self-Serve Workflows */}
+            <div className="v-card p-6 space-y-2.5">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#16C784]">
+                Handled 100% Inside the App
+              </span>
+              <div className="space-y-2 text-xs">
+                <Link
+                  to="/programmes/atswa#document-guidance"
+                  className="flex items-center justify-between rounded-xl bg-[#0B0E11] border border-white/[0.07] hover:border-[#16C784]/45 px-3.5 py-2.5 text-white transition-colors"
+                >
+                  <span>ATSWA Document &amp; Registration Guidance</span>
+                  <ArrowRight className="h-3.5 w-3.5 text-[#16C784]" />
+                </Link>
+                <Link
+                  to="/store?enquiry=open"
+                  className="flex items-center justify-between rounded-xl bg-[#0B0E11] border border-white/[0.07] hover:border-[#16C784]/45 px-3.5 py-2.5 text-white transition-colors"
+                >
+                  <span>Study Materials &amp; Delivery Enquiry</span>
+                  <ArrowRight className="h-3.5 w-3.5 text-[#16C784]" />
+                </Link>
+                <Link
+                  to="/advertise"
+                  className="flex items-center justify-between rounded-xl bg-[#0B0E11] border border-white/[0.07] hover:border-[#16C784]/45 px-3.5 py-2.5 text-white transition-colors"
+                >
+                  <span>VALENCE ADVERTISE (₦10,000/Week)</span>
+                  <ArrowRight className="h-3.5 w-3.5 text-[#16C784]" />
+                </Link>
+              </div>
             </div>
 
             <div className="v-card p-6 space-y-2.5">
@@ -157,14 +190,15 @@ export default function ContactPage() {
                   onChange={(e) => setForm({ ...form, category: e.target.value })}
                   className="v-input"
                 >
-                  <option>Student Tuition & Cost Implication Enquiry</option>
+                  <option>Student Tuition &amp; Cost Implication Enquiry</option>
+                  <option>ATSWA Document &amp; Registration Guidance (In-App)</option>
+                  <option>Study Materials &amp; Delivery Enquiry (In-App)</option>
+                  <option>VALENCE ADVERTISE — ₦10,000/Week Campaign (In-App)</option>
                   <option>Official ICAN Fee Assistance</option>
                   <option>Physical Tuition Application</option>
-                  <option>Exam Timetable & Result Release Notice</option>
-                  <option>National Competition & ₦50,000 Merit Reward</option>
-                  <option>Bookstore & Study Material Order</option>
+                  <option>Exam Timetable &amp; Result Release Notice</option>
+                  <option>National Competition &amp; ₦50,000 Merit Reward</option>
                   <option>Tutor / Professional Verification</option>
-                  <option>Tuition Centre Advertising</option>
                 </select>
               </div>
             </div>

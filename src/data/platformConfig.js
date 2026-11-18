@@ -14,6 +14,10 @@ export const PLATFORM_SETTINGS = {
   location: 'Lagos, Nigeria (Serving candidates & institutions nationwide)',
   paymentProvider: 'Paystack',
   tuitionUnlockFee: 3000,
+  adWeeklyRate: 10000,
+  atswaPastQuestionPerCourse: 5500,
+  icanPastQuestionPerCourse: 9000,
+  atswaStudyPackPrice: 9500,
   competitionCashReward: 50000,
   resultReleaseWindowDays: 30,
   registrationCutoffDaysBeforeExam: 7,
@@ -714,55 +718,63 @@ export const PROFESSIONAL_QUALIFICATIONS = [
   { code: 'ACTI / CIMA', name: 'Other Recognised Accounting & Tax Qualifications' },
 ];
 
-export const STORE_PRODUCTS = [
-  {
-    id: 'prod-atswa-pq-1',
-    title: 'ATSWA ATS 1 Insight Past Questions & Answers',
-    category: 'atswa_past_question',
-    categoryLabel: 'ATSWA Past Questions',
-    programme: 'ATSWA',
-    level: 'ATS 1',
-    courseCode: null,
-    price: 5500,
+export const ALL_ATSWA_COURSES = ATSWA_LEVELS.flatMap((lvl) =>
+  lvl.courses.map((course) => ({
+    ...course,
+    level: lvl.code,
+    levelId: lvl.id,
+  }))
+);
+
+const ATSWA_PQ_COVER_META = {
+  'ATS 1': {
     imageUrl: '/materials/ats1-past-question.jpg',
     colourBadge: 'Blue Cover · ATS 1',
     accentHex: '#2563EB',
-    editionLabel: 'Hard-Copy ATSWA Insight',
-    discountHint: '9% off 2+ copies',
-    description: 'Official blue-coded ATS 1 Insight past questions & answers with structured workings across BAPS, Economics, Communication Skills & Business Law.',
   },
-  {
-    id: 'prod-atswa-pq-2',
-    title: 'ATSWA ATS 2 Insight Past Questions & Answers',
-    category: 'atswa_past_question',
-    categoryLabel: 'ATSWA Past Questions',
-    programme: 'ATSWA',
-    level: 'ATS 2',
-    courseCode: null,
-    price: 5500,
+  'ATS 2': {
     imageUrl: '/materials/ats2-past-question.jpg',
     colourBadge: 'Orange Cover · ATS 2',
     accentHex: '#EA580C',
-    editionLabel: 'Hard-Copy ATSWA Insight',
-    discountHint: '9% off 2+ copies',
-    description: 'Official orange-coded ATS 2 Insight past examination questions & answers covering Financial Accounting, Public Sector Accounting, IT & Quantitative Analysis.',
   },
-  {
-    id: 'prod-atswa-pq-3',
-    title: 'ATSWA ATS 3 Insight Past Questions & Answers',
-    category: 'atswa_past_question',
-    categoryLabel: 'ATSWA Past Questions',
-    programme: 'ATSWA',
-    level: 'ATS 3',
-    courseCode: null,
-    price: 5500,
+  'ATS 3': {
     imageUrl: '/materials/ats3-past-question.jpg',
     colourBadge: 'Dark Green Cover · ATS 3',
     accentHex: '#15803D',
-    editionLabel: 'Hard-Copy ATSWA Insight',
-    discountHint: '9% off 2+ copies',
-    description: 'Official dark-green ATS 3 Insight past questions & answers with examiner workings across Cost Accounting, Auditing, Taxation & Management.',
   },
+};
+
+/**
+ * VALENCE Store Catalogue (Admin-Editable from Admin Portal)
+ * - 12 ATSWA Past Questions (PER COURSE — ₦5,500 per course, automatic 9% off 2+ courses/copies)
+ * - 3 ATSWA Study Packs (ATS 1, ATS 2, ATS 3 — ₦9,500 per pack, automatic 5% off 2+ packs)
+ * - 15 ICAN Pathfinder Past Questions (PER COURSE — ₦9,000 per course, automatic 6% off 2+ courses/copies)
+ * - 15 ICAN Study Packs (PER COURSE — ₦10,000–₦15,500, automatic 7% off 2+ distinct courses across levels)
+ * Total: 45 individual orderable items.
+ */
+export const STORE_PRODUCTS = [
+  // 12 Individual Per-Course ATSWA Insight Past Questions (₦5,500 per course)
+  ...ALL_ATSWA_COURSES.map((course) => {
+    const meta = ATSWA_PQ_COVER_META[course.level] || ATSWA_PQ_COVER_META['ATS 1'];
+    return {
+      id: `prod-atswa-pq-${course.id}`,
+      title: `${course.title} (${course.code}) — ${course.level} Past Questions`,
+      category: 'atswa_past_question',
+      categoryLabel: 'ATSWA Past Questions (Per Course)',
+      programme: 'ATSWA',
+      level: course.level,
+      courseCode: course.code,
+      courseTitle: course.title,
+      price: 5500,
+      imageUrl: meta.imageUrl,
+      colourBadge: `${meta.colourBadge} · ${course.code}`,
+      accentHex: meta.accentHex,
+      editionLabel: 'ATSWA Insight · Per Course',
+      discountHint: '₦5,500/course · 9% off 2+ courses',
+      description: `Official ${course.level} Insight hard-copy past questions & answers specifically for ${course.title} (${course.code}). Order this single course or combine with your other ${course.level} papers for automatic 9% off.`,
+    };
+  }),
+  // 3 ATSWA Study Packs (plain Study Packs — real photos uploaded later / via Admin Portal)
   {
     id: 'prod-atswa-sp-1',
     title: 'ATSWA ATS 1 Study Pack',
@@ -811,54 +823,28 @@ export const STORE_PRODUCTS = [
     discountHint: '5% off 2+ packs',
     description: 'Complete printed ATS 3 syllabus study pack covering Cost Accounting, Auditing, Taxation & Management for final AAT candidates.',
   },
-  {
-    id: 'prod-ican-pq-fnd',
-    title: 'ICAN Foundation Pathfinder Past Questions & Answers',
-    category: 'ican_past_question',
-    categoryLabel: 'ICAN Past Questions',
-    programme: 'ICAN',
-    level: 'Foundation',
-    courseCode: null,
-    price: 9000,
-    imageUrl: '/materials/ican-past-question.jpg',
-    colourBadge: 'Green Pathfinder · Sealed',
-    accentHex: '#16A34A',
-    editionLabel: 'Nylon-Sealed New Syllabus',
-    discountHint: '6% off 2+ copies',
-    description: 'Nylon-sealed green ICAN Pathfinder past questions & answers (new syllabus) with full marking-scheme solutions for Foundation Level.',
-  },
-  {
-    id: 'prod-ican-pq-skl',
-    title: 'ICAN Skills Pathfinder Past Questions & Answers',
-    category: 'ican_past_question',
-    categoryLabel: 'ICAN Past Questions',
-    programme: 'ICAN',
-    level: 'Skills',
-    courseCode: null,
-    price: 9000,
-    imageUrl: '/materials/ican-past-question.jpg',
-    colourBadge: 'Green Pathfinder · Sealed',
-    accentHex: '#16A34A',
-    editionLabel: 'Nylon-Sealed New Syllabus',
-    discountHint: '6% off 2+ copies',
-    description: 'Nylon-sealed green ICAN Pathfinder past questions & answers (new syllabus) with full IFRS/IPSAS examination workings for Skills Level.',
-  },
-  {
-    id: 'prod-ican-pq-pro',
-    title: 'ICAN Professional Pathfinder Past Questions & Answers',
-    category: 'ican_past_question',
-    categoryLabel: 'ICAN Past Questions',
-    programme: 'ICAN',
-    level: 'Professional',
-    courseCode: null,
-    price: 9000,
-    imageUrl: '/materials/ican-past-question.jpg',
-    colourBadge: 'Green Pathfinder · Sealed',
-    accentHex: '#16A34A',
-    editionLabel: 'Nylon-Sealed New Syllabus',
-    discountHint: '6% off 2+ copies',
-    description: 'Nylon-sealed green ICAN Pathfinder past questions & answers (new syllabus) with Case Study dossiers and advisory solutions for Professional Level.',
-  },
+  // 15 Individual Per-Course ICAN Pathfinder Past Questions (₦9,000 per course)
+  ...ALL_ICAN_COURSES.map((course) => {
+    const slug = course.code.toLowerCase().replace('/', '');
+    return {
+      id: `prod-ican-pq-${slug}`,
+      title: `${course.title} (${course.code}) — Pathfinder Past Questions`,
+      category: 'ican_past_question',
+      categoryLabel: 'ICAN Past Questions (Per Course)',
+      programme: 'ICAN',
+      level: course.level,
+      courseCode: course.code,
+      courseTitle: course.title,
+      price: 9000,
+      imageUrl: '/materials/ican-past-question.jpg',
+      colourBadge: `${course.code} Pathfinder · Sealed`,
+      accentHex: '#16A34A',
+      editionLabel: 'Nylon-Sealed Pathfinder · Per Course',
+      discountHint: '₦9,000/course · 6% off 2+ courses',
+      description: `Nylon-sealed green ICAN Pathfinder past questions & answers (new syllabus) specifically for ${course.title} (${course.code}) — ${course.level} Level. Buy this single course or add all courses applicable to you for automatic 6% off.`,
+    };
+  }),
+  // 15 Individual Per-Course ICAN Study Packs (₦10,000–₦15,500 per course)
   ...ALL_ICAN_COURSES.map((course) => {
     const slug = course.code.toLowerCase().replace('/', '');
     return {
@@ -869,6 +855,7 @@ export const STORE_PRODUCTS = [
       programme: 'ICAN',
       level: course.level,
       courseCode: course.code,
+      courseTitle: course.title,
       price: course.studyPackPrice,
       imageUrl: `/materials/ican-sp-${slug}.jpg`,
       colourBadge: `${course.code} Study Text`,
@@ -878,6 +865,29 @@ export const STORE_PRODUCTS = [
       description: `Official ICAN ${course.level} Level Study Text for ${course.title} (${course.code}) — 2026 syllabus edition with full standards coverage and exam-grade questions.`,
     };
   }),
+];
+
+export const ATSWA_APP_REGISTRATION_GUIDE = [
+  {
+    step: '01',
+    title: 'Confirm Your Starting ATS Level',
+    detail: "O'Level or non-accounting ND starts at ATS 1 · ND Banking & Finance starts at ATS 2 (exempt ATS 1) · ND Accounting starts at ATS 3 (exempt ATS 1 & 2).",
+  },
+  {
+    step: '02',
+    title: 'Prepare & Check Required Documents In-App',
+    detail: "ATS 1 requires a clear passport photograph, O'Level result (WAEC/NECO/NABTEB) and birth certificate. ATS 2 & ATS 3 require your previous ATS pass slip or approved ND exemption slip plus subscription evidence.",
+  },
+  {
+    step: '03',
+    title: 'Submit Documents & Registration Details on VALENCE',
+    detail: 'Upload your documents and submit registration/document questions directly inside your VALENCE Student Portal — our academic team reviews and updates your status in-app.',
+  },
+  {
+    step: '04',
+    title: 'Complete Exam Entry Before the 7-Day Cutoff',
+    detail: 'Register for your March or September 2-day diet (second-to-last Tuesday & Wednesday) at least 1 week before Exam Day 1, and optionally unlock online tuition (₦3,000) whenever ready.',
+  },
 ];
 
 export const DELIVERY_ZONES = [
@@ -929,18 +939,18 @@ export const VALENCE_PILLARS = [
   {
     id: 'marketplace',
     code: 'VALENCE MARKETPLACE',
-    title: 'Study Packs, Past Questions & Digital Library',
-    description: 'Authentic ICAN and ATSWA study packs, hard-copy past questions with automatic multi-pack discounts, Paystack checkout, free campus delivery zones and PDF textbooks.',
+    title: 'Study Packs, Per-Course Past Questions & Library',
+    description: 'Order a single course or all applicable courses — per-course ATSWA (₦5,500) & ICAN (₦9,000) past questions, study packs with up to 9% automatic discounts, Paystack checkout, free campus delivery and in-app delivery enquiries.',
     route: '/store',
-    metric: '6 Free Delivery Hubs',
+    metric: '45 Items · 6 Free Hubs',
   },
   {
     id: 'advertise',
     code: 'VALENCE ADVERTISE',
-    title: 'Independent Tuition Centre Advertising',
-    description: 'A neutral, transparent advertising platform and searchable Tuition Centres Directory for verified tutorial institutes nationwide with Paystack billing and live CTR analytics.',
+    title: 'In-App Tuition Centre Advertising (₦10,000/Week)',
+    description: 'A neutral, 100% in-app advertising hub and searchable Tuition Centres Directory for verified tutorial institutes nationwide at ₦10,000/week with Paystack billing, live CTR analytics and Admin Portal management.',
     route: '/advertise',
-    metric: '9 Ad Placements',
+    metric: '₦10,000 / Week · In-App',
   },
   {
     id: 'opportunities',
@@ -1300,16 +1310,16 @@ export const FAQS = [
     a: `Yes. VALENCE includes a built-in searchable directory of ${UNIVERSITY_COUNTS.total}+ NUC-accredited Federal, State and Private universities across all 36 states and FCT Abuja (plus support for polytechnics and colleges) for student profiles, study groups, exemption checks and inter-school competitions.`,
   },
   {
-    q: 'How are online payments processed, and when is WhatsApp used?',
-    a: 'Paystack is the exclusive online checkout and payment processor across all of VALENCE (tuition application unlocks, online tuition, store orders and advertising packages), verified server-side before access is granted. WhatsApp (+234 915 434 4663) is never used as an online checkout — it handles enquiries, official ICAN fee assistance, physical tuition applications and customer support.',
+    q: 'How are online payments, store enquiries, ATSWA guidance and advertising handled?',
+    a: 'Paystack is the exclusive online checkout across all of VALENCE (tuition application unlocks, online tuition, store orders and ₦10,000/week tuition-centre advertising), verified server-side before access is granted. ATSWA document & registration guidance, study materials & delivery enquiries, and VALENCE ADVERTISE campaign bookings are all completed directly inside the app (and updated dynamically via the Admin Portal). WhatsApp (+234 915 434 4663) handles official ICAN fee assistance, physical tuition applications and general support.',
   },
   {
-    q: 'How does the 7% ICAN study pack discount and free campus delivery work?',
-    a: 'Purchasing two or more different ICAN study packs in the same transaction — even across Foundation, Skills and Professional levels — triggers an automatic 7% discount on those study packs. ATSWA past questions get 9% off (2+), ATSWA study packs 5% off (2+) and ICAN past questions 6% off (2+). Delivery is free to LASU, Ojo, UNILAG, YABATECH, FCE and Yaba.',
+    q: 'Are past questions sold per course, and how do store discounts & free delivery work?',
+    a: 'Yes — past questions are priced per individual course so you can buy a single paper or every paper applicable to you: ATSWA past questions are ₦5,500 per course (automatic 9% off 2+ courses/copies) and ICAN Pathfinder past questions are ₦9,000 per course (automatic 6% off 2+ courses/copies). ATSWA study packs are ₦9,500/pack (5% off 2+), and buying 2+ different ICAN study packs — even across Foundation, Skills and Professional — unlocks an automatic 7% discount. Delivery is free to LASU, Ojo, UNILAG, YABATECH, FCE and Yaba.',
   },
   {
-    q: 'Can independent tuition centres advertise on VALENCE?',
-    a: 'Yes. VALENCE is an open, neutral ecosystem where verified accounting tuition centres and training providers across Nigeria can list in the public Tuition Centres Directory and run clearly labelled Sponsored campaigns with Paystack billing and live impression/click analytics.',
+    q: 'How much does it cost for tuition centres to advertise on VALENCE?',
+    a: 'Approved tuition centres advertise directly inside the VALENCE app at ₦10,000 per week (with rates, placements and approvals managed via the Admin Portal). Every campaign runs through server-verified Paystack checkout, carries a transparent Sponsored label, and includes live impression, click and CTR analytics.',
   },
 ];
 

@@ -101,10 +101,10 @@ export default function HomePage() {
   const lifecycle = getSessionLifecycle(activeSession);
 
   const featuredProducts = [
-    products.find((p) => p.courseCode === 'FR'),
-    products.find((p) => p.courseCode === 'SBR'),
-    products.find((p) => p.id === 'prod-ican-pq-skl'),
-    products.find((p) => p.id === 'prod-atswa-pq-2'),
+    products.find((p) => p.id === 'prod-ican-sp-fr'),
+    products.find((p) => p.id === 'prod-ican-sp-sbr'),
+    products.find((p) => p.id === 'prod-ican-pq-fr'),
+    products.find((p) => p.id === 'prod-atswa-pq-ats2-fa'),
   ].filter(Boolean);
 
   const visibleAnnouncements = announcements.filter((a) => {
@@ -614,8 +614,8 @@ export default function HomePage() {
                 ATSWA Programme (ATS 1, ATS 2 & ATS 3)
               </h2>
               <p className="text-sm text-[#9AA4B2]">
-                Next sitting: <strong className="text-white">Tue 23 & Wed 24 March 2027</strong> (registration closes Tue 16 March 2027). Pay the one-time{' '}
-                <strong className="text-[#16C784]">₦3,000 registration</strong> per level only when applying for tuition to view your full cost implication and 25% multi-course tuition discount (2+ courses).
+                Next sitting: <strong className="text-white">Tue 23 & Wed 24 March 2027</strong> (registration closes Tue 16 March 2027). ATSWA document checklist & registration guidance run directly inside VALENCE; pay the one-time{' '}
+                <strong className="text-[#16C784]">₦3,000 registration</strong> per level only when applying for tuition to unlock your full cost implication and 25% multi-course tuition discount (2+ courses).
               </p>
             </div>
             <div className="flex flex-wrap gap-2.5">
@@ -974,20 +974,25 @@ export default function HomePage() {
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5">
             <div className="space-y-2 max-w-2xl">
               <div className="flex flex-wrap items-center gap-2">
-                <Badge variant="green">7% Off 2+ Distinct ICAN Study Packs</Badge>
+                <Badge variant="green">Per-Course Past Questions & Study Packs</Badge>
                 <Badge variant="neutral">Free Delivery: LASU · Ojo · UNILAG · YABATECH · FCE · Yaba</Badge>
               </div>
               <h2 className="font-display text-2xl sm:text-4xl font-bold text-white">
-                VALENCE Marketplace — Study Packs & Past Questions
+                VALENCE Marketplace — Study Packs & Per-Course Past Questions
               </h2>
               <p className="text-sm text-[#9AA4B2]">
-                ATSWA past questions (₦5,500 · 9% off 2+), ATSWA study packs (₦9,500 · 5% off 2+), ICAN past questions (₦9,000 · 6% off 2+), and all 15 ICAN study packs (₦10,000–₦15,500 · 7% off 2+ distinct courses across levels).
+                Buy a single course or all courses applicable to you: ATSWA past questions (₦5,500/course · 9% off 2+), ICAN Pathfinder past questions (₦9,000/course · 6% off 2+), ATSWA study packs (₦9,500 · 5% off 2+), and all 15 ICAN study packs (₦10,000–₦15,500 · 7% off 2+ distinct courses) — with in-app material & delivery enquiries.
               </p>
             </div>
-            <Link to="/store" className="v-btn-primary self-start lg:self-auto shrink-0">
-              <ShoppingBag className="h-4 w-4" />
-              Browse All 24 Products
-            </Link>
+            <div className="flex flex-wrap gap-2.5 self-start lg:self-auto shrink-0">
+              <Link to="/store?enquiry=open" className="v-btn-secondary text-xs">
+                In-App Delivery Enquiry
+              </Link>
+              <Link to="/store" className="v-btn-primary">
+                <ShoppingBag className="h-4 w-4" />
+                Browse All 45 Materials
+              </Link>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -1068,7 +1073,7 @@ export default function HomePage() {
                 Discover Verified Accounting Tuition Centres Across Nigeria
               </h2>
               <p className="text-xs sm:text-sm text-[#9AA4B2]">
-                An open, level playing field for Nigerian tutorial institutes. Paid placements are clearly labelled <strong className="text-[#EA3943]">Sponsored</strong> or <strong className="text-[#EA3943]">Advertisement</strong> and never presented as academic guarantees.
+                An open, level playing field for Nigerian tutorial institutes — advertise directly in-app at <strong className="text-[#16C784]">₦10,000/week</strong> with Paystack checkout and live analytics. Paid placements are clearly labelled <strong className="text-[#EA3943]">Sponsored</strong> or <strong className="text-[#EA3943]">Advertisement</strong>.
               </p>
             </div>
             <div className="flex flex-wrap gap-2.5">
@@ -1076,7 +1081,7 @@ export default function HomePage() {
                 Full Directory
               </Link>
               <Link to="/advertise" className="v-btn-primary text-xs">
-                <Megaphone className="h-3.5 w-3.5" /> Advertise Your Centre
+                <Megaphone className="h-3.5 w-3.5" /> Advertise In-App (₦10,000/wk)
               </Link>
             </div>
           </div>

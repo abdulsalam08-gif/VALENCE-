@@ -32,10 +32,10 @@ const PORTAL_META = {
       'Free signup for ATSWA candidates, ICAN candidates, students across all Nigerian universities/polytechnics and general accounting learners. Pay ₦3,000 per level only when applying for tuition and viewing cost implications.',
     capabilities: [
       'Free access to profile, photo gallery, forums, study groups, AI tools & official diet timetables',
+      'In-app ATSWA document checklist, upload & registration guidance + in-app study material & delivery enquiries',
       'Optional ₦3,000 per-level Paystack registration exclusively when applying for tuition & cost implication',
-      'Live Google Meet classroom links, diet registration cutoff alerts & 30-day result release countdowns',
-      '15 study tools + National Inter-School Competitions with ₦50,000 post-competition cash rewards',
-      'Direct & group messaging, real WebRTC voice/video calls, bookstore order & Paystack receipt history',
+      'Per-course past question & study pack orders (buy 1 course or all applicable) with automatic discounts up to 9%',
+      '15 study tools, WebRTC voice/video calling & National Competitions with ₦50,000 cash rewards',
     ],
     needsInstitution: true,
     registerFields: [
@@ -125,16 +125,16 @@ const PORTAL_META = {
   advertiser: {
     key: 'advertiser',
     label: 'Tuition Centre Advertiser Portal',
-    badge: 'VALENCE ADVERTISE · NEUTRAL PLATFORM',
+    badge: 'VALENCE ADVERTISE · ₦10,000/WEEK · IN-APP',
     icon: Megaphone,
-    headline: 'Promote Your Approved Accounting Tuition Centre Nationwide',
+    headline: 'Promote Your Approved Accounting Tuition Centre Nationwide (₦10,000/Week)',
     summary:
-      'Manage your independent centre profile, purchase Paystack-verified banner or featured listing packages, upload creatives for compliance review and monitor live impressions and CTR.',
+      'Complete every step directly inside VALENCE — manage your independent centre profile, submit enquiries, book weekly placements at ₦10,000/week via Paystack, upload creatives for Admin review and track live impressions and CTR.',
     capabilities: [
-      'Neutral, independent national platform — open equally to all approved tuition centres',
-      'Directory listing management (Lagos, Abuja, Port Harcourt, Ibadan, Kano, Enugu & all states)',
-      'Paystack-verified Starter, Featured, Banner, Spotlight, Season & Sponsored Directory purchases',
-      'Live impression counts, clicks, CTR performance, active windows & renewal reminders',
+      '100% in-app self-serve workflow on a neutral national platform open equally to all approved centres',
+      'Transparent ₦10,000/week advertising rate across 9 approved placements with Paystack billing & invoices',
+      'Directory listing management (Lagos, Abuja, Port Harcourt, Ibadan, Kano, Enugu & all 36 states + FCT)',
+      'Live impression counts, clicks, CTR performance, active weekly windows & one-click in-app renewals',
     ],
     needsInstitution: false,
     registerFields: [
@@ -144,16 +144,17 @@ const PORTAL_META = {
   admin: {
     key: 'admin',
     label: 'Admin & Central Examination Authority',
-    badge: 'RBAC · AUDIT-LOGGED · RLS PROTECTED',
+    badge: 'FULL PLATFORM CMS · RBAC · RLS PROTECTED',
     icon: ShieldCheck,
-    headline: 'VALENCE Administration & Central Examination Authority Console',
+    headline: 'VALENCE Administration, Content Updates & Central Examination Authority Console',
     summary:
-      'Role-based command centre for Super Admin, Central Examination Authority (exam date overrides, timetables & 30-day result delay adjustments), Competition Manager (₦50,000 reward payouts), Finance, Store, Content, Moderation & Ad Managers.',
+      'Complete role-based Admin Portal to update all live platform information anytime — store courses/prices/discounts, delivery zones & in-app material enquiries, ATSWA document & registration guidance, ₦10,000/week ad rates & campaigns, official exam timetables/results, tuition pricing, FAQs and announcements.',
     capabilities: [
+      'Dynamic Platform & Pricing CMS: update per-course past question/study pack prices, discounts, delivery zones, tuition fees, ₦3,000 lock, ₦10,000/week ad rate & FAQs anytime',
+      'In-App Operations Queues: manage ATSWA document/registration guidance, study material & delivery enquiries, and VALENCE ADVERTISE campaign approvals & billing',
       'Central Examination Authority: update ATSWA (2-day) & ICAN (3-day) dates, paper timetables & 30-day result release / delay notices',
       'Competition Manager: papers, timers, rubric grading, appeals & ₦50,000 post-competition reward disbursement logs',
-      'Verification queues: tutors (AAT / AAT + ACA private storage), professionals, Nigerian institutions & tuition centres',
-      'Finance, tuition fee locks (₦3,000), Paystack audit logs, bookstore inventory, ad approvals & community moderation',
+      'Verification, Finance & Moderation: tutor certificates (AAT / AAT + ACA), professionals, Nigerian institutions, Paystack audit logs & community safety',
     ],
     needsInstitution: false,
     registerFields: [],

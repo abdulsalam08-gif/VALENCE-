@@ -10,8 +10,10 @@ import {
   FileText,
   ShieldCheck,
   Calendar,
-  MessageCircle,
   Clock,
+  UploadCloud,
+  Send,
+  ShoppingBag,
 } from 'lucide-react';
 import { usePlatform } from '../context/PlatformContext';
 import { useToast } from '../context/ToastContext';
@@ -24,10 +26,11 @@ export default function AtswaPage() {
   const {
     atswaLevels,
     atswaEntryPathways,
+    atswaRegistrationGuide,
     sessions,
     settings,
     isLevelUnlocked,
-    openWhatsAppModal,
+    submitInAppTicket,
   } = usePlatform();
   const toast = useToast();
 
@@ -45,6 +48,17 @@ export default function AtswaPage() {
     'ats1-bl',
   ]);
 
+  // Interactive In-App ATSWA Document Readiness & Registration Guidance state
+  const [checkedDocs, setCheckedDocs] = useState([]);
+  const [showGuidanceForm, setShowGuidanceForm] = useState(false);
+  const [guidanceForm, setGuidanceForm] = useState({
+    fullName: '',
+    email: '',
+    entryQualification: "O'Level Result (WAEC / NECO / NABTEB)",
+    question: '',
+  });
+  const [submittedRef, setSubmittedRef] = useState(null);
+
   const activeLevel = atswaLevels.find((l) => l.id === selectedLevelId) || atswaLevels[0];
   const activeDiet = atswaSessions.find((s) => s.id === selectedDietId) || atswaSessions[0];
   const dietLifecycle = getSessionLifecycle(activeDiet);
@@ -53,11 +67,18 @@ export default function AtswaPage() {
   const handleSelectLevel = (lvl) => {
     setSelectedLevelId(lvl.id);
     setSelectedCourseIds(lvl.courses.map((c) => c.id));
+    setCheckedDocs([]);
   };
 
   const toggleCourse = (courseId) => {
     setSelectedCourseIds((prev) =>
       prev.includes(courseId) ? prev.filter((id) => id !== courseId) : [...prev, courseId]
+    );
+  };
+
+  const toggleDoc = (doc) => {
+    setCheckedDocs((prev) =>
+      prev.includes(doc) ? prev.filter((d) => d !== doc) : [...prev, doc]
     );
   };
 
@@ -84,6 +105,26 @@ export default function AtswaPage() {
     );
   };
 
+  const handleGuidanceSubmit = (e) => {
+    e.preventDefault();
+    const ticket = submitInAppTicket('atswa', {
+      ...guidanceForm,
+      level: activeLevel.code,
+      diet: activeDiet.label,
+      readyDocuments: checkedDocs,
+    });
+    setSubmittedRef(ticket.id);
+    toast.success(
+      `ATSWA Guidance Logged In-App (${ticket.id})`,
+      'Your document checklist & registration request are saved for in-app review inside your Student Portal.'
+    );
+    setGuidanceForm((prev) => ({ ...prev, question: '' }));
+  };
+
+  const allDocsReady =
+    activeLevel.requiredDocuments.length > 0 &&
+    checkedDocs.length === activeLevel.requiredDocuments.length;
+
   return (
     <div className="divide-y divide-white/[0.06]">
       <section className="bg-grid-fintech py-14 sm:py-18">
@@ -91,24 +132,32 @@ export default function AtswaPage() {
           <div className="space-y-4 max-w-3xl">
             <div className="flex flex-wrap items-center gap-2">
               <Badge variant="green">ATSWA · MARCH & SEPTEMBER DIETS (2 EXAM DAYS)</Badge>
-              <Badge variant="neutral">2nd-to-Last Tuesday & Wednesday</Badge>
+              <Badge variant="neutral">In-App Document & Registration Guidance</Badge>
             </div>
             <h1 className="font-display text-3xl sm:text-5xl font-bold text-white">
               Accounting Technicians Scheme West Africa (ATS 1 – ATS 3)
             </h1>
             <p className="text-sm sm:text-base text-[#9AA4B2]">
-              Explore courses, required documents and the official 2-day diet timetable freely. You only pay the one-time{' '}
-              <strong className="text-[#16C784]">₦3,000 registration</strong> per level if you wish to apply for online tuition and unlock your complete cost implication (credited/waived as your tutorial registration fee).
+              Complete your ATSWA document checklist, registration guidance and 2-day diet timetable review directly inside VALENCE. You only pay the one-time{' '}
+              <strong className="text-[#16C784]">₦3,000 registration</strong> per level if applying for online tuition and unlocking your full cost implication (credited/waived as your tutorial registration fee).
             </p>
           </div>
-          <a
-            href={settings.officialLinks.atswaSoftCopy}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="v-btn-secondary text-xs self-start shrink-0"
-          >
-            Official ATSWA Soft-Copy Resources <ExternalLink className="h-4 w-4 text-[#16C784]" />
-          </a>
+          <div className="flex flex-wrap gap-2.5 self-start shrink-0">
+            <a
+              href={settings.officialLinks.atswaSoftCopy}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="v-btn-secondary text-xs"
+            >
+              Official Soft-Copy Portal <ExternalLink className="h-4 w-4 text-[#16C784]" />
+            </a>
+            <Link
+              to={`/store?category=atswa_past_question&level=${encodeURIComponent(activeLevel.code)}`}
+              className="v-btn-secondary text-xs"
+            >
+              <ShoppingBag className="h-3.5 w-3.5 text-[#16C784]" /> Per-Course PQs (₦5,500)
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -151,7 +200,7 @@ export default function AtswaPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 items-start">
-            {/* Left: Courses, 2-Day Timetable & Required Docs */}
+            {/* Left: Courses, 2-Day Timetable, Entry Route & In-App Document/Registration Guidance */}
             <div className="lg:col-span-7 space-y-6">
               <div className="v-card p-6 space-y-5">
                 <div className="flex flex-wrap items-center justify-between gap-2">
@@ -208,7 +257,7 @@ export default function AtswaPage() {
                               </span>
                             </p>
                             <p className="text-[11px] text-[#9AA4B2]">
-                              {course.topics} syllabus units · Live Google Meet + practice bank
+                              {course.topics} syllabus units · Past Question: ₦5,500/course (9% off 2+)
                             </p>
                           </div>
                         </div>
@@ -282,7 +331,9 @@ export default function AtswaPage() {
                   <Badge variant="green">~2.5 Yrs Full ATSWA → ACA</Badge>
                 </div>
                 <p className="text-xs text-[#9AA4B2]">
-                  You must pass all 4 courses in a level before advancing to the next. After clearing ATS 3, you earn the <strong className="text-white">AAT certificate</strong> and progress directly to the ICAN main levels (<strong className="text-[#16C784]">Skills & Professional</strong>).
+                  Pass all 4 courses in a level before moving to the next. After clearing ATS 3, you earn the{' '}
+                  <strong className="text-white">AAT certificate</strong> and progress directly to ICAN{' '}
+                  <strong className="text-[#16C784]">Skills & Professional Levels</strong>.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
                   {atswaEntryPathways.map((p) => (
@@ -298,34 +349,168 @@ export default function AtswaPage() {
                 </div>
               </div>
 
-              {/* Required Documents */}
-              <div className="v-card p-5 space-y-3">
-                <h3 className="font-display text-base font-bold text-white flex items-center gap-2">
-                  <FileText className="h-4 w-4 text-[#16C784]" /> Required Documents ({activeLevel.code})
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-[#C2C9D4]">
-                  {activeLevel.requiredDocuments.map((doc) => (
+              {/* IN-APP ATSWA Document Checklist & Registration Guidance (100% On-App, Admin-Editable) */}
+              <div id="document-guidance" className="v-card p-6 space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h3 className="font-display text-lg font-bold text-white flex items-center gap-2">
+                    <FileText className="h-4 w-4 text-[#16C784]" /> In-App {activeLevel.code} Document & Registration Guidance
+                  </h3>
+                  <Badge variant={allDocsReady ? 'green' : 'neutral'}>
+                    {allDocsReady
+                      ? 'All Documents Ready'
+                      : `${checkedDocs.length}/${activeLevel.requiredDocuments.length} Checked`}
+                  </Badge>
+                </div>
+
+                <p className="text-xs text-[#9AA4B2]">
+                  Tick each required document below to verify readiness and complete your ATSWA registration & document verification directly inside VALENCE (requirements & steps are kept updated via the Admin Portal).
+                </p>
+
+                {/* Interactive Document Readiness Checklist */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+                  {activeLevel.requiredDocuments.map((doc) => {
+                    const ready = checkedDocs.includes(doc);
+                    return (
+                      <button
+                        key={doc}
+                        type="button"
+                        onClick={() => toggleDoc(doc)}
+                        className={`flex items-center gap-2 rounded-xl border px-3 py-3 text-left transition-all ${
+                          ready
+                            ? 'bg-[#16C784]/12 border-[#16C784]/45 text-white'
+                            : 'bg-[#0B0E11] border-white/[0.07] text-[#C2C9D4] hover:border-white/[0.18]'
+                        }`}
+                      >
+                        <span
+                          className={`inline-flex h-4 w-4 shrink-0 items-center justify-center rounded border ${
+                            ready
+                              ? 'bg-[#16C784] border-[#16C784] text-[#06130D]'
+                              : 'border-white/25'
+                          }`}
+                        >
+                          {ready && <Check className="h-3 w-3 stroke-[3]" />}
+                        </span>
+                        <span className="font-medium leading-snug">{doc}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* 4-Step In-App Registration Workflow */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                  {atswaRegistrationGuide.map((item) => (
                     <div
-                      key={doc}
-                      className="flex items-center gap-2 rounded-lg bg-[#0B0E11] border border-white/[0.06] px-3 py-2.5"
+                      key={item.step}
+                      className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-3.5 space-y-1"
                     >
-                      <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784] shrink-0" />
-                      <span>{doc}</span>
+                      <p className="font-display font-bold text-[#16C784]">
+                        Step {item.step} · <span className="text-white">{item.title}</span>
+                      </p>
+                      <p className="text-[11px] text-[#9AA4B2] leading-relaxed">{item.detail}</p>
                     </div>
                   ))}
                 </div>
-                <button
-                  type="button"
-                  onClick={() =>
-                    openWhatsAppModal({
-                      category: 'ATSWA Document & Registration Guidance',
-                      level: `ATSWA — ${activeLevel.code}`,
-                    })
-                  }
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#16C784] hover:underline"
-                >
-                  <MessageCircle className="h-3.5 w-3.5" /> Ask about ATSWA document submission
-                </button>
+
+                {/* In-App Document Upload & Registration Guidance Actions */}
+                <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                  <Link
+                    to={`/portal/student?programme=atswa&level=${activeLevel.id}&section=documents`}
+                    className="v-btn-primary text-xs py-2.5 px-4"
+                  >
+                    <UploadCloud className="h-4 w-4" /> Upload {activeLevel.code} Documents in Student Portal
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => setShowGuidanceForm((v) => !v)}
+                    className="v-btn-secondary text-xs py-2.5 px-4"
+                  >
+                    {showGuidanceForm ? 'Hide In-App Guidance Form' : 'Request In-App Registration Guidance'}
+                  </button>
+                </div>
+
+                {submittedRef && (
+                  <div className="rounded-xl bg-[#16C784]/10 border border-[#16C784]/35 p-3.5 text-xs text-[#E5E9F0]">
+                    <strong className="text-[#16C784]">Reference {submittedRef} logged in-app.</strong>{' '}
+                    Track document verification feedback and admin responses inside your VALENCE Student Portal.
+                  </div>
+                )}
+
+                {showGuidanceForm && (
+                  <form
+                    onSubmit={handleGuidanceSubmit}
+                    className="rounded-2xl bg-[#0B0E11] border border-white/[0.08] p-4 space-y-3 animate-fade-up"
+                  >
+                    <p className="font-display text-xs font-bold uppercase tracking-wider text-[#16C784]">
+                      In-App {activeLevel.code} Document & Registration Request
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="v-label" htmlFor="ag-name">Full Name</label>
+                        <input
+                          id="ag-name"
+                          type="text"
+                          required
+                          value={guidanceForm.fullName}
+                          onChange={(e) =>
+                            setGuidanceForm({ ...guidanceForm, fullName: e.target.value })
+                          }
+                          placeholder="Surname & First Name"
+                          className="v-input text-xs"
+                        />
+                      </div>
+                      <div>
+                        <label className="v-label" htmlFor="ag-email">Email Address</label>
+                        <input
+                          id="ag-email"
+                          type="email"
+                          required
+                          value={guidanceForm.email}
+                          onChange={(e) =>
+                            setGuidanceForm({ ...guidanceForm, email: e.target.value })
+                          }
+                          placeholder="you@example.com"
+                          className="v-input text-xs"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="v-label" htmlFor="ag-qual">Entry Qualification</label>
+                      <select
+                        id="ag-qual"
+                        value={guidanceForm.entryQualification}
+                        onChange={(e) =>
+                          setGuidanceForm({ ...guidanceForm, entryQualification: e.target.value })
+                        }
+                        className="v-input text-xs"
+                      >
+                        <option>O&apos;Level Result (WAEC / NECO / NABTEB) — ATS 1 Entry</option>
+                        <option>ND Non-Accounting — ATS 1 Entry</option>
+                        <option>ND Banking &amp; Finance — ATS 2 Entry (Exempt ATS 1)</option>
+                        <option>ND Accounting — ATS 3 Entry (Exempt ATS 1 &amp; 2)</option>
+                        <option>Returning ATSWA Candidate (Passed Previous ATS Level)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="v-label" htmlFor="ag-q">
+                        Document or Registration Details
+                      </label>
+                      <textarea
+                        id="ag-q"
+                        rows={2}
+                        required
+                        value={guidanceForm.question}
+                        onChange={(e) =>
+                          setGuidanceForm({ ...guidanceForm, question: e.target.value })
+                        }
+                        placeholder="Ask about document format, O'Level combination, ND exemption slip or ATSWA registration number..."
+                        className="v-input text-xs resize-none"
+                      />
+                    </div>
+                    <button type="submit" className="v-btn-primary text-xs py-2.5 px-4">
+                      <Send className="h-3.5 w-3.5" /> Submit In-App Guidance Request
+                    </button>
+                  </form>
+                )}
               </div>
             </div>
 
@@ -372,7 +557,6 @@ export default function AtswaPage() {
                 </div>
 
                 {unlocked ? (
-                  /* Unlocked View — shown ONLY after verified Paystack ₦3,000 unlock record exists */
                   <div className="rounded-xl bg-[#0B0E11] border border-[#16C784]/35 p-4 space-y-2 text-xs">
                     <div className="flex items-center gap-1.5 text-[#16C784] font-semibold">
                       <Unlock className="h-3.5 w-3.5" /> {activeLevel.code} Cost Implication Unlocked
@@ -400,7 +584,6 @@ export default function AtswaPage() {
                     </div>
                   </div>
                 ) : (
-                  /* Gated View — Students pay ₦3,000 ONLY if applying for tuition & viewing cost implication */
                   <div className="rounded-2xl bg-gradient-to-b from-[#16C784]/[0.08] to-[#0B0E11] border border-[#16C784]/30 p-5 space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#16C784]">
@@ -431,7 +614,7 @@ export default function AtswaPage() {
 
                 <div className="flex items-center justify-center gap-1.5 text-[11px] text-[#667085]">
                   <ShieldCheck className="h-3.5 w-3.5 text-[#16C784]" />
-                  Paystack exclusive online checkout · Or join VALENCE free without tuition
+                  Paystack exclusive online checkout · In-app ATSWA document desk
                 </div>
               </div>
             </div>

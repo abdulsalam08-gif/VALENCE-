@@ -300,7 +300,7 @@ export default function IcanPage() {
                               <span className="font-display text-xs text-[#16C784]">({c.code})</span>
                             </p>
                             <p className="text-[11px] text-[#9AA4B2]">
-                              {c.topics} syllabus modules · Store study pack: {formatNaira(c.studyPackPrice)}
+                              {c.topics} syllabus modules · Study Pack: {formatNaira(c.studyPackPrice)} · Past Question: ₦9,000/course (6% off 2+)
                             </p>
                           </div>
                         </div>
