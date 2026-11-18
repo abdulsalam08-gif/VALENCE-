@@ -24,7 +24,7 @@
 | **Phase 12** | **Real WebRTC direct audio & video calling (ICE/STUN/TURN signaling, ring/accept/decline/end, permission checks, privacy controls & call logs)** | Pending |
 | **Phase 13** | **Competition system: school registration across all Nigerian universities/polytechnics/centres, 6 divisions, configurable ATSWA & ICAN timed exams, auto + human rubric grading, 6 leaderboards, Monthly League, 1v1/2v2 Arena, certificates, appeals, Hall of Fame & audited ₦50,000 post-competition learner reward disbursement** | Pending |
 | **Phase 14** | **Scholarships, internships, graduate jobs, CPE/CPD webinars & VALENCE PRO verified professional hub** | Pending |
-| **Phase 15** | **Approved Tuition Centres directory, 100% in-app VALENCE ADVERTISE booking & Paystack billing (₦10,000/week, admin-configurable), 9 `Sponsored`-labelled ad placements, approval queue & live impression/click/CTR analytics** | Pending |
+| **Phase 15** | **Verified Physical Tuition Centres directory (strictly in-person venues; online tuition is delivered solely in-app by VALENCE-verified tutors), 100% in-app VALENCE ADVERTISE booking & Paystack billing (₦10,000/week, admin-configurable), 9 `Sponsored`-labelled ad placements, physical-venue verification queue & live impression/click/CTR analytics** | Pending |
 | **Phase 16** | **Full 8-role RBAC Admin Portal & Live Platform CMS (update all per-course store prices/discounts, delivery zones, ₦10,000/week ad rate, ATSWA guidance, in-app material/delivery & ad queues, Central Exam Authority date/timetable/result-delay console, ₦50,000 competition payout ledger, FAQs & announcements), verification queues, moderation, audit logs, security hardening, Google Workspace automation & Vercel deployment** | Pending |
 
 ---

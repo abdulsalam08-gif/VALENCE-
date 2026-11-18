@@ -18,10 +18,10 @@ import Badge from '../components/ui/Badge';
 const SERVICES = [
   {
     icon: Video,
-    title: 'Online Live Tuition (ATSWA & ICAN)',
+    title: 'In-App Online Tuition (Verified Tutors)',
     badge: '₦3,000 to Apply & View Cost',
-    desc: 'Structured live Google Meet tutorials, recorded lessons and syllabus guidance. Free platform entry; pay ₦3,000 per level only when applying for tuition and viewing cost implications.',
-    cta: 'Apply for Tuition',
+    desc: 'All online ATSWA & ICAN tuition is taken directly in-app with tutors verified by VALENCE (AAT for ATSWA; AAT + ACA for ICAN). Pay ₦3,000 per level only when applying for tuition.',
+    cta: 'Apply for Online Tuition',
     to: '/programmes',
   },
   {
@@ -66,10 +66,10 @@ const SERVICES = [
   },
   {
     icon: Building2,
-    title: 'Verified Tuition Centres & VALENCE ADVERTISE',
-    badge: '₦10,000/Week · In-App',
-    desc: '100% in-app advertising at ₦10,000/week, independent directory verification, Paystack billing and live CTR analytics for approved accounting tuition centres across Nigeria.',
-    cta: 'Advertise In-App',
+    title: 'Physical Tuition Centres & VALENCE ADVERTISE',
+    badge: 'Physical Only · ₦10k/Wk',
+    desc: '100% in-app directory & advertising exclusively for verified physical (in-person) accounting tuition centres nationwide at ₦10,000/week with Paystack billing and live CTR analytics.',
+    cta: 'Advertise Physical Centre',
     to: '/advertise',
   },
   {

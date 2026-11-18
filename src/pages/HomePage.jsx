@@ -1067,21 +1067,21 @@ export default function HomePage() {
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5">
             <div className="space-y-2 max-w-2xl">
               <span className="text-xs font-semibold uppercase tracking-widest text-[#16C784]">
-                TUITION CENTRES DIRECTORY & VALENCE ADVERTISE
+                PHYSICAL TUITION CENTRES DIRECTORY &amp; VALENCE ADVERTISE
               </span>
               <h2 className="font-display text-2xl sm:text-3xl font-bold text-white">
-                Discover Verified Accounting Tuition Centres Across Nigeria
+                Discover Verified Physical Tuition Centres Across Nigeria
               </h2>
               <p className="text-xs sm:text-sm text-[#9AA4B2]">
-                An open, level playing field for Nigerian tutorial institutes — advertise directly in-app at <strong className="text-[#16C784]">₦10,000/week</strong> with Paystack checkout and live analytics. Paid placements are clearly labelled <strong className="text-[#EA3943]">Sponsored</strong> or <strong className="text-[#EA3943]">Advertisement</strong>.
+                We exclusively list and advertise verified <strong className="text-white">physical (in-person) accounting tuition centres</strong> in-app at <strong className="text-[#16C784]">₦10,000/week</strong> (all online tuition is taken directly in-app with VALENCE-verified tutors). Paid placements carry clear <strong className="text-[#EA3943]">Sponsored</strong> or <strong className="text-[#EA3943]">Advertisement</strong> badges.
               </p>
             </div>
             <div className="flex flex-wrap gap-2.5">
               <Link to="/tuition-centres" className="v-btn-secondary text-xs">
-                Full Directory
+                Physical Directory
               </Link>
               <Link to="/advertise" className="v-btn-primary text-xs">
-                <Megaphone className="h-3.5 w-3.5" /> Advertise In-App (₦10,000/wk)
+                <Megaphone className="h-3.5 w-3.5" /> Advertise Physical Centre (₦10k/wk)
               </Link>
             </div>
           </div>
@@ -1092,8 +1092,8 @@ export default function HomePage() {
                 <div className="space-y-2.5">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
-                      {centre.verified && <Badge variant="verified">Verified Centre</Badge>}
-                      <Badge variant="neutral">{centre.mode}</Badge>
+                      {centre.verified && <Badge variant="verified">Verified Physical Centre</Badge>}
+                      <Badge variant="neutral">{centre.schedule || centre.mode}</Badge>
                     </div>
                     {centre.sponsored && <Badge variant="sponsored">{centre.adLabel}</Badge>}
                   </div>

@@ -124,21 +124,21 @@ const PORTAL_META = {
   },
   advertiser: {
     key: 'advertiser',
-    label: 'Tuition Centre Advertiser Portal',
-    badge: 'VALENCE ADVERTISE · ₦10,000/WEEK · IN-APP',
+    label: 'Physical Tuition Centre Advertiser Portal',
+    badge: 'PHYSICAL CENTRES ONLY · ₦10,000/WEEK · IN-APP',
     icon: Megaphone,
-    headline: 'Promote Your Approved Accounting Tuition Centre Nationwide (₦10,000/Week)',
+    headline: 'Promote Your Verified Physical Tuition Centre Nationwide (₦10,000/Week)',
     summary:
-      'Complete every step directly inside VALENCE — manage your independent centre profile, submit enquiries, book weekly placements at ₦10,000/week via Paystack, upload creatives for Admin review and track live impressions and CTR.',
+      'Exclusively for verified bricks-and-mortar (in-person) accounting tuition centres across Nigeria. Book weekly placements at ₦10,000/week via Paystack, verify your physical venue address and track live CTR in-app. (Online tuition is delivered strictly in-app by VALENCE-verified tutors.)',
     capabilities: [
-      '100% in-app self-serve workflow on a neutral national platform open equally to all approved centres',
-      'Transparent ₦10,000/week advertising rate across 9 approved placements with Paystack billing & invoices',
-      'Directory listing management (Lagos, Abuja, Port Harcourt, Ibadan, Kano, Enugu & all 36 states + FCT)',
-      'Live impression counts, clicks, CTR performance, active weekly windows & one-click in-app renewals',
+      'Strictly for verified physical (in-person) tuition centres with confirmed Nigerian lecture addresses',
+      '100% in-app campaign booking at ₦10,000/week across 9 approved placements with Paystack billing',
+      'Searchable city & state directory listing (Lagos, Abuja, Port Harcourt, Ibadan, Kano, Enugu & all states)',
+      'Live impression counts, clicks, CTR analytics, active weekly schedules & one-click in-app renewals',
     ],
     needsInstitution: false,
     registerFields: [
-      { name: 'centreName', label: 'Registered Tuition Centre Name', type: 'text', placeholder: 'e.g. Prime Ledger Academy' },
+      { name: 'centreName', label: 'Physical Tuition Centre Name', type: 'text', placeholder: 'e.g. Prime Ledger School of Accountancy (Yaba, Lagos)' },
     ],
   },
   admin: {

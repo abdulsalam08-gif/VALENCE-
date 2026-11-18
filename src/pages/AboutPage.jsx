@@ -19,7 +19,7 @@ const COMMUNITIES_SERVED = [
   { num: '04', title: 'ICAN Professional Students', desc: 'Final-stage candidates sitting SBR, Case Study, AAAF, Advanced Taxation and SFM.' },
   { num: '05', title: 'University & Polytechnic Students', desc: 'Undergraduates across all Federal, State & Private Nigerian universities and polytechnics in 12+ disciplines.' },
   { num: '06', title: 'Chartered Accountants & Professionals', desc: 'Verified ACA, FCA, ACCA, CPA and practising finance leaders.' },
-  { num: '07', title: 'Tutors & Independent Tuition Centres', desc: 'Verified educators and tutorial centres across Nigeria on a neutral, open platform.' },
+  { num: '07', title: 'Verified In-App Tutors & Physical Tuition Centres', desc: 'Online tuition taught strictly in-app by VALENCE-verified tutors, plus a directory of verified physical tuition centres across Nigeria.' },
   { num: '08', title: 'General Accounting Learners', desc: 'Entrepreneurs and individuals building financial literacy, bookkeeping and tax skills.' },
 ];
 
@@ -153,7 +153,7 @@ export default function AboutPage() {
                 'Verified Chartered Accountants',
                 'Verified Professionals',
                 'Verified Institutions',
-                'Approved Tuition Centres',
+                'Verified Physical Tuition Centres',
               ].map((b) => (
                 <Badge key={b} variant="verified">
                   {b}

@@ -9,6 +9,7 @@ import {
   Calendar,
   Check,
   Send,
+  MapPin,
 } from 'lucide-react';
 import { usePlatform } from '../context/PlatformContext';
 import { useToast } from '../context/ToastContext';
@@ -17,14 +18,14 @@ import { calculateAdCampaignCost, formatNaira } from '../lib/pricing';
 
 const AD_PLACEMENTS = [
   { id: 'home-banner', label: 'Homepage Promotional Banner' },
-  { id: 'ican-sponsored', label: 'Sponsored ICAN Programme Listing' },
-  { id: 'atswa-sponsored', label: 'Sponsored ATSWA Programme Listing' },
+  { id: 'ican-sponsored', label: 'Sponsored ICAN Physical Centre Listing' },
+  { id: 'atswa-sponsored', label: 'Sponsored ATSWA Physical Centre Listing' },
   { id: 'student-dash', label: 'Student Dashboard Placement' },
   { id: 'connect-post', label: 'Sponsored VALENCE CONNECT Post' },
-  { id: 'featured-centre', label: 'Featured Tuition Centre Directory Card' },
+  { id: 'featured-centre', label: 'Featured Physical Tuition Centre Card' },
   { id: 'learn-slot', label: 'Learning Section Placement' },
-  { id: 'revision-workshop', label: 'Revision Workshop Promotion' },
-  { id: 'pro-training', label: 'Professional Training Announcement' },
+  { id: 'revision-workshop', label: 'In-Person Revision Workshop Promotion' },
+  { id: 'pro-training', label: 'Physical Professional Training Announcement' },
 ];
 
 const QUICK_DURATIONS = [1, 2, 4, 8, 12];
@@ -36,12 +37,14 @@ export default function AdvertisePage() {
   const weeklyRate = settings.adWeeklyRate || 10000;
   const [weeks, setWeeks] = useState(1);
   const [selectedPlacementId, setSelectedPlacementId] = useState('featured-centre');
+  const [physicalOnlyConfirmed, setPhysicalOnlyConfirmed] = useState(true);
   const [campaign, setCampaign] = useState({
     centreName: '',
+    streetAddress: '',
     contactEmail: '',
     contactPhone: '',
     cityState: 'Lagos',
-    deliveryMode: 'Online & Physical Tuition',
+    classSchedule: 'Weekday & Weekend Physical Classes',
     targetAudience: 'ATSWA & ICAN Candidates (All Levels)',
     headline: '',
     notes: '',
@@ -58,8 +61,16 @@ export default function AdvertisePage() {
 
   const handleCampaignSubmit = (e) => {
     e.preventDefault();
+    if (!physicalOnlyConfirmed) {
+      toast.warning(
+        'Physical Centre Confirmation Required',
+        'VALENCE ADVERTISE exclusively promotes verified physical (in-person) tuition centres.'
+      );
+      return;
+    }
     const record = submitInAppTicket('advertise', {
       ...campaign,
+      mode: 'Physical Tuition Only',
       placement: selectedPlacement.label,
       weeks: cost.weeks,
       weeklyRate: cost.weeklyRate,
@@ -67,34 +78,39 @@ export default function AdvertisePage() {
     });
     setSubmittedRef(record.id);
     toast.success(
-      `Campaign Submitted In-App (${record.id})`,
-      `${cost.weeks} week(s) × ${formatNaira(cost.weeklyRate)} = ${formatNaira(cost.totalAmount)} · Ready for verification & Paystack billing in Advertiser Portal.`
+      `Physical Centre Campaign Logged (${record.id})`,
+      `${cost.weeks} week(s) × ${formatNaira(cost.weeklyRate)} = ${formatNaira(cost.totalAmount)} · Pending Admin physical-venue verification & Paystack billing.`
     );
   };
 
   return (
     <div className="divide-y divide-white/[0.06]">
-      {/* Hero with Official ₦10,000 / Week Rate */}
+      {/* Hero — Strictly Physical Tuition Centres @ ₦10,000 / Week */}
       <section className="bg-grid-fintech py-14 sm:py-18">
         <div className="v-container grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-7 space-y-5">
             <div className="flex flex-wrap items-center gap-2">
-              <Badge variant="green">VALENCE ADVERTISE · 100% IN-APP</Badge>
-              <Badge variant="neutral">Independent & Brand-Neutral Platform</Badge>
+              <Badge variant="green">VALENCE ADVERTISE · PHYSICAL CENTRES ONLY</Badge>
+              <Badge variant="neutral">100% In-App · Paystack Verified</Badge>
             </div>
             <h1 className="font-display text-3xl sm:text-5xl font-bold text-white leading-tight">
-              Advertise Your Tuition Centre Nationwide for{' '}
+              Advertise Your Physical Tuition Centre for{' '}
               <span className="text-[#16C784]">{formatNaira(weeklyRate)}/Week</span>
             </h1>
             <p className="text-sm sm:text-base text-[#9AA4B2]">
-              Apply, configure placements, upload creatives, verify your centre, pay via Paystack and monitor live impressions, clicks & CTR <strong className="text-white">entirely inside VALENCE</strong>. Rates, active windows and compliance approvals are centrally managed via the Admin Portal.
+              VALENCE exclusively lists and promotes verified{' '}
+              <strong className="text-white">physical (in-person) accounting tuition centres</strong>{' '}
+              across Nigeria — so candidates can find trusted lecture venues in their city. All online tuition on VALENCE is delivered strictly in-app by tutors verified directly by VALENCE.
             </p>
             <div className="flex flex-wrap gap-3">
               <a href="#campaign-builder" className="v-btn-primary text-xs">
-                <Megaphone className="h-4 w-4" /> Book In-App Ad Campaign ({formatNaira(weeklyRate)}/wk)
+                <Megaphone className="h-4 w-4" /> Book Physical Centre Ad ({formatNaira(weeklyRate)}/wk)
               </a>
               <Link to="/portal/advertiser?mode=register" className="v-btn-secondary text-xs">
                 Advertiser Portal Login / Signup <ArrowRight className="h-3.5 w-3.5 text-[#16C784]" />
+              </Link>
+              <Link to="/portal/tutor?mode=register" className="v-btn-secondary text-xs">
+                Teach Online? Apply as a Verified Tutor →
               </Link>
             </div>
           </div>
@@ -103,45 +119,47 @@ export default function AdvertisePage() {
           <div className="lg:col-span-5 v-glass-card p-6 sm:p-7 border-[#16C784]/35 space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider text-[#16C784]">
-                Official Tuition Centre Ad Rate
+                Physical Tuition Centre Ad Rate
               </span>
-              <Badge variant="verified">Paystack Verified</Badge>
+              <Badge variant="verified">In-Person Only</Badge>
             </div>
             <div className="rounded-2xl bg-[#0B0E11] border border-[#16C784]/30 p-5 text-center space-y-1">
               <p className="font-display text-4xl sm:text-5xl font-bold text-[#16C784] tabular-nums-display">
                 {formatNaira(weeklyRate)}
               </p>
-              <p className="text-xs font-semibold text-white">Per Week · Flexible Weekly Duration</p>
+              <p className="text-xs font-semibold text-white">
+                Per Week · Verified Physical Tuition Centres Only
+              </p>
             </div>
             <ul className="space-y-1.5 text-xs text-[#C2C9D4]">
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784] shrink-0 mt-0.5" />
-                <span>100% self-serve inside the VALENCE app — from enquiry & creative upload to renewal</span>
+                <span>Strictly for bricks-and-mortar / in-person tutorial centres with verified physical lecture addresses</span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784] shrink-0 mt-0.5" />
-                <span>Choose 1 week ({formatNaira(weeklyRate)}), 4 weeks ({formatNaira(weeklyRate * 4)}) or full exam-diet runs</span>
+                <span>100% in-app booking, creative upload, Paystack billing ({formatNaira(weeklyRate)}/wk) & live CTR analytics</span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784] shrink-0 mt-0.5" />
-                <span>Live impressions, clicks, CTR & schedule tracking inside your Advertiser Portal</span>
+                <span>External online classes are not advertised — online tuition runs exclusively in-app via VALENCE-verified tutors</span>
               </li>
             </ul>
           </div>
         </div>
       </section>
 
-      {/* Interactive In-App Campaign Builder & Application */}
+      {/* Interactive In-App Campaign Builder & Physical Centre Application */}
       <section id="campaign-builder" className="py-14 sm:py-18">
         <div className="v-container grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           <form onSubmit={handleCampaignSubmit} className="lg:col-span-7 v-card p-6 sm:p-7 space-y-5">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
                 <h2 className="font-display text-xl font-bold text-white">
-                  In-App Campaign Booking & Advertiser Enquiry
+                  In-App Physical Tuition Centre Ad Booking
                 </h2>
                 <p className="text-xs text-[#9AA4B2] mt-0.5">
-                  Configure your weekly campaign directly on VALENCE — reviewed by Admin Ad Manager and activated via Paystack.
+                  Submit your physical lecture centre details & weekly campaign directly inside VALENCE — verified by Admin and activated via Paystack.
                 </p>
               </div>
               <Badge variant="green">{formatNaira(weeklyRate)} / Week</Badge>
@@ -154,11 +172,11 @@ export default function AdvertisePage() {
                 </p>
                 <p className="text-[#C2C9D4]">
                   Total: <strong>{formatNaira(cost.totalAmount)}</strong> ({cost.weeks}{' '}
-                  {cost.weeks === 1 ? 'week' : 'weeks'} on {selectedPlacement.label}). Continue in your{' '}
+                  {cost.weeks === 1 ? 'week' : 'weeks'} on {selectedPlacement.label} · Physical Tuition Only). Continue in your{' '}
                   <Link to="/portal/advertiser" className="text-[#16C784] underline font-semibold">
                     Advertiser Portal
                   </Link>{' '}
-                  for verification status, Paystack payment and live analytics.
+                  for physical-address verification, Paystack payment and live analytics.
                 </p>
               </div>
             )}
@@ -225,7 +243,7 @@ export default function AdvertisePage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               <div>
-                <label className="v-label" htmlFor="ad-centre">Tuition Centre Name</label>
+                <label className="v-label" htmlFor="ad-centre">Physical Tuition Centre Name</label>
                 <input
                   id="ad-centre"
                   type="text"
@@ -237,22 +255,37 @@ export default function AdvertisePage() {
                 />
               </div>
               <div>
-                <label className="v-label" htmlFor="ad-city">City & State</label>
+                <label className="v-label" htmlFor="ad-city">City &amp; State</label>
                 <input
                   id="ad-city"
                   type="text"
                   required
                   value={campaign.cityState}
                   onChange={(e) => setCampaign({ ...campaign, cityState: e.target.value })}
-                  placeholder="e.g. Yaba, Lagos / Wuse, Abuja"
+                  placeholder="e.g. Yaba, Lagos / Wuse II, Abuja"
                   className="v-input text-xs"
                 />
               </div>
             </div>
 
+            <div>
+              <label className="v-label flex items-center gap-1.5" htmlFor="ad-address">
+                <MapPin className="h-3.5 w-3.5 text-[#16C784]" /> Full Physical Lecture Venue Address (Required)
+              </label>
+              <input
+                id="ad-address"
+                type="text"
+                required
+                value={campaign.streetAddress}
+                onChange={(e) => setCampaign({ ...campaign, streetAddress: e.target.value })}
+                placeholder="Street number, building, bus-stop / landmark, LGA & State"
+                className="v-input text-xs"
+              />
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               <div>
-                <label className="v-label" htmlFor="ad-email">Official Email</label>
+                <label className="v-label" htmlFor="ad-email">Official Centre Email</label>
                 <input
                   id="ad-email"
                   type="email"
@@ -279,16 +312,16 @@ export default function AdvertisePage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               <div>
-                <label className="v-label" htmlFor="ad-mode">Tuition Mode Offered</label>
+                <label className="v-label" htmlFor="ad-sched">In-Person Class Schedule</label>
                 <select
-                  id="ad-mode"
-                  value={campaign.deliveryMode}
-                  onChange={(e) => setCampaign({ ...campaign, deliveryMode: e.target.value })}
+                  id="ad-sched"
+                  value={campaign.classSchedule}
+                  onChange={(e) => setCampaign({ ...campaign, classSchedule: e.target.value })}
                   className="v-input text-xs"
                 >
-                  <option>Online &amp; Physical Tuition</option>
-                  <option>Physical Tuition Only</option>
-                  <option>Online Tuition Only</option>
+                  <option>Weekday &amp; Weekend Physical Classes</option>
+                  <option>Weekend Intensive Physical Classes</option>
+                  <option>Weekday Daytime / Evening Physical Classes</option>
                 </select>
               </div>
               <div>
@@ -310,31 +343,44 @@ export default function AdvertisePage() {
             </div>
 
             <div>
-              <label className="v-label" htmlFor="ad-headline">Campaign Headline</label>
+              <label className="v-label" htmlFor="ad-headline">Campaign Headline (Physical Classes Only)</label>
               <input
                 id="ad-headline"
                 type="text"
                 required
                 value={campaign.headline}
                 onChange={(e) => setCampaign({ ...campaign, headline: e.target.value })}
-                placeholder="e.g. May 2027 ICAN Skills & Professional Intensive Weekend Lectures"
+                placeholder="e.g. May 2027 ICAN Skills & Professional Physical Weekend Lectures — Yaba"
                 className="v-input text-xs"
               />
             </div>
 
             <div>
               <label className="v-label" htmlFor="ad-notes">
-                Courses Covered / Campaign Details (Optional)
+                Papers Taught &amp; Facility Notes (Optional)
               </label>
               <textarea
                 id="ad-notes"
                 rows={2}
                 value={campaign.notes}
                 onChange={(e) => setCampaign({ ...campaign, notes: e.target.value })}
-                placeholder="List papers taught, preferred start date, banner details or any in-app enquiry..."
+                placeholder="List physical papers taught, classroom capacity, preferred start week or enquiry..."
                 className="v-input text-xs resize-none"
               />
             </div>
+
+            {/* Mandatory Physical-Only Policy Confirmation */}
+            <label className="flex items-start gap-2.5 rounded-xl bg-[#0B0E11] border border-white/[0.08] p-3.5 text-xs text-[#C2C9D4] cursor-pointer">
+              <input
+                type="checkbox"
+                checked={physicalOnlyConfirmed}
+                onChange={(e) => setPhysicalOnlyConfirmed(e.target.checked)}
+                className="mt-0.5 h-4 w-4 accent-[#16C784] rounded shrink-0"
+              />
+              <span>
+                We confirm that our centre operates a verifiable <strong className="text-white">physical lecture venue</strong> and this advertisement promotes <strong className="text-white">in-person physical tuition only</strong> (no external online classes).
+              </span>
+            </label>
 
             {/* Live Cost Summary Bar */}
             <div className="rounded-2xl bg-[#0B0E11] border border-[#16C784]/30 p-4 flex flex-wrap items-center justify-between gap-3">
@@ -344,7 +390,7 @@ export default function AdvertisePage() {
                   {formatNaira(cost.weeklyRate)}/week
                 </p>
                 <p className="text-[11px] text-[#667085] mt-0.5">
-                  Admin verification + server-verified Paystack checkout inside VALENCE
+                  Admin physical-venue verification + server-verified Paystack checkout inside VALENCE
                 </p>
               </div>
               <span className="tabular-nums-display font-display text-2xl font-bold text-[#16C784]">
@@ -353,27 +399,27 @@ export default function AdvertisePage() {
             </div>
 
             <button type="submit" className="v-btn-primary w-full py-3">
-              <Send className="h-4 w-4" /> Submit In-App Ad Application ({formatNaira(cost.totalAmount)})
+              <Send className="h-4 w-4" /> Submit Physical Centre Ad ({formatNaira(cost.totalAmount)})
             </button>
           </form>
 
-          {/* Governance, Analytics & Admin Controls */}
+          {/* Governance, Policy & Analytics */}
           <div className="lg:col-span-5 space-y-5 lg:sticky lg:top-28">
             <div className="v-card p-6 sm:p-7 space-y-4">
               <div className="flex items-center gap-2 text-[#16C784]">
                 <BarChart3 className="h-5 w-5" />
                 <h2 className="font-display text-xl font-bold text-white">
-                  In-App Governance & Analytics
+                  Physical-Only Advertising Rules
                 </h2>
               </div>
               <ul className="space-y-2.5 text-xs text-[#9AA4B2]">
                 {[
-                  `Transparent flat rate of ${formatNaira(weeklyRate)} per week — configurable anytime by Super Admin / Ad Manager in the Admin Portal.`,
-                  'Entire workflow (centre onboarding, ad enquiry, creative upload, approval, Paystack payment & renewal) runs natively inside VALENCE.',
-                  'Every active placement displays a clear Sponsored or Advertisement badge.',
-                  'Real-time impressions, clicks, CTR, schedule and remaining days inside your Advertiser Portal.',
-                  'False claims of ICAN, ATSWA or VALENCE accreditation are strictly prohibited.',
-                  'Student private records are never sold and unsolicited cold DMs are blocked.',
+                  'Strictly for verified physical (in-person) accounting tuition centres with real Nigerian lecture addresses.',
+                  'External online tuition ads are rejected — all online tuition runs natively inside VALENCE by VALENCE-verified tutors (AAT for ATSWA; AAT + ACA for ICAN).',
+                  `Flat rate of ${formatNaira(weeklyRate)} per week (configurable anytime via the Admin Portal) with server-verified Paystack billing.`,
+                  '100% in-app onboarding, creative review, Sponsored labelling, live impressions, clicks & CTR tracking.',
+                  'False claims of official ICAN, ATSWA or VALENCE accreditation are strictly prohibited.',
+                  'Student private records are never shared and unsolicited direct messages are blocked.',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2">
                     <CheckCircle2 className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" />
@@ -386,9 +432,9 @@ export default function AdvertisePage() {
             <div className="v-card p-5 flex items-start gap-3 text-xs text-[#9AA4B2]">
               <ShieldCheck className="h-5 w-5 text-[#16C784] shrink-0 mt-0.5" />
               <p>
-                Already a verified tuition centre? Sign in to the{' '}
+                Already a verified physical tuition centre? Sign in to the{' '}
                 <Link to="/portal/advertiser" className="text-[#16C784] font-semibold hover:underline">
-                  Tuition Centre Advertiser Portal
+                  Physical Centre Advertiser Portal
                 </Link>{' '}
                 to extend running weeks, swap approved banners or download Paystack invoices.
               </p>

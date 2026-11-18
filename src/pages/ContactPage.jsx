@@ -105,7 +105,7 @@ export default function ContactPage() {
                   to="/advertise"
                   className="flex items-center justify-between rounded-xl bg-[#0B0E11] border border-white/[0.07] hover:border-[#16C784]/45 px-3.5 py-2.5 text-white transition-colors"
                 >
-                  <span>VALENCE ADVERTISE (₦10,000/Week)</span>
+                  <span>Advertise Physical Tuition Centre (₦10,000/Wk)</span>
                   <ArrowRight className="h-3.5 w-3.5 text-[#16C784]" />
                 </Link>
               </div>
