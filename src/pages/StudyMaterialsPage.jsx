@@ -21,9 +21,9 @@ export default function StudyMaterialsPage() {
 
   const allSyllabusItems = useMemo(() => {
     const atswaMeta = {
-      'ATS 1': { packImg: null, pqImg: '/materials/ats1-past-question.jpg', colour: 'Study Pack + Blue PQ', hex: '#2563EB' },
-      'ATS 2': { packImg: null, pqImg: '/materials/ats2-past-question.jpg', colour: 'Study Pack + Orange PQ', hex: '#EA580C' },
-      'ATS 3': { packImg: null, pqImg: '/materials/ats3-past-question.jpg', colour: 'Study Pack + Dark Green PQ', hex: '#15803D' },
+      'ATS 1': { colour: 'Blue ATS 1 PQ Cover', hex: '#2563EB' },
+      'ATS 2': { colour: 'Orange ATS 2 PQ Cover', hex: '#EA580C' },
+      'ATS 3': { colour: 'Dark Green ATS 3 PQ Cover', hex: '#15803D' },
     };
     const atswa = atswaLevels.flatMap((lvl) =>
       lvl.courses.map((c) => ({
@@ -32,6 +32,8 @@ export default function StudyMaterialsPage() {
         levelName: lvl.code,
         packPrice: 9500,
         pqPrice: 5500,
+        packImg: null,
+        pqImg: `/materials/atswa-pq-${c.id}.jpg`,
         ...(atswaMeta[lvl.code] || atswaMeta['ATS 1']),
       }))
     );
@@ -45,8 +47,8 @@ export default function StudyMaterialsPage() {
           packPrice: c.studyPackPrice,
           pqPrice: 9000,
           packImg: `/materials/ican-sp-${slug}.jpg`,
-          pqImg: '/materials/ican-past-question.jpg',
-          colour: `${c.code} Study Text + Pathfinder`,
+          pqImg: `/materials/ican-pq-${slug}.jpg`,
+          colour: `${c.code} Study Text + ${c.code} Pathfinder`,
           hex: '#2563EB',
         };
       })

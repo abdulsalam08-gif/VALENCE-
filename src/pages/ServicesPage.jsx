@@ -66,10 +66,10 @@ const SERVICES = [
   },
   {
     icon: Building2,
-    title: 'Physical Tuition Centres & VALENCE ADVERTISE',
-    badge: 'Physical Only · ₦10k/Wk',
-    desc: '100% in-app directory & advertising exclusively for verified physical (in-person) accounting tuition centres nationwide at ₦10,000/week with Paystack billing and live CTR analytics.',
-    cta: 'Advertise Physical Centre',
+    title: 'VALENCE ADVERTISE (Centres, Authors & Vendors)',
+    badge: '₦10,000/Week · In-App',
+    desc: '100% in-app advertising at ₦10,000/week for verified physical tuition centres, accounting textbook authors and verified textbook vendors (online tuition stays in-app via verified tutors).',
+    cta: 'Advertise In-App',
     to: '/advertise',
   },
   {

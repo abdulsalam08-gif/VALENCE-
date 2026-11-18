@@ -220,15 +220,15 @@ export default function StorePage() {
               {
                 title: 'ICAN Pathfinder PQs (15 Courses)',
                 price: '₦9,000 / course',
-                rule: 'Buy 1 course or all applicable · 6% off 2+ courses/copies',
-                thumb: '/materials/ican-past-question.jpg',
+                rule: 'Each course cover · Buy 1 or all · 6% off 2+',
+                thumb: '/materials/ican-pq-fr.jpg',
                 cat: 'ican_past_question',
               },
               {
                 title: 'ATSWA Insight PQs (12 Courses)',
                 price: '₦5,500 / course',
-                rule: 'Buy 1 course or all applicable · 9% off 2+ courses/copies',
-                thumb: '/materials/ats2-past-question.jpg',
+                rule: 'Each course cover · Buy 1 or all · 9% off 2+',
+                thumb: '/materials/atswa-pq-ats2-fa.jpg',
                 cat: 'atswa_past_question',
               },
               {

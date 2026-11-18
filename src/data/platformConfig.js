@@ -728,17 +728,14 @@ export const ALL_ATSWA_COURSES = ATSWA_LEVELS.flatMap((lvl) =>
 
 const ATSWA_PQ_COVER_META = {
   'ATS 1': {
-    imageUrl: '/materials/ats1-past-question.jpg',
     colourBadge: 'Blue Cover · ATS 1',
     accentHex: '#2563EB',
   },
   'ATS 2': {
-    imageUrl: '/materials/ats2-past-question.jpg',
     colourBadge: 'Orange Cover · ATS 2',
     accentHex: '#EA580C',
   },
   'ATS 3': {
-    imageUrl: '/materials/ats3-past-question.jpg',
     colourBadge: 'Dark Green Cover · ATS 3',
     accentHex: '#15803D',
   },
@@ -746,10 +743,10 @@ const ATSWA_PQ_COVER_META = {
 
 /**
  * VALENCE Store Catalogue (Admin-Editable from Admin Portal)
- * - 12 ATSWA Past Questions (PER COURSE — ₦5,500 per course, automatic 9% off 2+ courses/copies)
+ * - 12 ATSWA Past Questions (PER COURSE — ₦5,500 per course, each with its own course-specific cover, 9% off 2+)
  * - 3 ATSWA Study Packs (ATS 1, ATS 2, ATS 3 — ₦9,500 per pack, automatic 5% off 2+ packs)
- * - 15 ICAN Pathfinder Past Questions (PER COURSE — ₦9,000 per course, automatic 6% off 2+ courses/copies)
- * - 15 ICAN Study Packs (PER COURSE — ₦10,000–₦15,500, automatic 7% off 2+ distinct courses across levels)
+ * - 15 ICAN Pathfinder Past Questions (PER COURSE — ₦9,000 per course, each with its own course-specific Pathfinder cover, 6% off 2+)
+ * - 15 ICAN Study Packs (PER COURSE — ₦10,000–₦15,500, each with its own Study Text cover, 7% off 2+ distinct courses)
  * Total: 45 individual orderable items.
  */
 export const STORE_PRODUCTS = [
@@ -766,7 +763,7 @@ export const STORE_PRODUCTS = [
       courseCode: course.code,
       courseTitle: course.title,
       price: 5500,
-      imageUrl: meta.imageUrl,
+      imageUrl: `/materials/atswa-pq-${course.id}.jpg`,
       colourBadge: `${meta.colourBadge} · ${course.code}`,
       accentHex: meta.accentHex,
       editionLabel: 'ATSWA Insight · Per Course',
@@ -836,8 +833,8 @@ export const STORE_PRODUCTS = [
       courseCode: course.code,
       courseTitle: course.title,
       price: 9000,
-      imageUrl: '/materials/ican-past-question.jpg',
-      colourBadge: `${course.code} Pathfinder · Sealed`,
+      imageUrl: `/materials/ican-pq-${slug}.jpg`,
+      colourBadge: `${course.code} Pathfinder · ${course.level}`,
       accentHex: '#16A34A',
       editionLabel: 'Nylon-Sealed Pathfinder · Per Course',
       discountHint: '₦9,000/course · 6% off 2+ courses',
@@ -947,10 +944,10 @@ export const VALENCE_PILLARS = [
   {
     id: 'advertise',
     code: 'VALENCE ADVERTISE',
-    title: 'Physical Tuition Centre Advertising (₦10,000/Week)',
-    description: '100% in-app advertising and searchable directory exclusively for verified PHYSICAL accounting tuition centres nationwide at ₦10,000/week (all online tuition is delivered directly in-app by VALENCE-verified tutors).',
+    title: 'Physical Centres, Textbook Authors & Vendors (₦10k/Wk)',
+    description: '100% in-app advertising at ₦10,000/week for verified physical tuition centres, accounting textbook authors and verified textbook vendors nationwide (all online tuition stays in-app via VALENCE-verified tutors).',
     route: '/advertise',
-    metric: 'Physical Only · ₦10k/Wk',
+    metric: '₦10,000 / Week · In-App',
   },
   {
     id: 'opportunities',
@@ -1026,6 +1023,65 @@ export const FEATURED_TUITION_CENTRES = [
     description: 'On-site Abuja lecture centre offering IPSAS, Nigerian tax reform workshops and structured in-person May/November ICAN diet coaching.',
     website: 'https://example.com',
     contact: 'Verified Physical Centre',
+  },
+];
+
+export const FEATURED_TEXTBOOK_ADVERTISERS = [
+  {
+    id: 'tb-1',
+    type: 'Textbook Author',
+    name: 'Dr. Kunle Adeyemi, FCA',
+    title: 'Mastering IFRS Group Accounts & Strategic Business Reporting (2026 Syllabus Edition)',
+    location: 'Lagos · Nationwide Delivery',
+    state: 'Lagos',
+    programmes: ['ICAN Skills', 'ICAN Professional', 'University Accounting'],
+    subjects: ['FR', 'SBR', 'FA'],
+    verified: true,
+    sponsored: true,
+    adLabel: 'Sponsored · Author',
+    description: 'Author-published worked manual covering 120+ graded IFRS consolidation, financial instrument and impairment questions tailored to the new ICAN syllabus.',
+  },
+  {
+    id: 'tb-2',
+    type: 'Textbook Author',
+    name: 'Ngozi Okafor, FCA, FCTI',
+    title: 'Nigerian Taxation & Finance Act Practice Compendium (ATS 3, Skills & Advanced Tax)',
+    location: 'Abuja · Nationwide Delivery',
+    state: 'FCT Abuja',
+    programmes: ['ATSWA', 'ICAN Skills', 'ICAN Professional'],
+    subjects: ['TAX', 'A/TAX'],
+    verified: true,
+    sponsored: true,
+    adLabel: 'Sponsored · Author',
+    description: 'Comprehensive Nigerian CIT, PIT, VAT, CGT, petroleum tax and capital allowance computation handbook with step-by-step diet exam templates.',
+  },
+  {
+    id: 'tb-3',
+    type: 'Textbook Vendor',
+    name: 'Scholar’s Ledger Academic Bookshop',
+    title: 'Genuine ICAN, ATSWA, IFRS, Costing, Audit & Finance Textbooks',
+    location: 'Yaba, Lagos · Dispatches to 36 States + FCT',
+    state: 'Lagos',
+    programmes: ['ATSWA', 'ICAN Foundation', 'ICAN Skills', 'ICAN Professional', 'University Accounting'],
+    subjects: ['BAPS', 'FA', 'MA', 'FR', 'FM', 'SFM', 'AAF', 'AAAF'],
+    verified: true,
+    sponsored: true,
+    adLabel: 'Advertisement · Vendor',
+    description: 'Verified accounting bookstore stocking authentic publisher-direct textbooks, standards handbooks, revision manuals and university accounting texts.',
+  },
+  {
+    id: 'tb-4',
+    type: 'Textbook Vendor',
+    name: 'Savannah Professional Book Mart',
+    title: 'Accounting, Public Sector (IPSAS), Auditing & Business Law Textbooks',
+    location: 'Wuse, Abuja & Ibadan · Nationwide Courier',
+    state: 'FCT Abuja',
+    programmes: ['ATSWA', 'ICAN Foundation', 'ICAN Skills', 'University Accounting'],
+    subjects: ['PSA', 'PSAF', 'CBL', 'BLW', 'AUD', 'PM'],
+    verified: true,
+    sponsored: false,
+    adLabel: null,
+    description: 'Verified multi-publisher textbook vendor supplying original accounting, IPSAS public sector, corporate law and quantitative methods titles.',
   },
 ];
 
@@ -1322,8 +1378,123 @@ export const FAQS = [
     a: 'Yes — past questions are priced per individual course so you can buy a single paper or every paper applicable to you: ATSWA past questions are ₦5,500 per course (automatic 9% off 2+ courses/copies) and ICAN Pathfinder past questions are ₦9,000 per course (automatic 6% off 2+ courses/copies). ATSWA study packs are ₦9,500/pack (5% off 2+), and buying 2+ different ICAN study packs — even across Foundation, Skills and Professional — unlocks an automatic 7% discount. Delivery is free to LASU, Ojo, UNILAG, YABATECH, FCE and Yaba.',
   },
   {
-    q: 'Which tuition centres can advertise on VALENCE, and how much does it cost?',
-    a: 'VALENCE ADVERTISE exclusively lists and promotes verified PHYSICAL (in-person) tuition centres across Nigeria at ₦10,000 per week, managed 100% inside the app with Paystack billing, Sponsored badges and live CTR analytics. External online tuition is not advertised — all online tuition on VALENCE is delivered directly in-app by tutors manually verified by VALENCE (minimum AAT for ATSWA; AAT + ACA for ICAN).',
+    q: 'Who can advertise on VALENCE, and how much does it cost?',
+    a: 'Three verified categories can advertise 100% inside VALENCE at ₦10,000 per week: (1) verified PHYSICAL (in-person) accounting tuition centres, (2) accounting textbook authors promoting original books they sell, and (3) verified textbook vendors/bookshops stocking authentic accounting texts. External online tuition is never advertised — all online tuition is taken directly in-app with VALENCE-verified tutors (AAT for ATSWA; AAT + ACA for ICAN).',
+  },
+];
+
+/**
+ * Admin-Editable Motivational & Study-Inspiration Quote Bank
+ * Pops up randomly across VALENCE to encourage ATSWA, ICAN & university learners.
+ */
+export const MOTIVATIONAL_QUOTES = [
+  {
+    id: 'mq-1',
+    tag: 'VALENCE MOTTO',
+    quote: 'Vita sine litteris mors est — every quiet hour you invest in mastering your syllabus builds a career no one can take from you.',
+    author: 'Seneca · VALENCE Ethos',
+  },
+  {
+    id: 'mq-2',
+    tag: 'FUTURE CHARTERED ACCOUNTANT',
+    quote: 'Every FCA and ACA you admire once stared at a tough ledger page and chose to solve one more question instead of quitting.',
+    author: 'VALENCE Study Spark',
+  },
+  {
+    id: 'mq-3',
+    tag: 'CONSISTENCY WINS',
+    quote: 'Success is the sum of small efforts, repeated day in and day out. Two focused hours today beat ten panicked hours before exam week.',
+    author: 'Robert Collier',
+  },
+  {
+    id: 'mq-4',
+    tag: 'EXAM MASTERY',
+    quote: 'Don’t just read solutions — pick up your pen, set a timer, show every working clearly, and earn every single mark on the marking scheme.',
+    author: 'VALENCE Exam Coach',
+  },
+  {
+    id: 'mq-5',
+    tag: 'BALANCE & DISCIPLINE',
+    quote: 'Just like double-entry bookkeeping, every debit of discipline and sacrifice you post today has a matching credit of distinction waiting.',
+    author: 'VALENCE Study Spark',
+  },
+  {
+    id: 'mq-6',
+    tag: 'RESILIENCE',
+    quote: 'It always seems impossible until it is done. Keep turning the pages — your examination breakthrough is closer than you think.',
+    author: 'Nelson Mandela',
+  },
+  {
+    id: 'mq-7',
+    tag: 'DAILY MOMENTUM',
+    quote: 'We are what we repeatedly do. Excellence, then, is not an act, but a habit.',
+    author: 'Aristotle',
+  },
+  {
+    id: 'mq-8',
+    tag: 'PAST QUESTION POWER',
+    quote: 'The candidate who solves five diets of past questions under timed conditions walks into the examination hall as an old friend of the paper.',
+    author: 'VALENCE Exam Coach',
+  },
+  {
+    id: 'mq-9',
+    tag: 'INVEST IN YOURSELF',
+    quote: 'An investment in knowledge always pays the best interest — compound your understanding by one syllabus topic every single day.',
+    author: 'Benjamin Franklin',
+  },
+  {
+    id: 'mq-10',
+    tag: 'COURAGE TO KEEP GOING',
+    quote: 'A difficult standard or tax computation is not a stop sign; it is proof that your mind is stretching to chartered level.',
+    author: 'VALENCE Study Spark',
+  },
+  {
+    id: 'mq-11',
+    tag: 'DEEP FOCUS',
+    quote: 'The secret of getting ahead is getting started. Break that heavy syllabus down into one calm, focused practice question right now.',
+    author: 'Mark Twain',
+  },
+  {
+    id: 'mq-12',
+    tag: 'ACCURACY & INTEGRITY',
+    quote: 'Accuracy earns the pass mark; integrity builds the reputation. Train both in every assignment and mock paper you write.',
+    author: 'VALENCE Ethos',
+  },
+  {
+    id: 'mq-13',
+    tag: 'FIRST-SITTING MINDSET',
+    quote: 'Believe you can clear every paper on this diet, then back that belief with a disciplined timetable and relentless past-question drills.',
+    author: 'VALENCE Study Spark',
+  },
+  {
+    id: 'mq-14',
+    tag: 'GROWTH OVER PERFECTION',
+    quote: 'Getting a mock question wrong today is a gift — you just caught a mistake in practice so it never costs you marks in the exam hall.',
+    author: 'VALENCE Exam Coach',
+  },
+  {
+    id: 'mq-15',
+    tag: 'LONG-TERM VISION',
+    quote: 'The future belongs to those who prepare for it today. Your letters — AAT, ACA, B.Sc., FCA — are being written right now.',
+    author: 'Malcolm X',
+  },
+  {
+    id: 'mq-16',
+    tag: 'UNSTOPPABLE GRIT',
+    quote: 'Discipline is choosing between what you want now and the pride you will feel on result release day.',
+    author: 'VALENCE Study Spark',
+  },
+  {
+    id: 'mq-17',
+    tag: 'SMART PREPARATION',
+    quote: 'Give me six hours to chop down a tree and I will spend the first four sharpening the axe. Master principles, not shortcuts.',
+    author: 'Abraham Lincoln',
+  },
+  {
+    id: 'mq-18',
+    tag: 'YOU BELONG HERE',
+    quote: 'No syllabus paper was written to defeat a prepared student. Stay calm, read every requirement twice, and trust your preparation.',
+    author: 'VALENCE Exam Coach',
   },
 ];
 

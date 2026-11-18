@@ -51,8 +51,8 @@ export default function Footer() {
               <li><Link to="/competitions" className="hover:text-[#16C784] transition-colors">National Challenge (₦50,000 Reward)</Link></li>
               <li><Link to="/portal/tutor" className="hover:text-[#16C784] transition-colors">Apply as a Tutor</Link></li>
               <li><Link to="/opportunities" className="hover:text-[#16C784] transition-colors">Scholarships & Opportunities</Link></li>
-              <li><Link to="/tuition-centres" className="hover:text-[#16C784] transition-colors">Physical Tuition Centres Directory</Link></li>
-              <li><Link to="/advertise" className="hover:text-[#16C784] transition-colors">Advertise Physical Centre (₦10,000/Wk)</Link></li>
+              <li><Link to="/tuition-centres" className="hover:text-[#16C784] transition-colors">Physical Centres, Authors &amp; Vendors</Link></li>
+              <li><Link to="/advertise" className="hover:text-[#16C784] transition-colors">Advertise (Centres, Authors &amp; Vendors)</Link></li>
               <li><Link to="/portal/admin" className="hover:text-[#16C784] transition-colors">Admin Portal Login</Link></li>
             </ul>
           </div>

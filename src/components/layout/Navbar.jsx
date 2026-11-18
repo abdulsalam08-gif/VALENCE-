@@ -33,8 +33,8 @@ const MORE_MENU = [
   { label: 'Services', desc: 'All 7 VALENCE pillars & 7-step AI Accounting Tutor', to: '/services' },
   { label: 'Study Materials', desc: 'Syllabus guides, videos, textbooks & soft-copy links', to: '/study-materials' },
   { label: 'Opportunities', desc: 'Scholarships, internships, audit & finance jobs', to: '/opportunities' },
-  { label: 'Tuition Centres', desc: 'Find verified physical (in-person) tuition centres', to: '/tuition-centres' },
-  { label: 'Advertise on VALENCE', desc: 'In-app ads for verified physical centres (₦10,000/wk)', to: '/advertise' },
+  { label: 'Tuition Centres & Vendors', desc: 'Verified physical centres, textbook authors & book vendors', to: '/tuition-centres' },
+  { label: 'Advertise on VALENCE', desc: 'Physical centres, textbook authors & vendors (₦10k/wk)', to: '/advertise' },
   { label: 'Contact', desc: 'Enquiries, ICAN official fee assistance & support', to: '/contact' },
 ];
 
@@ -44,7 +44,7 @@ const PORTAL_ACTIONS = [
   { label: 'Join VALENCE Connect', desc: 'Community feed, study groups & messaging', to: '/connect', icon: Users },
   { label: 'Apply as a Tutor', desc: 'AAT (ATSWA) or AAT + ACA (ICAN) recruitment', to: '/portal/tutor', icon: Award },
   { label: 'Register for Competitions', desc: '₦50,000 merit reward after every competition', to: '/competitions', icon: Trophy },
-  { label: 'Advertise Physical Centre', desc: 'Physical centres only · ₦10,000/wk in-app', to: '/advertise', icon: Megaphone },
+  { label: 'Advertise (Centres, Authors & Vendors)', desc: '₦10,000/wk in-app · Paystack verified', to: '/advertise', icon: Megaphone },
   { label: 'Admin Portal Login', desc: 'Central Examination Authority & governance', to: '/portal/admin', icon: Shield },
 ];
 

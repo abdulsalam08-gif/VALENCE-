@@ -124,21 +124,26 @@ const PORTAL_META = {
   },
   advertiser: {
     key: 'advertiser',
-    label: 'Physical Tuition Centre Advertiser Portal',
-    badge: 'PHYSICAL CENTRES ONLY · ₦10,000/WEEK · IN-APP',
+    label: 'VALENCE Advertiser Portal',
+    badge: 'PHYSICAL CENTRES · AUTHORS · BOOK VENDORS · ₦10K/WK',
     icon: Megaphone,
-    headline: 'Promote Your Verified Physical Tuition Centre Nationwide (₦10,000/Week)',
+    headline: 'Promote Your Physical Tuition Centre, Textbooks or Bookshop (₦10,000/Week)',
     summary:
-      'Exclusively for verified bricks-and-mortar (in-person) accounting tuition centres across Nigeria. Book weekly placements at ₦10,000/week via Paystack, verify your physical venue address and track live CTR in-app. (Online tuition is delivered strictly in-app by VALENCE-verified tutors.)',
+      'Open to verified physical (in-person) accounting tuition centres, accounting textbook authors selling original books, and verified textbook vendors/bookshops. Book weekly ads at ₦10,000/week via Paystack and track live CTR in-app. (Online tuition stays strictly in-app via VALENCE-verified tutors.)',
     capabilities: [
-      'Strictly for verified physical (in-person) tuition centres with confirmed Nigerian lecture addresses',
-      '100% in-app campaign booking at ₦10,000/week across 9 approved placements with Paystack billing',
-      'Searchable city & state directory listing (Lagos, Abuja, Port Harcourt, Ibadan, Kano, Enugu & all states)',
-      'Live impression counts, clicks, CTR analytics, active weekly schedules & one-click in-app renewals',
+      'Verified Physical Tuition Centres (in-person venues only), Textbook Authors & Verified Textbook Vendors',
+      '100% in-app campaign booking at ₦10,000/week across 9 placements (incl. Bookstore & Syllabus spotlights)',
+      'Strict zero-piracy verification for author textbooks & vendor stock, plus physical venue verification for centres',
+      'Live impression counts, clicks, CTR analytics, Paystack receipts & one-click weekly renewals',
     ],
     needsInstitution: false,
     registerFields: [
-      { name: 'centreName', label: 'Physical Tuition Centre Name', type: 'text', placeholder: 'e.g. Prime Ledger School of Accountancy (Yaba, Lagos)' },
+      { name: 'advertiserCategory', label: 'Advertiser Type', type: 'select', options: [
+        'Verified Physical Tuition Centre (In-Person Only)',
+        'Accounting Textbook Author',
+        'Verified Textbook Vendor / Bookshop',
+      ] },
+      { name: 'centreName', label: 'Centre, Author or Bookshop Name', type: 'text', placeholder: 'e.g. Prime Ledger Centre / Dr. K. Adeyemi, FCA / Scholar’s Bookshop' },
     ],
   },
   admin: {
@@ -150,7 +155,7 @@ const PORTAL_META = {
     summary:
       'Complete role-based Admin Portal to update all live platform information anytime — store courses/prices/discounts, delivery zones & in-app material enquiries, ATSWA document & registration guidance, ₦10,000/week ad rates & campaigns, official exam timetables/results, tuition pricing, FAQs and announcements.',
     capabilities: [
-      'Dynamic Platform & Pricing CMS: update per-course past question/study pack prices, discounts, delivery zones, tuition fees, ₦3,000 lock, ₦10,000/week ad rate & FAQs anytime',
+      'Dynamic Platform & Pricing CMS: update per-course past question/study pack prices, discounts, delivery zones, tuition fees, ₦3,000 lock, ₦10,000/week ad rate, motivational quote pop-ups & FAQs anytime',
       'In-App Operations Queues: manage ATSWA document/registration guidance, study material & delivery enquiries, and VALENCE ADVERTISE campaign approvals & billing',
       'Central Examination Authority: update ATSWA (2-day) & ICAN (3-day) dates, paper timetables & 30-day result release / delay notices',
       'Competition Manager: papers, timers, rubric grading, appeals & ₦50,000 post-competition reward disbursement logs',

@@ -102,8 +102,8 @@ export default function HomePage() {
 
   const featuredProducts = [
     products.find((p) => p.id === 'prod-ican-sp-fr'),
-    products.find((p) => p.id === 'prod-ican-sp-sbr'),
-    products.find((p) => p.id === 'prod-ican-pq-fr'),
+    products.find((p) => p.id === 'prod-ican-pq-sbr'),
+    products.find((p) => p.id === 'prod-atswa-pq-ats1-baps'),
     products.find((p) => p.id === 'prod-atswa-pq-ats2-fa'),
   ].filter(Boolean);
 
@@ -1067,21 +1067,24 @@ export default function HomePage() {
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5">
             <div className="space-y-2 max-w-2xl">
               <span className="text-xs font-semibold uppercase tracking-widest text-[#16C784]">
-                PHYSICAL TUITION CENTRES DIRECTORY &amp; VALENCE ADVERTISE
+                PHYSICAL CENTRES, TEXTBOOK AUTHORS &amp; BOOK VENDORS · VALENCE ADVERTISE
               </span>
               <h2 className="font-display text-2xl sm:text-3xl font-bold text-white">
-                Discover Verified Physical Tuition Centres Across Nigeria
+                Physical Tuition Centres, Author Textbooks &amp; Verified Book Vendors
               </h2>
               <p className="text-xs sm:text-sm text-[#9AA4B2]">
-                We exclusively list and advertise verified <strong className="text-white">physical (in-person) accounting tuition centres</strong> in-app at <strong className="text-[#16C784]">₦10,000/week</strong> (all online tuition is taken directly in-app with VALENCE-verified tutors). Paid placements carry clear <strong className="text-[#EA3943]">Sponsored</strong> or <strong className="text-[#EA3943]">Advertisement</strong> badges.
+                Verified <strong className="text-white">physical (in-person) tuition centres</strong>,{' '}
+                <strong className="text-white">accounting textbook authors</strong> and{' '}
+                <strong className="text-white">verified textbook vendors</strong> advertise in-app at{' '}
+                <strong className="text-[#16C784]">₦10,000/week</strong> (all online tuition is taken directly in-app with VALENCE-verified tutors). Paid slots carry clear <strong className="text-[#EA3943]">Sponsored</strong> badges.
               </p>
             </div>
             <div className="flex flex-wrap gap-2.5">
               <Link to="/tuition-centres" className="v-btn-secondary text-xs">
-                Physical Directory
+                Centres &amp; Textbook Vendors
               </Link>
               <Link to="/advertise" className="v-btn-primary text-xs">
-                <Megaphone className="h-3.5 w-3.5" /> Advertise Physical Centre (₦10k/wk)
+                <Megaphone className="h-3.5 w-3.5" /> Advertise In-App (₦10k/wk)
               </Link>
             </div>
           </div>
