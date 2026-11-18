@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-base: #0B0E11;
+    --bg-surface: #11161C;
+    --bg-elevated: #161D26;
+    --bg-subtle: #1C2530;
+    --border-subtle: rgba(255, 255, 255, 0.07);
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --accent-green: #16C784;
+    --accent-red: #EA3943;
+    --text-primary: #F4F6F9;
+    --text-secondary: #9AA4B2;
+    --text-muted: #667085;
+    color-scheme: dark;
+  }
+
+  html {
+    background-color: #0B0E11;
+    color: #F4F6F9;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: #0B0E11;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    letter-spacing: -0.02em;
+  }
+
+  /* Custom refined dark scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0B0E11;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1E2733;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2C394A;
+  }
+}
+
+@layer components {
+  .v-card {
+    @apply rounded-2xl bg-[#11161C] border border-white/[0.07] shadow-card transition-all duration-200;
+  }
+
+  .v-card-hover {
+    @apply v-card hover:border-[#16C784]/30 hover:bg-[#141A22];
+  }
+
+  .v-glass {
+    background: rgba(11, 14, 17, 0.82);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-color: rgba(255, 255, 255, 0.07);
+  }
+
+  .v-glass-card {
+    background: linear-gradient(180deg, rgba(22, 29, 38, 0.85) 0%, rgba(17, 22, 28, 0.92) 100%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    @apply rounded-2xl border border-white/[0.08] shadow-card;
+  }
+
+  .v-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-[#16C784] px-5 py-2.5 text-sm font-semibold text-[#06130D] transition-all duration-200 hover:bg-[#1ED791] active:scale-[0.98] shadow-glow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#16C784] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B0E11] disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .v-btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-[#161D26] border border-white/[0.1] px-5 py-2.5 text-sm font-medium text-[#F4F6F9] transition-all duration-200 hover:border-white/[0.2] hover:bg-[#1C2530] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#16C784] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B0E11];
+  }
+
+  .v-btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-medium text-[#9AA4B2] transition-colors duration-150 hover:bg-white/[0.05] hover:text-[#F4F6F9];
+  }
+
+  .v-btn-danger {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-[#EA3943]/15 border border-[#EA3943]/35 px-4 py-2.5 text-sm font-semibold text-[#EA3943] transition-all duration-200 hover:bg-[#EA3943]/25 active:scale-[0.98];
+  }
+
+  .v-input {
+    @apply w-full rounded-xl bg-[#0F141A] border border-white/[0.09] px-4 py-2.5 text-sm text-[#F4F6F9] placeholder-[#667085] transition-colors duration-150 focus:border-[#16C784] focus:outline-none focus:ring-1 focus:ring-[#16C784]/40;
+  }
+
+  .v-label {
+    @apply block text-xs font-medium uppercase tracking-wider text-[#9AA4B2] mb-1.5;
+  }
+
+  .v-skeleton {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.04) 25%,
+      rgba(255, 255, 255, 0.09) 50%,
+      rgba(255, 255, 255, 0.04) 75%
+    );
+    background-size: 200% 100%;
+    @apply animate-shimmer rounded-xl;
+  }
+
+  .v-container {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .tabular-nums-display {
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.bg-grid-fintech {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.safe-bottom {
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+}
