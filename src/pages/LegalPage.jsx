@@ -195,7 +195,7 @@ export default function LegalPage() {
                   3.4 Study Materials Store, Per-Course Orders &amp; Delivery
                 </h3>
                 <p>
-                  Past questions are sold per individual course (ATSWA ₦5,500/course with automatic 9% off 2+; ICAN ₦9,000/course with automatic 6% off 2+) alongside ATSWA Study Packs (₦9,500/pack, 5% off 2+) and ICAN Study Packs (₦10,000 to ₦15,500/course, 7% off 2+ distinct courses). Free campus delivery covers LASU, Ojo, UNILAG, YABATECH, FCE, and Yaba; paid delivery zones cover wider Lagos and all Nigerian states. If a delivered booklet is damaged in transit or differs from the course code ordered, report it via the In-App Store &amp; Delivery Desk within 72 hours of receipt for a free replacement or full refund.
+                  Past questions are sold per individual course (ATSWA ₦5,500/course with automatic 9% off 2+; ICAN ₦9,000/course with automatic 6% off 2+) and are delivered the <strong>same day within Lagos</strong> (including free campus delivery to LASU, Ojo, UNILAG, YABATECH, FCE, and Yaba) and within <strong>1 day (next day) outside Lagos</strong> across Nigeria. Study Packs (ATSWA ₦9,500/pack, 5% off 2+; ICAN ₦10,000 to ₦15,500/course, 7% off 2+ distinct courses) display a live availability indicator updated directly by VALENCE administrators and are delivered when available. If a delivered material is damaged in transit or differs from the course code ordered, report it via the In-App Store &amp; Delivery Desk within 72 hours of receipt for a free replacement or full refund.
                 </p>
               </div>
             </article>

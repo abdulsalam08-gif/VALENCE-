@@ -1049,9 +1049,20 @@ export default function HomePage() {
                     </div>
                   </Link>
                   <div className="p-5 pb-3 space-y-2">
-                    <span className="text-[10.5px] font-semibold text-[#16C784] block">
-                      {prod.discountHint}
-                    </span>
+                    <div className="flex flex-wrap items-center justify-between gap-1 text-[10.5px]">
+                      <span className="font-semibold text-[#16C784]">{prod.discountHint}</span>
+                      <span
+                        className={`font-semibold ${
+                          prod.isAvailable === false ? 'text-[#EA3943]' : 'text-[#C2C9D4]'
+                        }`}
+                      >
+                        {prod.isStudyPack
+                          ? prod.isAvailable === false
+                            ? 'Unavailable'
+                            : 'Available · Ships when ready'
+                          : 'Same-day Lagos · 1-day outside'}
+                      </span>
+                    </div>
                     <h3 className="font-display text-base font-bold text-white leading-snug">
                       {prod.title}
                     </h3>

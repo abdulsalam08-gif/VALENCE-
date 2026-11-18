@@ -9,6 +9,7 @@ export const PLATFORM_SETTINGS = {
   heroSubcopy:
     'VALENCE is your complete learning and professional development community for ICAN and ATSWA candidates, tertiary students, chartered accountants, accounting tutors and aspiring professionals. Access structured learning, intelligent study tools, professional networking, academic competitions, educational resources and career opportunities in one place.',
   whatsappNumber: '+234 915 434 4663',
+  whatsappChannelUrl: 'https://whatsapp.com/channel/0029VbDLZl4J93wMoS0biE1o',
   email: 'atvalencecustomersupport@gmail.com',
   operatingHours: '24/7',
   location: 'Lagos, Nigeria (Serving candidates & institutions nationwide)',
@@ -31,6 +32,7 @@ export const PLATFORM_SETTINGS = {
       'https://icanig.org/ican/assets/docs/documents/Accredited_institutions_0425.pdf',
     icanMcatiInstitutions:
       'https://icanig.org/ican/assets/docs/documents/MCATI_LIST_UPDATED_MAY_2024.pdf',
+    whatsappChannel: 'https://whatsapp.com/channel/0029VbDLZl4J93wMoS0biE1o',
   },
   // Configurable anytime from Admin Portal; automatically rendered in Footer when populated
   socialLinks: {
@@ -776,10 +778,15 @@ export const STORE_PRODUCTS = [
       accentHex: meta.accentHex,
       editionLabel: 'ATSWA Insight · Per Course',
       discountHint: '₦5,500/course · 9% off 2+ courses',
-      description: `Official ${course.level} Insight hard-copy past questions & answers specifically for ${course.title} (${course.code}). Order this single course or combine with your other ${course.level} papers for automatic 9% off.`,
+      isStudyPack: false,
+      isAvailable: true,
+      availabilityStatus: 'available',
+      availabilityNote: 'In stock · Ready for dispatch',
+      deliveryNote: 'Same-day delivery in Lagos · 1-day delivery outside Lagos',
+      description: `Official ${course.level} Insight hard-copy past questions & answers specifically for ${course.title} (${course.code}). Same-day delivery within Lagos and 1-day delivery outside Lagos. Combine 2+ courses for automatic 9% off.`,
     };
   }),
-  // 3 ATSWA Study Packs (plain Study Packs, real photos uploaded later / via Admin Portal)
+  // 3 ATSWA Study Packs (live availability updated by Admin; delivered when available)
   {
     id: 'prod-atswa-sp-1',
     title: 'ATSWA ATS 1 Study Pack',
@@ -794,7 +801,12 @@ export const STORE_PRODUCTS = [
     accentHex: '#2563EB',
     editionLabel: 'ATS 1 Study Pack',
     discountHint: '5% off 2+ packs',
-    description: 'Complete printed ATS 1 syllabus study pack covering Basic Accounting Processes & Systems, Economics, Business Law & Communication Skills.',
+    isStudyPack: true,
+    isAvailable: true,
+    availabilityStatus: 'available',
+    availabilityNote: 'Available · Updated by Admin',
+    deliveryNote: 'Delivered when available (live status updated by Admin)',
+    description: 'Complete printed ATS 1 syllabus study pack covering Basic Accounting Processes & Systems, Economics, Business Law & Communication Skills. Delivered when available.',
   },
   {
     id: 'prod-atswa-sp-2',
@@ -810,7 +822,12 @@ export const STORE_PRODUCTS = [
     accentHex: '#EA580C',
     editionLabel: 'ATS 2 Study Pack',
     discountHint: '5% off 2+ packs',
-    description: 'Complete printed ATS 2 syllabus study pack covering Financial Accounting, Public Sector Accounting, Quantitative Analysis & Information Technology.',
+    isStudyPack: true,
+    isAvailable: true,
+    availabilityStatus: 'available',
+    availabilityNote: 'Available · Updated by Admin',
+    deliveryNote: 'Delivered when available (live status updated by Admin)',
+    description: 'Complete printed ATS 2 syllabus study pack covering Financial Accounting, Public Sector Accounting, Quantitative Analysis & Information Technology. Delivered when available.',
   },
   {
     id: 'prod-atswa-sp-3',
@@ -826,7 +843,12 @@ export const STORE_PRODUCTS = [
     accentHex: '#15803D',
     editionLabel: 'ATS 3 Study Pack',
     discountHint: '5% off 2+ packs',
-    description: 'Complete printed ATS 3 syllabus study pack covering Cost Accounting, Auditing, Taxation & Management for final AAT candidates.',
+    isStudyPack: true,
+    isAvailable: true,
+    availabilityStatus: 'available',
+    availabilityNote: 'Available · Updated by Admin',
+    deliveryNote: 'Delivered when available (live status updated by Admin)',
+    description: 'Complete printed ATS 3 syllabus study pack covering Cost Accounting, Auditing, Taxation & Management for final AAT candidates. Delivered when available.',
   },
   // 15 Individual Per-Course ICAN Pathfinder Past Questions (₦9,000 per course)
   ...ALL_ICAN_COURSES.map((course) => {
@@ -846,10 +868,15 @@ export const STORE_PRODUCTS = [
       accentHex: '#16A34A',
       editionLabel: 'Nylon-Sealed Pathfinder · Per Course',
       discountHint: '₦9,000/course · 6% off 2+ courses',
-      description: `Nylon-sealed green ICAN Pathfinder past questions & answers (new syllabus) specifically for ${course.title} (${course.code}) (${course.level} Level). Buy this single course or add all courses applicable to you for automatic 6% off.`,
+      isStudyPack: false,
+      isAvailable: true,
+      availabilityStatus: 'available',
+      availabilityNote: 'In stock · Ready for dispatch',
+      deliveryNote: 'Same-day delivery in Lagos · 1-day delivery outside Lagos',
+      description: `Nylon-sealed green ICAN Pathfinder past questions & answers (new syllabus) for ${course.title} (${course.code}) (${course.level} Level). Same-day delivery within Lagos and 1-day delivery outside Lagos; 6% off 2+ courses.`,
     };
   }),
-  // 15 Individual Per-Course ICAN Study Packs (₦10,000–₦15,500 per course)
+  // 15 Individual Per-Course ICAN Study Packs (₦10,000 to ₦15,500 per course; delivered when available)
   ...ALL_ICAN_COURSES.map((course) => {
     const slug = course.code.toLowerCase().replace('/', '');
     return {
@@ -867,7 +894,12 @@ export const STORE_PRODUCTS = [
       accentHex: '#2563EB',
       editionLabel: 'Official ICAN Study Text',
       discountHint: '7% off 2+ distinct ICAN packs',
-      description: `Official ICAN ${course.level} Level Study Text for ${course.title} (${course.code}), 2026 syllabus edition with full standards coverage and exam-grade questions.`,
+      isStudyPack: true,
+      isAvailable: true,
+      availabilityStatus: 'available',
+      availabilityNote: 'Available · Updated by Admin',
+      deliveryNote: 'Delivered when available (live status updated by Admin)',
+      description: `Official ICAN ${course.level} Level Study Text for ${course.title} (${course.code}), 2026 syllabus edition. Live stock status updated by Admin; delivered when available.`,
     };
   }),
 ];
@@ -896,16 +928,16 @@ export const ATSWA_APP_REGISTRATION_GUIDE = [
 ];
 
 export const DELIVERY_ZONES = [
-  { id: 'zone-lasu', name: 'LASU (Lagos State University Campus)', fee: 0, isFree: true, eta: '1 – 2 business days' },
-  { id: 'zone-ojo', name: 'Ojo Axis, Lagos', fee: 0, isFree: true, eta: '1 – 2 business days' },
-  { id: 'zone-unilag', name: 'UNILAG (Akoka Campus)', fee: 0, isFree: true, eta: '1 – 2 business days' },
-  { id: 'zone-yabatech', name: 'YABATECH Campus', fee: 0, isFree: true, eta: '1 – 2 business days' },
-  { id: 'zone-fce', name: 'FCE (Akoka)', fee: 0, isFree: true, eta: '1 – 2 business days' },
-  { id: 'zone-yaba', name: 'Yaba Axis, Lagos', fee: 0, isFree: true, eta: '1 – 2 business days' },
-  { id: 'zone-lagos-mainland', name: 'Other Lagos Mainland Locations', fee: 2500, isFree: false, eta: '1 – 3 business days' },
-  { id: 'zone-lagos-island', name: 'Lagos Island / Lekki / Ajah', fee: 3500, isFree: false, eta: '2 – 3 business days' },
-  { id: 'zone-southwest', name: 'South-West States (Ogun, Oyo, Osun, Ondo, Ekiti)', fee: 4500, isFree: false, eta: '3 – 5 business days' },
-  { id: 'zone-nationwide', name: 'Abuja, Port Harcourt & Other States (Nationwide)', fee: 6000, isFree: false, eta: '4 – 6 business days' },
+  { id: 'zone-lasu', name: 'LASU (Lagos State University Campus)', regionType: 'lagos', fee: 0, isFree: true, pqEta: 'Same-day delivery', studyPackEta: 'Delivered when available', eta: 'Same-day (Past Qs) · When available (Study Packs)' },
+  { id: 'zone-ojo', name: 'Ojo Axis, Lagos', regionType: 'lagos', fee: 0, isFree: true, pqEta: 'Same-day delivery', studyPackEta: 'Delivered when available', eta: 'Same-day (Past Qs) · When available (Study Packs)' },
+  { id: 'zone-unilag', name: 'UNILAG (Akoka Campus)', regionType: 'lagos', fee: 0, isFree: true, pqEta: 'Same-day delivery', studyPackEta: 'Delivered when available', eta: 'Same-day (Past Qs) · When available (Study Packs)' },
+  { id: 'zone-yabatech', name: 'YABATECH Campus', regionType: 'lagos', fee: 0, isFree: true, pqEta: 'Same-day delivery', studyPackEta: 'Delivered when available', eta: 'Same-day (Past Qs) · When available (Study Packs)' },
+  { id: 'zone-fce', name: 'FCE (Akoka)', regionType: 'lagos', fee: 0, isFree: true, pqEta: 'Same-day delivery', studyPackEta: 'Delivered when available', eta: 'Same-day (Past Qs) · When available (Study Packs)' },
+  { id: 'zone-yaba', name: 'Yaba Axis, Lagos', regionType: 'lagos', fee: 0, isFree: true, pqEta: 'Same-day delivery', studyPackEta: 'Delivered when available', eta: 'Same-day (Past Qs) · When available (Study Packs)' },
+  { id: 'zone-lagos-mainland', name: 'Other Lagos Mainland Locations', regionType: 'lagos', fee: 2500, isFree: false, pqEta: 'Same-day delivery', studyPackEta: 'Delivered when available', eta: 'Same-day (Past Qs) · When available (Study Packs)' },
+  { id: 'zone-lagos-island', name: 'Lagos Island / Lekki / Ajah', regionType: 'lagos', fee: 3500, isFree: false, pqEta: 'Same-day delivery', studyPackEta: 'Delivered when available', eta: 'Same-day (Past Qs) · When available (Study Packs)' },
+  { id: 'zone-southwest', name: 'Outside Lagos: South-West States (Ogun, Oyo, Osun, Ondo, Ekiti)', regionType: 'outside_lagos', fee: 4500, isFree: false, pqEta: '1-day (next-day) delivery', studyPackEta: 'Delivered when available', eta: '1 day / Next-day (Past Qs) · When available (Study Packs)' },
+  { id: 'zone-nationwide', name: 'Outside Lagos: Abuja, Port Harcourt & All Other States', regionType: 'outside_lagos', fee: 6000, isFree: false, pqEta: '1-day (next-day) delivery', studyPackEta: 'Delivered when available', eta: '1 day / Next-day (Past Qs) · When available (Study Packs)' },
 ];
 
 export const VALENCE_PILLARS = [
@@ -1044,9 +1076,9 @@ export const ANNOUNCEMENTS_FEED = [
     verifiedBadge: 'Official Notice',
     category: 'Study Materials',
     audience: 'Public · ATSWA & ICAN Candidates',
-    title: 'Per-Course Past Questions & Study Packs Available with Free Campus Hub Delivery',
+    title: 'Per-Course Past Questions (Same-Day Lagos, 1-Day Outside Lagos) & Study Packs Live',
     content:
-      'Order a single course or every course applicable to you across all 12 ATSWA papers (₦5,500/course, 9% off 2+) and all 15 ICAN papers (₦9,000/course, 6% off 2+), plus ICAN Study Texts (7% off 2+ distinct courses) and ATSWA Study Packs (5% off 2+). Free delivery covers LASU, Ojo, UNILAG, YABATECH, FCE and Yaba.',
+      'All Past Questions (12 ATSWA papers at ₦5,500/course, 9% off 2+; 15 ICAN Pathfinder papers at ₦9,000/course, 6% off 2+) deliver the same day within Lagos and within 1 day outside Lagos, with free delivery to LASU, Ojo, UNILAG, YABATECH, FCE and Yaba. ICAN and ATSWA Study Packs show live Admin-updated availability and are delivered when available.',
     timestamp: 'Official Update',
     likes: 0,
     comments: 0,
@@ -1170,8 +1202,8 @@ export const FAQS = [
     a: 'Paystack is the exclusive online checkout across all of VALENCE (tuition application unlocks, in-app online tuition, store orders, optional advertised textbook orders and ₦10,000/week advertising), verified server-side before access is granted. ATSWA document & registration guidance, study materials & delivery enquiries, and VALENCE ADVERTISE bookings all run directly inside the app. WhatsApp (+234 915 434 4663, 24/7) handles official ICAN fee/exemption assistance and general customer support.',
   },
   {
-    q: 'Are past questions sold per course, and how do store discounts & free delivery work?',
-    a: 'Yes. Past questions are priced per individual course so you can buy a single paper or every paper applicable to you: ATSWA past questions are ₦5,500 per course (automatic 9% off 2+ courses/copies) and ICAN Pathfinder past questions are ₦9,000 per course (automatic 6% off 2+ courses/copies). ATSWA study packs are ₦9,500/pack (5% off 2+), and buying 2+ different ICAN study packs (even across Foundation, Skills and Professional) unlocks an automatic 7% discount. Delivery is free to LASU, Ojo, UNILAG, YABATECH, FCE and Yaba.',
+    q: 'How fast is delivery for Past Questions and Study Packs, and how do discounts work?',
+    a: 'All Past Questions are delivered the SAME DAY within Lagos and within 1 DAY (next day) outside Lagos across Nigeria, with FREE delivery to LASU, Ojo, UNILAG, YABATECH, FCE and Yaba. ATSWA past questions are ₦5,500/course (9% off 2+ courses/copies) and ICAN Pathfinder past questions are ₦9,000/course (6% off 2+ courses/copies). Study Packs (ATSWA ₦9,500/pack with 5% off 2+; ICAN ₦10,000 to ₦15,500/course with 7% off 2+ distinct courses) display live availability updated by the Admin team and are delivered when available.',
   },
   {
     q: 'Who can advertise on VALENCE, and how do students buy from textbook authors & vendors?',
@@ -1447,3 +1479,179 @@ export const COMPETITION_STRUCTURES = {
     ],
   },
 };
+
+/**
+ * Page-Specific Top Moving Ticker Notices (Admin-Editable via Admin Portal / Supabase `page_ticker_notices`)
+ * - Home (`/`) streams all 30 shuffled timeless life & wisdom quotes at a calm, readable pace.
+ * - Every other route streams focused, field-relevant announcements tailored to that exact page.
+ */
+export const PAGE_TICKER_NOTICES = {
+  programmes: {
+    label: 'Programmes',
+    items: [
+      { id: 'pg-1', text: 'Registration for ICAN and ATSWA examinations is currently ongoing across all levels. Prepare early and beat the 7-day exam registration cutoff.', tag: 'Registration Open' },
+      { id: 'pg-2', text: 'ATSWA diets hold over 2 days (second-to-last Tuesday & Wednesday of March and September); ICAN diets hold over 3 days (first Tuesday to Thursday of May and November).', tag: 'Diet Calendar' },
+      { id: 'pg-3', text: 'Need assistance with official ICAN registration, examination, annual subscription, development levy or exemption fees? Tap WhatsApp Support 24/7.', tag: 'Official ICAN Help' },
+      { id: 'pg-4', text: 'ATSWA document review and starting-level guidance run 100% inside the VALENCE app.', tag: 'ATSWA Desk' },
+      { id: 'pg-5', text: 'Unlock full level cost implications (in-app online tuition plus verified advertising physical tuition centre fees) with a one-time ₦3,000 fee per level.', tag: 'Cost Unlock' },
+      { id: 'pg-6', text: 'Automatic 30-day post-exam result countdowns are maintained live by the VALENCE Central Examination Authority.', tag: 'Result Tracker' },
+      { id: 'pg-7', text: 'Join the official VALENCE WhatsApp Channel for instant exam timetable, cutoff and diet announcements.', tag: 'WhatsApp Channel' },
+    ],
+  },
+  atswa: {
+    label: 'ATSWA Live',
+    items: [
+      { id: 'at-1', text: 'ATSWA registration is ongoing across ATS 1, ATS 2 and ATS 3. Confirm your entry at least 7 days before Examination Day 1.', tag: 'Registration Ongoing' },
+      { id: 'at-2', text: "Starting-level guide: O'Level or non-accounting ND enters ATS 1; ND Banking & Finance enters ATS 2; ND Accounting enters ATS 3.", tag: 'Entry Pathways' },
+      { id: 'at-3', text: "Upload and verify your O'Level, passport photograph, birth certificate or ND exemption slip right in the in-app ATSWA Guidance Desk below.", tag: 'In-App Guidance' },
+      { id: 'at-4', text: 'In-app ATSWA online classes are led by verified AAT-certified tutors, with an automatic 25% discount on 2 or more courses.', tag: 'Online Tuition' },
+      { id: 'at-5', text: 'ATSWA Insight Past Questions (₦5,500/course, 9% off 2+) deliver the same day within Lagos and within 1 day outside Lagos; Study Packs ship when available.', tag: 'Materials' },
+      { id: 'at-6', text: 'One-time ₦3,000 per-level unlock reveals online tuition, official fees, and verified rates from physical tuition centres advertising on VALENCE.', tag: 'Cost Unlock' },
+    ],
+  },
+  icanExemptions: {
+    label: 'Exemptions',
+    items: [
+      { id: 'ex-1', text: 'ICAN student registration and exemption processing are ongoing. Check your eligible starting level and exempted papers instantly below.', tag: 'Exemption Check' },
+      { id: 'ex-2', text: 'Download and cross-check the official ICAN Accredited Institutions list and MCATI partner institutions directory directly on this page.', tag: 'Accredited List' },
+      { id: 'ex-3', text: 'AAT graduates, B.Sc./HND Accounting graduates and allied degree holders qualify for structured Foundation and Skills paper exemptions.', tag: 'Eligibility' },
+      { id: 'ex-4', text: 'Need help filing your official ICAN exemption or paying statutory fees? Contact our 24/7 WhatsApp Support Desk.', tag: '24/7 Support' },
+      { id: 'ex-5', text: 'Once exempted, order past questions only for the exact papers you need to sit (same-day delivery in Lagos, 1-day outside Lagos).', tag: 'Smart Ordering' },
+    ],
+  },
+  icanGuide: {
+    label: 'ICAN Guide',
+    items: [
+      { id: 'ig-1', text: 'Registration for ICAN Foundation, Skills and Professional diets is ongoing for both first-time applicants and returning candidates.', tag: 'Registration Open' },
+      { id: 'ig-2', text: 'Read all 10 official ICAN candidate FAQs covering entry eligibility, ATSWA vs graduate pathways, exam steps and ACA completion timelines.', tag: 'Candidate Guide' },
+      { id: 'ig-3', text: 'Access the official ICAN 2026 Syllabus PDF, examination docket portal, Accredited Institutions list and MCATI directory in one click.', tag: 'Official Docs' },
+      { id: 'ig-4', text: 'Our 24/7 WhatsApp Desk assists candidates with official ICAN registration, annual subscription, development levy, exemption and exam fees.', tag: 'Fee Assistance' },
+    ],
+  },
+  ican: {
+    label: 'ICAN Live',
+    items: [
+      { id: 'ic-1', text: 'ICAN registration and examination entry are ongoing across Foundation (4 papers), Skills (6 papers) and Professional (5 papers).', tag: 'Registration Ongoing' },
+      { id: 'ic-2', text: 'Exam registration closes 7 days before Day 1 of each May and November 3-day diet, followed by a live 30-day provisional result countdown.', tag: 'Diet Deadlines' },
+      { id: 'ic-3', text: 'All in-app ICAN online classes are taught by manually verified tutors holding both AAT and ACA certificates, with 25% off 3 or more courses.', tag: 'Verified Tutors' },
+      { id: 'ic-4', text: 'One-time ₦3,000 per-level unlock reveals online tuition alongside the exact verified cost implications of physical tuition centres advertising on VALENCE.', tag: 'Cost Unlock' },
+      { id: 'ic-5', text: 'Sealed ICAN Pathfinder Past Questions (₦9,000/course, 6% off 2+) deliver the same day within Lagos and within 1 day outside Lagos; Study Packs show live availability.', tag: 'Fast Delivery' },
+      { id: 'ic-6', text: 'Need official ICAN registration, exam fee, annual subscription, development levy or exemption assistance? Tap WhatsApp Support 24/7.', tag: '24/7 Assistance' },
+    ],
+  },
+  tertiary: {
+    label: 'Campus Hub',
+    items: [
+      { id: 'tr-1', text: '300 accredited Nigerian universities, polytechnics and colleges across all 36 states and FCT Abuja are embedded right inside VALENCE.', tag: '300 Institutions' },
+      { id: 'tr-2', text: 'Free membership for every undergraduate, ND, HND, NCE and general accounting learner; ATSWA and ICAN registration is ongoing.', tag: 'Join Free' },
+      { id: 'tr-3', text: 'Start ATSWA or ICAN while in school, join campus study groups and master 6 practical financial literacy tracks.', tag: 'Early Advantage' },
+      { id: 'tr-4', text: 'Rally your campus team for the VALENCE National Inter-School Challenge (accounting & related fields) and compete for the ₦50,000 reward.', tag: 'Inter-School' },
+    ],
+  },
+  store: {
+    label: 'Store & Delivery',
+    items: [
+      { id: 'st-1', text: 'All Past Questions deliver the SAME DAY within Lagos and within 1 DAY (next day) outside Lagos nationwide.', tag: 'Express Dispatch' },
+      { id: 'st-2', text: 'Study Packs show live availability updated directly by Admin and are delivered as soon as available.', tag: 'Study Pack Status' },
+      { id: 'st-3', text: 'Enjoy FREE delivery to LASU, Ojo, UNILAG, YABATECH, FCE and Yaba on eligible store orders.', tag: '6 Free Hubs' },
+      { id: 'st-4', text: 'Automatic checkout discounts: 9% off 2+ ATSWA PQs (₦5,500/course), 6% off 2+ ICAN PQs (₦9,000/course), 5% off 2+ ATSWA Study Packs & 7% off 2+ distinct ICAN Study Packs.', tag: 'Auto Savings' },
+      { id: 'st-5', text: 'Order a single paper or every paper applicable to you, secured exclusively via Paystack with in-app material and delivery enquiries.', tag: 'Paystack Secured' },
+    ],
+  },
+  studyMaterials: {
+    label: 'Study Library',
+    items: [
+      { id: 'sm-1', text: 'Complete syllabus coverage for all 12 ATSWA papers and all 15 ICAN papers, plus official ICAN 2026 Syllabus and Accredited Institution PDFs.', tag: '27 Courses' },
+      { id: 'sm-2', text: 'Printed Past Questions deliver the same day within Lagos and within 1 day outside Lagos, with free campus delivery to LASU, Ojo, UNILAG, YABATECH, FCE & Yaba.', tag: 'Same-Day Lagos' },
+      { id: 'sm-3', text: 'Printed Study Packs display live availability updated by Admin in the Store and are dispatched when available.', tag: 'Live Stock Status' },
+      { id: 'sm-4', text: 'Registration for ICAN and ATSWA examinations is ongoing. Pair official study texts with course-specific past questions for first-sitting mastery.', tag: 'Exam Prep' },
+    ],
+  },
+  connect: {
+    label: 'Community',
+    items: [
+      { id: 'cn-1', text: 'Welcome to VALENCE Connect: free academic and professional networking for ATSWA & ICAN candidates, 300 Nigerian campuses and chartered accountants.', tag: 'Free Network' },
+      { id: 'cn-2', text: 'Form diet study groups, join 12 subject forums, share announcements across 7 controlled audiences and connect with verified ACA/FCA mentors.', tag: 'Collaborate' },
+      { id: 'cn-3', text: 'Follow the official VALENCE WhatsApp Channel for instant broadcasts on ICAN/ATSWA registration, study pack restocks and competition dates.', tag: 'WhatsApp Channel' },
+      { id: 'cn-4', text: 'Protected by server-enforced audience permissions, profile verification badges and NDPA-aligned privacy settings.', tag: 'Safe Space' },
+    ],
+  },
+  competitions: {
+    label: 'Challenge',
+    items: [
+      { id: 'cp-1', text: 'The VALENCE National Inter-School Challenge brings together 300 accredited Nigerian universities, polytechnics, colleges and exam divisions.', tag: 'National Challenge' },
+      { id: 'cp-2', text: 'All competition questions test accounting and related fields: reporting, costing, audit, tax, finance, economics, business law, quantitative methods & management.', tag: 'Question Scope' },
+      { id: 'cp-3', text: 'Top learners earn a verified ₦50,000 merit cash reward after every competition closes, plus digital certificates and Hall of Fame recognition.', tag: '₦50,000 Reward' },
+      { id: 'cp-4', text: 'Five competitive rounds: Institution Verification, Individual CBT Qualifiers, Zonal Brackets, National Semi-Finals and the Grand Finale.', tag: '5 Rounds' },
+    ],
+  },
+  opportunities: {
+    label: 'Careers',
+    items: [
+      { id: 'op-1', text: 'Every scholarship, undergraduate internship, NYSC placement, workshop and graduate audit/tax/finance role is manually verified by Admin.', tag: '100% Verified' },
+      { id: 'op-2', text: 'Zero fake or expired job cards: create a free VALENCE account and follow our official WhatsApp Channel for instant deadline alerts.', tag: 'Real Openings' },
+      { id: 'op-3', text: 'Verified chartered accountants, professional firms and institutions can submit authentic scholarships and roles via the Professional Portal.', tag: 'Employers' },
+      { id: 'op-4', text: 'Progressing through ATSWA and ICAN (registration ongoing) strengthens your eligibility for Tier-1 audit, tax and advisory trainee programmes.', tag: 'Career Edge' },
+    ],
+  },
+  tuitionCentres: {
+    label: 'Partner Hub',
+    items: [
+      { id: 'tc-1', text: 'Verified Partner Directory: Admin-verified physical (in-person) tuition centres, original accounting textbook authors and genuine book vendors.', tag: 'Verified Only' },
+      { id: 'tc-2', text: 'Physical tuition cost implications unlocked on VALENCE (one-time ₦3,000 per level) reflect each advertising tuition centre’s exact verified rates.', tag: 'Centre Fees' },
+      { id: 'tc-3', text: 'Advertised textbook authors and bookshops include built-in in-app student enquiries plus optional in-app Paystack checkout.', tag: 'In-App Book Buying' },
+      { id: 'tc-4', text: 'Prefer online lectures? All online ATSWA and ICAN classes on VALENCE are taught strictly in-app by verified AAT and ACA tutors.', tag: 'Online Tuition' },
+    ],
+  },
+  advertise: {
+    label: 'Advertise',
+    items: [
+      { id: 'ad-1', text: 'Book targeted campaigns 100% inside VALENCE at ₦10,000 per week via Paystack across 9 high-visibility academic placements.', tag: '₦10,000 / Week' },
+      { id: 'ad-2', text: 'Open to 3 verified groups: physical (in-person) accounting tuition centres, accounting textbook authors and verified textbook vendors.', tag: 'Who Qualifies' },
+      { id: 'ad-3', text: 'Physical tuition centres submit verified per-level/per-course cost implications displayed to students who unlock cost implications on VALENCE.', tag: 'Publish Centre Fees' },
+      { id: 'ad-4', text: 'Textbook authors and vendors get built-in in-app buyer enquiries, optional Paystack checkout, live CTR analytics and strict zero-piracy enforcement.', tag: 'Author & Vendor Tools' },
+    ],
+  },
+  services: {
+    label: 'Services',
+    items: [
+      { id: 'sv-1', text: 'ICAN and ATSWA registration is ongoing: access verified in-app online tuition, 7-step study support, timetables, community and career tools in one place.', tag: '7 Pillars' },
+      { id: 'sv-2', text: 'Past Questions deliver the same day within Lagos and within 1 day outside Lagos; Study Packs show live Admin-updated availability and ship when available.', tag: 'Bookstore' },
+      { id: 'sv-3', text: '24/7 support via email, prefilled WhatsApp for official ICAN fees & exemptions, and broadcast updates on our official WhatsApp Channel.', tag: '24/7 Support' },
+    ],
+  },
+  about: {
+    label: 'About VALENCE',
+    items: [
+      { id: 'ab-1', text: 'Vita sine litteris mors est (Life without learning is death): uniting learning, networking, inter-school competition, marketplace and career growth.', tag: 'Mission' },
+      { id: 'ab-2', text: 'Built for ATSWA & ICAN candidates, 300 accredited Nigerian universities, polytechnics & colleges, verified partners and chartered accountants.', tag: 'Nationwide' },
+      { id: 'ab-3', text: 'Follow the official VALENCE WhatsApp Channel and reach our team 24/7 at atvalencecustomersupport@gmail.com.', tag: 'Stay Connected' },
+    ],
+  },
+  contact: {
+    label: '24/7 Support',
+    items: [
+      { id: 'ct-1', text: 'VALENCE Support is open 24/7 via atvalencecustomersupport@gmail.com, in-app support tickets, and WhatsApp (+234 915 434 4663).', tag: 'Always Open' },
+      { id: 'ct-2', text: 'Official ICAN registration, examination, subscription, development levy and exemption assistance is ongoing via WhatsApp Support.', tag: 'ICAN Fee Desk' },
+      { id: 'ct-3', text: 'Follow the official VALENCE WhatsApp Channel for instant updates on exam dates, registration cutoffs, study pack availability and competitions.', tag: 'Official Channel' },
+      { id: 'ct-4', text: 'Past Questions deliver the same day in Lagos and in 1 day outside Lagos; submit store or delivery enquiries directly inside the app.', tag: 'Fast Help' },
+    ],
+  },
+  legal: {
+    label: 'Policies',
+    items: [
+      { id: 'lg-1', text: 'Transparent governance: Terms of Service, NDPA-aligned Privacy Policy, Paystack Payment/Refund/Delivery rules & Zero-Piracy Ad Policy.', tag: 'Compliance' },
+      { id: 'lg-2', text: 'Delivery SLA: same-day within Lagos and 1-day outside Lagos for all Past Questions; Study Packs display live Admin availability and deliver when available.', tag: 'Delivery Policy' },
+      { id: 'lg-3', text: 'VALENCE never stores card numbers and never sells student data to advertisers. All online payments verify server-side via Paystack.', tag: 'Data & Payment Safety' },
+    ],
+  },
+  portal: {
+    label: 'Portal Access',
+    items: [
+      { id: 'pt-1', text: 'Free account signup for students, campuses and professionals; registration for ICAN and ATSWA diets is currently ongoing.', tag: 'Free Signup' },
+      { id: 'pt-2', text: 'Unlock per-level online and verified advertising tuition centre cost implications for ₦3,000 once per level, verified via Paystack.', tag: 'Student Portal' },
+      { id: 'pt-3', text: 'Admin Portal updates Study Pack availability, store prices, delivery zones, exam timetables and page ticker notices live in real time.', tag: 'Live Admin CMS' },
+    ],
+  },
+};
+

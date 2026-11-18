@@ -70,6 +70,7 @@ export default function StorePage() {
     searchParams.get('category') || 'all'
   );
   const [levelFilter, setLevelFilter] = useState(searchParams.get('level') || 'ALL');
+  const [availabilityFilter, setAvailabilityFilter] = useState('ALL');
   const [search, setSearch] = useState(searchParams.get('q') || '');
   const [previewProduct, setPreviewProduct] = useState(null);
   const [enquiryOpen, setEnquiryOpen] = useState(searchParams.get('enquiry') === 'open');
@@ -100,6 +101,7 @@ export default function StorePage() {
     return products.filter((p) => {
       if (activeCategory !== 'all' && p.category !== activeCategory) return false;
       if (levelFilter !== 'ALL' && p.level !== levelFilter) return false;
+      if (availabilityFilter === 'AVAILABLE' && p.isAvailable === false) return false;
       if (search.trim()) {
         const q = search.toLowerCase();
         return (
@@ -112,7 +114,25 @@ export default function StorePage() {
       }
       return true;
     });
-  }, [products, activeCategory, levelFilter, search]);
+  }, [products, activeCategory, levelFilter, availabilityFilter, search]);
+
+  const cartHasPastQuestions = useMemo(
+    () => cart.some((i) => i.category.endsWith('past_question')),
+    [cart]
+  );
+  const cartHasStudyPacks = useMemo(
+    () => cart.some((i) => i.category.endsWith('study_pack')),
+    [cart]
+  );
+
+  const openRestockEnquiry = (prod) => {
+    setEnquiryForm((prev) => ({
+      ...prev,
+      topic: 'Study Pack Availability & Restock Alert',
+      materialOrCourse: prod.title,
+    }));
+    setEnquiryOpen(true);
+  };
 
   const getItemQty = (id) => cart.find((i) => i.id === id)?.quantity || 0;
 
@@ -212,29 +232,29 @@ export default function StorePage() {
             {[
               {
                 title: 'ICAN Study Packs (15 Courses)',
-                price: '₦10,000 – ₦15,500 / course',
-                rule: '7% off 2+ distinct courses across Foundation, Skills & Pro',
+                price: '₦10,000 to ₦15,500 / course',
+                rule: '7% off 2+ distinct courses · Delivered when available',
                 thumb: '/materials/ican-sp-fr.jpg',
                 cat: 'ican_study_pack',
               },
               {
                 title: 'ICAN Pathfinder PQs (15 Courses)',
                 price: '₦9,000 / course',
-                rule: 'Each course cover · Buy 1 or all · 6% off 2+',
+                rule: '6% off 2+ · Same-day Lagos, 1-day outside Lagos',
                 thumb: '/materials/ican-pq-fr.jpg',
                 cat: 'ican_past_question',
               },
               {
                 title: 'ATSWA Insight PQs (12 Courses)',
                 price: '₦5,500 / course',
-                rule: 'Each course cover · Buy 1 or all · 9% off 2+',
+                rule: '9% off 2+ · Same-day Lagos, 1-day outside Lagos',
                 thumb: '/materials/atswa-pq-ats2-fa.jpg',
                 cat: 'atswa_past_question',
               },
               {
-                title: 'ATSWA Study Packs (ATS 1 – 3)',
+                title: 'ATSWA Study Packs (ATS 1 to 3)',
                 price: '₦9,500 / pack',
-                rule: 'Automatic 5% off on 2 or more study packs',
+                rule: '5% off 2+ packs · Delivered when available',
                 thumb: null,
                 cat: 'atswa_study_pack',
               },
@@ -264,6 +284,25 @@ export default function StorePage() {
                 </div>
               </button>
             ))}
+          </div>
+
+          {/* Delivery Timeline & Live Study Pack Availability Banner */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1 text-xs">
+            <div className="rounded-xl bg-[#11161C] border border-[#16C784]/30 p-3.5 flex items-start gap-2.5">
+              <Truck className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" />
+              <p className="text-[#C2C9D4] leading-relaxed">
+                <strong className="text-white">All Past Questions Delivery:</strong>{' '}
+                <strong className="text-[#16C784]">Same-day delivery within Lagos</strong> (FREE to LASU, Ojo, UNILAG, YABATECH, FCE &amp; Yaba) and{' '}
+                <strong className="text-[#16C784]">1-day (next-day) delivery outside Lagos</strong> nationwide.
+              </p>
+            </div>
+            <div className="rounded-xl bg-[#11161C] border border-white/[0.1] p-3.5 flex items-start gap-2.5">
+              <CheckCircle2 className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" />
+              <p className="text-[#C2C9D4] leading-relaxed">
+                <strong className="text-white">Study Packs Availability &amp; Delivery:</strong> Every Study Pack displays a live{' '}
+                <strong className="text-[#16C784]">Available / Unavailable</strong> badge updated directly by Admin, and Study Packs are delivered when available.
+              </p>
+            </div>
           </div>
 
           {/* Official Cover Colour Guide */}
@@ -358,7 +397,7 @@ export default function StorePage() {
                 value={levelFilter}
                 onChange={(e) => setLevelFilter(e.target.value)}
                 aria-label="Filter by examination level"
-                className="v-input sm:w-52 text-xs"
+                className="v-input sm:w-48 text-xs"
               >
                 <option value="ALL">All Levels</option>
                 <option value="ATS 1">ATS 1 (4 Courses · Blue)</option>
@@ -367,6 +406,15 @@ export default function StorePage() {
                 <option value="Foundation">ICAN Foundation (4 Courses)</option>
                 <option value="Skills">ICAN Skills (6 Courses)</option>
                 <option value="Professional">ICAN Professional (5 Courses)</option>
+              </select>
+              <select
+                value={availabilityFilter}
+                onChange={(e) => setAvailabilityFilter(e.target.value)}
+                aria-label="Filter by availability"
+                className="v-input sm:w-44 text-xs"
+              >
+                <option value="ALL">All Stock Statuses</option>
+                <option value="AVAILABLE">Available Now Only</option>
               </select>
             </div>
 
@@ -442,6 +490,35 @@ export default function StorePage() {
                         )}
 
                         <div className="p-5 pb-3 space-y-2">
+                          {/* Live Admin-Updated Availability & Delivery Timeline Row */}
+                          {isPq ? (
+                            <div className="flex flex-wrap items-center gap-1.5 text-[10.5px]">
+                              <span className="inline-flex items-center gap-1 rounded-full bg-[#16C784]/15 border border-[#16C784]/35 px-2.5 py-0.5 font-semibold text-[#16C784]">
+                                <span className="h-1.5 w-1.5 rounded-full bg-[#16C784]" />
+                                Available Now
+                              </span>
+                              <span className="text-[#C2C9D4]">
+                                Same-day Lagos · 1-day outside Lagos
+                              </span>
+                            </div>
+                          ) : prod.isAvailable !== false ? (
+                            <div className="flex flex-wrap items-center gap-1.5 text-[10.5px]">
+                              <span className="inline-flex items-center gap-1 rounded-full bg-[#16C784]/15 border border-[#16C784]/35 px-2.5 py-0.5 font-semibold text-[#16C784]">
+                                <span className="h-1.5 w-1.5 rounded-full bg-[#16C784]" />
+                                {prod.availabilityNote || 'Available · Admin Updated'}
+                              </span>
+                              <span className="text-[#9AA4B2]">Delivered when available</span>
+                            </div>
+                          ) : (
+                            <div className="flex flex-wrap items-center gap-1.5 text-[10.5px]">
+                              <span className="inline-flex items-center gap-1 rounded-full bg-[#EA3943]/15 border border-[#EA3943]/35 px-2.5 py-0.5 font-semibold text-[#EA3943]">
+                                <span className="h-1.5 w-1.5 rounded-full bg-[#EA3943]" />
+                                {prod.availabilityNote || 'Currently Unavailable · Admin Updated'}
+                              </span>
+                              <span className="text-[#9AA4B2]">Delivered once restocked</span>
+                            </div>
+                          )}
+
                           <h3 className="font-display text-base font-bold text-white leading-snug">
                             {prod.title}
                           </h3>
@@ -460,22 +537,33 @@ export default function StorePage() {
                             <span className="tabular-nums-display text-lg font-bold text-white">
                               {formatNaira(prod.price)}
                             </span>
-                            {prod.courseCode && (
-                              <span className="block text-[10px] text-[#667085]">
-                                Per course ({prod.courseCode})
-                              </span>
-                            )}
+                            <span className="block text-[10px] text-[#667085]">
+                              {prod.courseCode
+                                ? `Per course (${prod.courseCode})`
+                                : `Per study pack (${prod.level})`}
+                            </span>
                           </div>
-                          {qty === 0 ? (
+                          {prod.isAvailable === false ? (
+                            <button
+                              type="button"
+                              onClick={() => openRestockEnquiry(prod)}
+                              className="v-btn-secondary text-xs py-2 px-3"
+                            >
+                              <HelpCircle className="h-3.5 w-3.5 text-[#EA3943]" /> Notify When Available
+                            </button>
+                          ) : qty === 0 ? (
                             <button
                               type="button"
                               onClick={() => {
                                 addToCart(prod, 1);
-                                toast.success('Added Course to Cart', prod.title);
+                                toast.success(
+                                  isPq ? 'Added Past Question to Cart' : 'Added Study Pack to Cart',
+                                  prod.title
+                                );
                               }}
                               className="v-btn-primary text-xs py-2 px-3.5"
                             >
-                              <Plus className="h-3.5 w-3.5" /> Add Course
+                              <Plus className="h-3.5 w-3.5" /> {isPq ? 'Add Course' : 'Add Pack'}
                             </button>
                           ) : (
                             <div className="inline-flex items-center gap-2 rounded-xl bg-[#0B0E11] border border-[#16C784]/40 px-2 py-1">
@@ -619,9 +707,23 @@ export default function StorePage() {
                   </option>
                 ))}
               </select>
-              <p className="mt-1 text-[11px] text-[#667085]">
-                Free hubs: LASU, Ojo, UNILAG, YABATECH, FCE, Yaba · Est. {selectedZone.eta}
-              </p>
+              <div className="mt-2 rounded-xl bg-[#0B0E11] border border-white/[0.07] p-3 space-y-1 text-[11px]">
+                <p className="text-[#C2C9D4]">
+                  <strong className="text-[#16C784]">Past Questions ETA:</strong>{' '}
+                  {selectedZone.pqEta ||
+                    (selectedZone.regionType === 'lagos'
+                      ? 'Same-day delivery'
+                      : '1-day (next-day) delivery')}
+                  {cartHasPastQuestions ? ' (in your cart)' : ''}
+                </p>
+                <p className="text-[#9AA4B2]">
+                  <strong className="text-white">Study Packs ETA:</strong> Delivered when available (live stock updated by Admin)
+                  {cartHasStudyPacks ? ' · In your cart' : ''}
+                </p>
+                <p className="text-[10.5px] text-[#667085]">
+                  Free delivery hubs: LASU, Ojo, UNILAG, YABATECH, FCE &amp; Yaba
+                </p>
+              </div>
             </div>
 
             {/* Automatic Discounts & Totals */}
@@ -769,8 +871,9 @@ export default function StorePage() {
                     className="v-input text-xs"
                   >
                     <option>Material Availability & Edition Check</option>
+                    <option>Study Pack Availability & Restock Alert</option>
+                    <option>Same-Day Lagos / 1-Day Outside Lagos PQ Delivery</option>
                     <option>Campus Free-Delivery Hub Arrangement</option>
-                    <option>Inter-State / Nationwide Dispatch ETA</option>
                     <option>Per-Course Past Question Selection Help</option>
                     <option>Existing Order Tracking Update</option>
                   </select>
@@ -889,26 +992,58 @@ export default function StorePage() {
                 <p className="text-xs font-semibold text-[#16C784]">
                   {previewProduct.discountHint}
                 </p>
+                <div className="rounded-lg bg-[#0B0E11] border border-white/[0.08] px-3 py-2 text-[11px] space-y-0.5">
+                  <p
+                    className={`font-semibold ${
+                      previewProduct.isAvailable === false ? 'text-[#EA3943]' : 'text-[#16C784]'
+                    }`}
+                  >
+                    {previewProduct.isStudyPack
+                      ? previewProduct.isAvailable === false
+                        ? 'Status: Currently Unavailable (Admin Updated)'
+                        : 'Status: Available Now (Admin Updated)'
+                      : 'Status: Available Now · Ready for Dispatch'}
+                  </p>
+                  <p className="text-[#9AA4B2]">
+                    {previewProduct.isStudyPack
+                      ? 'Delivery: Delivered when available'
+                      : 'Delivery: Same-day within Lagos · 1-day outside Lagos'}
+                  </p>
+                </div>
               </div>
 
               <div className="space-y-3 border-t border-white/[0.08] pt-4">
                 <div className="flex items-baseline justify-between">
-                  <span className="text-xs text-[#9AA4B2]">Course Price</span>
+                  <span className="text-xs text-[#9AA4B2]">Price</span>
                   <span className="tabular-nums-display text-2xl font-bold text-white">
                     {formatNaira(previewProduct.price)}
                   </span>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    addToCart(previewProduct, 1);
-                    toast.success('Added Course to Cart', previewProduct.title);
-                    setPreviewProduct(null);
-                  }}
-                  className="v-btn-primary w-full py-2.5 text-xs"
-                >
-                  <Plus className="h-4 w-4" /> Add Course to Cart
-                </button>
+                {previewProduct.isAvailable === false ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const target = previewProduct;
+                      setPreviewProduct(null);
+                      openRestockEnquiry(target);
+                    }}
+                    className="v-btn-secondary w-full py-2.5 text-xs"
+                  >
+                    <HelpCircle className="h-4 w-4 text-[#EA3943]" /> Notify Me When Available
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      addToCart(previewProduct, 1);
+                      toast.success('Added to Cart', previewProduct.title);
+                      setPreviewProduct(null);
+                    }}
+                    className="v-btn-primary w-full py-2.5 text-xs"
+                  >
+                    <Plus className="h-4 w-4" /> Add to Cart
+                  </button>
+                )}
               </div>
             </div>
           </div>

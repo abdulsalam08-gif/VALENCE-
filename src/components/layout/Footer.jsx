@@ -21,11 +21,23 @@ export default function Footer() {
               Nigeria’s complete accounting education, professional networking, inter-school competition, marketplace and career ecosystem connecting ATSWA &amp; ICAN candidates,{' '}
               <span className="text-[#F4F6F9] font-medium">{universityCounts.total}+ Nigerian universities, polytechnics &amp; colleges</span>, verified partners and chartered accountants.
             </p>
-            <div className="inline-flex items-center gap-2 rounded-xl bg-[#11161C] border border-white/[0.08] px-3.5 py-2 text-xs text-[#C2C9D4]">
-              <ShieldCheck className="h-4 w-4 text-[#16C784] shrink-0" />
-              <span>
-                Online Checkout Secured Exclusively by <strong className="text-white">Paystack</strong>
-              </span>
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="inline-flex items-center gap-2 rounded-xl bg-[#11161C] border border-white/[0.08] px-3.5 py-2 text-xs text-[#C2C9D4]">
+                <ShieldCheck className="h-4 w-4 text-[#16C784] shrink-0" />
+                <span>
+                  Online Checkout Secured Exclusively by <strong className="text-white">Paystack</strong>
+                </span>
+              </div>
+              {settings.whatsappChannelUrl && (
+                <a
+                  href={settings.whatsappChannelUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-[#16C784]/15 border border-[#16C784]/35 px-3.5 py-2 text-xs font-semibold text-[#16C784] hover:bg-[#16C784] hover:text-[#06130D] transition-colors"
+                >
+                  Follow Official WhatsApp Channel <ExternalLink className="h-3.5 w-3.5" />
+                </a>
+              )}
             </div>
             {activeSocials.length > 0 && (
               <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
@@ -104,11 +116,26 @@ export default function Footer() {
               </li>
               <li className="flex items-start gap-2">
                 <MapPin className="h-3.5 w-3.5 text-[#16C784] mt-0.5 shrink-0" />
-                <span>Free store delivery: LASU, Ojo, UNILAG, YABATECH, FCE & Yaba</span>
+                <span>
+                  Past Qs: Same-day Lagos, 1-day outside Lagos (free: LASU, Ojo, UNILAG, YABATECH, FCE &amp; Yaba) · Study Packs: When available
+                </span>
               </li>
             </ul>
 
             <div className="pt-2 space-y-1.5 border-t border-white/[0.06]">
+              {settings.whatsappChannelUrl && (
+                <>
+                  <a
+                    href={settings.whatsappChannelUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#16C784] hover:underline"
+                  >
+                    VALENCE Official WhatsApp Channel <ExternalLink className="h-3 w-3" />
+                  </a>
+                  <br />
+                </>
+              )}
               <a
                 href={settings.officialLinks.atswaSoftCopy}
                 target="_blank"

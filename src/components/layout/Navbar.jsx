@@ -148,6 +148,17 @@ export default function Navbar() {
             <Link to="/advertise" className="hover:text-[#16C784] transition-colors">
               Advertise on VALENCE
             </Link>
+            {settings.whatsappChannelUrl && (
+              <a
+                href={settings.whatsappChannelUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 font-semibold text-[#16C784] hover:text-[#1ED791] transition-colors"
+              >
+                WhatsApp Channel
+                <ArrowUpRight className="h-3 w-3" />
+              </a>
+            )}
             <Link
               to="/portal/admin"
               className="inline-flex items-center gap-1 text-[#9AA4B2] hover:text-white transition-colors"
@@ -411,8 +422,19 @@ export default function Navbar() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between rounded-xl bg-[#11161C] border border-white/[0.08] px-3.5 py-2.5 text-[11px] text-[#9AA4B2]">
-              <span className="italic text-[#16C784]">{settings.tagline}</span>
+            <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-[#11161C] border border-white/[0.08] px-3.5 py-2.5 text-[11px] text-[#9AA4B2]">
+              {settings.whatsappChannelUrl ? (
+                <a
+                  href={settings.whatsappChannelUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 font-semibold text-[#16C784] hover:underline"
+                >
+                  Follow Official WhatsApp Channel <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+              ) : (
+                <span className="italic text-[#16C784]">{settings.tagline}</span>
+              )}
               <Link to="/programmes/ican/exemptions" className="inline-flex items-center gap-1 text-[#F4F6F9] font-medium">
                 <Scale className="h-3.5 w-3.5 text-[#16C784]" />
                 Exemption Guide

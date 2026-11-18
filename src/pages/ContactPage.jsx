@@ -79,6 +79,16 @@ export default function ContactPage() {
               >
                 <MessageCircle className="h-4 w-4" /> Open Prefilled WhatsApp Chat
               </button>
+              {settings.whatsappChannelUrl && (
+                <a
+                  href={settings.whatsappChannelUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="v-btn-secondary w-full text-xs"
+                >
+                  Follow Official WhatsApp Channel <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
+                </a>
+              )}
             </div>
 
             {/* Dedicated In-App Self-Serve Workflows */}

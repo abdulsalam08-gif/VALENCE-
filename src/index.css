@@ -142,17 +142,21 @@
   display: flex;
   width: max-content;
   will-change: transform;
-  animation: wisdom-marquee 240s linear infinite;
+  animation-name: wisdom-marquee;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: var(--ticker-duration, 560s);
 }
 
 .v-wisdom-bar:hover .v-wisdom-track,
-.v-wisdom-bar:focus-within .v-wisdom-track {
+.v-wisdom-bar:focus-within .v-wisdom-track,
+.v-wisdom-bar[data-paused='true'] .v-wisdom-track {
   animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .v-wisdom-track {
-    animation-duration: 480s;
+    animation-duration: 900s;
   }
 }
 

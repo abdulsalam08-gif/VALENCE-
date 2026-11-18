@@ -102,7 +102,26 @@ export default function WhatsAppWidget() {
               </button>
             </div>
 
-            <div className="mt-4 flex items-start gap-2.5 rounded-xl bg-[#0B0E11] border border-white/[0.08] p-3 text-xs text-[#9AA4B2]">
+            {settings.whatsappChannelUrl && (
+              <a
+                href={settings.whatsappChannelUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 flex items-center justify-between gap-3 rounded-xl bg-[#16C784]/15 border border-[#16C784]/35 px-3.5 py-2.5 text-xs hover:bg-[#16C784]/25 transition-colors"
+              >
+                <div>
+                  <p className="font-display font-bold text-[#16C784]">
+                    Follow Official VALENCE WhatsApp Channel
+                  </p>
+                  <p className="text-[11px] text-[#D5DBE3]">
+                    Instant alerts on ICAN/ATSWA registration, diets, study pack stock &amp; challenges
+                  </p>
+                </div>
+                <ExternalLink className="h-4 w-4 shrink-0 text-[#16C784]" />
+              </a>
+            )}
+
+            <div className="mt-3 flex items-start gap-2.5 rounded-xl bg-[#0B0E11] border border-white/[0.08] p-3 text-xs text-[#9AA4B2]">
               <ShieldAlert className="h-4 w-4 shrink-0 text-[#16C784] mt-0.5" />
               <p>
                 <strong className="text-[#F4F6F9]">In-App First &amp; Paystack-Only Checkout:</strong> Online tuition, ATSWA guidance, store &amp; delivery enquiries, and VALENCE ADVERTISE (₦10,000/week) all run directly inside VALENCE. WhatsApp is reserved strictly for official ICAN fee/exemption assistance and 24/7 general customer support.
@@ -118,7 +137,7 @@ export default function WhatsAppWidget() {
                   required
                   value={studentName}
                   onChange={(e) => setStudentName(e.target.value)}
-                  placeholder="e.g. Oluwatobi Adeyemi"
+                  placeholder="Enter your full name"
                   className="v-input"
                 />
               </div>

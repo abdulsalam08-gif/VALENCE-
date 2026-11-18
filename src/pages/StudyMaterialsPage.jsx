@@ -147,9 +147,9 @@ export default function StudyMaterialsPage() {
           </div>
           <div className="v-card p-5 space-y-2">
             <ShoppingBag className="h-5 w-5 text-[#16C784]" />
-            <h3 className="font-display text-base font-bold text-white">Hard-Copy Study Packs & PQs</h3>
+            <h3 className="font-display text-base font-bold text-white">Hard-Copy Study Packs &amp; PQs</h3>
             <p className="text-xs text-[#9AA4B2]">
-              Automatic volume & multi-course discounts up to 9%, free delivery across 6 Lagos campus hubs and Paystack checkout.
+              Past Questions deliver the same day within Lagos (free across 6 campus hubs) and in 1 day outside Lagos. Study Packs show live Admin-updated availability and ship when available.
             </p>
           </div>
         </div>

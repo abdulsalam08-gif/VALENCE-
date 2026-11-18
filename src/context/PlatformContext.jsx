@@ -13,6 +13,7 @@ import {
   FEATURED_TUITION_CENTRES,
   FEATURED_TEXTBOOK_ADVERTISERS,
   MOTIVATIONAL_QUOTES,
+  PAGE_TICKER_NOTICES,
   FEATURED_TUTORS,
   LATEST_OPPORTUNITIES,
   UPCOMING_EVENTS,
@@ -51,6 +52,30 @@ export function PlatformProvider({ children }) {
   // Server-verified student_fee_unlocks records hydrate here in Phase 2/4/8
   const [unlockedLevelIds, setUnlockedLevelIds] = useState([]);
   const [isHydrating, setIsHydrating] = useState(true);
+  // Live store catalogue state: Study Pack availability & prices hydrate/update from Admin Portal (Phase 2/9)
+  const [catalogProducts, setCatalogProducts] = useState(() => STORE_PRODUCTS);
+
+  const updateProductAvailability = (productId, isAvailable, customNote = '') => {
+    setCatalogProducts((prev) =>
+      prev.map((p) =>
+        p.id === productId
+          ? {
+              ...p,
+              isAvailable: Boolean(isAvailable),
+              availabilityStatus: isAvailable ? 'available' : 'unavailable',
+              availabilityNote:
+                customNote ||
+                (isAvailable
+                  ? 'Available · Updated by Admin'
+                  : 'Currently Unavailable · Updated by Admin'),
+            }
+          : p
+      )
+    );
+    if (!isAvailable) {
+      setCart((prev) => prev.filter((item) => item.id !== productId));
+    }
+  };
 
   const [cart, setCart] = useState(() => {
     try {
@@ -105,6 +130,7 @@ export function PlatformProvider({ children }) {
   const isLevelUnlocked = (levelKey) => unlockedLevelIds.includes(levelKey);
 
   const addToCart = (product, qty = 1) => {
+    if (product.isAvailable === false) return false;
     setCart((prev) => {
       const existing = prev.find((item) => item.id === product.id);
       if (existing) {
@@ -114,6 +140,7 @@ export function PlatformProvider({ children }) {
       }
       return [...prev, { ...product, quantity: qty }];
     });
+    return true;
   };
 
   const updateCartQty = (productId, nextQty) => {
@@ -171,12 +198,14 @@ export function PlatformProvider({ children }) {
     atswaRegistrationGuide: ATSWA_APP_REGISTRATION_GUIDE,
     icanLevels: ICAN_LEVELS,
     allIcanCourses: ALL_ICAN_COURSES,
-    products: STORE_PRODUCTS,
+    products: catalogProducts,
+    updateProductAvailability,
     deliveryZones: DELIVERY_ZONES,
     pillars: VALENCE_PILLARS,
     tuitionCentres: FEATURED_TUITION_CENTRES,
     textbookAdvertisers: FEATURED_TEXTBOOK_ADVERTISERS,
     motivationalQuotes: MOTIVATIONAL_QUOTES,
+    pageTickerNotices: PAGE_TICKER_NOTICES,
     tutors: FEATURED_TUTORS,
     opportunities: LATEST_OPPORTUNITIES,
     events: UPCOMING_EVENTS,

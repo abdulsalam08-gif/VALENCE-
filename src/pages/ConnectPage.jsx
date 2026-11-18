@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   Heart,
   ArrowRight,
+  ExternalLink,
   Lock,
 } from 'lucide-react';
 import { usePlatform } from '../context/PlatformContext';
@@ -27,7 +28,7 @@ const AUDIENCE_TYPES = [
 ];
 
 export default function ConnectPage() {
-  const { announcements, discussionCategories, events } = usePlatform();
+  const { announcements, discussionCategories, events, settings } = usePlatform();
   const [selectedForum, setSelectedForum] = useState(discussionCategories[0]);
 
   return (
@@ -51,6 +52,16 @@ export default function ConnectPage() {
             <Link to="/portal/professional" className="v-btn-secondary text-xs">
               Offer Professional Mentorship
             </Link>
+            {settings.whatsappChannelUrl && (
+              <a
+                href={settings.whatsappChannelUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="v-btn-secondary text-xs border-[#16C784]/35 text-[#16C784]"
+              >
+                Follow Official WhatsApp Channel <ExternalLink className="h-3.5 w-3.5" />
+              </a>
+            )}
           </div>
         </div>
       </section>
