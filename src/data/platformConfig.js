@@ -37,8 +37,8 @@ export const PLATFORM_SETTINGS = {
 /**
  * Dynamic Examination Sessions & Timetables
  * Governed & published by the Central Examination Authority in Admin Portal:
- * - ATSWA (March & September): 2 days — second-to-last Tuesday & Wednesday of diet month
- * - ICAN (May & November): 3 days — first Tuesday, Wednesday & Thursday of diet month (overridable when ICAN adjusts schedule)
+ * - ATSWA (March & September): 2 days, second-to-last Tuesday & Wednesday of diet month
+ * - ICAN (May & November): 3 days, first Tuesday, Wednesday & Thursday of diet month (overridable when ICAN adjusts schedule)
  * - Exam registration closes 1 week (7 days) prior to Day 1
  * - After final exam day, automatic 30-day countdown to result release begins (overridable if delayed)
  */
@@ -86,12 +86,12 @@ export const EXAMINATION_SESSIONS = [
       {
         dayLabel: 'Day 3 · Thursday',
         dateIndex: 2,
-        morning: 'Skills: Financial Management (FM) · Pro: Case Study (CS — Full Session)',
+        morning: 'Skills: Financial Management (FM) · Pro: Case Study (CS, Full Session)',
         afternoon: 'Skills: Public Sector Accounting & Finance (PSAF)',
       },
     ],
   }),
-  // Concluded November 2026 ICAN diet — demonstrates LIVE 30-day post-exam Result Release Countdown!
+  // Concluded November 2026 ICAN diet, demonstrates LIVE 30-day post-exam Result Release Countdown!
   buildDietSession({
     id: 'ican-nov-2026',
     programme: 'ICAN',
@@ -129,7 +129,7 @@ export const EXAMINATION_SESSIONS = [
       {
         dayLabel: 'Day 1 · Tuesday',
         dateIndex: 0,
-        morning: 'BAPS · Financial Accounting · Cost Accounting (Provisional — Central Authority)',
+        morning: 'BAPS · Financial Accounting · Cost Accounting (Provisional, Central Authority)',
         afternoon: 'Economics · Public Sector Accounting · Audit (Provisional)',
       },
       {
@@ -150,7 +150,7 @@ export const EXAMINATION_SESSIONS = [
       {
         dayLabel: 'Day 1 · Tuesday',
         dateIndex: 0,
-        morning: 'FA · FR · SBR (Provisional — Subject to Institute Timetable)',
+        morning: 'FA · FR · SBR (Provisional, Subject to Institute Timetable)',
         afternoon: 'BE · TAX · A/TAX (Provisional)',
       },
       {
@@ -248,7 +248,7 @@ export const ICAN_LEVELS = [
     code: 'FOUNDATION',
     name: 'ICAN Foundation Level',
     shortName: 'Foundation',
-    tagline: 'Entry stage to the ACA professional qualification — 4 rigorous foundational papers.',
+    tagline: 'Entry stage to the ACA professional qualification, 4 rigorous foundational papers.',
     unlockFee: 3000,
     tuitionPerCourse: 40000,
     discountRate: 0.25,
@@ -266,7 +266,7 @@ export const ICAN_LEVELS = [
     code: 'SKILLS',
     name: 'ICAN Skills Level',
     shortName: 'Skills',
-    tagline: 'Applied technical mastery across IFRS reporting, corporate finance, public sector, assurance and taxation — 6 papers.',
+    tagline: 'Applied technical mastery across IFRS reporting, corporate finance, public sector, assurance and taxation, 6 papers.',
     unlockFee: 3000,
     tuitionPerCourse: 40000,
     discountRate: 0.25,
@@ -286,7 +286,7 @@ export const ICAN_LEVELS = [
     code: 'PROFESSIONAL',
     name: 'ICAN Professional Level',
     shortName: 'Professional',
-    tagline: 'Boardroom-level advisory, group reporting, forensic assurance, tax strategy and integrated case synthesis — 5 papers.',
+    tagline: 'Boardroom-level advisory, group reporting, forensic assurance, tax strategy and integrated case synthesis, 5 papers.',
     unlockFee: 3000,
     tuitionPerCourse: 40000,
     discountRate: 0.25,
@@ -316,13 +316,13 @@ export const ICAN_PRICING_TABLE = [
 export const EXEMPTION_RULES = [
   {
     id: 'bsc_hnd_accounting_mcati',
-    label: 'B.Sc. / HND Accounting — ICAN-Accredited Institution with MCATI Agreement',
+    label: 'B.Sc. / HND Accounting: ICAN-Accredited Institution with MCATI Agreement',
     startingLevel: 'ICAN Professional Level',
     estimatedDuration: '~6 months – 1 year (without carryovers)',
     exemptedCodes: ['CBL', 'BE', 'MA', 'FA', 'FR', 'FM', 'PSAF', 'AAF', 'TAX', 'PM'],
     atswaExemptedLevels: [],
     guidance:
-      'Accounting graduates from an ICAN-accredited institution with an active Mutual Cooperation Agreement with Tertiary Institutions (MCATI) start directly from the ICAN Professional Level — exempted from all Foundation and Skills Level papers, subject to graduation-year verification.',
+      'Accounting graduates from an ICAN-accredited institution with an active Mutual Cooperation Agreement with Tertiary Institutions (MCATI) start directly from the ICAN Professional Level, exempted from all Foundation and Skills Level papers, subject to graduation-year verification.',
     conditions: [
       'Confirm your school appears on the official ICAN MCATI Institutions List (applies strictly to Accounting graduates).',
       'Active MCATI status must cover your exact graduation cohort/session.',
@@ -332,13 +332,13 @@ export const EXEMPTION_RULES = [
   },
   {
     id: 'bsc_hnd_accounting_accredited',
-    label: 'B.Sc. / HND Accounting — ICAN-Accredited Institution (Non-MCATI)',
+    label: 'B.Sc. / HND Accounting: ICAN-Accredited Institution (Non-MCATI)',
     startingLevel: 'ICAN Skills Level',
     estimatedDuration: '~1 year (without carryovers)',
     exemptedCodes: ['CBL', 'BE', 'MA', 'FA', 'AAF'],
     atswaExemptedLevels: [],
     guidance:
-      'Accounting graduates from an ICAN-accredited university or polytechnic start from the ICAN Skills Level — exempted from all 4 Foundation Level courses and Audit, Assurance & Forensics (AAF). You clear the remaining Skills papers before advancing to Professional Level.',
+      'Accounting graduates from an ICAN-accredited university or polytechnic start from the ICAN Skills Level, exempted from all 4 Foundation Level courses and Audit, Assurance & Forensics (AAF). You clear the remaining Skills papers before advancing to Professional Level.',
     conditions: [
       'Confirm your institution appears on the official ICAN Accredited Institutions PDF (applies to Accounting graduates).',
       'Accreditation status must be valid for your year of graduation.',
@@ -348,13 +348,13 @@ export const EXEMPTION_RULES = [
   },
   {
     id: 'bsc_hnd_accounting_unaccredited',
-    label: 'B.Sc. / HND Accounting — Non-Accredited Institution',
+    label: 'B.Sc. / HND Accounting: Non-Accredited Institution',
     startingLevel: 'ICAN Foundation Level (Usually Management Accounting Only)',
     estimatedDuration: '~1.5 years (without carryovers)',
     exemptedCodes: ['CBL', 'BE', 'FA'],
     atswaExemptedLevels: [],
     guidance:
-      'Accounting graduates from a non-accredited institution commence from the ICAN Foundation Level — typically writing Management Accounting (MA) only at Foundation before advancing to Skills and Professional Levels, subject to official ICAN transcript verification.',
+      'Accounting graduates from a non-accredited institution commence from the ICAN Foundation Level, typically writing Management Accounting (MA) only at Foundation before advancing to Skills and Professional Levels, subject to official ICAN transcript verification.',
     conditions: [
       'Official academic transcript evaluation by ICAN confirms exact Foundation paper exemptions.',
       'Must clear Foundation stage completely before progressing to Skills Level.',
@@ -410,7 +410,7 @@ export const EXEMPTION_RULES = [
     exemptedCodes: [],
     atswaExemptedLevels: [],
     guidance:
-      'Graduates from any non-accounting discipline (Sciences, Engineering, Arts, Social Sciences, Tech, Law, etc.) are fully eligible to enrol without starting from ATSWA — commencing directly at ICAN Foundation Level (MA, FA, CBL, BE) and progressing through Skills and Professional.',
+      'Graduates from any non-accounting discipline (Sciences, Engineering, Arts, Social Sciences, Tech, Law, etc.) are fully eligible to enrol without starting from ATSWA, commencing directly at ICAN Foundation Level (MA, FA, CBL, BE) and progressing through Skills and Professional.',
     conditions: [
       'Recognised bachelor’s degree or HND certificate from an approved institution.',
       'Complete Student Registration, Annual Subscription & one-time Development Levy before Exam Registration.',
@@ -419,12 +419,12 @@ export const EXEMPTION_RULES = [
   {
     id: 'nd_accounting',
     label: 'ND Accounting (ATSWA Undergraduate Entry Route)',
-    startingLevel: 'ATSWA — ATS 3 (Exempted from ATS 1 & ATS 2)',
+    startingLevel: 'ATSWA ATS 3 (Exempted from ATS 1 & ATS 2)',
     estimatedDuration: '~1.5 – 2 years to full ACA (ATS 3 → AAT → Skills → Professional)',
     exemptedCodes: [],
     atswaExemptedLevels: ['ATS 1', 'ATS 2'],
     guidance:
-      'ND Accounting holders start directly from ATS 3 (exempted from ATS 1 and ATS 2 — writing Cost Accounting, Taxation, Auditing and Management). Upon passing ATS 3 and earning the AAT certificate, you progress directly into ICAN Skills and Professional Levels.',
+      'ND Accounting holders start directly from ATS 3 (exempted from ATS 1 and ATS 2: writing Cost Accounting, Taxation, Auditing and Management). Upon passing ATS 3 and earning the AAT certificate, you progress directly into ICAN Skills and Professional Levels.',
     conditions: [
       'Recognised NBTE-accredited National Diploma (ND) in Accounting plus 5 O’Level credits incl. English & Mathematics.',
       'Apply for ATS 1 & ATS 2 exemption during ATSWA registration before sitting ATS 3 (March or September diet).',
@@ -433,7 +433,7 @@ export const EXEMPTION_RULES = [
   {
     id: 'nd_banking_finance',
     label: 'ND Banking & Finance (ATSWA Undergraduate Entry Route)',
-    startingLevel: 'ATSWA — ATS 2 (Exempted from ATS 1)',
+    startingLevel: 'ATSWA ATS 2 (Exempted from ATS 1)',
     estimatedDuration: '~2 years to full ACA (ATS 2 → ATS 3 → AAT → Skills → Professional)',
     exemptedCodes: [],
     atswaExemptedLevels: ['ATS 1'],
@@ -447,7 +447,7 @@ export const EXEMPTION_RULES = [
   {
     id: 'olevel_or_nd_non_accounting',
     label: "O'Level (WAEC/NECO/NABTEB) or ND Non-Accounting (ATSWA Route)",
-    startingLevel: 'ATSWA — ATS 1',
+    startingLevel: 'ATSWA ATS 1',
     estimatedDuration: '~2.5 years full ATSWA-to-ACA route (without carryovers)',
     exemptedCodes: [],
     atswaExemptedLevels: [],
@@ -466,7 +466,7 @@ export const ATSWA_ENTRY_PATHWAYS = [
     id: 'entry-ats1',
     qualification: "O'Level Result or ND (Non-Accounting)",
     startAt: 'Start from ATS 1',
-    exemptions: 'No exemption — complete ATS 1 → ATS 2 → ATS 3',
+    exemptions: 'No exemption; complete ATS 1 → ATS 2 → ATS 3',
     nextStep: 'Earn AAT certificate → progress to ICAN Skills & Professional (~2.5 yrs total)',
   },
   {
@@ -490,7 +490,7 @@ export const GRADUATE_ENTRY_PATHWAYS = [
     id: 'grad-non-acct',
     qualification: 'Graduate (Non-Accounting Discipline)',
     startAt: 'Foundation Level',
-    exemptions: 'Direct graduate entry — no ATSWA required (subject exemptions where applicable)',
+    exemptions: 'Direct graduate entry; no ATSWA required (subject exemptions where applicable)',
     duration: '~1.5 years (without carryovers)',
   },
   {
@@ -511,7 +511,7 @@ export const GRADUATE_ENTRY_PATHWAYS = [
     id: 'grad-mcati',
     qualification: 'B.Sc. / HND Accounting (MCATI Partner Institution)',
     startAt: 'Professional Level',
-    exemptions: 'Exempted from Foundation & Skills — starts directly at final stage',
+    exemptions: 'Exempted from Foundation & Skills; starts directly at final stage',
     duration: '~6 months – 1 year (without carryovers)',
   },
 ];
@@ -601,7 +601,7 @@ export const ICAN_CANDIDATE_FAQS = [
     q: 'What are the ways to start my ICAN journey?',
     a: 'There are two major entry routes into becoming a Chartered Accountant:',
     bullets: [
-      "a) Undergraduate / ATSWA Route: Start via ICAN’s subsidiary scheme — ATSWA (Accounting Technicians Scheme West Africa) — with just an O'Level result. Progress from ATS 1 → ATS 3, earn the AAT certificate, and advance directly to the ICAN main levels (Skills and Professional).",
+      "a) Undergraduate / ATSWA Route: Start via ICAN’s subsidiary scheme, ATSWA (Accounting Technicians Scheme West Africa), with just an O'Level result. Progress from ATS 1 → ATS 3, earn the AAT certificate, and advance directly to the ICAN main levels (Skills and Professional).",
       'b) Graduate Route: Graduates do not need to start from ATSWA. Depending on your qualification, course and institution’s accreditation status, you begin directly at Foundation Level, Skills Level or Professional Level.',
     ],
   },
@@ -610,8 +610,8 @@ export const ICAN_CANDIDATE_FAQS = [
     q: 'How many levels are there in ATSWA and ICAN?',
     a: 'Both programmes have 3 structured stages, and you must pass all courses in a level/stage before progressing to the next:',
     bullets: [
-      'ATSWA (3 Levels — 4 courses each): ATS 1 (Basic Accounting Processes & Systems, Economics, Business Law, Communication Skills) → ATS 2 (Financial Accounting, Public Sector Accounting, Quantitative Analysis, Information Technology) → ATS 3 (Cost Accounting, Taxation, Auditing, Management).',
-      'ICAN (3 Stages — 15 courses total): Foundation Level (Management Accounting, Financial Accounting, Corporate & Business Law, Business Environment) → Skills Level (Financial Reporting, Performance Management, Public Sector Accounting & Finance, Financial Management, Taxation, Audit, Assurance & Forensics) → Professional Level (Strategic Business Reporting, Strategic Financial Management, Advanced Taxation, Advanced Audit, Assurance & Forensics, Case Study).',
+      'ATSWA (3 Levels: 4 courses each): ATS 1 (Basic Accounting Processes & Systems, Economics, Business Law, Communication Skills) → ATS 2 (Financial Accounting, Public Sector Accounting, Quantitative Analysis, Information Technology) → ATS 3 (Cost Accounting, Taxation, Auditing, Management).',
+      'ICAN (3 Stages: 15 courses total): Foundation Level (Management Accounting, Financial Accounting, Corporate & Business Law, Business Environment) → Skills Level (Financial Reporting, Performance Management, Public Sector Accounting & Finance, Financial Management, Taxation, Audit, Assurance & Forensics) → Professional Level (Strategic Business Reporting, Strategic Financial Management, Advanced Taxation, Advanced Audit, Assurance & Forensics, Case Study).',
     ],
   },
   {
@@ -669,7 +669,7 @@ export const ICAN_CANDIDATE_FAQS = [
   {
     num: 9,
     q: 'How long does it take to complete the ICAN programme?',
-    a: 'Examinations hold twice every year — ATSWA in March & September (2 exam days: second-to-last Tue & Wed) and ICAN in May & November (3 exam days: first Tue, Wed & Thu). Estimated completion time without carryovers:',
+    a: 'Examinations hold twice every year: ATSWA in March & September (2 exam days: second-to-last Tue & Wed) and ICAN in May & November (3 exam days: first Tue, Wed & Thu). Estimated completion time without carryovers:',
     bullets: [
       'ATSWA Route (O’Level → AAT → ACA): ~2.5 years',
       'Graduate starting from Foundation Level: ~1.5 years',
@@ -681,7 +681,7 @@ export const ICAN_CANDIDATE_FAQS = [
     num: 10,
     q: 'Is ICAN difficult?',
     a: 'Yes and No. ICAN is rigorously examined, but with structured preparation, consistent daily study, strong interest and discipline, it is completely achievable.',
-    tagline: '“If I can, you CAN — that’s why it’s ICAN.”',
+    tagline: '“If I can, you CAN. That’s why it’s ICAN.”',
   },
 ];
 
@@ -743,10 +743,10 @@ const ATSWA_PQ_COVER_META = {
 
 /**
  * VALENCE Store Catalogue (Admin-Editable from Admin Portal)
- * - 12 ATSWA Past Questions (PER COURSE — ₦5,500 per course, each with its own course-specific cover, 9% off 2+)
- * - 3 ATSWA Study Packs (ATS 1, ATS 2, ATS 3 — ₦9,500 per pack, automatic 5% off 2+ packs)
- * - 15 ICAN Pathfinder Past Questions (PER COURSE — ₦9,000 per course, each with its own course-specific Pathfinder cover, 6% off 2+)
- * - 15 ICAN Study Packs (PER COURSE — ₦10,000–₦15,500, each with its own Study Text cover, 7% off 2+ distinct courses)
+ * - 12 ATSWA Past Questions (PER COURSE: ₦5,500 per course, each with its own course-specific cover, 9% off 2+)
+ * - 3 ATSWA Study Packs (ATS 1, ATS 2, ATS 3: ₦9,500 per pack, automatic 5% off 2+ packs)
+ * - 15 ICAN Pathfinder Past Questions (PER COURSE: ₦9,000 per course, each with its own course-specific Pathfinder cover, 6% off 2+)
+ * - 15 ICAN Study Packs (PER COURSE: ₦10,000–₦15,500, each with its own Study Text cover, 7% off 2+ distinct courses)
  * Total: 45 individual orderable items.
  */
 export const STORE_PRODUCTS = [
@@ -755,7 +755,7 @@ export const STORE_PRODUCTS = [
     const meta = ATSWA_PQ_COVER_META[course.level] || ATSWA_PQ_COVER_META['ATS 1'];
     return {
       id: `prod-atswa-pq-${course.id}`,
-      title: `${course.title} (${course.code}) — ${course.level} Past Questions`,
+      title: `${course.title} (${course.code}) · ${course.level} Past Questions`,
       category: 'atswa_past_question',
       categoryLabel: 'ATSWA Past Questions (Per Course)',
       programme: 'ATSWA',
@@ -771,7 +771,7 @@ export const STORE_PRODUCTS = [
       description: `Official ${course.level} Insight hard-copy past questions & answers specifically for ${course.title} (${course.code}). Order this single course or combine with your other ${course.level} papers for automatic 9% off.`,
     };
   }),
-  // 3 ATSWA Study Packs (plain Study Packs — real photos uploaded later / via Admin Portal)
+  // 3 ATSWA Study Packs (plain Study Packs, real photos uploaded later / via Admin Portal)
   {
     id: 'prod-atswa-sp-1',
     title: 'ATSWA ATS 1 Study Pack',
@@ -825,7 +825,7 @@ export const STORE_PRODUCTS = [
     const slug = course.code.toLowerCase().replace('/', '');
     return {
       id: `prod-ican-pq-${slug}`,
-      title: `${course.title} (${course.code}) — Pathfinder Past Questions`,
+      title: `${course.title} (${course.code}) · Pathfinder Past Questions`,
       category: 'ican_past_question',
       categoryLabel: 'ICAN Past Questions (Per Course)',
       programme: 'ICAN',
@@ -838,7 +838,7 @@ export const STORE_PRODUCTS = [
       accentHex: '#16A34A',
       editionLabel: 'Nylon-Sealed Pathfinder · Per Course',
       discountHint: '₦9,000/course · 6% off 2+ courses',
-      description: `Nylon-sealed green ICAN Pathfinder past questions & answers (new syllabus) specifically for ${course.title} (${course.code}) — ${course.level} Level. Buy this single course or add all courses applicable to you for automatic 6% off.`,
+      description: `Nylon-sealed green ICAN Pathfinder past questions & answers (new syllabus) specifically for ${course.title} (${course.code}) (${course.level} Level). Buy this single course or add all courses applicable to you for automatic 6% off.`,
     };
   }),
   // 15 Individual Per-Course ICAN Study Packs (₦10,000–₦15,500 per course)
@@ -859,7 +859,7 @@ export const STORE_PRODUCTS = [
       accentHex: '#2563EB',
       editionLabel: 'Official ICAN Study Text',
       discountHint: '7% off 2+ distinct ICAN packs',
-      description: `Official ICAN ${course.level} Level Study Text for ${course.title} (${course.code}) — 2026 syllabus edition with full standards coverage and exam-grade questions.`,
+      description: `Official ICAN ${course.level} Level Study Text for ${course.title} (${course.code}), 2026 syllabus edition with full standards coverage and exam-grade questions.`,
     };
   }),
 ];
@@ -878,7 +878,7 @@ export const ATSWA_APP_REGISTRATION_GUIDE = [
   {
     step: '03',
     title: 'Submit Documents & Registration Details on VALENCE',
-    detail: 'Upload your documents and submit registration/document questions directly inside your VALENCE Student Portal — our academic team reviews and updates your status in-app.',
+    detail: 'Upload your documents and submit registration/document questions directly inside your VALENCE Student Portal, our academic team reviews and updates your status in-app.',
   },
   {
     step: '04',
@@ -921,7 +921,7 @@ export const VALENCE_PILLARS = [
     id: 'compete',
     code: 'VALENCE COMPETE',
     title: 'National Accounting Challenge & ₦50,000 Rewards',
-    description: 'Nigeria’s inter-school championship across all accredited universities, polytechnics and exam divisions — awarding ₦50,000 to outstanding learners after every competition closes.',
+    description: 'Nigeria’s inter-school championship across all accredited universities, polytechnics and exam divisions, awarding ₦50,000 to outstanding learners after every competition closes.',
     route: '/competitions',
     metric: '₦50,000 Cash Reward',
   },
@@ -937,7 +937,7 @@ export const VALENCE_PILLARS = [
     id: 'marketplace',
     code: 'VALENCE MARKETPLACE',
     title: 'Study Packs, Per-Course Past Questions & Library',
-    description: 'Order a single course or all applicable courses — per-course ATSWA (₦5,500) & ICAN (₦9,000) past questions, study packs with up to 9% automatic discounts, Paystack checkout, free campus delivery and in-app delivery enquiries.',
+    description: 'Order a single course or all applicable courses, per-course ATSWA (₦5,500) & ICAN (₦9,000) past questions, study packs with up to 9% automatic discounts, Paystack checkout, free campus delivery and in-app delivery enquiries.',
     route: '/store',
     metric: '45 Items · 6 Free Hubs',
   },
@@ -1199,7 +1199,7 @@ export const UPCOMING_EVENTS = [
     id: 'evt-4',
     type: '₦50,000 Prize Competition',
     programme: 'VALENCE COMPETE',
-    title: 'VALENCE National Accounting Challenge — Qualifier & ₦50,000 Reward Briefing',
+    title: 'VALENCE National Accounting Challenge: Qualifier & ₦50,000 Reward Briefing',
     date: '23 Jan 2027 · 4:00 PM WAT',
     mode: 'Live Inter-University Session',
     access: 'Verified Schools & Candidates',
@@ -1264,7 +1264,7 @@ export const ANNOUNCEMENTS_FEED = [
     verifiedBadge: 'Verified Institution Rep',
     category: 'Competition Announcements',
     audience: 'Institution & Inter-School',
-    title: 'Campus Tryouts Open for the VALENCE Challenge — ₦50,000 Merit Cash Reward!',
+    title: 'Campus Tryouts Open for the VALENCE Challenge (₦50,000 Merit Cash Reward)',
     content:
       'Calling 200L–400L Accounting and ATSWA students ready to compete in the upcoming VALENCE National Accounting Challenge. Top performers earn the ₦50,000 post-competition cash reward plus Hall of Fame recognition.',
     timestamp: '2 days ago',
@@ -1284,7 +1284,7 @@ export const TESTIMONIALS = [
   {
     id: 'test-2',
     quote:
-      'The 7-step examination working structure — interpreting the requirement, citing the IFRS principle, showing clean workings and flagging common traps — trains candidates the exact way markers grade.',
+      'The 7-step examination working structure (interpreting the requirement, citing the IFRS principle, showing clean workings and flagging common traps) trains candidates the exact way markers grade.',
     name: 'Kelechi Eze, FCA, AAT',
     role: 'Practising Chartered Accountant & VALENCE Mentor',
   },
@@ -1375,126 +1375,198 @@ export const FAQS = [
   },
   {
     q: 'Are past questions sold per course, and how do store discounts & free delivery work?',
-    a: 'Yes — past questions are priced per individual course so you can buy a single paper or every paper applicable to you: ATSWA past questions are ₦5,500 per course (automatic 9% off 2+ courses/copies) and ICAN Pathfinder past questions are ₦9,000 per course (automatic 6% off 2+ courses/copies). ATSWA study packs are ₦9,500/pack (5% off 2+), and buying 2+ different ICAN study packs — even across Foundation, Skills and Professional — unlocks an automatic 7% discount. Delivery is free to LASU, Ojo, UNILAG, YABATECH, FCE and Yaba.',
+    a: 'Yes. Past questions are priced per individual course so you can buy a single paper or every paper applicable to you: ATSWA past questions are ₦5,500 per course (automatic 9% off 2+ courses/copies) and ICAN Pathfinder past questions are ₦9,000 per course (automatic 6% off 2+ courses/copies). ATSWA study packs are ₦9,500/pack (5% off 2+), and buying 2+ different ICAN study packs (even across Foundation, Skills and Professional) unlocks an automatic 7% discount. Delivery is free to LASU, Ojo, UNILAG, YABATECH, FCE and Yaba.',
   },
   {
     q: 'Who can advertise on VALENCE, and how much does it cost?',
-    a: 'Three verified categories can advertise 100% inside VALENCE at ₦10,000 per week: (1) verified PHYSICAL (in-person) accounting tuition centres, (2) accounting textbook authors promoting original books they sell, and (3) verified textbook vendors/bookshops stocking authentic accounting texts. External online tuition is never advertised — all online tuition is taken directly in-app with VALENCE-verified tutors (AAT for ATSWA; AAT + ACA for ICAN).',
+    a: 'Three verified categories can advertise 100% inside VALENCE at ₦10,000 per week: (1) verified PHYSICAL (in-person) accounting tuition centres, (2) accounting textbook authors promoting original books they sell, and (3) verified textbook vendors/bookshops stocking authentic accounting texts. External online tuition is never advertised; all online tuition is taken directly in-app with VALENCE-verified tutors (AAT for ATSWA; AAT + ACA for ICAN).',
   },
 ];
 
 /**
- * Admin-Editable Motivational & Study-Inspiration Quote Bank
- * Pops up randomly across VALENCE to encourage ATSWA, ICAN & university learners.
+ * Admin-Editable General Life & Wisdom Quote Bank
+ * Pops up randomly across VALENCE to encourage, ground and inspire users in life and growth.
  */
 export const MOTIVATIONAL_QUOTES = [
   {
     id: 'mq-1',
-    tag: 'VALENCE MOTTO',
-    quote: 'Vita sine litteris mors est — every quiet hour you invest in mastering your syllabus builds a career no one can take from you.',
-    author: 'Seneca · VALENCE Ethos',
-  },
-  {
-    id: 'mq-2',
-    tag: 'FUTURE CHARTERED ACCOUNTANT',
-    quote: 'Every FCA and ACA you admire once stared at a tough ledger page and chose to solve one more question instead of quitting.',
-    author: 'VALENCE Study Spark',
-  },
-  {
-    id: 'mq-3',
-    tag: 'CONSISTENCY WINS',
-    quote: 'Success is the sum of small efforts, repeated day in and day out. Two focused hours today beat ten panicked hours before exam week.',
-    author: 'Robert Collier',
-  },
-  {
-    id: 'mq-4',
-    tag: 'EXAM MASTERY',
-    quote: 'Don’t just read solutions — pick up your pen, set a timer, show every working clearly, and earn every single mark on the marking scheme.',
-    author: 'VALENCE Exam Coach',
-  },
-  {
-    id: 'mq-5',
-    tag: 'BALANCE & DISCIPLINE',
-    quote: 'Just like double-entry bookkeeping, every debit of discipline and sacrifice you post today has a matching credit of distinction waiting.',
-    author: 'VALENCE Study Spark',
-  },
-  {
-    id: 'mq-6',
-    tag: 'RESILIENCE',
-    quote: 'It always seems impossible until it is done. Keep turning the pages — your examination breakthrough is closer than you think.',
-    author: 'Nelson Mandela',
-  },
-  {
-    id: 'mq-7',
-    tag: 'DAILY MOMENTUM',
+    tag: 'TIMELESS WISDOM',
     quote: 'We are what we repeatedly do. Excellence, then, is not an act, but a habit.',
     author: 'Aristotle',
   },
   {
+    id: 'mq-2',
+    tag: 'RESILIENCE',
+    quote: 'It always seems impossible until it is done.',
+    author: 'Nelson Mandela',
+  },
+  {
+    id: 'mq-3',
+    tag: 'SELF-MASTERY',
+    quote: 'You have power over your mind, not outside events. Realize this, and you will find strength.',
+    author: 'Marcus Aurelius',
+  },
+  {
+    id: 'mq-4',
+    tag: 'LIFE & PURPOSE',
+    quote: 'Luck is what happens when preparation meets opportunity.',
+    author: 'Seneca',
+  },
+  {
+    id: 'mq-5',
+    tag: 'AFRICAN WISDOM',
+    quote: 'However long the night, the dawn will break.',
+    author: 'African Proverb',
+  },
+  {
+    id: 'mq-6',
+    tag: 'STEADY PROGRESS',
+    quote: 'It does not matter how slowly you go as long as you do not stop.',
+    author: 'Confucius',
+  },
+  {
+    id: 'mq-7',
+    tag: 'COURAGE',
+    quote: 'Do what you can, with what you have, where you are.',
+    author: 'Theodore Roosevelt',
+  },
+  {
     id: 'mq-8',
-    tag: 'PAST QUESTION POWER',
-    quote: 'The candidate who solves five diets of past questions under timed conditions walks into the examination hall as an old friend of the paper.',
-    author: 'VALENCE Exam Coach',
+    tag: 'BEGIN TODAY',
+    quote: 'A journey of a thousand miles begins with a single step.',
+    author: 'Lao Tzu',
   },
   {
     id: 'mq-9',
-    tag: 'INVEST IN YOURSELF',
-    quote: 'An investment in knowledge always pays the best interest — compound your understanding by one syllabus topic every single day.',
-    author: 'Benjamin Franklin',
+    tag: 'CHARACTER',
+    quote: 'Success is to be measured not so much by the position one has reached in life as by the obstacles overcome while trying to succeed.',
+    author: 'Booker T. Washington',
   },
   {
     id: 'mq-10',
-    tag: 'COURAGE TO KEEP GOING',
-    quote: 'A difficult standard or tax computation is not a stop sign; it is proof that your mind is stretching to chartered level.',
-    author: 'VALENCE Study Spark',
+    tag: 'INNER STRENGTH',
+    quote: 'First say to yourself what you would be, and then do what you have to do.',
+    author: 'Epictetus',
   },
   {
     id: 'mq-11',
-    tag: 'DEEP FOCUS',
-    quote: 'The secret of getting ahead is getting started. Break that heavy syllabus down into one calm, focused practice question right now.',
-    author: 'Mark Twain',
+    tag: 'GROWTH',
+    quote: 'Do the best you can until you know better. Then when you know better, do better.',
+    author: 'Maya Angelou',
   },
   {
     id: 'mq-12',
-    tag: 'ACCURACY & INTEGRITY',
-    quote: 'Accuracy earns the pass mark; integrity builds the reputation. Train both in every assignment and mock paper you write.',
-    author: 'VALENCE Ethos',
+    tag: 'PERSPECTIVE',
+    quote: 'In the middle of every difficulty lies opportunity.',
+    author: 'Albert Einstein',
   },
   {
     id: 'mq-13',
-    tag: 'FIRST-SITTING MINDSET',
-    quote: 'Believe you can clear every paper on this diet, then back that belief with a disciplined timetable and relentless past-question drills.',
-    author: 'VALENCE Study Spark',
+    tag: 'DAILY EFFORT',
+    quote: 'Success is the sum of small efforts, repeated day in and day out.',
+    author: 'Robert Collier',
   },
   {
     id: 'mq-14',
-    tag: 'GROWTH OVER PERFECTION',
-    quote: 'Getting a mock question wrong today is a gift — you just caught a mistake in practice so it never costs you marks in the exam hall.',
-    author: 'VALENCE Exam Coach',
+    tag: 'VISION',
+    quote: 'The future belongs to those who believe in the beauty of their dreams.',
+    author: 'Eleanor Roosevelt',
   },
   {
     id: 'mq-15',
-    tag: 'LONG-TERM VISION',
-    quote: 'The future belongs to those who prepare for it today. Your letters — AAT, ACA, B.Sc., FCA — are being written right now.',
-    author: 'Malcolm X',
+    tag: 'COMMUNITY & LIFE',
+    quote: 'If you want to go fast, go alone. If you want to go far, go together.',
+    author: 'African Proverb',
   },
   {
     id: 'mq-16',
-    tag: 'UNSTOPPABLE GRIT',
-    quote: 'Discipline is choosing between what you want now and the pride you will feel on result release day.',
-    author: 'VALENCE Study Spark',
+    tag: 'PREPARATION',
+    quote: 'The best time to plant a tree was twenty years ago. The second best time is now.',
+    author: 'Proverb',
   },
   {
     id: 'mq-17',
-    tag: 'SMART PREPARATION',
-    quote: 'Give me six hours to chop down a tree and I will spend the first four sharpening the axe. Master principles, not shortcuts.',
-    author: 'Abraham Lincoln',
+    tag: 'CLARITY',
+    quote: 'He who has a why to live can bear almost any how.',
+    author: 'Friedrich Nietzsche',
   },
   {
     id: 'mq-18',
-    tag: 'YOU BELONG HERE',
-    quote: 'No syllabus paper was written to defeat a prepared student. Stay calm, read every requirement twice, and trust your preparation.',
-    author: 'VALENCE Exam Coach',
+    tag: 'MOMENTUM',
+    quote: 'The secret of getting ahead is getting started.',
+    author: 'Mark Twain',
+  },
+  {
+    id: 'mq-19',
+    tag: 'INTEGRITY',
+    quote: 'Waste no more time arguing about what a good person should be. Be one.',
+    author: 'Marcus Aurelius',
+  },
+  {
+    id: 'mq-20',
+    tag: 'PATIENCE',
+    quote: 'Rivers know this: there is no hurry. We shall get there some day.',
+    author: 'A. A. Milne',
+  },
+  {
+    id: 'mq-21',
+    tag: 'DETERMINATION',
+    quote: 'One child, one teacher, one book and one pen can change the world.',
+    author: 'Malala Yousafzai',
+  },
+  {
+    id: 'mq-22',
+    tag: 'FREEDOM OF CHOICE',
+    quote: 'When we are no longer able to change a situation, we are challenged to change ourselves.',
+    author: 'Viktor E. Frankl',
+  },
+  {
+    id: 'mq-23',
+    tag: 'HUMILITY & WISDOM',
+    quote: 'Knowing others is intelligence; knowing yourself is true wisdom. Mastering others is strength; mastering yourself is true power.',
+    author: 'Lao Tzu',
+  },
+  {
+    id: 'mq-24',
+    tag: 'PERSEVERANCE',
+    quote: 'Smooth seas do not make skillful sailors.',
+    author: 'African Proverb',
+  },
+  {
+    id: 'mq-25',
+    tag: 'ACTION',
+    quote: 'Well done is better than well said.',
+    author: 'Benjamin Franklin',
+  },
+  {
+    id: 'mq-26',
+    tag: 'SELF-BELIEF',
+    quote: 'What lies behind us and what lies before us are tiny matters compared to what lies within us.',
+    author: 'Ralph Waldo Emerson',
+  },
+  {
+    id: 'mq-27',
+    tag: 'DISCIPLINE',
+    quote: 'We must all suffer one of two things: the pain of discipline or the pain of regret.',
+    author: 'Jim Rohn',
+  },
+  {
+    id: 'mq-28',
+    tag: 'PURPOSE',
+    quote: 'Act as if what you do makes a difference. It does.',
+    author: 'William James',
+  },
+  {
+    id: 'mq-29',
+    tag: 'SHARPEN YOUR CRAFT',
+    quote: 'Give me six hours to chop down a tree and I will spend the first four sharpening the axe.',
+    author: 'Abraham Lincoln',
+  },
+  {
+    id: 'mq-30',
+    tag: 'HOPE & COURAGE',
+    quote: 'Do not judge me by my successes; judge me by how many times I fell down and got back up again.',
+    author: 'Nelson Mandela',
   },
 ];
 
@@ -1518,7 +1590,7 @@ export const COMPETITION_DIVISIONS = [
   { id: 'div-ican-fnd', name: 'ICAN Foundation Challenge', level: 'CBL · BE · MA · FA', reward: '₦50,000 Merit Reward', format: 'Section A: 30m compulsory · Section B: 2 of 3 (20m each = 40m) · Section C: 2 of 4 (15m each = 30m) = 100m' },
   { id: 'div-ican-skl', name: 'ICAN Skills Challenge', level: 'FR · FM · PSAF · AAF · TAX · PM', reward: '₦50,000 Merit Reward', format: 'Section A: 30m compulsory · Section B: 2 of 3 (20m each = 40m) · Section C: 2 of 4 (15m each = 30m) = 100m' },
   { id: 'div-ican-pro', name: 'ICAN Professional Challenge', level: 'SBR · CS · AAAF · A/TAX · SFM', reward: '₦50,000 Merit Reward', format: 'Section A: 30m compulsory · Section B: 2 of 3 (20m each = 40m) · Section C: 2 of 4 (15m each = 30m) = 100m' },
-  { id: 'div-uni', name: 'University Accounting Challenge', level: `${UNIVERSITY_COUNTS.total}+ Nigerian Universities & Polytechnics`, reward: '₦50,000 Merit Reward', format: 'Inter-school individual & team tournament across 5 national rounds — syllabus-reviewed before publication' },
+  { id: 'div-uni', name: 'University Accounting Challenge', level: `${UNIVERSITY_COUNTS.total}+ Nigerian Universities & Polytechnics`, reward: '₦50,000 Merit Reward', format: 'Inter-school individual & team tournament across 5 national rounds, syllabus-reviewed before publication' },
   { id: 'div-pro', name: 'Professional Accounting Challenge', level: 'ACA · FCA · ACCA · CPA (Optional Division)', reward: '₦50,000 Merit Reward', format: 'Executive IFRS, tax strategy, forensic assurance & boardroom advisory showcase' },
 ];
 
@@ -1541,17 +1613,17 @@ export const COMPETITION_STRUCTURES = {
     totalMarks: 100,
     sections: [
       {
-        label: 'Section A — Multiple Choice Questions (Compulsory)',
+        label: 'Section A: Multiple Choice Questions (Compulsory)',
         detail: '30 objective questions × 1 mark each (auto-graded on submission)',
         marks: 30,
       },
       {
-        label: 'Section B — Short-Answer Questions (Compulsory)',
+        label: 'Section B: Short-Answer Questions (Compulsory)',
         detail: '20 short-answer items × 1 mark each (structured precision check)',
         marks: 20,
       },
       {
-        label: 'Section C — Theory & Practical Workings',
+        label: 'Section C: Theory & Practical Workings',
         detail: 'Answer any 4 out of 6 questions × 12.5 marks each (human rubric grading)',
         marks: 50,
       },
@@ -1562,17 +1634,17 @@ export const COMPETITION_STRUCTURES = {
     totalMarks: 100,
     sections: [
       {
-        label: 'Section A — Compulsory Core Question(s)',
+        label: 'Section A: Compulsory Core Question(s)',
         detail: 'Mandatory foundational / scenario calculation & reporting section',
         marks: 30,
       },
       {
-        label: 'Section B — Applied Technical Scenarios',
+        label: 'Section B: Applied Technical Scenarios',
         detail: 'Answer any 2 out of 3 questions × 20 marks each (rubric graded)',
         marks: 40,
       },
       {
-        label: 'Section C — Analytical & Advisory Questions',
+        label: 'Section C: Analytical & Advisory Questions',
         detail: 'Answer any 2 out of 4 questions × 15 marks each (rubric graded)',
         marks: 30,
       },

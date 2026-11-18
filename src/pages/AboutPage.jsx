@@ -45,10 +45,10 @@ export default function AboutPage() {
               Academic Excellence, Professional Growth & Institutional Neutrality.
             </h1>
             <p className="font-display text-lg italic text-[#16C784]">
-              “{settings.tagline}” — {settings.taglineTranslation}
+              “{settings.tagline}” ({settings.taglineTranslation})
             </p>
             <p className="text-sm sm:text-base leading-relaxed text-[#9AA4B2] max-w-3xl">
-              <strong className="text-white">VALENCE</strong> is Nigeria’s complete accounting education, professional networking, inter-school competition, marketplace, tuition-centre directory and career development ecosystem. Membership is free for students, professionals and learners — with a one-time ₦3,000 registration required only when applying for tuition and viewing personalised cost implications, and a verified <strong className="text-[#16C784]">₦50,000 cash reward</strong> celebrating top learners after every competition closes.
+              <strong className="text-white">VALENCE</strong> is Nigeria’s complete accounting education, professional networking, inter-school competition, marketplace, tuition-centre directory and career development ecosystem. Membership is free for students, professionals and learners, with a one-time ₦3,000 registration required only when applying for tuition and viewing personalised cost implications, and a verified <strong className="text-[#16C784]">₦50,000 cash reward</strong> celebrating top learners after every competition closes.
             </p>
           </div>
 
@@ -142,7 +142,7 @@ export default function AboutPage() {
               <BadgeCheck className="h-5 w-5" />
             </div>
             <h3 className="font-display text-2xl font-bold text-white">
-              Earned Verification — Never Automatic
+              Earned Verification, Never Automatic
             </h3>
             <p className="text-sm text-[#9AA4B2] leading-relaxed">
               Uploading a certificate or business profile never automatically awards verification. Every badge on VALENCE follows manual administrative authentication:

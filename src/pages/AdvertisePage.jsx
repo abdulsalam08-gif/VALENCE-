@@ -113,7 +113,7 @@ export default function AdvertisePage() {
 
   return (
     <div className="divide-y divide-white/[0.06]">
-      {/* Hero — Physical Tuition Centres, Textbook Authors & Textbook Vendors @ ₦10,000/Week */}
+      {/* Hero, Physical Tuition Centres, Textbook Authors & Textbook Vendors @ ₦10,000/Week */}
       <section className="bg-grid-fintech py-14 sm:py-18">
         <div className="v-container grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-7 space-y-5">
@@ -126,7 +126,7 @@ export default function AdvertisePage() {
               <span className="text-[#16C784]">{formatNaira(weeklyRate)}/Week</span>
             </h1>
             <p className="text-sm sm:text-base text-[#9AA4B2]">
-              Reach ATSWA, ICAN and university accounting students nationwide — open to verified{' '}
+              Reach ATSWA, ICAN and university accounting students nationwide, open to verified{' '}
               <strong className="text-white">physical (in-person) tuition centres</strong>,{' '}
               <strong className="text-white">accounting textbook authors</strong>, and{' '}
               <strong className="text-white">verified textbook vendors</strong>. External online tuition is never advertised (all online tuition is taken directly in-app with VALENCE-verified tutors).
@@ -359,7 +359,7 @@ export default function AdvertisePage() {
                   advertiserType === 'physical_centre'
                     ? 'Street number, building, bus-stop / landmark, LGA & State'
                     : advertiserType === 'textbook_author'
-                    ? 'e.g. Mastering IFRS Group Accounts (4th Ed., 2026) — ₦14,000'
+                    ? 'e.g. Mastering IFRS Group Accounts (4th Ed., 2026) (₦14,000)'
                     : 'e.g. 24 Herbert Macaulay Way, Yaba, Lagos · Nationwide courier dispatch'
                 }
                 className="v-input text-xs"
@@ -474,10 +474,10 @@ export default function AdvertisePage() {
                 onChange={(e) => setCampaign({ ...campaign, headline: e.target.value })}
                 placeholder={
                   advertiserType === 'physical_centre'
-                    ? 'e.g. May 2027 ICAN Skills & Pro Physical Weekend Classes — Yaba'
+                    ? 'e.g. May 2027 ICAN Skills & Pro Physical Weekend Classes, Yaba'
                     : advertiserType === 'textbook_author'
                     ? 'e.g. New 2026 Edition: Nigerian Taxation & Finance Act Worked Manual'
-                    : 'e.g. Original ICAN, ATSWA & University Accounting Textbooks — Fast Delivery'
+                    : 'e.g. Original ICAN, ATSWA & University Accounting Textbooks · Fast Delivery'
                 }
                 className="v-input text-xs"
               />
@@ -553,7 +553,7 @@ export default function AdvertisePage() {
               <ul className="space-y-2.5 text-xs text-[#9AA4B2]">
                 {[
                   'Open to 3 verified groups: (1) Physical Tuition Centres, (2) Accounting Textbook Authors, and (3) Verified Textbook Vendors / Bookshops.',
-                  'External online tuition is never advertised — all online tuition runs strictly inside VALENCE with VALENCE-verified tutors (AAT for ATSWA; AAT + ACA for ICAN).',
+                  'External online tuition is never advertised; all online tuition runs strictly inside VALENCE with VALENCE-verified tutors (AAT for ATSWA; AAT + ACA for ICAN).',
                   'Strict anti-piracy protection: textbook authors & vendors must supply genuine, copyright-compliant editions only.',
                   `Transparent flat rate of ${formatNaira(weeklyRate)} per week (admin-editable via the Admin Portal) paid via server-verified Paystack checkout.`,
                   '100% in-app workflow with clear Sponsored / Advertisement badges and live impressions, clicks & CTR analytics.',

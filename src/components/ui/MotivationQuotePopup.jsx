@@ -117,12 +117,12 @@ export default function MotivationQuotePopup() {
       <button
         type="button"
         onClick={handleManualOpen}
-        aria-label="Pop up a random motivational study quote"
-        title="Click for a random motivational study quote"
+        aria-label="Show a random life and wisdom quote"
+        title="Click for a random life and wisdom quote"
         className="fixed bottom-20 lg:bottom-6 left-4 sm:left-6 z-40 inline-flex items-center gap-1.5 rounded-full bg-[#11161C]/95 backdrop-blur-xl border border-[#16C784]/35 hover:border-[#16C784] px-3 py-2 text-[11px] font-display font-bold text-[#F4F6F9] shadow-xl hover:-translate-y-0.5 transition-all"
       >
         <Sparkles className="h-3.5 w-3.5 text-[#16C784]" />
-        <span className="hidden sm:inline">Inspire Me</span>
+        <span className="hidden sm:inline">Daily Wisdom</span>
       </button>
     );
   }
@@ -179,7 +179,7 @@ export default function MotivationQuotePopup() {
       </blockquote>
 
       <div className="mt-2.5 flex items-center justify-between gap-2 text-[10.5px]">
-        <span className="text-[#9AA4B2] italic">— {current.author}</span>
+        <span className="text-[#9AA4B2] italic">{current.author}</span>
         <button
           type="button"
           onClick={pickNextRandom}

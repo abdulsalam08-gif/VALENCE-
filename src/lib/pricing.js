@@ -197,7 +197,7 @@ export function calculateStoreCart(cartItems = [], deliveryZone = null, discount
 }
 
 /**
- * ICAN Exemption Guidance Evaluator (Advisory — ICAN holds final authority)
+ * ICAN Exemption Guidance Evaluator (Advisory: ICAN holds final authority)
  */
 export function evaluateIcanExemptions(input, allIcanCourses, exemptionRules) {
   const matchedRule =
@@ -234,7 +234,7 @@ export function evaluateIcanExemptions(input, allIcanCourses, exemptionRules) {
         ? ['Awaiting graduation/NYSC: formal statement of result and official transcript are required before ICAN grants final exemption approval.']
         : []),
       ...(input.supportingDocNote
-        ? [`Supporting document noted: "${input.supportingDocNote}" — ensure certified copies match ICAN portal submission specifications.`]
+        ? [`Supporting document noted: "${input.supportingDocNote}", ensure certified copies match ICAN portal submission specifications.`]
         : []),
     ],
     guidance: matchedRule.guidance,
@@ -242,7 +242,7 @@ export function evaluateIcanExemptions(input, allIcanCourses, exemptionRules) {
       'Check if your school is on ICAN’s official Accredited Institutions PDF or MCATI List PDF (applicable to Accounting graduates).',
       'Confirm your official exemption status on icanig.org/ican (Students → Exemptions → Professional → Professional Exemption Guide).',
       'Complete Student Registration, Annual Subscription & one-time Development Levy, then process confirmed exemptions before Exam Registration (closes 1 week before Exam Day 1).',
-      'Apply for VALENCE tuition on your confirmed remaining papers — VALENCE never automatically removes a course from enrolment based on an estimated exemption.',
+      'Apply for VALENCE tuition on your confirmed remaining papers. VALENCE never automatically removes a course from enrolment based on an estimated exemption.',
     ],
     disclaimer:
       'Important Advisory Notice: This output is an educational guidance estimate on VALENCE. The Institute of Chartered Accountants of Nigeria (ICAN) holds sole authority to approve, modify or decline exemptions.',
@@ -250,7 +250,7 @@ export function evaluateIcanExemptions(input, allIcanCourses, exemptionRules) {
 }
 
 /**
- * VALENCE ADVERTISE — Weekly Tuition Centre Advertisement Rate Calculator
+ * VALENCE ADVERTISE: Weekly Tuition Centre Advertisement Rate Calculator
  * Default official rate: ₦10,000 per week (admin-editable from the Admin Portal).
  * All campaign applications, approvals, creative management & Paystack payments run in-app.
  */

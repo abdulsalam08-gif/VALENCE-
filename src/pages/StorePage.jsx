@@ -189,7 +189,7 @@ export default function StorePage() {
               </h1>
               <p className="text-xs sm:text-sm text-[#9AA4B2]">
                 Order <strong className="text-white">just one individual course</strong> or{' '}
-                <strong className="text-white">every course applicable to you</strong> — multi-course discounts trigger automatically at checkout, and all study material & delivery enquiries are handled right here on the app.
+                <strong className="text-white">every course applicable to you</strong>. Multi-course discounts trigger automatically at checkout, and all study material & delivery enquiries are handled right here on the app.
               </p>
             </div>
 
@@ -319,7 +319,7 @@ export default function StorePage() {
                 <div className="flex flex-wrap items-center justify-between gap-2 text-[11px]">
                   <span className="font-semibold text-white inline-flex items-center gap-1.5">
                     <Layers className="h-3.5 w-3.5 text-[#16C784]" />
-                    Past Questions — Pick Individual Courses Below, or Add a Full Level Set:
+                    Past Questions: Pick Individual Courses Below, or Add a Full Level Set:
                   </span>
                   <span className="text-[#9AA4B2]">
                     Remove any exempted course right inside the cart
@@ -395,7 +395,7 @@ export default function StorePage() {
                           >
                             <img
                               src={prod.imageUrl}
-                              alt={`${prod.title} — ${prod.colourBadge}`}
+                              alt={`${prod.title}, ${prod.colourBadge}`}
                               loading="lazy"
                               className="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-105"
                             />
@@ -615,7 +615,7 @@ export default function StorePage() {
               >
                 {deliveryZones.map((z) => (
                   <option key={z.id} value={z.id}>
-                    {z.name} — {z.isFree ? 'FREE (₦0)' : formatNaira(z.fee)}
+                    {z.name}: {z.isFree ? 'FREE (₦0)' : formatNaira(z.fee)}
                   </option>
                 ))}
               </select>

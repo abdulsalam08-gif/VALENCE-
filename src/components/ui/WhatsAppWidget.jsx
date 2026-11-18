@@ -13,12 +13,12 @@ const ENQUIRY_CATEGORIES = [
 ];
 
 const LEVEL_OPTIONS = [
-  'ICAN — Foundation Level',
-  'ICAN — Skills Level',
-  'ICAN — Professional Level',
-  'ATSWA — ATS 1',
-  'ATSWA — ATS 2',
-  'ATSWA — ATS 3',
+  'ICAN Foundation Level',
+  'ICAN Skills Level',
+  'ICAN Professional Level',
+  'ATSWA ATS 1',
+  'ATSWA ATS 2',
+  'ATSWA ATS 3',
   'University / Polytechnic Student',
   'Chartered Accountant / Professional',
   'Not Applicable',

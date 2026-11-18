@@ -482,7 +482,7 @@ export default function HomePage() {
                 <Sparkles className="h-6 w-6 text-[#16C784] shrink-0" />
               </div>
               <p className="text-xs sm:text-sm text-[#9AA4B2]">
-                Supports ATSWA, ICAN Foundation, Skills & Professional, university accounting and financial literacy — structured the exact way professional markers award scores.
+                Supports ATSWA, ICAN Foundation, Skills & Professional, university accounting and financial literacy, structured the exact way professional markers award scores.
               </p>
               <div className="space-y-2">
                 {AI_TUTOR_STEPS.map((item) => (
@@ -586,7 +586,7 @@ export default function HomePage() {
                       onClick={() =>
                         openWhatsAppModal({
                           category: 'ICAN Official Registration Fee Assistance',
-                          level: `ICAN — ${level.shortName} Level`,
+                          level: `ICAN ${level.shortName} Level`,
                         })
                       }
                       className="v-btn-secondary text-xs py-2 px-3"
@@ -683,7 +683,7 @@ export default function HomePage() {
               Every University, Polytechnic & College in Nigeria Connected
             </h2>
             <p className="text-sm text-[#9AA4B2]">
-              Select your exact Nigerian university during registration to join campus study groups, compete for the <strong className="text-[#16C784]">₦50,000 competition reward</strong>, access practice questions, AI tutoring, ACA/FCA mentorship and internship opportunities — even if you are not yet writing ICAN or ATSWA.
+              Select your exact Nigerian university during registration to join campus study groups, compete for the <strong className="text-[#16C784]">₦50,000 competition reward</strong>, access practice questions, AI tutoring, ACA/FCA mentorship and internship opportunities, even if you are not yet writing ICAN or ATSWA.
             </p>
             <div className="flex flex-wrap gap-2">
               {tertiaryDisciplines.map((d) => (
@@ -978,10 +978,10 @@ export default function HomePage() {
                 <Badge variant="neutral">Free Delivery: LASU · Ojo · UNILAG · YABATECH · FCE · Yaba</Badge>
               </div>
               <h2 className="font-display text-2xl sm:text-4xl font-bold text-white">
-                VALENCE Marketplace — Study Packs & Per-Course Past Questions
+                VALENCE Marketplace: Study Packs & Per-Course Past Questions
               </h2>
               <p className="text-sm text-[#9AA4B2]">
-                Buy a single course or all courses applicable to you: ATSWA past questions (₦5,500/course · 9% off 2+), ICAN Pathfinder past questions (₦9,000/course · 6% off 2+), ATSWA study packs (₦9,500 · 5% off 2+), and all 15 ICAN study packs (₦10,000–₦15,500 · 7% off 2+ distinct courses) — with in-app material & delivery enquiries.
+                Buy a single course or all courses applicable to you: ATSWA past questions (₦5,500/course · 9% off 2+), ICAN Pathfinder past questions (₦9,000/course · 6% off 2+), ATSWA study packs (₦9,500 · 5% off 2+), and all 15 ICAN study packs (₦10,000–₦15,500 · 7% off 2+ distinct courses), with in-app material & delivery enquiries.
               </p>
             </div>
             <div className="flex flex-wrap gap-2.5 self-start lg:self-auto shrink-0">
@@ -1008,7 +1008,7 @@ export default function HomePage() {
                   >
                     <img
                       src={prod.imageUrl}
-                      alt={`${prod.title} — ${prod.colourBadge}`}
+                      alt={`${prod.title}, ${prod.colourBadge}`}
                       loading="lazy"
                       className="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-105"
                     />
@@ -1233,7 +1233,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 18. FAQ — PROSPECTIVE ICAN CANDIDATE GUIDE (10 FAQS) & PLATFORM FAQS */}
+      {/* 18. FAQ, PROSPECTIVE ICAN CANDIDATE GUIDE (10 FAQS) & PLATFORM FAQS */}
       <section id="faq" className="py-16 sm:py-22">
         <div className="v-container max-w-4xl space-y-8">
           <div className="text-center space-y-3">
@@ -1256,7 +1256,7 @@ export default function HomePage() {
                     : 'text-[#9AA4B2] hover:text-white'
                 }`}
               >
-                ICAN Programme — 10 Candidate FAQs
+                ICAN Programme: 10 Candidate FAQs
               </button>
               <button
                 type="button"

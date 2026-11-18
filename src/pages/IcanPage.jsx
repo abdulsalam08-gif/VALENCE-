@@ -132,15 +132,15 @@ export default function IcanPage() {
     activeTab === 'exemptions'
       ? 'ICAN Exemption & Starting-Level Guide'
       : activeTab === 'guide'
-      ? 'Prospective ICAN Candidate Guide — 10 FAQs'
+      ? 'Prospective ICAN Candidate Guide: 10 FAQs'
       : activeLevel.name;
 
   const pageSubtitle =
     activeTab === 'exemptions'
-      ? 'Find your exact entry stage across O’Level/ND (ATSWA), Non-Accredited, ICAN-Accredited and MCATI Accounting degrees — plus direct official ICAN accreditation & MCATI directory checks.'
+      ? 'Find your exact entry stage across O’Level/ND (ATSWA), Non-Accredited, ICAN-Accredited and MCATI Accounting degrees, plus direct official ICAN accreditation & MCATI directory checks.'
       : activeTab === 'guide'
       ? 'Everything prospective candidates need to know about ACA eligibility, ATSWA vs Graduate entry routes, levels, Accredited & MCATI school checks, exam registration steps and completion timelines.'
-      : `${activeLevel.tagline} Progression requires clearing all papers in a stage before advancing. Join VALENCE free — pay the one-time ₦3,000 registration only if applying for tuition and unlocking your cost implication.`;
+      : `${activeLevel.tagline} Progression requires clearing all papers in a stage before advancing. Join VALENCE free, and pay the one-time ₦3,000 registration only if applying for tuition and unlocking your cost implication.`;
 
   return (
     <div className="divide-y divide-white/[0.06]">
@@ -325,7 +325,7 @@ export default function IcanPage() {
               <div className="v-card p-6 space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <h3 className="font-display text-lg font-bold text-white">
-                    {activeDiet.label} — 3-Day Schedule & Timetable
+                    {activeDiet.label}: 3-Day Schedule & Timetable
                   </h3>
                   <Badge variant={dietLifecycle.badgeVariant}>{dietLifecycle.badgeLabel}</Badge>
                 </div>
@@ -425,7 +425,7 @@ export default function IcanPage() {
                   Official ICAN Fees & Physical Tuition Enquiries
                 </h3>
                 <p className="text-xs leading-relaxed text-[#9AA4B2]">
-                  Official ICAN student registration, annual subscription & one-time development levy, exemption processing and exam fee assistance — plus physical tuition applications — are handled via prefilled WhatsApp enquiries. Online tuition and level unlocks run strictly via Paystack.
+                  Official ICAN student registration, annual subscription & one-time development levy, exemption processing, exam fee assistance and physical tuition applications are handled via prefilled WhatsApp enquiries. Online tuition and level unlocks run strictly via Paystack.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {whatsappEnquiryButtons.map((btn) => (
@@ -435,7 +435,7 @@ export default function IcanPage() {
                       onClick={() =>
                         openWhatsAppModal({
                           category: btn.category,
-                          level: `ICAN — ${activeLevel.shortName} Level`,
+                          level: `ICAN ${activeLevel.shortName} Level`,
                         })
                       }
                       className="flex items-center justify-between rounded-xl bg-[#0B0E11] border border-white/[0.09] hover:border-[#16C784]/45 px-4 py-3 text-xs font-semibold text-[#F4F6F9] transition-colors group"
@@ -477,7 +477,7 @@ export default function IcanPage() {
                       const lc = getSessionLifecycle(s);
                       return (
                         <option key={s.id} value={s.id}>
-                          {s.label} — {lc.badgeLabel}
+                          {s.label} · {lc.badgeLabel}
                         </option>
                       );
                     })}
@@ -859,7 +859,7 @@ export default function IcanPage() {
                           </p>
                           {exResult.potentialExemptions.length === 0 ? (
                             <p className="text-xs text-[#9AA4B2]">
-                              No standard automatic exemptions — commence from Foundation Level (all 4 courses).
+                              No standard automatic exemptions; commence from Foundation Level (all 4 courses).
                             </p>
                           ) : (
                             <ul className="space-y-1 text-xs text-[#D5DBE3]">
@@ -925,7 +925,7 @@ export default function IcanPage() {
       )}
 
       {activeTab === 'guide' && (
-        /* PROSPECTIVE ICAN CANDIDATE GUIDE — 10 FREQUENTLY ASKED QUESTIONS */
+        /* PROSPECTIVE ICAN CANDIDATE GUIDE, 10 FREQUENTLY ASKED QUESTIONS */
         <section className="py-14 sm:py-18">
           <div className="v-container space-y-10">
             {/* Completion Timeline Strip */}
@@ -947,7 +947,7 @@ export default function IcanPage() {
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <h2 className="font-display text-2xl font-bold text-white">
-                    ICAN Programme — 10 Frequently Asked Questions
+                    ICAN Programme: 10 Frequently Asked Questions
                   </h2>
                   <p className="text-xs text-[#9AA4B2] mt-0.5">
                     A clear, step-by-step orientation guide for prospective ATSWA and ICAN (ACA) candidates.
@@ -1041,7 +1041,7 @@ export default function IcanPage() {
                   <Sparkles className="h-4 w-4" /> Start Your ACA Journey on VALENCE
                 </span>
                 <h3 className="font-display text-xl sm:text-2xl font-bold text-white">
-                  “If I can, you CAN — that’s why it’s ICAN.”
+                  “If I can, you CAN. That’s why it’s ICAN.”
                 </h3>
                 <p className="text-xs sm:text-sm text-[#9AA4B2]">
                   Check your exact entry level, create a free learner account, or apply for structured ATSWA & ICAN online tuition.

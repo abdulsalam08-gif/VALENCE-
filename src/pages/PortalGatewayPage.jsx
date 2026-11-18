@@ -88,8 +88,8 @@ const PORTAL_META = {
     needsInstitution: true,
     registerFields: [
       { name: 'credential', label: 'Primary Professional Designation', type: 'select', options: [
-        'ACA — Associate Chartered Accountant (ICAN)',
-        'FCA — Fellow Chartered Accountant (ICAN)',
+        'ACA: Associate Chartered Accountant (ICAN)',
+        'FCA: Fellow Chartered Accountant (ICAN)',
         'ACCA / FCCA',
         'CPA / CIMA / CITN',
         'Finance Manager / Auditor / Accounting Lecturer',
@@ -153,7 +153,7 @@ const PORTAL_META = {
     icon: ShieldCheck,
     headline: 'VALENCE Administration, Content Updates & Central Examination Authority Console',
     summary:
-      'Complete role-based Admin Portal to update all live platform information anytime — store courses/prices/discounts, delivery zones & in-app material enquiries, ATSWA document & registration guidance, ₦10,000/week ad rates & campaigns, official exam timetables/results, tuition pricing, FAQs and announcements.',
+      'Complete role-based Admin Portal to update all live platform information anytime: store courses/prices/discounts, delivery zones & in-app material enquiries, ATSWA document & registration guidance, ₦10,000/week ad rates & campaigns, official exam timetables/results, tuition pricing, FAQs and announcements.',
     capabilities: [
       'Dynamic Platform & Pricing CMS: update per-course past question/study pack prices, discounts, delivery zones, tuition fees, ₦3,000 lock, ₦10,000/week ad rate, motivational quote pop-ups & FAQs anytime',
       'In-App Operations Queues: manage ATSWA document/registration guidance, study material & delivery enquiries, and VALENCE ADVERTISE campaign approvals & billing',

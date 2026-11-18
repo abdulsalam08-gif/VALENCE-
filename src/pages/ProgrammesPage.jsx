@@ -307,7 +307,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
                     Which Level Should You Start From?
                   </h2>
                   <p className="text-xs sm:text-sm text-[#9AA4B2]">
-                    Anyone interested in accounting — Accounting or non-accounting students and graduates — can become an ACA. Clear all courses in each stage to advance.
+                    Anyone interested in accounting, whether an accounting or non-accounting student or graduate, can become an ACA. Clear all courses in each stage to advance.
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -357,7 +357,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
                 <div className="rounded-2xl bg-[#0B0E11] border border-white/[0.07] p-5 space-y-3">
                   <div className="flex items-center justify-between gap-2">
                     <p className="font-display text-sm font-bold text-white">
-                      b) Graduate Route (B.Sc. / HND — Direct ICAN)
+                      b) Graduate Route (B.Sc. / HND, Direct ICAN)
                     </p>
                     <Badge variant="neutral">~6 Mos – 1.5 Yrs</Badge>
                   </div>
@@ -384,7 +384,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
 
               <div className="flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-white/[0.06] text-xs">
                 <p className="font-display italic text-[#16C784]">
-                  “If I can, you CAN — that’s why it’s ICAN.”
+                  “If I can, you CAN. That’s why it’s ICAN.”
                 </p>
                 <Link
                   to="/programmes/ican/guide"

@@ -53,7 +53,7 @@ export default function CompetitionsPage() {
             </h1>
             <p className="text-sm sm:text-base text-[#9AA4B2]">
               Nigeria’s premier academic accounting championship uniting all{' '}
-              <strong className="text-white">{universityCounts.total} accredited Nigerian universities</strong>, polytechnics, colleges, ATSWA centres, ICAN centres and private candidates — with a guaranteed{' '}
+              <strong className="text-white">{universityCounts.total} accredited Nigerian universities</strong>, polytechnics, colleges, ATSWA centres, ICAN centres and private candidates, with a guaranteed{' '}
               <strong className="text-[#16C784]">{formatNaira(competitionReward.amount)}</strong> cash reward paid to outstanding learners after every competition concludes.
             </p>
             <div className="flex flex-wrap gap-3 pt-1">

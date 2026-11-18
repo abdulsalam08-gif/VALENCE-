@@ -159,7 +159,7 @@ export default function ConnectPage() {
                 ))}
               </div>
               <p className="text-[11px] text-[#9AA4B2] pt-1">
-                Selected space: <strong className="text-white">{selectedForum}</strong> — supports threads, nested replies, likes, bookmarks and moderation reporting.
+                Selected space: <strong className="text-white">{selectedForum}</strong>: supports threads, nested replies, likes, bookmarks and moderation reporting.
               </p>
             </div>
           </aside>

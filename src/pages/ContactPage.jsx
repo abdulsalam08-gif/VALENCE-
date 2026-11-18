@@ -134,7 +134,7 @@ export default function ContactPage() {
               </div>
               <p className="font-display text-base font-bold text-white">{settings.operatingHours}</p>
               <p className="text-xs text-[#9AA4B2]">
-                Platform: <strong className="text-white">{settings.brandName}</strong> — <em>{settings.tagline}</em>
+                Platform: <strong className="text-white">{settings.brandName}</strong> · <em>{settings.tagline}</em>
               </p>
             </div>
           </div>
@@ -193,7 +193,7 @@ export default function ContactPage() {
                   <option>Student Tuition &amp; Cost Implication Enquiry</option>
                   <option>ATSWA Document &amp; Registration Guidance (In-App)</option>
                   <option>Study Materials &amp; Delivery Enquiry (In-App)</option>
-                  <option>VALENCE ADVERTISE — ₦10,000/Week Campaign (In-App)</option>
+                  <option>VALENCE ADVERTISE: ₦10,000/Week Campaign (In-App)</option>
                   <option>Official ICAN Fee Assistance</option>
                   <option>Physical Tuition Application</option>
                   <option>Exam Timetable &amp; Result Release Notice</option>

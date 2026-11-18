@@ -4,12 +4,12 @@
  * Default Statutory Rules (all individually overridable by VALENCE Central Academic Authority
  * whenever ICAN / ATSWA adjusts official dates or announces result delays):
  *
- * 1. ATSWA Diets (March & September) — 2 Examination Days:
+ * 1. ATSWA Diets (March & September), 2 Examination Days:
  *    - Always the second-to-last Tuesday and Wednesday of March or September.
  *    - Exam registration closes exactly 7 days (1 week) before Exam Day 1.
  *    - Result release countdown runs for 30 days after the last exam day (subject to delay/override).
  *
- * 2. ICAN Diets (May & November) — 3 Examination Days:
+ * 2. ICAN Diets (May & November), 3 Examination Days:
  *    - Standard schedule: First Tuesday, Wednesday and Thursday of May or November
  *      (configurable by Central Academic Authority when the Institute adjusts dates).
  *    - Exam registration closes exactly 7 days (1 week) before Exam Day 1.
@@ -243,7 +243,7 @@ export function getSessionLifecycle(session, nowMs = Date.now()) {
     badgeLabel: 'Result Release Pending (Possible Delay)',
     badgeVariant: 'red',
     canRegister: false,
-    countdownLabel: '30-Day Standard Window Elapsed — Awaiting Official Release',
+    countdownLabel: '30-Day Standard Window Elapsed: Awaiting Official Release',
     countdownTarget: null,
     subNote:
       'Official result release is experiencing a schedule delay. Central Academic Authority will update immediately upon confirmation.',

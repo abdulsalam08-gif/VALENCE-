@@ -282,7 +282,7 @@ export default function AtswaPage() {
               <div className="v-card p-6 space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <h3 className="font-display text-lg font-bold text-white">
-                    {activeDiet.label} — 2-Day Schedule & Timetable
+                    {activeDiet.label}: 2-Day Schedule & Timetable
                   </h3>
                   <Badge variant={dietLifecycle.badgeVariant}>{dietLifecycle.badgeLabel}</Badge>
                 </div>
@@ -483,10 +483,10 @@ export default function AtswaPage() {
                         }
                         className="v-input text-xs"
                       >
-                        <option>O&apos;Level Result (WAEC / NECO / NABTEB) — ATS 1 Entry</option>
-                        <option>ND Non-Accounting — ATS 1 Entry</option>
-                        <option>ND Banking &amp; Finance — ATS 2 Entry (Exempt ATS 1)</option>
-                        <option>ND Accounting — ATS 3 Entry (Exempt ATS 1 &amp; 2)</option>
+                        <option>O&apos;Level Result (WAEC / NECO / NABTEB): ATS 1 Entry</option>
+                        <option>ND Non-Accounting: ATS 1 Entry</option>
+                        <option>ND Banking &amp; Finance: ATS 2 Entry (Exempt ATS 1)</option>
+                        <option>ND Accounting: ATS 3 Entry (Exempt ATS 1 &amp; 2)</option>
                         <option>Returning ATSWA Candidate (Passed Previous ATS Level)</option>
                       </select>
                     </div>
@@ -596,7 +596,7 @@ export default function AtswaPage() {
                       <strong>{activeLevel.code}</strong> only when you want to apply for tuition and reveal your full cost implication (tuition, automatic 25% multi-course savings, examination and annual subscription breakdown).
                     </p>
                     <ul className="space-y-1 text-[11px] text-[#9AA4B2]">
-                      <li>• Permanently unlocks {activeLevel.code} — never charged twice</li>
+                      <li>• Permanently unlocks {activeLevel.code}, never charged twice</li>
                       <li>• Credited/waived as your ATSWA tutorial registration fee</li>
                       <li>• Verified server-side via Paystack; unlocks Google Meet enrolment</li>
                     </ul>

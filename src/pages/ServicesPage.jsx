@@ -52,7 +52,7 @@ const SERVICES = [
     icon: ShoppingBag,
     title: 'Accounting Study Materials Store (In-App)',
     badge: 'Per-Course · Up to 9% Off',
-    desc: '45 catalogue items — buy a single course or all applicable courses (ATSWA PQs ₦5,500/course, ICAN PQs ₦9,000/course & study packs) with Paystack checkout and in-app material & delivery enquiries.',
+    desc: '45 catalogue items: buy a single course or all applicable courses (ATSWA PQs ₦5,500/course, ICAN PQs ₦9,000/course & study packs) with Paystack checkout and in-app material & delivery enquiries.',
     cta: 'Shop Materials',
     to: '/store',
   },
