@@ -56,25 +56,26 @@ function mapStoreProductRow(row) {
   return {
     ...base,
     id: row.id,
-    title: row.title || base.title,
+    title: base.title || row.title,
     category: row.category || base.category,
-    categoryLabel: row.category_label || base.categoryLabel,
+    categoryLabel: base.categoryLabel || row.category_label,
     programme: row.programme || base.programme,
     level: row.level_label || base.level,
     courseCode: row.course_code ?? base.courseCode ?? null,
-    courseTitle: row.course_title ?? base.courseTitle ?? null,
+    courseTitle: base.courseTitle || row.course_title || null,
     price: Number(row.price_ngn ?? base.price ?? 0),
     imageUrl: row.image_url ?? base.imageUrl ?? null,
-    colourBadge: row.colour_badge || base.colourBadge || '',
-    accentHex: row.accent_hex || base.accentHex || '#16C784',
-    editionLabel: row.edition_label || base.editionLabel || '',
-    discountHint: row.discount_hint || base.discountHint || '',
-    description: row.description || base.description || '',
+    colourBadge: base.colourBadge || row.colour_badge || '',
+    accentHex: base.accentHex || row.accent_hex || '#16C784',
+    editionLabel: base.editionLabel || row.edition_label || '',
+    discountHint: base.discountHint || row.discount_hint || '',
+    description: base.description || row.description || '',
     isStudyPack: Boolean(row.is_study_pack ?? base.isStudyPack),
     isAvailable,
     availabilityStatus: row.availability_status || (isAvailable ? 'available' : 'unavailable'),
     availabilityNote:
       row.availability_note ||
+      base.availabilityNote ||
       (isAvailable ? 'Available · Updated by Admin' : 'Currently Unavailable · Updated by Admin'),
     deliveryNote:
       row.delivery_note ||
@@ -429,7 +430,18 @@ export function PlatformProvider({ children }) {
       }
 
       if (Array.isArray(tickersRes.data) && tickersRes.data.length > 0) {
-        setLivePageTickers(mergePageTickerRows(tickersRes.data));
+        // Keep full Phase 1 route notices intact and blend any live Admin notices seamlessly
+        const merged = { ...PAGE_TICKER_NOTICES };
+        const byPage = mergePageTickerRows(tickersRes.data);
+        for (const [key, cfg] of Object.entries(byPage)) {
+          const existing = PAGE_TICKER_NOTICES[key];
+          if (!existing) {
+            merged[key] = cfg;
+          } else if (cfg.items.length >= existing.items.length) {
+            merged[key] = cfg;
+          }
+        }
+        setLivePageTickers(merged);
       }
 
       if (Array.isArray(centresRes.data)) {
@@ -539,9 +551,9 @@ export function PlatformProvider({ children }) {
           .map((f) => ({ q: f.question, a: f.answer }));
         const cand = faqsRes.data
           .filter((f) => f.faq_group === 'ican_candidate')
-          .map((f) => ({ q: f.question, a: f.answer }));
-        if (gen.length > 0) setLiveFaqs(gen);
-        if (cand.length > 0) setLiveCandidateFaqs(cand);
+          .map((f, idx) => ({ num: idx + 1, q: f.question, a: f.answer }));
+        if (gen.length >= FAQS.length) setLiveFaqs(gen);
+        if (cand.length >= ICAN_CANDIDATE_FAQS.length) setLiveCandidateFaqs(cand);
       }
 
       if (Array.isArray(instRes.data) && instRes.data.length > 0) {
