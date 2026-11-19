@@ -16,15 +16,28 @@ const StudyMaterialsPage = lazy(() => import('./pages/StudyMaterialsPage'));
 const StorePage = lazy(() => import('./pages/StorePage'));
 const ConnectPage = lazy(() => import('./pages/ConnectPage'));
 const CompetitionsPage = lazy(() => import('./pages/CompetitionsPage'));
+const CompetitionPage = lazy(() => import('./pages/CompetitionPage'));
+const CpdWebinarsPage = lazy(() => import('./pages/CpdWebinarsPage'));
+const ValenceProPage = lazy(() => import('./pages/ValenceProPage'));
 const OpportunitiesPage = lazy(() => import('./pages/OpportunitiesPage'));
 const TuitionCentresPage = lazy(() => import('./pages/TuitionCentresPage'));
 const AdvertisePage = lazy(() => import('./pages/AdvertisePage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 const LegalPage = lazy(() => import('./pages/LegalPage'));
 const PortalGatewayPage = lazy(() => import('./pages/PortalGatewayPage'));
+const AdminPortalRoute = lazy(() => import('./pages/AdminPortalRoute'));
+const AdvertiserHubRoute = lazy(() => import('./pages/AdvertiserHubRoute'));
+const PartnersDirectoryPage = lazy(() => import('./pages/PartnersDirectoryPage'));
 const OnboardingPage = lazy(() => import('./pages/OnboardingPage'));
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 const StudentPortalPage = lazy(() => import('./pages/StudentPortalPage'));
+const TutorWorkspacePage = lazy(() => import('./pages/TutorWorkspacePage'));
+const TutorApplyPage = lazy(() => import('./pages/TutorApplyPage'));
+const TutorExamPage = lazy(() => import('./pages/TutorExamPage'));
+const StudyToolsPage = lazy(() => import('./pages/StudyToolsPage'));
+const CommunityPage = lazy(() => import('./pages/CommunityPage'));
+const AnnouncementsPage = lazy(() => import('./pages/AnnouncementsPage'));
+const MessagingPage = lazy(() => import('./pages/MessagingPage'));
 
 export default function App() {
   return (
@@ -46,12 +59,18 @@ export default function App() {
                 <Route path="/store" element={<StorePage />} />
                 <Route path="/connect" element={<ConnectPage />} />
                 <Route path="/competitions" element={<CompetitionsPage />} />
+                <Route path="/competitions/:id" element={<CompetitionPage />} />
+                <Route path="/cpd-webinars" element={<CpdWebinarsPage />} />
+                <Route path="/valence-pro" element={<ValenceProPage />} />
                 <Route path="/opportunities" element={<OpportunitiesPage />} />
                 <Route path="/tuition-centres" element={<TuitionCentresPage />} />
+                <Route path="/partners" element={<PartnersDirectoryPage />} />
                 <Route path="/advertise" element={<AdvertisePage />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/legal" element={<LegalPage />} />
                 <Route path="/legal/:section" element={<LegalPage />} />
+                <Route path="/portal/admin" element={<AdminPortalRoute />} />
+                <Route path="/portal/advertiser" element={<AdvertiserHubRoute />} />
                 <Route path="/portal/:portalType" element={<PortalGatewayPage />} />
                 <Route path="/signin" element={<PortalGatewayPage />} />
                 <Route path="/onboarding" element={<OnboardingPage />} />
@@ -68,6 +87,62 @@ export default function App() {
                   element={
                     <RequireAuth>
                       <StudentPortalPage />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/portal/tutor"
+                  element={
+                    <RequireAuth>
+                      <TutorWorkspacePage />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/portal/tutor/apply"
+                  element={
+                    <RequireAuth>
+                      <TutorApplyPage />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/portal/tutor/exam"
+                  element={
+                    <RequireAuth>
+                      <TutorExamPage />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/learning"
+                  element={
+                    <RequireAuth>
+                      <StudyToolsPage />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/community"
+                  element={
+                    <RequireAuth>
+                      <CommunityPage />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/announcements"
+                  element={
+                    <RequireAuth>
+                      <AnnouncementsPage />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/messages"
+                  element={
+                    <RequireAuth>
+                      <MessagingPage />
                     </RequireAuth>
                   }
                 />

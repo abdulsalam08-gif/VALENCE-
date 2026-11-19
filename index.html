@@ -25,6 +25,31 @@
   </head>
   <body class="bg-[#0B0E11] text-[#F4F6F9] antialiased selection:bg-[#16C784]/25 selection:text-[#16C784]">
     <div id="root"></div>
+    <script>
+      (function () {
+        function showError(msg, stack) {
+          var d = document.getElementById('root');
+          if (!d) return;
+          d.innerHTML =
+            '<div style="min-height:100vh;background:#0B0F14;color:#E4E9F0;font-family:Inter,system-ui,sans-serif;padding:40px;display:flex;flex-direction:column;align-items:center;justify-content:center">' +
+            '<div style="max-width:700px;width:100%;background:#11161C;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:32px">' +
+            '<h1 style="color:#EA3943;font-size:20px;marginBottom:16px">VALENCE runtime error</h1>' +
+            '<pre style="background:#0B0F14;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:16px;font-size:13px;color:#FF6B73;overflow-x:auto;white-space:pre-wrap;word-break:break-word">' +
+            msg + (stack ? '\\n\\n' + stack : '') +
+            '</pre></div></div>';
+        }
+        window.addEventListener('error', function (e) {
+          showError(e.message || 'Error', e.error && e.error.stack);
+        });
+        window.addEventListener('unhandledrejection', function (e) {
+          var r = e.reason;
+          showError(
+            (r && r.message) ? r.message : String(r),
+            r && r.stack
+          );
+        });
+      })();
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

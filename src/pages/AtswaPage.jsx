@@ -31,8 +31,11 @@ export default function AtswaPage() {
     settings,
     isLevelUnlocked,
     submitInAppTicket,
+    handleUnlockLevel,
+    handleSubmitAtswaGuidance,
   } = usePlatform();
   const toast = useToast();
+  const [unlocking, setUnlocking] = useState(false);
 
   const atswaSessions = useMemo(
     () => sessions.filter((s) => s.programme === 'ATSWA'),
@@ -94,28 +97,44 @@ export default function AtswaPage() {
     [selectedCourseIds.length, activeLevel]
   );
 
-  const handleUnlockRedirect = () => {
+  const handleUnlockRedirect = async () => {
     if (selectedCourseIds.length === 0) {
       toast.warning('Select at least one course', 'Pick the ATSWA papers you intend to take.');
       return;
     }
-    toast.info(
-      `Unlock ${activeLevel.code} Cost Implication (₦3,000)`,
-      'Only required when applying for tuition. Sign in to complete your one-time Paystack unlock.'
+    setUnlocking(true);
+    const result = await handleUnlockLevel(`atswa:${activeLevel.id}`, 3000);
+    setUnlocking(false);
+    if (result.error) {
+      toast.error('Unlock failed', result.error);
+      return;
+    }
+    toast.success(
+      `${activeLevel.code} Cost Implication Unlocked`,
+      `₦3,000 unlocked. Full tuition cost implication is now visible above.`
     );
   };
 
-  const handleGuidanceSubmit = (e) => {
+  const handleGuidanceSubmit = async (e) => {
     e.preventDefault();
-    const ticket = submitInAppTicket('atswa', {
-      ...guidanceForm,
+    const result = await handleSubmitAtswaGuidance({
+      fullName: guidanceForm.fullName,
+      email: guidanceForm.email,
+      phone: guidanceForm.phone,
       level: activeLevel.code,
-      diet: activeDiet.label,
-      readyDocuments: checkedDocs,
+      qualification: guidanceForm.entryQualification,
+      institutionName: guidanceForm.institutionName,
+      documentsReady: checkedDocs,
+      question: guidanceForm.question,
     });
-    setSubmittedRef(ticket.id);
+    if (result.error) {
+      toast.error('Submit failed', result.error);
+      return;
+    }
+    const ticketRef = result.data?.ticket_ref || result.data?.id;
+    setSubmittedRef(ticketRef);
     toast.success(
-      `ATSWA Guidance Logged In-App (${ticket.id})`,
+      `ATSWA Guidance Submitted (${ticketRef})`,
       'Your document checklist & registration request are saved for in-app review inside your Student Portal.'
     );
     setGuidanceForm((prev) => ({ ...prev, question: '' }));

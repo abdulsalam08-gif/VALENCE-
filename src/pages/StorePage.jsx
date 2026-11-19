@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   ShoppingBag,
   Plus,
@@ -16,11 +16,18 @@ import {
   HelpCircle,
   Send,
   Layers,
+  CreditCard,
+  Loader2,
+  Receipt,
+  Clock,
+  Package,
 } from 'lucide-react';
 import { usePlatform } from '../context/PlatformContext';
 import { useToast } from '../context/ToastContext';
 import Badge from '../components/ui/Badge';
 import { formatNaira } from '../lib/pricing';
+import { openPaystackCheckout, generatePaymentReference, isPaystackConfigured } from '../lib/paystack';
+import { createStoreOrder, confirmStorePayment, fetchStoreOrders } from '../lib/storeOrders';
 
 const CATEGORY_TABS = [
   { id: 'all', label: 'All Materials (45)' },
@@ -50,6 +57,8 @@ const COLOUR_LEGEND = [
 export default function StorePage() {
   const [searchParams] = useSearchParams();
   const {
+    user,
+    profile,
     products,
     deliveryZones,
     cart,
@@ -83,6 +92,27 @@ export default function StorePage() {
     message: '',
   });
   const [lastEnquiryRef, setLastEnquiryRef] = useState(null);
+
+  // Phase 5: server-verified checkout state
+  const navigate = useNavigate();
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [checkoutForm, setCheckoutForm] = useState({ address: '', notes: '' });
+  const [checkoutPhase, setCheckoutPhase] = useState('details'); // details | paying | processing | done
+  const [checkoutBusy, setCheckoutBusy] = useState(false);
+  const [activeOrder, setActiveOrder] = useState(null);
+  const [receipt, setReceipt] = useState(null);
+  const [ordersOpen, setOrdersOpen] = useState(false);
+  const [myOrders, setMyOrders] = useState([]);
+  const [ordersLoading, setOrdersLoading] = useState(false);
+
+  // Stable signature of the cart + zone so a pending order can be reused on retry
+  const cartSignature = useMemo(
+    () =>
+      cart
+        .map((i) => `${i.dbId || i.id}x${i.quantity}`)
+        .join(',') + `|${selectedZoneId}`,
+    [cart, selectedZoneId]
+  );
 
   useEffect(() => {
     if (searchParams.get('enquiry') === 'open') setEnquiryOpen(true);
@@ -175,6 +205,7 @@ export default function StorePage() {
     setEnquiryForm((prev) => ({ ...prev, materialOrCourse: '', message: '' }));
   };
 
+  // Phase 5: real server-verified Paystack checkout
   const handleCheckout = () => {
     if (cart.length === 0) {
       toast.warning(
@@ -183,13 +214,107 @@ export default function StorePage() {
       );
       return;
     }
-    const courseList = cart
-      .map((i) => `${i.courseCode || i.level} ×${i.quantity}`)
-      .join(', ');
-    toast.info(
-      `Order Total: ${formatNaira(cartSummary.finalTotal)} (${courseList})`,
-      'Live server-verified Paystack checkout & order receipts connect in Phase 5 & Phase 8.'
-    );
+    if (!user) {
+      toast.info('Please sign in to checkout', 'Your cart stays saved on this device.');
+      navigate('/portal');
+      return;
+    }
+    if (!isPaystackConfigured()) {
+      toast.error(
+        'Payment gateway not configured',
+        'Paystack checkout becomes available once the payment key is configured.'
+      );
+      return;
+    }
+    setCheckoutForm({ address: '', notes: '' });
+    setActiveOrder(null);
+    setReceipt(null);
+    setCheckoutPhase('details');
+    setCheckoutOpen(true);
+  };
+
+  const createOrderForCheckout = async () => {
+    setCheckoutBusy(true);
+    setCheckoutPhase('creating');
+    try {
+      const items = cart.map((i) => ({
+        dbId: i.dbId || i.id,
+        quantity: i.quantity,
+        title: i.title,
+        category: i.category,
+        courseCode: i.courseCode,
+      }));
+      const order = await createStoreOrder({
+        items,
+        zoneId: selectedZone.dbId || selectedZoneId,
+        address: checkoutForm.address,
+        notes: checkoutForm.notes,
+      });
+      setActiveOrder({ ...order, _signature: cartSignature });
+      return order;
+    } catch (err) {
+      setCheckoutPhase('details');
+      toast.error('Order could not be created', err.message);
+      throw err;
+    } finally {
+      setCheckoutBusy(false);
+    }
+  };
+
+  const handlePayWithPaystack = async () => {
+    try {
+      const order =
+        activeOrder && activeOrder._signature === cartSignature
+          ? activeOrder
+          : await createOrderForCheckout();
+      setCheckoutBusy(true);
+      setCheckoutPhase('paying');
+      const reference = generatePaymentReference();
+      await openPaystackCheckout({
+        email: user.email,
+        name: profile?.full_name || profile?.display_name || user.email,
+        amountNgn: order.total_ngn,
+        reference,
+        onSuccess: async (response) => {
+          setCheckoutPhase('processing');
+          try {
+            const txReference = response?.reference || reference;
+            const result = await confirmStorePayment({
+              orderId: order.order_id,
+              reference: txReference,
+              amountNgn: order.total_ngn,
+            });
+            setReceipt({ ...result, items: order.items, zoneName: selectedZone.name });
+            setCheckoutPhase('done');
+            clearCart();
+          } catch (err) {
+            setCheckoutPhase('paying');
+            toast.error('Payment confirmation failed', err.message);
+          }
+        },
+        onClose: () => {
+          setCheckoutBusy(false);
+          if (checkoutPhase !== 'processing') setCheckoutPhase('paying');
+        },
+      });
+    } catch (err) {
+      setCheckoutBusy(false);
+      setCheckoutPhase('details');
+      toast.error('Paystack checkout failed to open', err.message);
+    }
+  };
+
+  const handleViewOrders = async () => {
+    setOrdersOpen(true);
+    setOrdersLoading(true);
+    try {
+      const orders = await fetchStoreOrders();
+      setMyOrders(orders);
+    } catch (err) {
+      toast.error('Could not load your orders', err.message);
+    } finally {
+      setOrdersLoading(false);
+    }
   };
 
   return (
@@ -213,6 +338,14 @@ export default function StorePage() {
               </p>
             </div>
 
+            <button
+              type="button"
+              onClick={handleViewOrders}
+              className="v-btn-secondary text-xs self-start shrink-0"
+            >
+              <Package className="h-4 w-4 text-[#16C784]" />
+              My Orders & Receipts
+            </button>
             <button
               type="button"
               onClick={() => setEnquiryOpen(true)}
@@ -792,6 +925,368 @@ export default function StorePage() {
           </aside>
         </div>
       </section>
+
+      {/* Phase 5: Secure Paystack Checkout, Order Confirmation & Receipt */}
+      {checkoutOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="store-checkout-title"
+          onClick={() => {
+            if (checkoutPhase !== 'paying' && checkoutPhase !== 'processing') {
+              setCheckoutOpen(false);
+            }
+          }}
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/80 backdrop-blur-sm p-0 sm:p-4"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-xl rounded-t-3xl sm:rounded-2xl bg-[#11161C] border border-[#16C784]/25 p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto animate-fade-up"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <Badge variant="green">VALENCE MARKETPLACE · SECURE CHECKOUT</Badge>
+                <h3
+                  id="store-checkout-title"
+                  className="mt-1.5 font-display text-xl font-bold text-white"
+                >
+                  {checkoutPhase === 'done'
+                    ? 'Payment Confirmed'
+                    : 'Checkout with Paystack'}
+                </h3>
+                <p className="text-xs text-[#9AA4B2] mt-0.5">
+                  {checkoutPhase === 'done'
+                    ? 'Your order is recorded server-side and a receipt has been generated.'
+                    : 'Order totals are recomputed & verified on the server before payment opens.'}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setCheckoutOpen(false)}
+                disabled={checkoutPhase === 'paying' || checkoutPhase === 'processing'}
+                aria-label="Close checkout"
+                className="rounded-lg p-1.5 text-[#9AA4B2] hover:text-white hover:bg-white/[0.06] disabled:opacity-40"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {checkoutPhase === 'done' && receipt ? (
+              <div className="space-y-4">
+                <div className="rounded-2xl bg-[#16C784]/10 border border-[#16C784]/40 p-5 text-center">
+                  <CheckCircle2 className="h-10 w-10 text-[#16C784] mx-auto" />
+                  <p className="mt-2 font-display text-lg font-bold text-white">
+                    Payment Successful
+                  </p>
+                  <p className="text-sm text-[#16C784] font-semibold">
+                    {formatNaira(receipt.amount_ngn)} paid via Paystack
+                  </p>
+                </div>
+                <div className="rounded-xl bg-[#0B0E11] border border-white/[0.08] p-4 space-y-2 text-xs">
+                  <div className="flex justify-between">
+                    <span className="text-[#9AA4B2]">Receipt Number</span>
+                    <span className="font-display font-bold text-[#16C784]">
+                      {receipt.receipt_number}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-[#9AA4B2]">Order ID</span>
+                    <span className="font-mono text-[11px] text-white break-all text-right">
+                      {receipt.order_id}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-[#9AA4B2]">Paystack Reference</span>
+                    <span className="font-mono text-[11px] text-white break-all text-right">
+                      {receipt.paystack_reference}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-[#9AA4B2]">Delivery Zone</span>
+                    <span className="text-white text-right">{receipt.zoneName}</span>
+                  </div>
+                  {receipt.server_verified ? (
+                    <div className="flex items-center gap-1.5 text-[#16C784]">
+                      <ShieldCheck className="h-3.5 w-3.5" />
+                      Server-verified against Paystack
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1.5 text-[#9AA4B2]">
+                      <Clock className="h-3.5 w-3.5" />
+                      Confirmed via checkout callback (add PAYSTACK_SECRET_KEY for API verification)
+                    </div>
+                  )}
+                </div>
+                <div className="rounded-xl bg-[#0B0E11] border border-white/[0.08] p-4 space-y-1.5 text-xs">
+                  <p className="font-semibold text-white inline-flex items-center gap-1.5">
+                    <Receipt className="h-3.5 w-3.5 text-[#16C784]" /> Your Items
+                  </p>
+                  {(receipt.items || []).map((it) => (
+                    <div key={it.product_id} className="flex justify-between gap-3">
+                      <span className="text-[#C2C9D4] truncate">
+                        {it.name} × {it.quantity}
+                      </span>
+                      <span className="tabular-nums-display text-white shrink-0">
+                        {formatNaira(it.line_total_ngn)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex items-center justify-end gap-2.5 pt-1">
+                  <button
+                    type="button"
+                    onClick={handleViewOrders}
+                    className="v-btn-secondary text-xs"
+                  >
+                    View My Orders
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCheckoutOpen(false);
+                      setReceipt(null);
+                      setActiveOrder(null);
+                      setCheckoutPhase('details');
+                      toast.success('Order Confirmed', `Receipt ${receipt.receipt_number} saved to your account.`);
+                    }}
+                    className="v-btn-primary text-xs"
+                  >
+                    Done
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                {/* Server-verified order summary */}
+                <div className="rounded-xl bg-[#0B0E11] border border-white/[0.08] p-4 space-y-2 text-xs">
+                  <p className="font-semibold text-white inline-flex items-center gap-1.5">
+                    <Package className="h-3.5 w-3.5 text-[#16C784]" /> Order Summary
+                  </p>
+                  {(activeOrder ? activeOrder.items : cart).map((it) => (
+                    <div key={it.product_id || it.id} className="flex justify-between gap-3">
+                      <span className="text-[#C2C9D4] truncate">
+                        {it.name || it.title} × {it.quantity}
+                      </span>
+                      <span className="tabular-nums-display text-white shrink-0">
+                        {formatNaira((it.line_total_ngn ?? it.price ?? 0) * (it.quantity || 1))}
+                      </span>
+                    </div>
+                  ))}
+                  <div className="border-t border-white/[0.08] pt-2 space-y-1">
+                    {activeOrder && activeOrder.discount_ngn > 0 && (
+                      <div className="flex justify-between text-[#16C784]">
+                        <span>Automatic discounts</span>
+                        <span className="tabular-nums-display">
+                          −{formatNaira(activeOrder.discount_ngn)}
+                        </span>
+                      </div>
+                    )}
+                    <div className="flex justify-between text-[#9AA4B2]">
+                      <span>Delivery Fee · {selectedZone.name}</span>
+                      <span className="tabular-nums-display text-white">
+                        {formatNaira(activeOrder ? activeOrder.delivery_fee_ngn : cartSummary.deliveryFee)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-baseline border-t border-white/[0.08] pt-2">
+                      <span className="text-sm font-bold text-white">Payable Total</span>
+                      <span className="tabular-nums-display text-xl font-bold text-[#16C784]">
+                        {formatNaira(activeOrder ? activeOrder.total_ngn : cartSummary.finalTotal)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {checkoutPhase === 'details' && (
+                  <div className="space-y-3">
+                    <div>
+                      <label className="v-label" htmlFor="checkout-address">
+                        Delivery Address / Pickup Point
+                      </label>
+                      <input
+                        id="checkout-address"
+                        type="text"
+                        value={checkoutForm.address}
+                        onChange={(e) =>
+                          setCheckoutForm({ ...checkoutForm, address: e.target.value })
+                        }
+                        placeholder="Street address, landmark or pickup hub"
+                        className="v-input text-xs"
+                      />
+                    </div>
+                    <div>
+                      <label className="v-label" htmlFor="checkout-notes">
+                        Delivery Notes (optional)
+                      </label>
+                      <textarea
+                        id="checkout-notes"
+                        rows={2}
+                        value={checkoutForm.notes}
+                        onChange={(e) =>
+                          setCheckoutForm({ ...checkoutForm, notes: e.target.value })
+                        }
+                        placeholder="e.g. Leave at gate, call on arrival..."
+                        className="v-input text-xs resize-none"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {checkoutPhase === 'creating' && (
+                  <div className="flex items-center justify-center gap-2 py-4 text-xs text-[#9AA4B2]">
+                    <Loader2 className="h-4 w-4 animate-spin text-[#16C784]" />
+                    Creating your server-verified order...
+                  </div>
+                )}
+
+                {checkoutPhase === 'paying' && (
+                  <div className="flex items-center justify-center gap-2 py-4 text-xs text-[#9AA4B2]">
+                    <Loader2 className="h-4 w-4 animate-spin text-[#16C784]" />
+                    Secure Paystack checkout is opening — complete your payment there...
+                  </div>
+                )}
+
+                {checkoutPhase === 'processing' && (
+                  <div className="flex items-center justify-center gap-2 py-4 text-xs text-[#9AA4B2]">
+                    <Loader2 className="h-4 w-4 animate-spin text-[#16C784]" />
+                    Confirming your payment & generating receipt server-side...
+                  </div>
+                )}
+
+                {checkoutPhase !== 'creating' && checkoutPhase !== 'paying' && (
+                  <div className="flex items-center justify-end gap-2.5 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => setCheckoutOpen(false)}
+                      className="v-btn-secondary text-xs"
+                    >
+                      {activeOrder ? 'Cancel Payment' : 'Close'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handlePayWithPaystack}
+                      disabled={checkoutBusy}
+                      className="v-btn-primary text-xs"
+                    >
+                      <ShieldCheck className="h-4 w-4" />
+                      {activeOrder
+                        ? `Pay ${formatNaira(activeOrder.total_ngn)} with Paystack`
+                        : 'Continue to Paystack'}
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Phase 5: My Orders Modal */}
+      {ordersOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="my-orders-title"
+          onClick={() => setOrdersOpen(false)}
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/80 backdrop-blur-sm p-0 sm:p-4"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-xl rounded-t-3xl sm:rounded-2xl bg-[#11161C] border border-white/[0.1] p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto animate-fade-up"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <Badge variant="green">ORDER CENTRE</Badge>
+                <h3 id="my-orders-title" className="mt-1.5 font-display text-xl font-bold text-white">
+                  My Store Orders
+                </h3>
+                <p className="text-xs text-[#9AA4B2] mt-0.5">
+                  Every order & receipt is recorded server-side in your account.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setOrdersOpen(false)}
+                aria-label="Close orders"
+                className="rounded-lg p-1.5 text-[#9AA4B2] hover:text-white hover:bg-white/[0.06]"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {ordersLoading ? (
+              <div className="flex items-center justify-center gap-2 py-8 text-xs text-[#9AA4B2]">
+                <Loader2 className="h-4 w-4 animate-spin text-[#16C784]" />
+                Loading your orders...
+              </div>
+            ) : myOrders.length === 0 ? (
+              <div className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-6 text-center text-xs text-[#9AA4B2]">
+                No store orders yet. Order past questions or study packs from the catalogue.
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {myOrders.map((o) => (
+                  <div
+                    key={o.id}
+                    className="rounded-xl bg-[#0B0E11] border border-white/[0.08] p-4 space-y-2 text-xs"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <span
+                        className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-semibold ${{
+                          pending: 'border-[#F59E0B]/40 text-[#F59E0B]',
+                          paid: 'border-[#16C784]/40 text-[#16C784]',
+                        }[o.status] || 'border-white/15 text-[#9AA4B2]'}`}
+                      >
+                        {o.status === 'paid' ? (
+                          <CheckCircle2 className="h-3 w-3" />
+                        ) : (
+                          <Clock className="h-3 w-3" />
+                        )}
+                        {o.status === 'paid' ? 'PAID' : 'PENDING PAYMENT'}
+                      </span>
+                      <span className="tabular-nums-display font-bold text-white">
+                        {formatNaira(o.total_ngn)}
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-[#9AA4B2]">
+                      <span>
+                        Placed:{' '}
+                        {o.created_at
+                          ? new Date(o.created_at).toLocaleDateString('en-NG', {
+                              day: 'numeric',
+                              month: 'short',
+                              year: 'numeric',
+                            })
+                          : '—'}
+                      </span>
+                      {o.paystack_reference && (
+                        <span className="font-mono">Ref: {o.paystack_reference}</span>
+                      )}
+                    </div>
+                    {Array.isArray(o.order_items) && o.order_items.length > 0 && (
+                      <div className="border-t border-white/[0.06] pt-2 space-y-0.5">
+                        {o.order_items.map((it) => (
+                          <div key={it.id} className="flex justify-between gap-3">
+                            <span className="text-[#C2C9D4]">Item × {it.quantity}</span>
+                            <span className="tabular-nums-display text-[#9AA4B2] shrink-0">
+                              {formatNaira(it.line_total_ngn)}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="flex items-center justify-end">
+              <button type="button" onClick={() => setOrdersOpen(false)} className="v-btn-secondary text-xs">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* In-App Study Materials & Delivery Enquiry Modal */}
       {enquiryOpen && (

@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TEST PAGE</title>
+  <style>
+    body { background: #0B0F14; color: #16C784; font-family: system-ui; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+    h1 { font-size: 32px; }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>VALENCE TEST PAGE</h1>
+    <p>If you can see this, the preview pane is working.</p>
+    <p id="time"></p>
+  </div>
+  <script>
+    document.getElementById('time').textContent = 'JS works: ' + new Date().toLocaleTimeString();
+  </script>
+</body>
+</html>

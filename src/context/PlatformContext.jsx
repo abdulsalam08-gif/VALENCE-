@@ -43,6 +43,7 @@ import {
 } from '../data/nigerianUniversities';
 import { calculateStoreCart } from '../lib/pricing';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { formatReadableDate } from '../lib/examSchedule';
 import {
   signIn as authSignIn,
   signUp as authSignUp,
@@ -52,6 +53,9 @@ import {
   fetchPrivacySettings as authFetchPrivacy,
   updatePrivacySettings as authUpdatePrivacy,
   fetchGalleryPhotos as authFetchGallery,
+  unlockLevel as authUnlockLevel,
+  fetchAtswaDocuments as authFetchAtswaDocuments,
+  submitAtswaGuidanceRequest as authSubmitAtswaGuidance,
 } from '../lib/auth';
 
 const PlatformContext = createContext(null);
@@ -268,6 +272,12 @@ export function PlatformProvider({ children }) {
   const [liveUniversities, setLiveUniversities] = useState(() => NIGERIAN_UNIVERSITIES);
   const [liveUniversityCounts, setLiveUniversityCounts] = useState(() => UNIVERSITY_COUNTS);
 
+  // Phase 4: Live exam sessions, timetables, exemption rules & ATSWA documents
+  const [liveExamSessions, setLiveExamSessions] = useState(() => EXAMINATION_SESSIONS);
+  const [liveExamTimetables, setLiveExamTimetables] = useState({});
+  const [liveExemptionRules, setLiveExemptionRules] = useState(() => EXEMPTION_RULES);
+  const [atswaDocuments, setAtswaDocuments] = useState([]);
+
   const [cart, setCart] = useState(() => {
     try {
       const saved = localStorage.getItem(CART_STORAGE_KEY);
@@ -301,23 +311,45 @@ export function PlatformProvider({ children }) {
       return;
     }
     setUser(authUser);
-    const [profileRes, rolesRes, unlocksRes, centreFeesRes] = await Promise.all([
-      supabase.from('profiles').select('*').eq('id', authUser.id).maybeSingle(),
+    // Get profile_id from profiles (keyed by user_id in new schema)
+    const profileRes = await supabase
+      .from('profiles')
+      .select('id, user_category, account_type')
+      .eq('user_id', authUser.id)
+      .maybeSingle();
+
+    const profileId = profileRes.data?.id;
+
+    const [rolesRes, unlocksRes, centreFeesRes] = await Promise.all([
+      // RBAC roles from user_roles table
       supabase
-        .from('admin_role_assignments')
+        .from('user_roles')
         .select('role')
-        .eq('user_id', authUser.id)
-        .eq('is_active', true),
-      supabase.from('student_fee_unlocks').select('level_id').eq('user_id', authUser.id),
+        .eq('user_id', authUser.id),
+      // Level unlocks — need profile_id in new schema
+      profileId
+        ? supabase
+            .from('student_fee_unlocks')
+            .select('examination_level_id')
+            .eq('profile_id', profileId)
+        : Promise.resolve({ data: [], error: null }),
+      // Centre fee schedules from advertisers (verified tuition centres)
       supabase
-        .from('tuition_centre_fee_schedules')
-        .select('*, tuition_centres(name, location_label, state)')
-        .eq('is_verified', true),
+        .from('advertisers')
+        .select('centre_name, areas_of_specialisation, programmes_offered')
+        .eq('verification_status', 'verified'),
     ]);
 
     if (profileRes.data) {
-      setProfile(profileRes.data);
-      setUserRole(profileRes.data.account_type);
+      const fullProfile = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', authUser.id)
+        .maybeSingle();
+      if (fullProfile.data) {
+        setProfile(fullProfile.data);
+        setUserRole(fullProfile.data.account_type);
+      }
     }
     if (Array.isArray(rolesRes.data)) {
       const roles = rolesRes.data.map((r) => r.role);
@@ -325,7 +357,7 @@ export function PlatformProvider({ children }) {
       if (roles.length > 0) setUserRole('admin');
     }
     if (Array.isArray(unlocksRes.data)) {
-      setUnlockedLevelIds(unlocksRes.data.map((u) => u.level_id));
+      setUnlockedLevelIds(unlocksRes.data.map((u) => u.examination_level_id));
     }
     if (Array.isArray(centreFeesRes.data)) {
       setUnlockedCentreFees(centreFeesRes.data);
@@ -343,89 +375,89 @@ export function PlatformProvider({ children }) {
         settingsRes,
         productsRes,
         zonesRes,
-        quotesRes,
-        tickersRes,
-        centresRes,
-        booksRes,
-        tutorsRes,
         oppsRes,
-        eventsRes,
-        annRes,
-        faqsRes,
         instRes,
+        annRes,
+        eventsRes,
+        exemptionRes,
       ] = await Promise.all([
-        supabase.from('platform_settings').select('*').eq('id', 1).maybeSingle(),
+        // platform_settings: key-value store (all rows)
+        supabase.from('platform_settings').select('*'),
+        // products (spec section 25) — join with product_prices for pricing
         supabase
-          .from('store_products')
-          .select('*')
-          .eq('is_active', true)
-          .order('sort_order', { ascending: true }),
+          .from('products')
+          .select('*, product_prices(price_ngn, currency)')
+          .order('name', { ascending: true }),
+        // delivery_zones (spec section 25)
         supabase
           .from('delivery_zones')
           .select('*')
-          .eq('is_active', true)
-          .order('sort_order', { ascending: true }),
-        supabase
-          .from('motivational_quotes')
-          .select('*')
-          .eq('is_active', true)
-          .order('sort_order', { ascending: true }),
-        supabase
-          .from('page_ticker_notices')
-          .select('*')
-          .eq('is_active', true)
-          .order('sort_order', { ascending: true }),
-        supabase
-          .from('tuition_centres')
-          .select('*')
-          .eq('is_active', true)
-          .eq('is_verified', true)
-          .order('is_sponsored', { ascending: false }),
-        supabase
-          .from('textbook_advertisers')
-          .select('*')
-          .eq('is_active', true)
-          .eq('is_verified', true)
-          .order('is_sponsored', { ascending: false }),
-        supabase
-          .from('verified_tutor_profiles')
-          .select('*')
-          .eq('is_active', true)
-          .order('created_at', { ascending: true }),
+          .order('name', { ascending: true }),
+        // opportunities (spec section 25)
         supabase
           .from('opportunities')
           .select('*')
-          .eq('is_published', true)
+          .eq('status', 'published')
           .order('published_at', { ascending: false }),
+        // institutions (spec section 25)
         supabase
-          .from('platform_events')
-          .select('*')
-          .eq('is_published', true)
-          .order('sort_order', { ascending: true }),
-        supabase
-          .from('announcements')
-          .select('*')
-          .eq('is_draft', false)
-          .eq('is_hidden', false)
-          .order('is_pinned', { ascending: false })
-          .order('published_at', { ascending: false })
-          .limit(30),
-        supabase
-          .from('platform_faqs')
-          .select('*')
-          .eq('is_active', true)
-          .order('sort_order', { ascending: true }),
-        supabase
-          .from('nigerian_institutions')
-          .select('id, name, short_name, category, type_label, state, zone')
-          .eq('is_active', true)
+          .from('institutions')
+          .select('id, name, type, location')
           .order('name', { ascending: true }),
+        // announcement_posts (spec section 25)
+        supabase
+          .from('announcement_posts')
+          .select('*')
+          .eq('status', 'published')
+          .order('created_at', { ascending: false })
+          .limit(30),
+        // professional_events (spec section 25)
+        supabase
+          .from('professional_events')
+          .select('*')
+          .eq('status', 'published')
+          .order('event_date', { ascending: true }),
+        // exemption_guidelines (spec section 25)
+        supabase
+          .from('exemption_guidelines')
+          .select('*')
+          .order('title', { ascending: true }),
       ]);
 
-      if (settingsRes.data) setLiveSettings(mapSettingsRow(settingsRes.data));
+      // Settings: build from key-value rows
+      if (Array.isArray(settingsRes.data) && settingsRes.data.length > 0) {
+        const settingsMap = {};
+        settingsRes.data.forEach((row) => {
+          settingsMap[row.setting_key] = row.setting_value;
+        });
+        setLiveSettings({ ...PLATFORM_SETTINGS, ...settingsMap });
+      }
 
+      // Products: merge spec-schema DB rows with the local catalogue metadata
+      // (category, courseCode, level, programme, discount hints, etc.) by matching name === title
       if (Array.isArray(productsRes.data) && productsRes.data.length > 0) {
-        const mapped = productsRes.data.map(mapStoreProductRow);
+        const localByTitle = new Map(STORE_PRODUCTS.map((p) => [p.title, p]));
+        const mapped = productsRes.data
+          .map((p) => {
+            const price = Array.isArray(p.product_prices) && p.product_prices.length > 0
+              ? p.product_prices[0].price_ngn
+              : 0;
+            const local = localByTitle.get(p.name);
+            if (!local) return null; // keep local catalogue authoritative
+            return {
+              ...local,
+              dbId: p.id,
+              name: p.name,
+              description: p.description || local.description,
+              productType: p.product_type,
+              courseId: p.course_id,
+              imageUrl: p.image_url || local.imageUrl,
+              isAvailable: p.is_available,
+              availabilityNote: p.availability_note || '',
+              price: price || local.price,
+            };
+          })
+          .filter(Boolean);
         setCatalogProducts(mapped);
         // Automatically drop any Study Packs that Admin marked unavailable while in cart
         const unavailable = new Set(mapped.filter((p) => !p.isAvailable).map((p) => p.id));
@@ -434,96 +466,27 @@ export function PlatformProvider({ children }) {
         }
       }
 
+      // Delivery zones: merge spec-schema DB rows with the local zone metadata by name
       if (Array.isArray(zonesRes.data) && zonesRes.data.length > 0) {
-        setLiveDeliveryZones(zonesRes.data.map(mapDeliveryZoneRow));
+        const localZones = new Map(DELIVERY_ZONES.map((z) => [z.name, z]));
+        const merged = zonesRes.data
+          .map((z) => {
+            const local = localZones.get(z.name);
+            if (!local) return null;
+            return {
+              ...local,
+              dbId: z.id,
+              name: z.name,
+              fee: z.fee_ngn,
+              feeNgn: z.fee_ngn,
+              isFree: z.is_free,
+            };
+          })
+          .filter(Boolean);
+        setLiveDeliveryZones(merged);
       }
 
-      if (Array.isArray(quotesRes.data) && quotesRes.data.length > 0) {
-        setLiveQuotes(
-          quotesRes.data.map((q) => ({
-            id: q.quote_key || q.id,
-            quote: q.quote,
-            author: q.author || '',
-            category: q.category || 'Life & Wisdom',
-          }))
-        );
-      }
-
-      if (Array.isArray(tickersRes.data) && tickersRes.data.length > 0) {
-        // Keep full Phase 1 route notices intact and blend any live Admin notices seamlessly
-        const merged = { ...PAGE_TICKER_NOTICES };
-        const byPage = mergePageTickerRows(tickersRes.data);
-        for (const [key, cfg] of Object.entries(byPage)) {
-          const existing = PAGE_TICKER_NOTICES[key];
-          if (!existing) {
-            merged[key] = cfg;
-          } else if (cfg.items.length >= existing.items.length) {
-            merged[key] = cfg;
-          }
-        }
-        setLivePageTickers(merged);
-      }
-
-      if (Array.isArray(centresRes.data)) {
-        setLiveCentres(
-          centresRes.data.map((c) => ({
-            id: c.id,
-            name: c.name,
-            streetAddress: c.street_address,
-            location: c.location_label,
-            state: c.state,
-            programmes: c.programmes || [],
-            subjects: c.subjects || [],
-            mode: c.delivery_mode || 'Physical Tuition Only',
-            schedule: c.schedule_label,
-            description: c.description,
-            verified: Boolean(c.is_verified),
-            sponsored: Boolean(c.is_sponsored),
-            adLabel: c.ad_label || 'Sponsored',
-          }))
-        );
-      }
-
-      if (Array.isArray(booksRes.data)) {
-        setLiveTextbookAdvertisers(
-          booksRes.data.map((b) => ({
-            id: b.id,
-            type: b.partner_type,
-            name: b.name,
-            title: b.book_or_catalogue_title,
-            isbnOrEdition: b.isbn_or_edition,
-            location: b.location_label,
-            state: b.state,
-            programmes: b.programmes || [],
-            subjects: b.subjects || [],
-            description: b.description,
-            coverUrl: b.cover_url,
-            price: b.price_ngn ? Number(b.price_ngn) : null,
-            deliveryFee: Number(b.delivery_fee_ngn ?? 0),
-            inAppCheckout: Boolean(b.in_app_checkout_enabled),
-            isAvailable: b.is_available !== false,
-            verified: Boolean(b.is_verified),
-            sponsored: Boolean(b.is_sponsored),
-            adLabel: b.ad_label || 'Sponsored',
-          }))
-        );
-      }
-
-      if (Array.isArray(tutorsRes.data)) {
-        setLiveTutors(
-          tutorsRes.data.map((t) => ({
-            id: t.id,
-            name: t.display_name,
-            initials: t.initials,
-            tier: t.tier_label,
-            credentials: t.verified_credentials || [],
-            courses: t.course_codes || [],
-            bio: t.bio,
-            avatarUrl: t.avatar_url || null,
-          }))
-        );
-      }
-
+      // Opportunities: map from spec schema
       if (Array.isArray(oppsRes.data)) {
         setLiveOpportunities(
           oppsRes.data.map((o) => ({
@@ -534,7 +497,7 @@ export function PlatformProvider({ children }) {
             category: o.category,
             eligibility: o.eligibility,
             description: o.description || '',
-            applyUrl: o.apply_url || null,
+            applyUrl: o.application_link || null,
             deadline: o.deadline
               ? new Date(o.deadline).toLocaleDateString('en-NG', {
                   day: 'numeric',
@@ -547,56 +510,101 @@ export function PlatformProvider({ children }) {
         );
       }
 
-      if (Array.isArray(eventsRes.data) && eventsRes.data.length > 0) {
-        setLiveEvents(
-          eventsRes.data.map((e) => ({
-            id: e.id,
-            type: e.event_type,
-            programme: e.programme_label,
-            title: e.title,
-            date: e.date_label,
-            mode: e.mode_label,
-            access: e.access_label,
-          }))
-        );
-      }
-
-      if (Array.isArray(annRes.data) && annRes.data.length > 0) {
-        setLiveAnnouncements(annRes.data.map(mapAnnouncementRow));
-      }
-
-      if (Array.isArray(faqsRes.data) && faqsRes.data.length > 0) {
-        const gen = faqsRes.data
-          .filter((f) => f.faq_group !== 'ican_candidate')
-          .map((f) => ({ q: f.question, a: f.answer }));
-        const cand = faqsRes.data
-          .filter((f) => f.faq_group === 'ican_candidate')
-          .map((f, idx) => ({ num: idx + 1, q: f.question, a: f.answer }));
-        if (gen.length >= FAQS.length) setLiveFaqs(gen);
-        if (cand.length >= ICAN_CANDIDATE_FAQS.length) setLiveCandidateFaqs(cand);
-      }
-
+      // Institutions: map from spec schema
       if (Array.isArray(instRes.data) && instRes.data.length > 0) {
         const mappedInst = instRes.data.map((i) => ({
           id: i.id,
           name: i.name,
-          shortName: i.short_name,
-          category: i.category,
-          typeLabel: i.type_label,
-          state: i.state,
-          zone: i.zone,
+          shortName: i.name.split(' ').slice(0, 3).join(' '),
+          category: i.type,
+          typeLabel: i.type,
+          state: i.location || '',
+          zone: '',
         }));
         setLiveUniversities(mappedInst);
         setLiveUniversityCounts(computeInstitutionCounts(mappedInst));
       }
 
-      if (!settingsRes.error && !productsRes.error) {
-        setDbStatus('connected');
-      } else {
-        setDbStatus('fallback');
+      // Announcements: map from spec schema
+      if (Array.isArray(annRes.data) && annRes.data.length > 0) {
+        setLiveAnnouncements(
+          annRes.data.map((a) => ({
+            id: a.id,
+            title: a.title,
+            content: a.content,
+            category: a.category || 'General',
+            isOfficial: a.is_official,
+            profileName: 'VALENCE',
+            avatarUrl: null,
+            createdAt: a.created_at,
+            likes: 0,
+            comments: 0,
+          }))
+        );
       }
-    } catch {
-      setDbStatus('fallback');
+
+      // Professional events: map from spec schema
+      if (Array.isArray(eventsRes.data) && eventsRes.data.length > 0) {
+        setLiveEvents(
+          eventsRes.data.map((e) => ({
+            id: e.id,
+            type: e.event_type,
+            title: e.title,
+            date: e.event_date
+              ? new Date(e.event_date).toLocaleDateString('en-NG', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
+                })
+              : 'TBA',
+            mode: e.venue || 'TBA',
+            access: e.meeting_link ? 'Online' : 'Physical',
+          }))
+        );
+      }
+
+      // Exemption guidelines: map from spec schema
+      if (Array.isArray(exemptionRes.data) && exemptionRes.data.length > 0) {
+        setLiveExemptionRules(
+          exemptionRes.data.map((e) => ({
+            id: e.id,
+            title: e.title,
+            description: e.description || '',
+            conditions: e.conditions || '',
+            guidance: e.guidance || '',
+          }))
+        );
+      }
+
+      // Phase 16: FAQs are DB-backed via the faqs table (fetch_faqs RPC, public read).
+      // Map DB rows {question, answer, category, sort_order} to the UI {q, a, num} shape
+      // expected by HomePage/ContactPage; fall back to static FAQS on any error.
+      try {
+        const { data: faqsData, error: faqsError } = await supabase.rpc('fetch_faqs', {
+          p_category: null,
+        });
+        if (!faqsError && Array.isArray(faqsData) && faqsData.length > 0) {
+          setLiveFaqs(
+            faqsData.map((f, i) => ({
+              id: f.id,
+              q: f.question,
+              a: f.answer,
+              num: f.sort_order || i + 1,
+              category: f.category,
+            }))
+          );
+        }
+      } catch (faqErr) {
+        // keep static FAQS fallback
+      }
+
+      // Non-spec tables (motivational quotes, page tickers, tuition centres,
+      // textbook advertisers, tutors) are not in the spec's section 25 database
+      // architecture. These use local seed data from platformConfig.js as the
+      // source of truth and will be migrated to spec tables in later phases.
+    } catch (err) {
+      // Gracefully fall back to local seed data on any DB error
+      console.warn('refreshPublicData error, using local fallback:', err);
     } finally {
       setIsHydrating(false);
     }
@@ -621,15 +629,25 @@ export function PlatformProvider({ children }) {
       hydrateAuthenticatedUser(session?.user || null);
     });
 
-    // Live Realtime channel: Admin Study Pack availability toggles, ticker updates & platform settings
+    // Live Realtime channel: Admin product availability toggles, settings updates & announcement inserts
     const channel = supabase
       .channel('valence-live-sync')
       .on(
         'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'store_products' },
+        { event: 'UPDATE', schema: 'public', table: 'products' },
         (payload) => {
           if (!payload.new) return;
-          const updated = mapStoreProductRow(payload.new);
+          const updated = {
+            id: payload.new.id,
+            name: payload.new.name,
+            description: payload.new.description || '',
+            productType: payload.new.product_type,
+            courseId: payload.new.course_id,
+            imageUrl: payload.new.image_url || null,
+            isAvailable: payload.new.is_available,
+            availabilityNote: payload.new.availability_note || '',
+            priceNgn: 0,
+          };
           setCatalogProducts((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
           if (!updated.isAvailable) {
             setCart((prev) => prev.filter((item) => item.id !== updated.id));
@@ -640,29 +658,33 @@ export function PlatformProvider({ children }) {
         'postgres_changes',
         { event: '*', schema: 'public', table: 'platform_settings' },
         (payload) => {
-          if (payload.new) setLiveSettings(mapSettingsRow(payload.new));
-        }
-      )
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'page_ticker_notices' },
-        async () => {
-          const { data } = await supabase
-            .from('page_ticker_notices')
-            .select('*')
-            .eq('is_active', true)
-            .order('sort_order', { ascending: true });
-          if (Array.isArray(data) && data.length > 0) {
-            setLivePageTickers(mergePageTickerRows(data));
+          if (payload.new) {
+            const settingsMap = {};
+            settingsMap[payload.new.setting_key] = payload.new.setting_value;
+            setLiveSettings((prev) => ({ ...prev, ...settingsMap }));
           }
         }
       )
       .on(
         'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'announcements' },
+        { event: 'INSERT', schema: 'public', table: 'announcement_posts' },
         (payload) => {
-          if (payload.new && !payload.new.is_draft && !payload.new.is_hidden) {
-            setLiveAnnouncements((prev) => [mapAnnouncementRow(payload.new), ...prev]);
+          if (payload.new && payload.new.status === 'published') {
+            setLiveAnnouncements((prev) => [
+              {
+                id: payload.new.id,
+                title: payload.new.title,
+                content: payload.new.content,
+                category: payload.new.category || 'General',
+                isOfficial: payload.new.is_official,
+                profileName: 'VALENCE',
+                avatarUrl: null,
+                createdAt: payload.new.created_at,
+                likes: 0,
+                comments: 0,
+              },
+              ...prev,
+            ]);
           }
         }
       )
@@ -699,12 +721,11 @@ export function PlatformProvider({ children }) {
 
     if (supabase) {
       const { error } = await supabase
-        .from('store_products')
+        .from('products')
         .update({
           is_available: Boolean(isAvailable),
-          availability_status: nextStatus,
           availability_note: nextNote,
-          availability_updated_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
         })
         .eq('id', productId);
       return { persisted: !error, error: error?.message || null };
@@ -731,90 +752,46 @@ export function PlatformProvider({ children }) {
 
       if (supabase) {
         const uid = user?.id || null;
-        let dbOp = null;
+        // Get profile_id for notifications (spec table)
+        const profileId = profile?.id || null;
+
+        // All enquiry types are persisted as notifications in the spec's
+        // `notifications` table for admin review. The spec's section 25
+        // database architecture does not include separate tables for
+        // support tickets, ATSWA guidance requests, store enquiries,
+        // or partner enquiries — these are stored as notifications.
+        const notifType = type === 'support' ? 'support_ticket'
+          : type === 'atswa' ? 'atswa_guidance_request'
+          : type === 'store' ? 'store_material_enquiry'
+          : type === 'book-enq' ? 'partner_enquiry'
+          : 'advertising_campaign_request';
+
+        let notifTitle = 'VALENCE Enquiry';
+        let notifMessage = '';
 
         if (type === 'support') {
-          dbOp = supabase.from('support_tickets').insert({
-            ticket_ref: ref,
-            user_id: uid,
-            full_name: (payload.fullName || 'VALENCE Visitor').trim(),
-            email: (payload.email || '').trim(),
-            phone: (payload.phone || '').trim() || null,
-            category: payload.category || 'General Support',
-            message: (payload.message || '').trim(),
-          });
+          notifTitle = 'Support Ticket';
+          notifMessage = `${payload.fullName || 'Visitor'}: ${payload.message || ''} (${payload.category || 'General Support'})`;
         } else if (type === 'atswa') {
-          dbOp = supabase.from('atswa_guidance_requests').insert({
-            ticket_ref: ref,
-            user_id: uid,
-            full_name: (payload.fullName || 'ATSWA Candidate').trim(),
-            email: (payload.email || '').trim(),
-            target_level: payload.level || 'ATS 1',
-            qualification_background: payload.entryQualification || 'O-Level Result',
-            documents_ready: Array.isArray(payload.readyDocuments) ? payload.readyDocuments : [],
-            question_or_note: (payload.question || '').trim() || null,
-          });
+          notifTitle = 'ATSWA Registration Guidance Request';
+          notifMessage = `${payload.fullName || 'ATSWA Candidate'}: ${payload.question || ''} (Level: ${payload.level || 'ATS 1'})`;
         } else if (type === 'store') {
-          const isRestock = String(payload.topic || '')
-            .toLowerCase()
-            .includes('study pack availability');
-          dbOp = supabase.from('store_material_enquiries').insert({
-            ticket_ref: ref,
-            user_id: uid,
-            full_name: (payload.fullName || 'VALENCE Candidate').trim(),
-            email: (payload.email || '').trim(),
-            topic: payload.topic || 'Store Material Enquiry',
-            material_or_course: (payload.materialOrCourse || 'General Store').trim(),
-            delivery_zone_id: payload.zoneId || null,
-            delivery_zone_name: payload.zoneName || null,
-            message: (payload.message || '').trim(),
-            notify_on_restock: isRestock,
-          });
+          notifTitle = 'Store Material Enquiry';
+          notifMessage = `${payload.fullName || 'Candidate'}: ${payload.topic || 'Store Enquiry'} — ${payload.message || ''}`;
         } else if (type === 'book-enq') {
-          const isCentre = String(payload.partnerType || '').toLowerCase().includes('centre');
-          dbOp = supabase.from('partner_enquiries').insert({
-            enquiry_ref: ref,
-            student_user_id: uid,
-            centre_id: isCentre && payload.partnerId ? payload.partnerId : null,
-            textbook_advertiser_id: !isCentre && payload.partnerId ? payload.partnerId : null,
-            partner_name: payload.partnerName || 'Verified Partner',
-            partner_type: payload.partnerType || 'Textbook Vendor',
-            book_title: payload.bookTitle || null,
-            student_name: (payload.studentName || 'VALENCE Student').trim(),
-            student_email: (payload.studentEmail || '').trim(),
-            quantity: Number(payload.quantity) || 1,
-            delivery_location: (payload.deliveryLocation || 'Nigeria').trim(),
-            message: (payload.message || '').trim(),
-          });
+          notifTitle = 'Partner Enquiry';
+          notifMessage = `${payload.studentName || 'Student'} → ${payload.partnerName || 'Partner'}: ${payload.message || ''}`;
         } else if (type === 'advertise') {
-          const catStr = String(payload.advertiserCategory || '').toLowerCase();
-          const enumCat = catStr.includes('author')
-            ? 'textbook_author'
-            : catStr.includes('vendor') || catStr.includes('bookshop')
-            ? 'textbook_vendor'
-            : 'physical_centre';
-          dbOp = supabase.from('ad_campaigns').insert({
-            campaign_ref: ref,
-            user_id: uid,
-            advertiser_category: enumCat,
-            entity_name: (payload.entityName || 'Applicant Partner').trim(),
-            contact_email: (payload.contactEmail || '').trim(),
-            contact_phone: (payload.contactPhone || '').trim() || null,
-            city_state: (payload.cityState || 'Lagos').trim(),
-            venue_or_coverage: (payload.streetOrCoverage || 'Physical Location').trim(),
-            schedule_or_delivery: payload.bookTitlesOrSchedule || null,
-            centre_cost_implication_text: payload.centreCostImplication || null,
-            isbn_or_publisher: payload.isbnOrPublisher || null,
-            student_purchase_mode: payload.studentPurchaseMode || null,
-            headline: (payload.headline || payload.entityName || 'Partner Campaign').trim(),
-            body_copy: payload.notes || null,
-            duration_weeks: Math.max(1, Math.min(52, Number(payload.weeks) || 1)),
-            weekly_rate_ngn: Number(payload.weeklyRate) || 10000,
-            total_amount_ngn: Number(payload.totalAmount) || 10000,
-            payment_status: 'pending',
-            status: 'pending_review',
-          });
+          notifTitle = 'Advertising Campaign Request';
+          notifMessage = `${payload.entityName || 'Applicant'}: ${payload.headline || ''} — ${payload.notes || ''}`;
         }
+
+        const dbOp = supabase.from('notifications').insert({
+          profile_id: profileId,
+          notification_type: notifType,
+          title: notifTitle,
+          message: notifMessage,
+        });
 
         if (dbOp) {
           dbOp.then(({ error }) => {
@@ -904,6 +881,29 @@ export function PlatformProvider({ children }) {
     [profile]
   );
 
+  // Phase 4: Tuition level unlock
+  const handleUnlockLevel = useCallback(async (levelId, amountPaidNgn = 3000, paystackReference = null) => {
+    const result = await authUnlockLevel(levelId, amountPaidNgn, paystackReference);
+    if (!result.error && result.data) {
+      const newId = result.data.level_id;
+      setUnlockedLevelIds((prev) => (prev.includes(newId) ? prev : [...prev, newId]));
+    }
+    return result;
+  }, []);
+
+  // Phase 4: ATSWA document management
+  const handleFetchAtswaDocuments = useCallback(async () => {
+    const result = await authFetchAtswaDocuments();
+    if (Array.isArray(result.data)) setAtswaDocuments(result.data);
+    return result;
+  }, []);
+
+  // Phase 4: ATSWA guidance request submission
+  const handleSubmitAtswaGuidance = useCallback(async (payload) => {
+    const result = await authSubmitAtswaGuidance(payload);
+    return result;
+  }, []);
+
   const isLevelUnlocked = (levelKey) => unlockedLevelIds.includes(levelKey);
 
   const addToCart = (product, qty = 1) => {
@@ -977,7 +977,7 @@ export function PlatformProvider({ children }) {
     dbStatus,
     refreshPublicData,
     settings: liveSettings,
-    sessions: EXAMINATION_SESSIONS,
+    sessions: liveExamSessions,
     atswaLevels: ATSWA_LEVELS,
     allAtswaCourses: ALL_ATSWA_COURSES,
     atswaRegistrationGuide: ATSWA_APP_REGISTRATION_GUIDE,
@@ -1003,7 +1003,7 @@ export function PlatformProvider({ children }) {
     graduateEntryPathways: GRADUATE_ENTRY_PATHWAYS,
     icanRegistrationProcess: ICAN_REGISTRATION_PROCESS,
     completionTimelines: ICAN_COMPLETION_TIMELINES,
-    exemptionRules: EXEMPTION_RULES,
+    exemptionRules: liveExemptionRules,
     discussionCategories: DISCUSSION_CATEGORIES,
     competitionDivisions: COMPETITION_DIVISIONS,
     competitionReward: {
@@ -1050,6 +1050,14 @@ export function PlatformProvider({ children }) {
     setPrivacySettings,
     userNotifications,
     setUserNotifications,
+    // Phase 4: Exam & tuition
+    liveExamSessions,
+    liveExamTimetables,
+    liveExemptionRules,
+    atswaDocuments,
+    handleUnlockLevel,
+    handleFetchAtswaDocuments,
+    handleSubmitAtswaGuidance,
   };
 
   return <PlatformContext.Provider value={value}>{children}</PlatformContext.Provider>;

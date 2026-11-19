@@ -77,6 +77,9 @@ export default function CompetitionsPage() {
               <Link to="/portal/student" className="v-btn-secondary text-xs">
                 Enter as Candidate & Compete for the Podium <ArrowRight className="h-4 w-4" />
               </Link>
+              <Link to="/competitions/19bd2129-6b4e-4804-8728-fb35cb2f5554" className="v-btn-ghost text-xs">
+                View the Live 2027 Competition <Trophy className="h-4 w-4" />
+              </Link>
             </div>
           </div>
 

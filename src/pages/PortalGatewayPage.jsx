@@ -226,7 +226,7 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
         return;
       }
       toast.success('Signed in', `Welcome to ${meta.label}.`);
-      navigate('/portal/student');
+      navigate(selectedPortal === 'admin' ? '/portal/admin' : selectedPortal === 'tutor' ? '/portal/tutor' : '/portal/student');
     } else {
       const accountType = selectedPortal === 'admin' ? 'admin' :
         selectedPortal === 'school_rep' ? 'school_rep' :
@@ -249,7 +249,7 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
         return;
       }
       toast.success('Account created', `Welcome to VALENCE.`);
-      navigate('/portal/student');
+      navigate(selectedPortal === 'admin' ? '/portal/admin' : selectedPortal === 'tutor' ? '/portal/tutor/apply' : '/portal/student');
     }
   };
 

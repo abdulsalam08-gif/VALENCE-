@@ -44,8 +44,24 @@ export default function IcanPage() {
     settings,
     isLevelUnlocked,
     openWhatsAppModal,
+    handleUnlockLevel,
   } = usePlatform();
   const toast = useToast();
+  const [unlocking, setUnlocking] = useState(false);
+
+  const handleIcanUnlock = async () => {
+    setUnlocking(true);
+    const result = await handleUnlockLevel(`ican:${activeLevel.slug}`, 3000);
+    setUnlocking(false);
+    if (result.error) {
+      toast.error('Unlock failed', result.error);
+      return;
+    }
+    toast.success(
+      `${activeLevel.shortName} Cost Implication Unlocked`,
+      `₦3,000 unlocked. Full tuition cost implication is now visible above.`
+    );
+  };
 
   const icanSessions = useMemo(
     () => sessions.filter((s) => s.programme === 'ICAN'),
@@ -562,18 +578,14 @@ export default function IcanPage() {
                   </div>
                 )}
 
-                <Link
-                  to={`/portal/student?programme=ican&level=${activeLevel.slug}&diet=${activeDiet.id}&apply=tuition`}
-                  onClick={() =>
-                    toast.info(
-                      `ICAN ${activeLevel.shortName} Tuition Unlock (₦3,000)`,
-                      'Sign in to unlock your personalised cost implication via Paystack.'
-                    )
-                  }
+                <button
+                  type="button"
+                  onClick={handleIcanUnlock}
+                  disabled={unlocking}
                   className="v-btn-primary w-full py-3"
                 >
-                  Apply for Tuition & View Cost (₦3,000) <ArrowRight className="h-4 w-4" />
-                </Link>
+                  {unlocking ? 'Processing...' : <>Apply for Tuition & View Cost (₦3,000) <ArrowRight className="h-4 w-4" /></>}
+                </button>
 
                 <p className="text-[11px] text-center text-[#667085] flex items-center justify-center gap-1.5">
                   <ShieldCheck className="h-3.5 w-3.5 text-[#16C784]" />
