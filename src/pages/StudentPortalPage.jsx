@@ -24,10 +24,7 @@ import {
   X,
   Trash2,
   ShieldCheck,
-  Clock,
-  Video,
   CalendarDays,
-  ExternalLink,
   Plus,
 } from 'lucide-react';
 import { uploadAtswaDocument, fetchAtswaDocuments, unlockLevel } from '../lib/auth';
@@ -36,8 +33,6 @@ import {
   unlockLevelWithPaystack,
   enrollTuition,
   fetchMyTuitionEnrolments,
-  listLiveClassSessions,
-  getLiveClassMeetUrl,
   fetchMyPaymentReceipts,
   resolveExaminationLevel,
 } from '../lib/payments';
@@ -478,14 +473,6 @@ export default function StudentPortalPage() {
                 icanLevels={icanLevels}
                 isLevelUnlocked={isLevelUnlocked}
               />
-
-              {/* Live classes (Google Meet access control) */}
-              <LiveClassesSection
-                atswaLevels={atswaLevels}
-                icanLevels={icanLevels}
-                isLevelUnlocked={isLevelUnlocked}
-                toast={toast}
-              />
             </div>
           </div>
         )}
@@ -700,110 +687,6 @@ function TuitionEnrolmentSection({ atswaLevels, icanLevels, isLevelUnlocked }) {
                   <Badge variant="neutral">Locked</Badge>
                 )}
               </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function LiveClassesSection({ atswaLevels, icanLevels, isLevelUnlocked, toast }) {
-  const [sessionsByLevel, setSessionsByLevel] = useState({});
-  const [loadingLevel, setLoadingLevel] = useState(null);
-  const [joining, setJoining] = useState(null);
-
-  const allLevels = [
-    ...atswaLevels.map((l) => ({ ...l, key: `atswa:${l.id}`, ref: l.id })),
-    ...icanLevels.map((l) => ({ ...l, key: `ican:${l.slug || l.id}`, ref: l.slug || l.id })),
-  ];
-
-  const loadLevel = async (level) => {
-    setLoadingLevel(level.key);
-    try {
-      const res = await resolveExaminationLevel(level.ref);
-      const sessions = await listLiveClassSessions(res.level_id);
-      setSessionsByLevel((prev) => ({ ...prev, [level.key]: sessions }));
-    } catch (e) {
-      setSessionsByLevel((prev) => ({ ...prev, [level.key]: [] }));
-      toast.error('Live classes', e.message);
-    } finally {
-      setLoadingLevel(null);
-    }
-  };
-
-  const join = async (session) => {
-    setJoining(session.id);
-    try {
-      const result = await getLiveClassMeetUrl(session.id);
-      if (result?.error) {
-        toast.error('Access denied', result.error);
-      } else {
-        window.open(result.meet_url, '_blank', 'noopener,noreferrer');
-        toast.success('Joining live class', session.title);
-      }
-    } catch (e) {
-      toast.error('Access denied', e.message);
-    } finally {
-      setJoining(null);
-    }
-  };
-
-  return (
-    <div className="mt-6 rounded-xl bg-[#11161C] border border-white/[0.10] p-5">
-      <div className="flex items-center gap-2 mb-4">
-        <Video className="h-4 w-4 text-[#16C784]" />
-        <h3 className="text-sm font-bold text-white">Live Classes</h3>
-        <span className="text-xs text-[#667085]">In-app video classes, enrolled students & assigned tutors</span>
-      </div>
-      <div className="space-y-4">
-        {allLevels.map((level) => {
-          const unlocked = isLevelUnlocked(level.key);
-          const sessions = sessionsByLevel[level.key] || [];
-          return (
-            <div key={level.key}>
-              <div className="flex items-center justify-between mb-2">
-                <p className="text-xs font-semibold text-white">{level.code || level.shortName || level.name}</p>
-                {unlocked && (
-                  <button
-                    onClick={() => loadLevel(level)}
-                    disabled={loadingLevel === level.key}
-                    className="text-xs text-[#16C784] hover:underline disabled:opacity-50"
-                  >
-                    {loadingLevel === level.key ? 'Loading...' : sessions.length ? 'Refresh' : 'View sessions'}
-                  </button>
-                )}
-              </div>
-              {unlocked && sessions.length === 0 && loadingLevel !== level.key && (
-                <p className="text-xs text-[#667085]">No live classes scheduled for this level.</p>
-              )}
-              {sessions.length > 0 && (
-                <div className="space-y-2">
-                  {sessions.map((s) => (
-                    <div key={s.id} className="rounded-lg border border-white/[0.08] p-3">
-                      <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <p className="text-xs font-semibold text-white">{s.title}</p>
-                          {s.scheduled_at && (
-                            <p className="text-xs text-[#9AA4B2] flex items-center gap-1">
-                              <Clock className="h-3 w-3" />
-                              {new Date(s.scheduled_at).toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' })}
-                            </p>
-                          )}
-                        </div>
-                        <button
-                          onClick={() => join(s)}
-                          disabled={joining === s.id}
-                          className="v-btn-primary !py-1 !px-2 text-xs whitespace-nowrap"
-                        >
-                          <ExternalLink className="h-3 w-3" /> {joining === s.id ? 'Opening...' : 'Join'}
-                        </button>
-                      </div>
-                      {s.description && <p className="text-xs text-[#9AA4B2] mt-1">{s.description}</p>}
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
           );
         })}

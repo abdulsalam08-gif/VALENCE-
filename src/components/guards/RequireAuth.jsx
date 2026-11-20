@@ -17,7 +17,10 @@ export function RequireAuth({ children }) {
   }
 
   if (!user) {
-    return <Navigate to="/portal/student" replace state={{ from: location.pathname }} />;
+    // Redirect to the sign-in gateway. Redirecting to /portal/student here
+    // would loop back into this same guard when the session hasn't hydrated,
+    // producing a blank page — /signin is the safe sign-in entry point.
+    return <Navigate to="/signin" replace state={{ from: location.pathname }} />;
   }
 
   return children;
@@ -37,7 +40,7 @@ export function RequireRole({ roles, children, fallback = null }) {
   }
 
   if (!user) {
-    return <Navigate to="/portal/student" replace />;
+    return <Navigate to="/signin" replace />;
   }
 
   const hasRole = roles.some((r) => adminRoles.includes(r) || user.user_metadata?.account_type === r);

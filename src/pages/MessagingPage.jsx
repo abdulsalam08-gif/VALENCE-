@@ -7,8 +7,6 @@ import {
   uploadAttachment, getAttachmentSignedUrl, subscribeToMessages,
 } from '../lib/messaging.js';
 import { fetchDiscoveryProfiles, toggleBlock } from '../lib/community.js';
-import { subscribeToCallSignals } from '../lib/calls.js';
-import CallModal from '../components/calls/CallModal.jsx';
 
 function initials(name) {
   return (name || 'V').split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join('');
@@ -142,7 +140,6 @@ export default function MessagingPage() {
   const [toast, setToast] = useState(null);
   const [busy, setBusy] = useState(false);
   const [modal, setModal] = useState(null);
-  const [callModal, setCallModal] = useState(null);
   const [recording, setRecording] = useState(false);
   const mediaRef = useRef(null);
   const scrollRef = useRef(null);
@@ -192,22 +189,6 @@ export default function MessagingPage() {
     });
     return unsub;
   }, [activeId, loadConversations]);
-
-  // Incoming call detection: ring signals addressed to me in the active conversation.
-  useEffect(() => {
-    if (!activeId || !myProfileId) return;
-    const unsub = subscribeToCallSignals(null, (sig) => {
-      if (sig.signal_type === 'ring' && sig.to_profile_id === myProfileId && sig.payload?.conversation_id === activeId) {
-        setCallModal({ sessionId: sig.session_id, incoming: true, mediaType: sig.payload?.media_type || 'audio', peerName: activeConvo?.peer_name || 'Call' });
-      }
-    });
-    return unsub;
-  }, [activeId, myProfileId, activeConvo]);
-
-  const startCall = (mediaType) => {
-    if (!activeId) return;
-    setCallModal({ sessionId: null, incoming: false, mediaType, peerName: activeConvo?.peer_name || 'Call' });
-  };
 
   // Auto-scroll to bottom on new messages
   useEffect(() => {
@@ -356,8 +337,6 @@ export default function MessagingPage() {
                   <div className="text-[11px] text-[#9AA4B2]">{members.length} members</div>
                 </div>
                 <div className="flex gap-1">
-                  <button onClick={() => startCall('audio')} title="Audio call" className="v-btn-ghost px-2 py-1 text-xs">📞</button>
-                  <button onClick={() => startCall('video')} title="Video call" className="v-btn-ghost px-2 py-1 text-xs">📹</button>
                   {activeConvo.conversation_type === 'direct' && (
                     <button onClick={handleBlockPeer} title="Block peer" className="v-btn-ghost px-2 py-1 text-xs">⛔</button>
                   )}
@@ -404,18 +383,6 @@ export default function MessagingPage() {
       )}
       {modal === 'new-group' && (
         <PickerModal title="New group" confirmLabel="Create group" onClose={() => setModal(null)} onConfirm={handleNewGroup} />
-      )}
-
-      {callModal && (
-        <CallModal
-          conversationId={activeId}
-          sessionId={callModal.sessionId}
-          mediaType={callModal.mediaType}
-          incoming={callModal.incoming}
-          peerName={callModal.peerName}
-          myProfileId={myProfileId}
-          onClose={() => setCallModal(null)}
-        />
       )}
     </div>
   );

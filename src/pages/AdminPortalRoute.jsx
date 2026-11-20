@@ -21,8 +21,12 @@ export default function AdminPortalRoute() {
   // Not signed in → show the admin sign-in gateway
   if (!user) return <PortalGatewayPage defaultPortal="admin" />;
 
-  // Signed in but not an admin → back to the public site
-  const isAdmin = adminRoles.some((r) => ADMIN_ROLES.some((ar) => ar.value === r));
+  // Signed in but not an admin → back to the public site.
+  // Accept either a user_roles assignment OR an account_type of 'admin'
+  // (account_type is available immediately from user metadata, avoiding the
+  // race where RBAC roles are still loading when this guard first runs).
+  const accountIsAdmin = user?.user_metadata?.account_type === 'admin';
+  const isAdmin = accountIsAdmin || adminRoles.some((r) => ADMIN_ROLES.some((ar) => ar.value === r));
   if (!isAdmin) return <Navigate to="/" replace />;
 
   return <AdminPortalPage />;

@@ -133,34 +133,6 @@ export async function fetchMyTuitionEnrolments() {
   return [];
 }
 
-/* ---------------- Live classes (Google Meet access control) ---------------- */
-
-export async function listLiveClassSessions(levelId) {
-  if (!supabase) return [];
-  const { data, error } = await supabase.rpc('list_live_class_sessions', {
-    p_level_id: levelId,
-  });
-  if (error) throw new Error(error.message || 'Unable to load live classes.');
-  if (Array.isArray(data)) return data;
-  if (data?.error) throw new Error(data.error);
-  return [];
-}
-
-/**
- * Get the Google Meet URL for a session. Server-side access control:
- * enrolled students (with an active tuition enrolment for the level), the
- * assigned tutor, or admins only.
- */
-export async function getLiveClassMeetUrl(sessionId) {
-  if (!supabase) return { error: 'Supabase is not configured.' };
-  const { data, error } = await supabase.rpc('get_live_class_meet_url', {
-    p_session_id: sessionId,
-  });
-  if (error) throw new Error(error.message || 'Unable to access the live class.');
-  if (data?.error) throw new Error(data.error);
-  return data;
-}
-
 /* ---------------- Payment receipts ---------------- */
 
 export async function fetchMyPaymentReceipts() {

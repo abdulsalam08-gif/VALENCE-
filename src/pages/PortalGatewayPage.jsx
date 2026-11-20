@@ -204,6 +204,18 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
   const Icon = meta.icon;
   const applyForTuition = searchParams.get('apply') === 'tuition';
 
+  // Map each portal to its post-login destination. Portals without a dedicated
+  // workspace (professional, school) use the student/learner portal.
+  const portalRoute = {
+    student: '/portal/student',
+    professional: '/portal/student',
+    school: '/portal/student',
+    general_learner: '/portal/student',
+    tutor: '/portal/tutor',
+    advertiser: '/portal/advertiser',
+    admin: '/portal/admin',
+  };
+
   const handlePortalSwitch = (key) => {
     setSelectedPortal(key);
     if (key === 'admin') setMode('signin');
@@ -226,7 +238,7 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
         return;
       }
       toast.success('Signed in', `Welcome to ${meta.label}.`);
-      navigate(selectedPortal === 'admin' ? '/portal/admin' : selectedPortal === 'tutor' ? '/portal/tutor' : '/portal/student');
+      navigate(portalRoute[selectedPortal] || '/portal/student');
     } else {
       const accountType = selectedPortal === 'admin' ? 'admin' :
         selectedPortal === 'school_rep' ? 'school_rep' :
@@ -249,7 +261,7 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
         return;
       }
       toast.success('Account created', `Welcome to VALENCE.`);
-      navigate(selectedPortal === 'admin' ? '/portal/admin' : selectedPortal === 'tutor' ? '/portal/tutor/apply' : '/portal/student');
+      navigate(selectedPortal === 'tutor' ? '/portal/tutor/apply' : portalRoute[selectedPortal] || '/portal/student');
     }
   };
 
