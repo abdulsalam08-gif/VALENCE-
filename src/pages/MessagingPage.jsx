@@ -198,7 +198,7 @@ export default function MessagingPage() {
     if (!activeId || !myProfileId) return;
     const unsub = subscribeToCallSignals(null, (sig) => {
       if (sig.signal_type === 'ring' && sig.to_profile_id === myProfileId && sig.payload?.conversation_id === activeId) {
-        setCallModal({ sessionId: sig.session_id, incoming: true, mediaType: sig.payload?.media_type || 'audio', peerName: activeConvo?.peer_name || 'Call' });
+        setCallModal({ sessionId: sig.session_id, incoming: true, mediaType: sig.payload?.media_type || 'audio', meetUrl: sig.payload?.meet_url || null, peerName: activeConvo?.peer_name || 'Call' });
       }
     });
     return unsub;
@@ -412,6 +412,7 @@ export default function MessagingPage() {
           sessionId={callModal.sessionId}
           mediaType={callModal.mediaType}
           incoming={callModal.incoming}
+          meetUrl={callModal.meetUrl}
           peerName={callModal.peerName}
           myProfileId={myProfileId}
           onClose={() => setCallModal(null)}
