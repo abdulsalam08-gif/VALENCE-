@@ -129,7 +129,7 @@ export default function ProfilePage() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {/* Header card */}
         <div className="rounded-2xl bg-[#11161C] border border-white/[0.10] overflow-hidden">
-          <div className="h-28 bg-gradient-to-r from-[#16C784]/20 via-[#11161C] to-[#11161C]" />
+          <div className="h-28 bg-gradient-to-r from-[#E0A82E]/20 via-[#11161C] to-[#11161C]" />
           <div className="px-6 sm:px-8 pb-6 -mt-12">
             <div className="flex items-end justify-between gap-4 flex-wrap">
               <div className="flex items-end gap-4">
@@ -143,7 +143,7 @@ export default function ProfilePage() {
                 <div className="pb-1">
                   <h1 className="text-xl font-bold text-white">{displayName}</h1>
                   {accountTypeLabel && (
-                    <span className="inline-flex items-center gap-1 text-xs font-medium text-[#16C784] capitalize mt-0.5">
+                    <span className="inline-flex items-center gap-1 text-xs font-medium text-[#E0A82E] capitalize mt-0.5">
                       {accountTypeLabel}
                     </span>
                   )}
@@ -249,7 +249,7 @@ export default function ProfilePage() {
         {/* Gallery */}
         <div className="mt-6 rounded-2xl bg-[#11161C] border border-white/[0.10] p-6 sm:p-8">
           <div className="flex items-center gap-2 mb-5">
-            <ImageIcon className="h-4.5 w-4.5 text-[#16C784]" />
+            <ImageIcon className="h-4.5 w-4.5 text-[#E0A82E]" />
             <h2 className="text-sm font-bold text-white">Photo gallery</h2>
             <span className="text-[10px] text-[#667085]">Private storage · your captions</span>
           </div>
@@ -259,7 +259,7 @@ export default function ProfilePage() {
         {/* Privacy settings */}
         <div className="mt-6 rounded-2xl bg-[#11161C] border border-white/[0.10] p-6 sm:p-8">
           <div className="flex items-center gap-2 mb-5">
-            <Lock className="h-4.5 w-4.5 text-[#16C784]" />
+            <Lock className="h-4.5 w-4.5 text-[#E0A82E]" />
             <h2 className="text-sm font-bold text-white">Privacy & visibility</h2>
           </div>
 
@@ -277,7 +277,7 @@ export default function ProfilePage() {
                           onClick={() => updatePrivacy(field.key, opt.value)}
                           className={`rounded-lg px-3 py-1.5 text-xs font-semibold capitalize transition-all ${
                             localPrivacy[field.key] === opt.value
-                              ? 'bg-[#16C784] text-black'
+                              ? 'bg-[#E0A82E] text-black'
                               : 'bg-white/[0.04] text-[#9AA4B2] hover:bg-white/[0.08]'
                           }`}
                         >
@@ -303,7 +303,7 @@ export default function ProfilePage() {
                         updatePrivacy(field.key, !localPrivacy[field.key]);
                       }}
                       className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-                        localPrivacy[field.key] ? 'bg-[#16C784]' : 'bg-white/[0.1]'
+                        localPrivacy[field.key] ? 'bg-[#E0A82E]' : 'bg-white/[0.1]'
                       }`}
                     >
                       <span
@@ -352,7 +352,7 @@ function StatCard({ icon: Icon, label, value }) {
 function ContactRow({ icon: Icon, label, value }) {
   return (
     <div className="flex items-center gap-2.5">
-      <div className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.05] text-[#16C784] shrink-0">
+      <div className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.05] text-[#E0A82E] shrink-0">
         <Icon className="h-4 w-4" />
       </div>
       <div className="min-w-0">

@@ -12,7 +12,7 @@ export default function BrandLogo({ size = 'md', showSubtext = true, to = '/' })
   const content = (
     <span className="inline-flex items-center gap-2.5 group">
       <span
-        className={`relative inline-flex ${s.box} items-center justify-center bg-[#0F141A] border border-[#16C784]/25 shadow-glow-sm transition-transform duration-200 group-hover:scale-[1.03] group-hover:border-[#16C784]/50 overflow-hidden`}
+        className={`relative inline-flex ${s.box} items-center justify-center bg-[#0F141A] border border-[#E0A82E]/25 shadow-glow-sm transition-transform duration-200 group-hover:scale-[1.03] group-hover:border-[#E0A82E]/50 overflow-hidden`}
       >
         <img
           src="/valence-mark-sm.png"
@@ -27,7 +27,7 @@ export default function BrandLogo({ size = 'md', showSubtext = true, to = '/' })
           VALENCE
         </span>
         {showSubtext && (
-          <span className={`mt-0.5 ${s.sub} italic font-medium tracking-wide text-[#16C784]/90`}>
+          <span className={`mt-0.5 ${s.sub} italic font-medium tracking-wide text-[#E0A82E]/90`}>
             Vita sine litteris mors est.
           </span>
         )}

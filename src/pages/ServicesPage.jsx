@@ -107,7 +107,7 @@ export default function ServicesPage() {
               <div key={s.title} className="v-card-hover p-6 flex flex-col justify-between gap-5">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between gap-2">
-                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#16C784]/[0.12] border border-[#16C784]/25 text-[#16C784]">
+                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#E0A82E]/[0.12] border border-[#E0A82E]/25 text-[#E0A82E]">
                       <Icon className="h-5 w-5" />
                     </div>
                     <Badge variant="neutral">{s.badge}</Badge>
@@ -117,7 +117,7 @@ export default function ServicesPage() {
                 </div>
                 <Link
                   to={s.to}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#16C784] hover:underline"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#E0A82E] hover:underline"
                 >
                   {s.cta} <ArrowRight className="h-3.5 w-3.5" />
                 </Link>

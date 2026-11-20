@@ -47,7 +47,7 @@ export default function OpportunitiesAdminPage() {
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
-            className={`inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-medium transition ${tab === t.id ? 'bg-[#16C784] text-[#06130D]' : 'border border-white/[0.08] text-[#9AA4B2] hover:bg-white/[0.04]'}`}
+            className={`inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-medium transition ${tab === t.id ? 'bg-[#E0A82E] text-[#06130D]' : 'border border-white/[0.08] text-[#9AA4B2] hover:bg-white/[0.04]'}`}
           >
             <t.icon className="h-3.5 w-3.5" /> {t.label}
           </button>
@@ -139,7 +139,7 @@ function OpportunitiesPanel() {
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
-        <button onClick={openNew} className="rounded-lg bg-[#16C784] px-4 py-2 text-xs font-semibold text-[#06130D]">
+        <button onClick={openNew} className="rounded-lg bg-[#E0A82E] px-4 py-2 text-xs font-semibold text-[#06130D]">
           <Plus className="mr-1 inline h-3.5 w-3.5" /> New Opportunity
         </button>
       </div>
@@ -211,7 +211,7 @@ function OpportunitiesPanel() {
             </label>
             <div className="flex justify-end gap-2 pt-2">
               <button type="button" onClick={() => setShowForm(false)} className="rounded-lg border border-white/[0.1] px-4 py-2 text-sm text-[#9AA4B2]">Cancel</button>
-              <button type="submit" className="rounded-lg bg-[#16C784] px-4 py-2 text-sm font-semibold text-[#06130D]">Save</button>
+              <button type="submit" className="rounded-lg bg-[#E0A82E] px-4 py-2 text-sm font-semibold text-[#06130D]">Save</button>
             </div>
           </form>
         </div>
@@ -268,7 +268,7 @@ function ApplicationsPanel() {
           <p className="mt-2 text-sm text-[#9AA4B2]">{a.application_text}</p>
           {['submitted', 'pending'].includes(a.status) && (
             <div className="mt-3 flex gap-2">
-              <button onClick={() => review(a.id, 'shortlisted')} className="rounded-lg bg-[#16C784] px-3 py-1.5 text-xs font-semibold text-[#06130D]">Shortlist</button>
+              <button onClick={() => review(a.id, 'shortlisted')} className="rounded-lg bg-[#E0A82E] px-3 py-1.5 text-xs font-semibold text-[#06130D]">Shortlist</button>
               <button onClick={() => review(a.id, 'rejected')} className="rounded-lg border border-[#EA3943]/40 bg-[#EA3943]/10 px-3 py-1.5 text-xs font-semibold text-[#EA3943]">Reject</button>
             </div>
           )}
@@ -338,7 +338,7 @@ function WebinarsPanel() {
                 </div>
               </div>
               {w.status === 'published' && (
-                <button onClick={() => setActive(w.id)} className="mt-3 rounded-lg border border-[#16C784]/40 bg-[#16C784]/10 px-3 py-1.5 text-xs font-semibold text-[#16C784]">
+                <button onClick={() => setActive(w.id)} className="mt-3 rounded-lg border border-[#E0A82E]/40 bg-[#E0A82E]/10 px-3 py-1.5 text-xs font-semibold text-[#E0A82E]">
                   View registrations
                 </button>
               )}
@@ -348,7 +348,7 @@ function WebinarsPanel() {
       </div>
 
       <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
-        <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><Users className="h-4 w-4 text-[#16C784]" /> Registrations & Attendance</h3>
+        <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><Users className="h-4 w-4 text-[#E0A82E]" /> Registrations & Attendance</h3>
         {!active ? (
           <p className="text-sm text-[#9AA4B2]">Select a published webinar to manage registrations and mark attendance.</p>
         ) : regs.length === 0 ? (
@@ -364,7 +364,7 @@ function WebinarsPanel() {
                   </div>
                   <div className="flex gap-2">
                     <button onClick={() => markAttend(r.id, r.profile_id, true)} disabled={r.status === 'certified'}
-                      className="rounded-lg bg-[#16C784] px-2.5 py-1 text-[11px] font-semibold text-[#06130D] disabled:opacity-40">Mark attended</button>
+                      className="rounded-lg bg-[#E0A82E] px-2.5 py-1 text-[11px] font-semibold text-[#06130D] disabled:opacity-40">Mark attended</button>
                     <button onClick={() => markAttend(r.id, r.profile_id, false)}
                       className="rounded-lg border border-white/[0.1] px-2.5 py-1 text-[11px] text-[#9AA4B2]">Reset</button>
                   </div>
@@ -431,7 +431,7 @@ function ProVerificationPanel() {
   return (
     <div className="grid gap-6 lg:grid-cols-2">
       <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
-        <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><Award className="h-4 w-4 text-[#16C784]" /> Credential Verification Queue</h3>
+        <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><Award className="h-4 w-4 text-[#E0A82E]" /> Credential Verification Queue</h3>
         {creds.length === 0 ? (
           <p className="text-sm text-[#9AA4B2]">No credentials pending verification.</p>
         ) : (
@@ -445,7 +445,7 @@ function ProVerificationPanel() {
                   </div>
                 </div>
                 <div className="mt-3 flex gap-2">
-                  <button onClick={() => reviewCred(c.id, true)} className="rounded-lg bg-[#16C784] px-3 py-1.5 text-xs font-semibold text-[#06130D]">Verify</button>
+                  <button onClick={() => reviewCred(c.id, true)} className="rounded-lg bg-[#E0A82E] px-3 py-1.5 text-xs font-semibold text-[#06130D]">Verify</button>
                   <button onClick={() => reviewCred(c.id, false)} className="rounded-lg border border-[#EA3943]/40 bg-[#EA3943]/10 px-3 py-1.5 text-xs font-semibold text-[#EA3943]">Reject</button>
                 </div>
               </li>
@@ -455,7 +455,7 @@ function ProVerificationPanel() {
       </div>
 
       <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
-        <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><ShieldCheck className="h-4 w-4 text-[#16C784]" /> VALENCE PRO Verification Queue</h3>
+        <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><ShieldCheck className="h-4 w-4 text-[#E0A82E]" /> VALENCE PRO Verification Queue</h3>
         {verifs.length === 0 ? (
           <p className="text-sm text-[#9AA4B2]">No verification requests pending.</p>
         ) : (
@@ -469,7 +469,7 @@ function ProVerificationPanel() {
                   </div>
                 </div>
                 <div className="mt-3 flex gap-2">
-                  <button onClick={() => reviewVerif(v.id, true)} className="rounded-lg bg-[#16C784] px-3 py-1.5 text-xs font-semibold text-[#06130D]">Approve</button>
+                  <button onClick={() => reviewVerif(v.id, true)} className="rounded-lg bg-[#E0A82E] px-3 py-1.5 text-xs font-semibold text-[#06130D]">Approve</button>
                   <button onClick={() => reviewVerif(v.id, false)} className="rounded-lg border border-[#EA3943]/40 bg-[#EA3943]/10 px-3 py-1.5 text-xs font-semibold text-[#EA3943]">Reject</button>
                 </div>
               </li>

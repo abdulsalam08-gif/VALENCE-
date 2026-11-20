@@ -75,13 +75,13 @@ export default function CpdWebinarsPage() {
       <div className="mt-8 flex flex-wrap gap-2">
         <button
           onClick={() => setTab('upcoming')}
-          className={`rounded-lg px-4 py-2 text-sm font-medium transition ${tab === 'upcoming' ? 'bg-[#16C784] text-[#06130D]' : 'border border-white/[0.08] text-[#9AA4B2] hover:bg-white/[0.04]'}`}
+          className={`rounded-lg px-4 py-2 text-sm font-medium transition ${tab === 'upcoming' ? 'bg-[#E0A82E] text-[#06130D]' : 'border border-white/[0.08] text-[#9AA4B2] hover:bg-white/[0.04]'}`}
         >
           Upcoming Webinars
         </button>
         <button
           onClick={() => setTab('mine')}
-          className={`rounded-lg px-4 py-2 text-sm font-medium transition ${tab === 'mine' ? 'bg-[#16C784] text-[#06130D]' : 'border border-white/[0.08] text-[#9AA4B2] hover:bg-white/[0.04]'}`}
+          className={`rounded-lg px-4 py-2 text-sm font-medium transition ${tab === 'mine' ? 'bg-[#E0A82E] text-[#06130D]' : 'border border-white/[0.08] text-[#9AA4B2] hover:bg-white/[0.04]'}`}
         >
           My CPD Record ({myRegs.length})
         </button>
@@ -113,10 +113,10 @@ export default function CpdWebinarsPage() {
                       <p className="mt-1 text-xs leading-relaxed text-[#9AA4B2]">{w.description}</p>
                     </div>
                     <div className="space-y-1.5 text-xs text-[#9AA4B2]">
-                      <p className="inline-flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5 text-[#16C784]" /> {fmtDateTime(w.start_time)}</p>
-                      <p className="inline-flex items-center gap-1.5"><Clock className="h-3.5 w-3.5 text-[#16C784]" /> {w.cpd_hours} CPD hours</p>
+                      <p className="inline-flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5 text-[#E0A82E]" /> {fmtDateTime(w.start_time)}</p>
+                      <p className="inline-flex items-center gap-1.5"><Clock className="h-3.5 w-3.5 text-[#E0A82E]" /> {w.cpd_hours} CPD hours</p>
                       {w.meeting_link && (
-                        <a href={w.meeting_link} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-[#16C784] hover:underline">
+                        <a href={w.meeting_link} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-[#E0A82E] hover:underline">
                           <Video className="h-3.5 w-3.5" /> Join meeting link
                         </a>
                       )}
@@ -124,7 +124,7 @@ export default function CpdWebinarsPage() {
                     <button
                       onClick={() => handleRegister(w)}
                       disabled={registered || full || !user}
-                      className="mt-auto rounded-lg bg-[#16C784] px-4 py-2 text-sm font-semibold text-[#06130D] disabled:opacity-40"
+                      className="mt-auto rounded-lg bg-[#E0A82E] px-4 py-2 text-sm font-semibold text-[#06130D] disabled:opacity-40"
                     >
                       {registered ? 'Registered' : full ? 'Full' : user ? 'Register' : 'Sign in to register'}
                     </button>
@@ -157,8 +157,8 @@ export default function CpdWebinarsPage() {
                     </div>
                   </div>
                   {r.certificate_number && (
-                    <div className="mt-3 flex items-center gap-2 rounded-lg border border-[#16C784]/30 bg-[#16C784]/[0.06] px-3 py-2">
-                      <Award className="h-4 w-4 text-[#16C784]" />
+                    <div className="mt-3 flex items-center gap-2 rounded-lg border border-[#E0A82E]/30 bg-[#E0A82E]/[0.06] px-3 py-2">
+                      <Award className="h-4 w-4 text-[#E0A82E]" />
                       <div>
                         <p className="text-sm font-medium text-white">CPD Certificate</p>
                         <p className="text-[11px] text-[#9AA4B2]">{r.certificate_number} · {r.cpd_hours_awarded} hours</p>

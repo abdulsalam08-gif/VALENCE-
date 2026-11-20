@@ -6,9 +6,9 @@ const ToastContext = createContext(null);
 const VARIANT_STYLES = {
   success: {
     icon: CheckCircle2,
-    border: 'border-[#16C784]/35',
-    iconColor: 'text-[#16C784]',
-    bar: 'bg-[#16C784]',
+    border: 'border-[#E0A82E]/35',
+    iconColor: 'text-[#E0A82E]',
+    bar: 'bg-[#E0A82E]',
   },
   error: {
     icon: AlertCircle,
@@ -25,8 +25,8 @@ const VARIANT_STYLES = {
   info: {
     icon: Info,
     border: 'border-white/[0.14]',
-    iconColor: 'text-[#16C784]',
-    bar: 'bg-[#16C784]/70',
+    iconColor: 'text-[#E0A82E]',
+    bar: 'bg-[#E0A82E]/70',
   },
 };
 

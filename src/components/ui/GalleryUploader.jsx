@@ -77,7 +77,7 @@ export default function GalleryUploader() {
       {/* Upload zone */}
       <div className="v-card p-5 space-y-4">
         <div>
-          <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">Add a Photo</p>
+          <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">Add a Photo</p>
           <p className="text-[11px] text-[#9AA4B2] mt-0.5">Upload study moments, campus photos or achievements to your gallery.</p>
         </div>
 
@@ -121,7 +121,7 @@ export default function GalleryUploader() {
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="w-full rounded-xl border-2 border-dashed border-[#16C784]/30 bg-[#16C784]/[0.03] py-8 flex flex-col items-center gap-2 text-[#16C784] hover:bg-[#16C784]/[0.06] transition-colors"
+            className="w-full rounded-xl border-2 border-dashed border-[#E0A82E]/30 bg-[#E0A82E]/[0.03] py-8 flex flex-col items-center gap-2 text-[#E0A82E] hover:bg-[#E0A82E]/[0.06] transition-colors"
           >
             <ImagePlus className="h-8 w-8" />
             <span className="text-sm font-semibold">Click to upload a photo</span>

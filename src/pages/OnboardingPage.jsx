@@ -143,7 +143,7 @@ export default function OnboardingPage() {
                 <div
                   className={`inline-flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-all ${
                     step >= s
-                      ? 'bg-[#16C784] text-black'
+                      ? 'bg-[#E0A82E] text-black'
                       : 'bg-white/[0.06] text-[#667085]'
                   }`}
                 >
@@ -154,7 +154,7 @@ export default function OnboardingPage() {
                 </span>
               </div>
               {s < 3 && (
-                <div className={`h-px flex-1 mx-2 ${step > s ? 'bg-[#16C784]' : 'bg-white/[0.08]'}`} />
+                <div className={`h-px flex-1 mx-2 ${step > s ? 'bg-[#E0A82E]' : 'bg-white/[0.08]'}`} />
               )}
             </React.Fragment>
           ))}
@@ -236,7 +236,7 @@ export default function OnboardingPage() {
                         onClick={() => update('accountType', t.key)}
                         className={`flex items-center gap-2 rounded-xl border px-3 py-3 text-left transition-all ${
                           active
-                            ? 'border-[#16C784] bg-[#16C784]/[0.08] text-white'
+                            ? 'border-[#E0A82E] bg-[#E0A82E]/[0.08] text-white'
                             : 'border-white/[0.08] bg-white/[0.02] text-[#9AA4B2] hover:border-white/20'
                         }`}
                       >
@@ -352,7 +352,7 @@ export default function OnboardingPage() {
               <button
                 type="button"
                 onClick={nextStep}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-[#16C784] px-5 py-2.5 text-sm font-bold text-black hover:bg-[#1DD99A] transition-colors"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-[#E0A82E] px-5 py-2.5 text-sm font-bold text-black hover:bg-[#F2C668] transition-colors"
               >
                 Continue <ArrowRight className="h-4 w-4" />
               </button>
@@ -361,7 +361,7 @@ export default function OnboardingPage() {
                 type="button"
                 onClick={submitOnboarding}
                 disabled={loading}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-[#16C784] px-5 py-2.5 text-sm font-bold text-black hover:bg-[#1DD99A] transition-colors disabled:opacity-60"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-[#E0A82E] px-5 py-2.5 text-sm font-bold text-black hover:bg-[#F2C668] transition-colors disabled:opacity-60"
               >
                 {loading ? (
                   <>
@@ -382,7 +382,7 @@ export default function OnboardingPage() {
           <button
             type="button"
             onClick={() => navigate('/signin')}
-            className="font-semibold text-[#16C784] hover:underline"
+            className="font-semibold text-[#E0A82E] hover:underline"
           >
             Sign in
           </button>

@@ -87,7 +87,7 @@ export default function NotificationsPanel() {
               <button
                 type="button"
                 onClick={handleMarkAllRead}
-                className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#16C784] hover:underline"
+                className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#E0A82E] hover:underline"
               >
                 <Check className="h-3 w-3" /> Mark all read
               </button>
@@ -97,7 +97,7 @@ export default function NotificationsPanel() {
           <div className="max-h-96 overflow-y-auto">
             {loading ? (
               <div className="py-8 flex items-center justify-center">
-                <Loader2 className="h-5 w-5 text-[#16C784] animate-spin" />
+                <Loader2 className="h-5 w-5 text-[#E0A82E] animate-spin" />
               </div>
             ) : notifications.length === 0 ? (
               <div className="py-8 text-center text-xs text-[#667085]">
@@ -110,11 +110,11 @@ export default function NotificationsPanel() {
                   key={n.id}
                   onClick={() => !n.read_at && handleMarkRead(n.id)}
                   className={`px-4 py-3 border-b border-white/[0.04] cursor-pointer transition-colors hover:bg-white/[0.03] ${
-                    !n.read_at ? 'bg-[#16C784]/[0.04]' : ''
+                    !n.read_at ? 'bg-[#E0A82E]/[0.04]' : ''
                   }`}
                 >
                   <div className="flex items-start gap-2.5">
-                    <span className={`mt-1 inline-block h-2 w-2 rounded-full shrink-0 ${!n.read_at ? 'bg-[#16C784]' : 'bg-[#667085]'}`} />
+                    <span className={`mt-1 inline-block h-2 w-2 rounded-full shrink-0 ${!n.read_at ? 'bg-[#E0A82E]' : 'bg-[#667085]'}`} />
                     <div className="min-w-0 flex-1">
                       <p className={`text-xs font-semibold ${n.read_at ? 'text-[#C2C9D4]' : 'text-white'}`}>{n.title}</p>
                       <p className="text-[11px] text-[#9AA4B2] mt-0.5 line-clamp-2">{n.body}</p>
@@ -122,7 +122,7 @@ export default function NotificationsPanel() {
                         <Clock className="h-3 w-3 text-[#667085]" />
                         <span className="text-[10px] text-[#667085]">{formatTime(n.created_at)}</span>
                         {n.link_url && (
-                          <Link2 className="h-3 w-3 text-[#16C784] ml-auto" />
+                          <Link2 className="h-3 w-3 text-[#E0A82E] ml-auto" />
                         )}
                       </div>
                     </div>

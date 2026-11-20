@@ -65,10 +65,10 @@ export default function CompetitionsPage() {
               <strong className="text-white">{universityCounts.total} accredited Nigerian universities, polytechnics and colleges</strong>, ATSWA candidates, ICAN candidates and private learners. Questions are rigorously structured across{' '}
               <strong className="text-white">accounting and related fields</strong> (financial &amp; corporate reporting, cost &amp; management accounting, auditing, taxation, finance, economics, business law, public sector accounting, quantitative methods, management and business ethics). Strictly only{' '}
               <strong className="text-white">4 students can compete in each school</strong>, and the top three winners earn a guaranteed{' '}
-              <strong className="text-[#16C784]">{formatNaira(competitionReward.totalPodiumPool)} podium prize pool</strong>{' · '}
-              <strong className="text-[#16C784]">{formatNaira(competitionReward.firstPrize)} for 1st</strong>,{' '}
-              <strong className="text-[#16C784]">{formatNaira(competitionReward.secondPrize)} for 2nd</strong> and{' '}
-              <strong className="text-[#16C784]">{formatNaira(competitionReward.thirdPrize)} for 3rd</strong> after every competition closes.
+              <strong className="text-[#E0A82E]">{formatNaira(competitionReward.totalPodiumPool)} podium prize pool</strong>{' · '}
+              <strong className="text-[#E0A82E]">{formatNaira(competitionReward.firstPrize)} for 1st</strong>,{' '}
+              <strong className="text-[#E0A82E]">{formatNaira(competitionReward.secondPrize)} for 2nd</strong> and{' '}
+              <strong className="text-[#E0A82E]">{formatNaira(competitionReward.thirdPrize)} for 3rd</strong> after every competition closes.
             </p>
             <div className="flex flex-wrap gap-3 pt-1">
               <Link to="/portal/school" className="v-btn-primary text-xs">
@@ -84,12 +84,12 @@ export default function CompetitionsPage() {
           </div>
 
           {/* ₦220,000 Podium Prize Spotlight Card */}
-          <div className="lg:col-span-5 v-glass-card p-6 sm:p-7 border-[#16C784]/35 space-y-4">
+          <div className="lg:col-span-5 v-glass-card p-6 sm:p-7 border-[#E0A82E]/35 space-y-4">
             <div className="flex items-center justify-between">
-              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#16C784]">
+              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#E0A82E]">
                 <Banknote className="h-4 w-4" /> Official Podium Prize Pool
               </span>
-              <Sparkles className="h-4 w-4 text-[#16C784]" />
+              <Sparkles className="h-4 w-4 text-[#E0A82E]" />
             </div>
             <div className="grid grid-cols-3 gap-2.5">
               {PODIUM.map((p) => {
@@ -97,10 +97,10 @@ export default function CompetitionsPage() {
                 return (
                   <div
                     key={p.rank}
-                    className="rounded-2xl bg-[#0B0E11] border border-[#16C784]/30 p-4 text-center space-y-1"
+                    className="rounded-2xl bg-[#0B0E11] border border-[#E0A82E]/30 p-4 text-center space-y-1"
                   >
-                    <Icon className="h-5 w-5 text-[#16C784] mx-auto" />
-                    <p className="font-display text-base font-bold text-[#16C784] tabular-nums-display">
+                    <Icon className="h-5 w-5 text-[#E0A82E] mx-auto" />
+                    <p className="font-display text-base font-bold text-[#E0A82E] tabular-nums-display">
                       {formatNaira(competitionReward[p.valueKey])}
                     </p>
                     <p className="text-[10px] font-semibold text-white">{p.rank}</p>
@@ -109,7 +109,7 @@ export default function CompetitionsPage() {
                 );
               })}
             </div>
-            <div className="rounded-xl bg-[#0B0E11] border border-[#16C784]/25 p-3 text-center">
+            <div className="rounded-xl bg-[#0B0E11] border border-[#E0A82E]/25 p-3 text-center">
               <p className="font-display text-lg font-bold text-white tabular-nums-display">
                 {formatNaira(competitionReward.totalPodiumPool)} Total Podium Pool
               </p>
@@ -119,7 +119,7 @@ export default function CompetitionsPage() {
             <ul className="space-y-1.5 text-[11.5px] text-[#9AA4B2]">
               {competitionReward.eligibilityRules.map((rule) => (
                 <li key={rule} className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784] shrink-0 mt-0.5" />
+                  <CheckCircle2 className="h-3.5 w-3.5 text-[#E0A82E] shrink-0 mt-0.5" />
                   <span>{rule}</span>
                 </li>
               ))}
@@ -172,7 +172,7 @@ export default function CompetitionsPage() {
             {competitionDivisions.map((d, idx) => (
               <div key={d.id} className="v-card-hover p-5 space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <span className="tabular-nums-display text-xs font-bold text-[#16C784]">
+                  <span className="tabular-nums-display text-xs font-bold text-[#E0A82E]">
                     DIVISION 0{idx + 1}
                   </span>
                   <Badge variant="green">₦220,000 Podium Eligible</Badge>
@@ -203,7 +203,7 @@ export default function CompetitionsPage() {
                 type="button"
                 onClick={() => setSelectedStructure('atswa')}
                 className={`rounded-lg px-4 py-2 text-xs font-bold transition-colors ${
-                  selectedStructure === 'atswa' ? 'bg-[#16C784] text-[#06130D]' : 'text-[#9AA4B2]'
+                  selectedStructure === 'atswa' ? 'bg-[#E0A82E] text-[#06130D]' : 'text-[#9AA4B2]'
                 }`}
               >
                 ATSWA Format (100 Marks)
@@ -212,7 +212,7 @@ export default function CompetitionsPage() {
                 type="button"
                 onClick={() => setSelectedStructure('ican')}
                 className={`rounded-lg px-4 py-2 text-xs font-bold transition-colors ${
-                  selectedStructure === 'ican' ? 'bg-[#16C784] text-[#06130D]' : 'text-[#9AA4B2]'
+                  selectedStructure === 'ican' ? 'bg-[#E0A82E] text-[#06130D]' : 'text-[#9AA4B2]'
                 }`}
               >
                 ICAN Format (100 Marks)
@@ -224,7 +224,7 @@ export default function CompetitionsPage() {
                 <h3 className="font-display text-base font-bold text-white">
                   {activeStructure.name}
                 </h3>
-                <span className="tabular-nums-display text-xs font-bold text-[#16C784]">
+                <span className="tabular-nums-display text-xs font-bold text-[#E0A82E]">
                   Total: {activeStructure.totalMarks} Marks
                 </span>
               </div>
@@ -238,7 +238,7 @@ export default function CompetitionsPage() {
                       <p className="text-xs font-bold text-white">{sec.label}</p>
                       <p className="text-[11px] text-[#9AA4B2] mt-0.5">{sec.detail}</p>
                     </div>
-                    <span className="tabular-nums-display rounded-lg bg-[#16C784]/[0.12] border border-[#16C784]/25 px-2.5 py-1 text-xs font-bold text-[#16C784] shrink-0">
+                    <span className="tabular-nums-display rounded-lg bg-[#E0A82E]/[0.12] border border-[#E0A82E]/25 px-2.5 py-1 text-xs font-bold text-[#E0A82E] shrink-0">
                       {sec.marks} mks
                     </span>
                   </div>
@@ -255,7 +255,7 @@ export default function CompetitionsPage() {
             <div className="space-y-3">
               {ROUNDS.map((r) => (
                 <div key={r.step} className="v-card p-4 flex items-start gap-4">
-                  <span className="tabular-nums-display inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#16C784]/[0.12] border border-[#16C784]/30 text-xs font-bold text-[#16C784]">
+                  <span className="tabular-nums-display inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#E0A82E]/[0.12] border border-[#E0A82E]/30 text-xs font-bold text-[#E0A82E]">
                     {r.step}
                   </span>
                   <div>
@@ -297,7 +297,7 @@ export default function CompetitionsPage() {
             const Icon = item.icon;
             return (
               <div key={item.title} className="v-card p-5 space-y-3">
-                <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#16C784]/[0.12] text-[#16C784]">
+                <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#E0A82E]/[0.12] text-[#E0A82E]">
                   <Icon className="h-4 w-4" />
                 </div>
                 <h3 className="font-display text-sm font-bold text-white">{item.title}</h3>
@@ -349,7 +349,7 @@ export default function CompetitionsPage() {
               const Icon = item.icon;
               return (
                 <div key={item.title} className="v-card p-6 space-y-3">
-                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#16C784]/[0.12] border border-[#16C784]/30 text-[#16C784]">
+                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#E0A82E]/[0.12] border border-[#E0A82E]/30 text-[#E0A82E]">
                     <Icon className="h-5 w-5" />
                   </div>
                   <h3 className="font-display text-base font-bold text-white">{item.title}</h3>
@@ -359,10 +359,10 @@ export default function CompetitionsPage() {
             })}
           </div>
 
-          <div className="v-glass-card p-6 sm:p-7 border-[#16C784]/25 space-y-3">
+          <div className="v-glass-card p-6 sm:p-7 border-[#E0A82E]/25 space-y-3">
             <div className="flex items-center gap-2">
-              <Trophy className="h-4 w-4 text-[#16C784]" />
-              <h3 className="font-display text-sm font-bold uppercase tracking-wider text-[#16C784]">
+              <Trophy className="h-4 w-4 text-[#E0A82E]" />
+              <h3 className="font-display text-sm font-bold uppercase tracking-wider text-[#E0A82E]">
                 How Top VALENCE Students Appear on School Profiles
               </h3>
             </div>
@@ -377,7 +377,7 @@ export default function CompetitionsPage() {
                   key={step}
                   className="flex items-start gap-3 rounded-xl bg-[#0B0E11] border border-white/[0.07] p-4"
                 >
-                  <span className="tabular-nums-display inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#16C784]/[0.12] border border-[#16C784]/30 text-[11px] font-bold text-[#16C784]">
+                  <span className="tabular-nums-display inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#E0A82E]/[0.12] border border-[#E0A82E]/30 text-[11px] font-bold text-[#E0A82E]">
                     {idx + 1}
                   </span>
                   <span className="text-[11.5px] leading-relaxed text-[#C2C9D4]">{step}</span>

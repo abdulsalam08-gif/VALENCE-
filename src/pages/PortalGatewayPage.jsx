@@ -280,7 +280,7 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
                 onClick={() => handlePortalSwitch(p.key)}
                 className={`inline-flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold border transition-all ${
                   active
-                    ? 'bg-[#16C784] text-[#06130D] border-[#16C784] shadow-glow-sm'
+                    ? 'bg-[#E0A82E] text-[#06130D] border-[#E0A82E] shadow-glow-sm'
                     : 'bg-[#11161C] text-[#C2C9D4] border-white/[0.08] hover:border-white/[0.2] hover:text-white'
                 }`}
               >
@@ -297,7 +297,7 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
             <div className="space-y-4">
               <Badge variant="green">{meta.badge}</Badge>
               <div className="flex items-center gap-3">
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#16C784]/[0.12] border border-[#16C784]/30 text-[#16C784]">
+                <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E0A82E]/[0.12] border border-[#E0A82E]/30 text-[#E0A82E]">
                   <Icon className="h-6 w-6" />
                 </div>
                 <h1 className="font-display text-2xl sm:text-3xl font-bold text-white">
@@ -311,8 +311,8 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
             </div>
 
             {applyForTuition && selectedPortal === 'student' && (
-              <div className="rounded-2xl bg-[#16C784]/10 border border-[#16C784]/35 p-4 text-xs text-[#E5E9F0] space-y-1">
-                <p className="font-bold text-[#16C784]">
+              <div className="rounded-2xl bg-[#E0A82E]/10 border border-[#E0A82E]/35 p-4 text-xs text-[#E5E9F0] space-y-1">
+                <p className="font-bold text-[#E0A82E]">
                   Tuition Application & Cost Implication Selected (₦3,000 One-Time Unlock)
                 </p>
                 <p className="text-[#C2C9D4]">
@@ -322,13 +322,13 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
             )}
 
             <div className="v-card p-6 space-y-3.5">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">
+              <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">
                 Included Portal Capabilities
               </p>
               <ul className="space-y-2.5 text-xs sm:text-sm text-[#D5DBE3]">
                 {meta.capabilities.map((cap) => (
                   <li key={cap} className="flex items-start gap-2.5">
-                    <CheckCircle2 className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" />
+                    <CheckCircle2 className="h-4 w-4 text-[#E0A82E] shrink-0 mt-0.5" />
                     <span>{cap}</span>
                   </li>
                 ))}
@@ -336,8 +336,8 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
             </div>
 
             {!isSupabaseConfigured && (
-              <div className="rounded-2xl bg-[#11161C] border border-[#16C784]/25 p-4 flex items-start gap-3 text-xs text-[#C2C9D4]">
-                <Database className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" />
+              <div className="rounded-2xl bg-[#11161C] border border-[#E0A82E]/25 p-4 flex items-start gap-3 text-xs text-[#C2C9D4]">
+                <Database className="h-4 w-4 text-[#E0A82E] shrink-0 mt-0.5" />
                 <div>
                   <p className="font-semibold text-white">Supabase Auth & Database Binding Ready</p>
                   <p className="text-[#9AA4B2] mt-0.5">
@@ -358,7 +358,7 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
                     type="button"
                     onClick={() => setMode('signin')}
                     className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
-                      mode === 'signin' ? 'bg-[#16C784] text-[#06130D]' : 'text-[#9AA4B2]'
+                      mode === 'signin' ? 'bg-[#E0A82E] text-[#06130D]' : 'text-[#9AA4B2]'
                     }`}
                   >
                     <LogIn className="h-3.5 w-3.5" /> Sign In
@@ -367,7 +367,7 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
                     type="button"
                     onClick={() => setMode('register')}
                     className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
-                      mode === 'register' ? 'bg-[#16C784] text-[#06130D]' : 'text-[#9AA4B2]'
+                      mode === 'register' ? 'bg-[#E0A82E] text-[#06130D]' : 'text-[#9AA4B2]'
                     }`}
                   >
                     <UserPlus className="h-3.5 w-3.5" /> Register Free
@@ -465,7 +465,7 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
                       onClick={() =>
                         toast.info('Password Reset', 'Email recovery activates with Supabase Auth in Phase 3.')
                       }
-                      className="text-[11px] font-medium text-[#16C784] hover:underline"
+                      className="text-[11px] font-medium text-[#E0A82E] hover:underline"
                     >
                       Forgot password?
                     </button>
@@ -492,11 +492,11 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
               </button>
               <p className="text-[11px] text-center text-[#9AA4B2]">
                 By continuing, you agree to VALENCE&apos;s{' '}
-                <Link to="/legal/terms" className="text-[#16C784] hover:underline">
+                <Link to="/legal/terms" className="text-[#E0A82E] hover:underline">
                   Terms of Service
                 </Link>{' '}
                 and{' '}
-                <Link to="/legal/privacy" className="text-[#16C784] hover:underline">
+                <Link to="/legal/privacy" className="text-[#E0A82E] hover:underline">
                   NDPA Privacy Policy
                 </Link>
                 .
@@ -505,7 +505,7 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
 
             <div className="border-t border-white/[0.07] pt-4 flex items-center justify-between gap-2 text-[11px] text-[#667085]">
               <span className="inline-flex items-center gap-1.5">
-                <Lock className="h-3.5 w-3.5 text-[#16C784]" />
+                <Lock className="h-3.5 w-3.5 text-[#E0A82E]" />
                 Encrypted Supabase Auth · Role-Isolated RLS
               </span>
               <span>Zero Secrets in Client</span>

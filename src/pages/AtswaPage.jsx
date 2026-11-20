@@ -158,7 +158,7 @@ export default function AtswaPage() {
             </h1>
             <p className="text-sm sm:text-base text-[#9AA4B2]">
               Complete your ATSWA document checklist, registration guidance and 2-day diet timetable review directly inside VALENCE. You only pay the one-time{' '}
-              <strong className="text-[#16C784]">₦3,000 registration</strong> per level when applying for tuition to unlock your full cost implication (in-app online tuition, the verified tuition fees of physical tuition centres advertising on VALENCE, and official exam/subscription breakdown).
+              <strong className="text-[#E0A82E]">₦3,000 registration</strong> per level when applying for tuition to unlock your full cost implication (in-app online tuition, the verified tuition fees of physical tuition centres advertising on VALENCE, and official exam/subscription breakdown).
             </p>
           </div>
           <div className="flex flex-wrap gap-2.5 self-start shrink-0">
@@ -168,13 +168,13 @@ export default function AtswaPage() {
               rel="noopener noreferrer"
               className="v-btn-secondary text-xs"
             >
-              Official Soft-Copy Portal <ExternalLink className="h-4 w-4 text-[#16C784]" />
+              Official Soft-Copy Portal <ExternalLink className="h-4 w-4 text-[#E0A82E]" />
             </a>
             <Link
               to={`/store?category=atswa_past_question&level=${encodeURIComponent(activeLevel.code)}`}
               className="v-btn-secondary text-xs"
             >
-              <ShoppingBag className="h-3.5 w-3.5 text-[#16C784]" /> Per-Course PQs (₦5,500)
+              <ShoppingBag className="h-3.5 w-3.5 text-[#E0A82E]" /> Per-Course PQs (₦5,500)
             </Link>
           </div>
         </div>
@@ -191,7 +191,7 @@ export default function AtswaPage() {
                   onClick={() => handleSelectLevel(lvl)}
                   className={`rounded-xl px-5 py-2.5 text-xs sm:text-sm font-display font-bold transition-all ${
                     selectedLevelId === lvl.id
-                      ? 'bg-[#16C784] text-[#06130D] shadow-glow-sm'
+                      ? 'bg-[#E0A82E] text-[#06130D] shadow-glow-sm'
                       : 'text-[#9AA4B2] hover:text-white'
                   }`}
                 >
@@ -201,13 +201,13 @@ export default function AtswaPage() {
             </div>
 
             <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4 text-[#16C784]" />
+              <Calendar className="h-4 w-4 text-[#E0A82E]" />
               <span className="text-xs text-[#9AA4B2]">Intended Diet:</span>
               <select
                 value={selectedDietId}
                 onChange={(e) => setSelectedDietId(e.target.value)}
                 aria-label="Select intended ATSWA examination diet"
-                className="rounded-xl bg-[#11161C] border border-white/[0.1] px-3 py-2 text-xs font-semibold text-white focus:border-[#16C784] focus:outline-none"
+                className="rounded-xl bg-[#11161C] border border-white/[0.1] px-3 py-2 text-xs font-semibold text-white focus:border-[#E0A82E] focus:outline-none"
               >
                 {atswaSessions.map((s) => (
                   <option key={s.id} value={s.id}>
@@ -236,7 +236,7 @@ export default function AtswaPage() {
                           : activeLevel.courses.map((c) => c.id)
                       )
                     }
-                    className="text-xs font-semibold text-[#16C784] hover:underline"
+                    className="text-xs font-semibold text-[#E0A82E] hover:underline"
                   >
                     {selectedCourseIds.length === activeLevel.courses.length
                       ? 'Clear selection'
@@ -254,7 +254,7 @@ export default function AtswaPage() {
                         onClick={() => toggleCourse(course.id)}
                         className={`w-full flex items-center justify-between gap-4 rounded-xl border p-4 text-left transition-all ${
                           checked
-                            ? 'bg-[#16C784]/[0.08] border-[#16C784]/45'
+                            ? 'bg-[#E0A82E]/[0.08] border-[#E0A82E]/45'
                             : 'bg-[#0B0E11] border-white/[0.07] hover:border-white/[0.16]'
                         }`}
                       >
@@ -262,7 +262,7 @@ export default function AtswaPage() {
                           <span
                             className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition-colors ${
                               checked
-                                ? 'bg-[#16C784] border-[#16C784] text-[#06130D]'
+                                ? 'bg-[#E0A82E] border-[#E0A82E] text-[#06130D]'
                                 : 'border-white/20 bg-transparent'
                             }`}
                           >
@@ -271,7 +271,7 @@ export default function AtswaPage() {
                           <div>
                             <p className="text-sm font-semibold text-white">
                               {idx + 1}. {course.title}{' '}
-                              <span className="text-xs text-[#16C784] font-display">
+                              <span className="text-xs text-[#E0A82E] font-display">
                                 ({course.code})
                               </span>
                             </p>
@@ -282,12 +282,12 @@ export default function AtswaPage() {
                         </div>
                         <span className="shrink-0 text-[11px] font-medium text-[#9AA4B2] inline-flex items-center gap-1">
                           {unlocked ? (
-                            <span className="tabular-nums-display font-bold text-[#16C784]">
+                            <span className="tabular-nums-display font-bold text-[#E0A82E]">
                               {formatNaira(tuitionCalc.effectivePerCourse)}
                             </span>
                           ) : (
                             <>
-                              <Lock className="h-3 w-3 text-[#16C784]" /> Unlocked on apply
+                              <Lock className="h-3 w-3 text-[#E0A82E]" /> Unlocked on apply
                             </>
                           )}
                         </span>
@@ -318,7 +318,7 @@ export default function AtswaPage() {
                   </div>
                   <div className="rounded-xl bg-[#0B0E11] p-3 border border-white/[0.06]">
                     <span className="text-[10.5px] text-[#667085] block">Result Release (+30 Days)</span>
-                    <span className="font-semibold text-[#16C784]">
+                    <span className="font-semibold text-[#E0A82E]">
                       {activeDiet.expectedResultFormatted}
                     </span>
                   </div>
@@ -329,7 +329,7 @@ export default function AtswaPage() {
                       key={slot.dayLabel}
                       className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-3 text-xs space-y-1"
                     >
-                      <div className="flex justify-between font-semibold text-[#16C784]">
+                      <div className="flex justify-between font-semibold text-[#E0A82E]">
                         <span>{slot.dayLabel}</span>
                         <span>{formatReadableDate(activeDiet.examDays[slot.dateIndex], false)}</span>
                       </div>
@@ -352,7 +352,7 @@ export default function AtswaPage() {
                 <p className="text-xs text-[#9AA4B2]">
                   Pass all 4 courses in a level before moving to the next. After clearing ATS 3, you earn the{' '}
                   <strong className="text-white">AAT certificate</strong> and progress directly to ICAN{' '}
-                  <strong className="text-[#16C784]">Skills & Professional Levels</strong>.
+                  <strong className="text-[#E0A82E]">Skills & Professional Levels</strong>.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
                   {atswaEntryPathways.map((p) => (
@@ -360,7 +360,7 @@ export default function AtswaPage() {
                       key={p.id}
                       className="rounded-xl bg-[#0B0E11] border border-white/[0.07] p-3.5 space-y-1"
                     >
-                      <p className="font-display font-bold text-[#16C784]">{p.startAt}</p>
+                      <p className="font-display font-bold text-[#E0A82E]">{p.startAt}</p>
                       <p className="font-semibold text-white">{p.qualification}</p>
                       <p className="text-[11px] text-[#9AA4B2]">{p.exemptions}</p>
                     </div>
@@ -372,7 +372,7 @@ export default function AtswaPage() {
               <div id="document-guidance" className="v-card p-6 space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <h3 className="font-display text-lg font-bold text-white flex items-center gap-2">
-                    <FileText className="h-4 w-4 text-[#16C784]" /> In-App {activeLevel.code} Document & Registration Guidance
+                    <FileText className="h-4 w-4 text-[#E0A82E]" /> In-App {activeLevel.code} Document & Registration Guidance
                   </h3>
                   <Badge variant={allDocsReady ? 'green' : 'neutral'}>
                     {allDocsReady
@@ -396,14 +396,14 @@ export default function AtswaPage() {
                         onClick={() => toggleDoc(doc)}
                         className={`flex items-center gap-2 rounded-xl border px-3 py-3 text-left transition-all ${
                           ready
-                            ? 'bg-[#16C784]/[0.12] border-[#16C784]/45 text-white'
+                            ? 'bg-[#E0A82E]/[0.12] border-[#E0A82E]/45 text-white'
                             : 'bg-[#0B0E11] border-white/[0.07] text-[#C2C9D4] hover:border-white/[0.18]'
                         }`}
                       >
                         <span
                           className={`inline-flex h-4 w-4 shrink-0 items-center justify-center rounded border ${
                             ready
-                              ? 'bg-[#16C784] border-[#16C784] text-[#06130D]'
+                              ? 'bg-[#E0A82E] border-[#E0A82E] text-[#06130D]'
                               : 'border-white/25'
                           }`}
                         >
@@ -422,7 +422,7 @@ export default function AtswaPage() {
                       key={item.step}
                       className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-3.5 space-y-1"
                     >
-                      <p className="font-display font-bold text-[#16C784]">
+                      <p className="font-display font-bold text-[#E0A82E]">
                         Step {item.step} · <span className="text-white">{item.title}</span>
                       </p>
                       <p className="text-[11px] text-[#9AA4B2] leading-relaxed">{item.detail}</p>
@@ -448,8 +448,8 @@ export default function AtswaPage() {
                 </div>
 
                 {submittedRef && (
-                  <div className="rounded-xl bg-[#16C784]/10 border border-[#16C784]/35 p-3.5 text-xs text-[#E5E9F0]">
-                    <strong className="text-[#16C784]">Reference {submittedRef} logged in-app.</strong>{' '}
+                  <div className="rounded-xl bg-[#E0A82E]/10 border border-[#E0A82E]/35 p-3.5 text-xs text-[#E5E9F0]">
+                    <strong className="text-[#E0A82E]">Reference {submittedRef} logged in-app.</strong>{' '}
                     Track document verification feedback and admin responses inside your VALENCE Student Portal.
                   </div>
                 )}
@@ -459,7 +459,7 @@ export default function AtswaPage() {
                     onSubmit={handleGuidanceSubmit}
                     className="rounded-2xl bg-[#0B0E11] border border-white/[0.08] p-4 space-y-3 animate-fade-up"
                   >
-                    <p className="font-display text-xs font-bold uppercase tracking-wider text-[#16C784]">
+                    <p className="font-display text-xs font-bold uppercase tracking-wider text-[#E0A82E]">
                       In-App {activeLevel.code} Document & Registration Request
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -548,7 +548,7 @@ export default function AtswaPage() {
                 {dietLifecycle.countdownTarget && (
                   <div className="space-y-1.5">
                     <p className="text-[11px] text-[#9AA4B2] flex items-center gap-1">
-                      <Clock className="h-3.5 w-3.5 text-[#16C784]" /> {dietLifecycle.countdownLabel}
+                      <Clock className="h-3.5 w-3.5 text-[#E0A82E]" /> {dietLifecycle.countdownLabel}
                     </p>
                     <CountdownTimer targetDate={dietLifecycle.countdownTarget} compact />
                   </div>
@@ -567,7 +567,7 @@ export default function AtswaPage() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-[#9AA4B2]">Multi-Course Benefit</span>
-                    <span className="font-semibold text-[#16C784]">
+                    <span className="font-semibold text-[#E0A82E]">
                       {selectedCourseIds.length >= 2
                         ? '25% Tuition Discount Eligible'
                         : 'Select 2+ courses for 25% off'}
@@ -576,8 +576,8 @@ export default function AtswaPage() {
                 </div>
 
                 {unlocked ? (
-                  <div className="rounded-xl bg-[#0B0E11] border border-[#16C784]/35 p-4 space-y-2 text-xs">
-                    <div className="flex items-center gap-1.5 text-[#16C784] font-semibold">
+                  <div className="rounded-xl bg-[#0B0E11] border border-[#E0A82E]/35 p-4 space-y-2 text-xs">
+                    <div className="flex items-center gap-1.5 text-[#E0A82E] font-semibold">
                       <Unlock className="h-3.5 w-3.5" /> {activeLevel.code} Cost Implication Unlocked
                     </div>
                     <div className="flex justify-between text-[#9AA4B2]">
@@ -603,9 +603,9 @@ export default function AtswaPage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="rounded-2xl bg-gradient-to-b from-[#16C784]/[0.08] to-[#0B0E11] border border-[#16C784]/30 p-5 space-y-3">
+                  <div className="rounded-2xl bg-gradient-to-b from-[#E0A82E]/[0.08] to-[#0B0E11] border border-[#E0A82E]/30 p-5 space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#16C784]">
+                      <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#E0A82E]">
                         <Lock className="h-4 w-4" /> Cost Implication Locked
                       </span>
                       <span className="tabular-nums-display text-xl font-bold text-white">₦3,000</span>
@@ -632,7 +632,7 @@ export default function AtswaPage() {
                 </Link>
 
                 <div className="flex items-center justify-center gap-1.5 text-[11px] text-[#667085]">
-                  <ShieldCheck className="h-3.5 w-3.5 text-[#16C784]" />
+                  <ShieldCheck className="h-3.5 w-3.5 text-[#E0A82E]" />
                   Paystack exclusive online checkout · In-app ATSWA document desk
                 </div>
               </div>

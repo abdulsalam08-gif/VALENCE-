@@ -10,8 +10,8 @@ export const PLATFORM_SETTINGS = {
     'VALENCE is your complete learning and professional development community for ICAN and ATSWA candidates, tertiary students, chartered accountants, accounting tutors and aspiring professionals. Access structured learning, intelligent study tools, professional networking, academic competitions, educational resources and career opportunities in one place.',
   whatsappNumber: '+234 915 434 4663',
   whatsappChannelUrl: 'https://whatsapp.com/channel/0029VbDLZl4J93wMoS0biE1o',
-  email: 'atvalencecustomersupport@gmail.com',
-  operatingHours: '24/7',
+  email: 'axelacademyinfo@gmail.com',
+  operatingHours: 'By appointment',
   location: 'Lagos, Nigeria (Serving candidates & institutions nationwide)',
   paymentProvider: 'Paystack',
   tuitionUnlockFee: 3000,
@@ -1635,13 +1635,13 @@ export const PAGE_TICKER_NOTICES = {
     items: [
       { id: 'ab-1', text: 'Vita sine litteris mors est (Life without learning is death): uniting learning, networking, inter-school competition, marketplace and career growth.', tag: 'Mission' },
       { id: 'ab-2', text: 'Built for ATSWA & ICAN candidates, 300 accredited Nigerian universities, polytechnics & colleges, verified partners and chartered accountants.', tag: 'Nationwide' },
-      { id: 'ab-3', text: 'Follow the official VALENCE WhatsApp Channel and reach our team 24/7 at atvalencecustomersupport@gmail.com.', tag: 'Stay Connected' },
+      { id: 'ab-3', text: 'Follow the official VALENCE WhatsApp Channel and reach our team 24/7 at axelacademyinfo@gmail.com.', tag: 'Stay Connected' },
     ],
   },
   contact: {
     label: '24/7 Support',
     items: [
-      { id: 'ct-1', text: 'VALENCE Support is open 24/7 via atvalencecustomersupport@gmail.com, in-app support tickets, and WhatsApp (+234 915 434 4663).', tag: 'Always Open' },
+      { id: 'ct-1', text: 'VALENCE Support is open 24/7 via axelacademyinfo@gmail.com, in-app support tickets, and WhatsApp (+234 915 434 4663).', tag: 'Always Open' },
       { id: 'ct-2', text: 'Official ICAN registration, examination, subscription, development levy and exemption assistance is ongoing via WhatsApp Support.', tag: 'ICAN Fee Desk' },
       { id: 'ct-3', text: 'Follow the official VALENCE WhatsApp Channel for instant updates on exam dates, registration cutoffs, study pack availability and competitions.', tag: 'Official Channel' },
       { id: 'ct-4', text: 'Past Questions deliver the same day in Lagos and in 1 day outside Lagos; submit store or delivery enquiries directly inside the app.', tag: 'Fast Help' },

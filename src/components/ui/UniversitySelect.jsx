@@ -67,12 +67,12 @@ export default function UniversitySelect({
         className="v-input flex items-center justify-between gap-2 text-left"
       >
         <span className={`truncate flex items-center gap-2 ${value ? 'text-[#F4F6F9]' : 'text-[#667085]'}`}>
-          <Building2 className="h-4 w-4 text-[#16C784] shrink-0" />
+          <Building2 className="h-4 w-4 text-[#E0A82E] shrink-0" />
           <span className="truncate">{value || placeholder}</span>
         </span>
         <ChevronDown
           className={`h-4 w-4 text-[#9AA4B2] shrink-0 transition-transform ${
-            open ? 'rotate-180 text-[#16C784]' : ''
+            open ? 'rotate-180 text-[#E0A82E]' : ''
           }`}
         />
       </button>
@@ -106,7 +106,7 @@ export default function UniversitySelect({
                 onClick={() => setCatFilter(c)}
                 className={`rounded-lg px-2 py-1 text-[10px] font-semibold transition-colors ${
                   catFilter === c
-                    ? 'bg-[#16C784] text-[#06130D]'
+                    ? 'bg-[#E0A82E] text-[#06130D]'
                     : 'bg-[#0B0E11] text-[#9AA4B2] hover:text-white'
                 }`}
               >
@@ -126,20 +126,20 @@ export default function UniversitySelect({
                   onClick={() => selectItem(display)}
                   className={`w-full flex items-center justify-between gap-2 rounded-xl px-3 py-2 text-left text-xs transition-colors ${
                     isSelected
-                      ? 'bg-[#16C784]/15 text-[#16C784] border border-[#16C784]/30'
+                      ? 'bg-[#E0A82E]/15 text-[#E0A82E] border border-[#E0A82E]/30'
                       : 'hover:bg-white/[0.05] text-[#D5DBE3]'
                   }`}
                 >
                   <div className="min-w-0">
                     <p className="font-medium truncate">
                       {u.name}{' '}
-                      <span className="font-display font-bold text-[#16C784]">({u.shortName})</span>
+                      <span className="font-display font-bold text-[#E0A82E]">({u.shortName})</span>
                     </p>
                     <p className="text-[10.5px] text-[#667085]">
                       {u.typeLabel || `${u.category} University`} · {u.state} ({u.zone})
                     </p>
                   </div>
-                  {isSelected && <Check className="h-3.5 w-3.5 text-[#16C784] shrink-0" />}
+                  {isSelected && <Check className="h-3.5 w-3.5 text-[#E0A82E] shrink-0" />}
                 </button>
               );
             })}
@@ -148,7 +148,7 @@ export default function UniversitySelect({
               <button
                 type="button"
                 onClick={() => selectItem(query.trim())}
-                className="w-full rounded-xl bg-[#0B0E11] border border-dashed border-[#16C784]/40 px-3 py-2 text-left text-xs text-[#16C784] hover:bg-[#16C784]/10"
+                className="w-full rounded-xl bg-[#0B0E11] border border-dashed border-[#E0A82E]/40 px-3 py-2 text-left text-xs text-[#E0A82E] hover:bg-[#E0A82E]/10"
               >
                 Use polytechnic / college / foreign institution: “{query.trim()}”
               </button>

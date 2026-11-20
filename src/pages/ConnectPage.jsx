@@ -57,7 +57,7 @@ export default function ConnectPage() {
                 href={settings.whatsappChannelUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="v-btn-secondary text-xs border-[#16C784]/35 text-[#16C784]"
+                className="v-btn-secondary text-xs border-[#E0A82E]/35 text-[#E0A82E]"
               >
                 Follow Official WhatsApp Channel <ExternalLink className="h-3.5 w-3.5" />
               </a>
@@ -80,7 +80,7 @@ export default function ConnectPage() {
             const Icon = f.icon;
             return (
               <div key={f.title} className="v-card p-5 space-y-2.5">
-                <Icon className="h-5 w-5 text-[#16C784]" />
+                <Icon className="h-5 w-5 text-[#E0A82E]" />
                 <h2 className="font-display text-base font-bold text-white">{f.title}</h2>
                 <p className="text-xs leading-relaxed text-[#9AA4B2]">{f.desc}</p>
               </div>
@@ -100,7 +100,7 @@ export default function ConnectPage() {
               <article
                 key={ann.id}
                 className={`v-card p-5 space-y-3 ${
-                  ann.isOfficial ? 'border-[#16C784]/40' : ''
+                  ann.isOfficial ? 'border-[#E0A82E]/40' : ''
                 }`}
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
@@ -124,7 +124,7 @@ export default function ConnectPage() {
                   </span>
                   <span className="inline-flex items-center gap-3 tabular-nums-display">
                     <span className="inline-flex items-center gap-1">
-                      <Heart className="h-3.5 w-3.5 text-[#16C784]" /> {ann.likes}
+                      <Heart className="h-3.5 w-3.5 text-[#E0A82E]" /> {ann.likes}
                     </span>
                     <span className="inline-flex items-center gap-1">
                       <MessageSquare className="h-3.5 w-3.5" /> {ann.comments}
@@ -137,7 +137,7 @@ export default function ConnectPage() {
 
           <aside className="lg:col-span-4 space-y-5">
             <div className="v-card p-5 space-y-3">
-              <div className="flex items-center gap-2 text-xs font-bold text-[#16C784]">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#E0A82E]">
                 <Lock className="h-4 w-4" /> 7 Server-Enforced Audiences
               </div>
               <ul className="space-y-1.5 text-xs text-[#C2C9D4]">
@@ -161,7 +161,7 @@ export default function ConnectPage() {
                     onClick={() => setSelectedForum(cat)}
                     className={`rounded-lg px-2.5 py-1.5 text-[11px] font-medium border transition-colors ${
                       selectedForum === cat
-                        ? 'bg-[#16C784] text-[#06130D] border-[#16C784] font-semibold'
+                        ? 'bg-[#E0A82E] text-[#06130D] border-[#E0A82E] font-semibold'
                         : 'bg-[#0B0E11] text-[#9AA4B2] border-white/[0.07] hover:text-white'
                     }`}
                   >

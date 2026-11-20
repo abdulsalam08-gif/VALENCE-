@@ -62,11 +62,11 @@ export default function ContactPage() {
           {/* Contact Cards */}
           <div className="lg:col-span-5 space-y-4">
             <div className="v-card p-6 space-y-3">
-              <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#16C784]/15 text-[#16C784]">
+              <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#E0A82E]/15 text-[#E0A82E]">
                 <MessageCircle className="h-5 w-5" />
               </div>
               <h2 className="font-display text-lg font-bold text-white">WhatsApp Support & Enquiries</h2>
-              <p className="font-display text-xl font-bold text-[#16C784] tabular-nums-display">
+              <p className="font-display text-xl font-bold text-[#E0A82E] tabular-nums-display">
                 {settings.whatsappNumber}
               </p>
               <p className="text-xs text-[#9AA4B2]">
@@ -86,49 +86,49 @@ export default function ContactPage() {
                   rel="noopener noreferrer"
                   className="v-btn-secondary w-full text-xs"
                 >
-                  Follow Official WhatsApp Channel <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
+                  Follow Official WhatsApp Channel <ExternalLink className="h-3.5 w-3.5 text-[#E0A82E]" />
                 </a>
               )}
             </div>
 
             {/* Dedicated In-App Self-Serve Workflows */}
             <div className="v-card p-6 space-y-2.5">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#16C784]">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">
                 Handled 100% Inside the App
               </span>
               <div className="space-y-2 text-xs">
                 <Link
                   to="/programmes/atswa#document-guidance"
-                  className="flex items-center justify-between rounded-xl bg-[#0B0E11] border border-white/[0.07] hover:border-[#16C784]/45 px-3.5 py-2.5 text-white transition-colors"
+                  className="flex items-center justify-between rounded-xl bg-[#0B0E11] border border-white/[0.07] hover:border-[#E0A82E]/45 px-3.5 py-2.5 text-white transition-colors"
                 >
                   <span>ATSWA Document &amp; Registration Guidance</span>
-                  <ArrowRight className="h-3.5 w-3.5 text-[#16C784]" />
+                  <ArrowRight className="h-3.5 w-3.5 text-[#E0A82E]" />
                 </Link>
                 <Link
                   to="/store?enquiry=open"
-                  className="flex items-center justify-between rounded-xl bg-[#0B0E11] border border-white/[0.07] hover:border-[#16C784]/45 px-3.5 py-2.5 text-white transition-colors"
+                  className="flex items-center justify-between rounded-xl bg-[#0B0E11] border border-white/[0.07] hover:border-[#E0A82E]/45 px-3.5 py-2.5 text-white transition-colors"
                 >
                   <span>Study Materials &amp; Delivery Enquiry</span>
-                  <ArrowRight className="h-3.5 w-3.5 text-[#16C784]" />
+                  <ArrowRight className="h-3.5 w-3.5 text-[#E0A82E]" />
                 </Link>
                 <Link
                   to="/advertise"
-                  className="flex items-center justify-between rounded-xl bg-[#0B0E11] border border-white/[0.07] hover:border-[#16C784]/45 px-3.5 py-2.5 text-white transition-colors"
+                  className="flex items-center justify-between rounded-xl bg-[#0B0E11] border border-white/[0.07] hover:border-[#E0A82E]/45 px-3.5 py-2.5 text-white transition-colors"
                 >
                   <span>Advertise: Centres, Textbook Authors &amp; Vendors (₦10k/Wk)</span>
-                  <ArrowRight className="h-3.5 w-3.5 text-[#16C784]" />
+                  <ArrowRight className="h-3.5 w-3.5 text-[#E0A82E]" />
                 </Link>
               </div>
             </div>
 
             <div className="v-card p-6 space-y-2.5">
-              <div className="flex items-center gap-2 text-[#16C784]">
+              <div className="flex items-center gap-2 text-[#E0A82E]">
                 <Mail className="h-4 w-4" />
                 <span className="text-xs font-bold uppercase tracking-wider">Official Email</span>
               </div>
               <a
                 href={`mailto:${settings.email}`}
-                className="block font-display text-base font-bold text-white hover:text-[#16C784] transition-colors"
+                className="block font-display text-base font-bold text-white hover:text-[#E0A82E] transition-colors"
               >
                 {settings.email}
               </a>
@@ -138,7 +138,7 @@ export default function ContactPage() {
             </div>
 
             <div className="v-card p-6 space-y-2">
-              <div className="flex items-center gap-2 text-[#16C784]">
+              <div className="flex items-center gap-2 text-[#E0A82E]">
                 <Clock className="h-4 w-4" />
                 <span className="text-xs font-bold uppercase tracking-wider">Operating Hours</span>
               </div>
@@ -231,7 +231,7 @@ export default function ContactPage() {
             </button>
 
             <p className="text-[11px] text-[#667085] flex items-center gap-1.5">
-              <ShieldCheck className="h-3.5 w-3.5 text-[#16C784]" />
+              <ShieldCheck className="h-3.5 w-3.5 text-[#E0A82E]" />
               Stored in VALENCE support logs and routed to the appropriate verification or academic team.
             </p>
           </form>
@@ -254,7 +254,7 @@ export default function ContactPage() {
                 }}
                 className={`rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-colors ${
                   faqTab === 'candidate'
-                    ? 'bg-[#16C784] text-[#06130D]'
+                    ? 'bg-[#E0A82E] text-[#06130D]'
                     : 'text-[#9AA4B2] hover:text-white'
                 }`}
               >
@@ -268,7 +268,7 @@ export default function ContactPage() {
                 }}
                 className={`rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-colors ${
                   faqTab === 'platform'
-                    ? 'bg-[#16C784] text-[#06130D]'
+                    ? 'bg-[#E0A82E] text-[#06130D]'
                     : 'text-[#9AA4B2] hover:text-white'
                 }`}
               >
@@ -292,7 +292,7 @@ export default function ContactPage() {
                     </span>
                     <ChevronDown
                       className={`h-4 w-4 shrink-0 text-[#9AA4B2] transition-transform ${
-                        isOpen ? 'rotate-180 text-[#16C784]' : ''
+                        isOpen ? 'rotate-180 text-[#E0A82E]' : ''
                       }`}
                     />
                   </button>
@@ -303,7 +303,7 @@ export default function ContactPage() {
                         <ul className="space-y-1.5 text-[#D5DBE3]">
                           {f.bullets.map((b) => (
                             <li key={b} className="flex items-start gap-2 text-xs">
-                              <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784] shrink-0 mt-0.5" />
+                              <CheckCircle2 className="h-3.5 w-3.5 text-[#E0A82E] shrink-0 mt-0.5" />
                               <span>{b}</span>
                             </li>
                           ))}
@@ -317,7 +317,7 @@ export default function ContactPage() {
                               href={lnk.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1.5 rounded-lg bg-[#0B0E11] border border-[#16C784]/35 px-3 py-1.5 text-xs font-semibold text-[#16C784] hover:border-[#16C784]"
+                              className="inline-flex items-center gap-1.5 rounded-lg bg-[#0B0E11] border border-[#E0A82E]/35 px-3 py-1.5 text-xs font-semibold text-[#E0A82E] hover:border-[#E0A82E]"
                             >
                               {lnk.label} <ExternalLink className="h-3 w-3" />
                             </a>
@@ -325,7 +325,7 @@ export default function ContactPage() {
                         </div>
                       )}
                       {f.tagline && (
-                        <p className="font-display text-sm font-bold italic text-[#16C784]">
+                        <p className="font-display text-sm font-bold italic text-[#E0A82E]">
                           {f.tagline}
                         </p>
                       )}

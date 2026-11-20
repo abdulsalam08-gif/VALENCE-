@@ -264,8 +264,8 @@ export default function AdvertiserHubPage() {
       <section className="bg-grid-fintech py-10 sm:py-14">
         <div className="v-container flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-2xl bg-[#16C784]/12 border border-[#16C784]/30 flex items-center justify-center">
-              <Megaphone className="h-6 w-6 text-[#16C784]" />
+            <div className="h-12 w-12 rounded-2xl bg-[#E0A82E]/12 border border-[#E0A82E]/30 flex items-center justify-center">
+              <Megaphone className="h-6 w-6 text-[#E0A82E]" />
             </div>
             <div>
               <h1 className="font-display text-2xl font-bold text-white">VALENCE Advertiser Hub</h1>
@@ -295,7 +295,7 @@ export default function AdvertiserHubPage() {
                     onClick={() => setTab(t.key)}
                     className={`flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-xs font-display font-bold transition-colors ${
                       active
-                        ? 'bg-[#16C784]/[0.12] text-[#16C784] border border-[#16C784]/30'
+                        ? 'bg-[#E0A82E]/[0.12] text-[#E0A82E] border border-[#E0A82E]/30'
                         : 'text-[#C2C9D4] border border-transparent hover:bg-white/[0.04]'
                     }`}
                   >
@@ -314,13 +314,13 @@ export default function AdvertiserHubPage() {
             {tab === 'profile' && (
               <>
                 {/* Verification status card */}
-                <div className={`v-card p-6 space-y-3 ${isVerified ? 'border-[#16C784]/40' : 'border-[#F59E0B]/40'}`}>
+                <div className={`v-card p-6 space-y-3 ${isVerified ? 'border-[#E0A82E]/40' : 'border-[#9AA4B2]/40'}`}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       {isVerified ? (
-                        <ShieldCheck className="h-5 w-5 text-[#16C784]" />
+                        <ShieldCheck className="h-5 w-5 text-[#E0A82E]" />
                       ) : (
-                        <ShieldAlert className="h-5 w-5 text-[#F59E0B]" />
+                        <ShieldAlert className="h-5 w-5 text-[#9AA4B2]" />
                       )}
                       <h2 className="font-display text-lg font-bold text-white">Verification Status</h2>
                     </div>
@@ -380,7 +380,7 @@ export default function AdvertiserHubPage() {
                     </div>
                   </div>
                   <div>
-                    <label className="v-label flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 text-[#16C784]" /> Address / Coverage</label>
+                    <label className="v-label flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 text-[#E0A82E]" /> Address / Coverage</label>
                     <input
                       type="text"
                       value={form.address}
@@ -443,7 +443,7 @@ export default function AdvertiserHubPage() {
                 {/* New campaign */}
                 <form onSubmit={handleCreateCampaign} className="v-card p-6 space-y-4">
                   <h2 className="font-display text-lg font-bold text-white flex items-center gap-2">
-                    <Plus className="h-4 w-4 text-[#16C784]" /> New Campaign
+                    <Plus className="h-4 w-4 text-[#E0A82E]" /> New Campaign
                   </h2>
                   <div>
                     <label className="v-label">Campaign Headline</label>
@@ -478,7 +478,7 @@ export default function AdvertiserHubPage() {
                             type="button"
                             onClick={() => togglePlacement(pl.id)}
                             className={`rounded-xl border px-3 py-2 text-left ${
-                              active ? 'bg-[#16C784]/[0.12] border-[#16C784]/50 text-white' : 'bg-[#0B0E11] border-white/[0.07] text-[#C2C9D4]'
+                              active ? 'bg-[#E0A82E]/[0.12] border-[#E0A82E]/50 text-white' : 'bg-[#0B0E11] border-white/[0.07] text-[#C2C9D4]'
                             }`}
                           >
                             {pl.label}
@@ -487,11 +487,11 @@ export default function AdvertiserHubPage() {
                       })}
                     </div>
                   </div>
-                  <div className="flex items-center justify-between rounded-xl bg-[#0B0E11] border border-[#16C784]/30 p-3">
+                  <div className="flex items-center justify-between rounded-xl bg-[#0B0E11] border border-[#E0A82E]/30 p-3">
                     <span className="text-xs text-[#9AA4B2]">
                       {newCampaign.weeks} week(s) × {newCampaign.placements.length} slot(s) × {formatNaira(activePackage?.price_ngn || settings.adWeeklyRate)}
                     </span>
-                    <span className="font-display text-lg font-bold text-[#16C784]">{formatNaira(cost)}</span>
+                    <span className="font-display text-lg font-bold text-[#E0A82E]">{formatNaira(cost)}</span>
                   </div>
                   <button type="submit" disabled={savingCampaign} className="v-btn-primary text-xs">
                     {savingCampaign ? <Loader2 className="h-4 w-4 animate-spin" /> : <Megaphone className="h-4 w-4" />} Create Campaign
@@ -538,7 +538,7 @@ export default function AdvertiserHubPage() {
                           </div>
                           <div className="rounded-lg bg-white/[0.03] p-2">
                             <p className="text-[10px] text-[#667085]">CTR</p>
-                            <p className="font-display text-sm font-bold text-[#16C784] tabular-nums">{c.ctr || 0}%</p>
+                            <p className="font-display text-sm font-bold text-[#E0A82E] tabular-nums">{c.ctr || 0}%</p>
                           </div>
                         </div>
                         {c.status === 'pending_payment' && (
@@ -569,7 +569,7 @@ export default function AdvertiserHubPage() {
                   {[
                     { label: 'Total Impressions', value: analytics.totals.impressions, color: 'text-white' },
                     { label: 'Total Clicks', value: analytics.totals.clicks, color: 'text-white' },
-                    { label: 'Click-through Rate', value: `${analytics.totals.ctr || 0}%`, color: 'text-[#16C784]' },
+                    { label: 'Click-through Rate', value: `${analytics.totals.ctr || 0}%`, color: 'text-[#E0A82E]' },
                     { label: 'Enquiries', value: analytics.totals.enquiries, color: 'text-white' },
                   ].map((s) => (
                     <div key={s.label} className="v-card p-5">
@@ -601,7 +601,7 @@ export default function AdvertiserHubPage() {
                               <td className="py-2.5 pr-3 text-[#9AA4B2]">{c.status}</td>
                               <td className="py-2.5 pr-3 text-right tabular-nums">{c.impressions || 0}</td>
                               <td className="py-2.5 pr-3 text-right tabular-nums">{c.clicks || 0}</td>
-                              <td className="py-2.5 pr-3 text-right text-[#16C784] tabular-nums">{c.ctr || 0}%</td>
+                              <td className="py-2.5 pr-3 text-right text-[#E0A82E] tabular-nums">{c.ctr || 0}%</td>
                             </tr>
                           ))}
                         </tbody>

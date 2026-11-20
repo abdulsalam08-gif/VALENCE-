@@ -80,7 +80,7 @@ function mapStoreProductRow(row) {
     price: Number(row.price_ngn ?? base.price ?? 0),
     imageUrl: row.image_url ?? base.imageUrl ?? null,
     colourBadge: base.colourBadge || row.colour_badge || '',
-    accentHex: base.accentHex || row.accent_hex || '#16C784',
+    accentHex: base.accentHex || row.accent_hex || '#E0A82E',
     editionLabel: base.editionLabel || row.edition_label || '',
     discountHint: base.discountHint || row.discount_hint || '',
     description: base.description || row.description || '',

@@ -31,7 +31,7 @@ function ChipList({ items }) {
   return (
     <div className="flex flex-wrap gap-1.5">
       {items.map((i, idx) => (
-        <span key={idx} className="rounded-md bg-[#16C784]/10 border border-[#16C784]/20 px-2 py-0.5 text-[11px] text-[#16C784]">{i}</span>
+        <span key={idx} className="rounded-md bg-[#E0A82E]/10 border border-[#E0A82E]/20 px-2 py-0.5 text-[11px] text-[#E0A82E]">{i}</span>
       ))}
     </div>
   );
@@ -46,7 +46,7 @@ function DirectoryCard({ prof }) {
     <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#16C784]/15 text-[#16C784] font-bold">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E0A82E]/15 text-[#E0A82E] font-bold">
             {prof.display_name?.charAt(0).toUpperCase() || 'P'}
           </div>
           <div>
@@ -226,14 +226,14 @@ function MyProHub() {
                 className="mt-1 block w-full rounded-lg border border-white/[0.1] bg-[#0F1620] px-3 py-2 text-sm text-white" />
             </label>
             <div className="sm:col-span-2 flex justify-end">
-              <button onClick={handleSave} className="rounded-lg bg-[#16C784] px-4 py-2 text-sm font-semibold text-[#06130D]">Save Profile</button>
+              <button onClick={handleSave} className="rounded-lg bg-[#E0A82E] px-4 py-2 text-sm font-semibold text-[#06130D]">Save Profile</button>
             </div>
           </div>
         )}
 
         {!profile?.verification_status || profile?.verification_status === 'pending' || profile?.verification_status === 'rejected' ? (
           <div className="mt-4">
-            <button onClick={handleVerification} className="rounded-lg border border-[#16C784]/40 bg-[#16C784]/10 px-4 py-2 text-sm font-semibold text-[#16C784] hover:bg-[#16C784]/20">
+            <button onClick={handleVerification} className="rounded-lg border border-[#E0A82E]/40 bg-[#E0A82E]/10 px-4 py-2 text-sm font-semibold text-[#E0A82E] hover:bg-[#E0A82E]/20">
               Request VALENCE PRO Verification
             </button>
           </div>
@@ -243,7 +243,7 @@ function MyProHub() {
       {/* Verification history */}
       {verifs.length > 0 && (
         <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
-          <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><FileCheck2 className="h-4 w-4 text-[#16C784]" /> Verification Requests</h3>
+          <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><FileCheck2 className="h-4 w-4 text-[#E0A82E]" /> Verification Requests</h3>
           <ul className="space-y-2">
             {verifs.map((v) => (
               <li key={v.id} className="flex items-center justify-between rounded-lg border border-white/[0.06] px-3 py-2">
@@ -260,7 +260,7 @@ function MyProHub() {
 
       {/* Credentials */}
       <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
-        <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><Award className="h-4 w-4 text-[#16C784]" /> Professional Credentials</h3>
+        <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><Award className="h-4 w-4 text-[#E0A82E]" /> Professional Credentials</h3>
         <form onSubmit={handleCredential} className="mb-4 grid gap-3 sm:grid-cols-2">
           <label className="text-xs text-[#9AA4B2]">Credential type
             <input name="type" required placeholder="e.g. ACA Final" className="mt-1 block w-full rounded-lg border border-white/[0.1] bg-[#0F1620] px-3 py-2 text-sm text-white" />
@@ -275,7 +275,7 @@ function MyProHub() {
             <input name="number" placeholder="optional" className="mt-1 block w-full rounded-lg border border-white/[0.1] bg-[#0F1620] px-3 py-2 text-sm text-white" />
           </label>
           <div className="sm:col-span-2">
-            <button type="submit" className="rounded-lg bg-[#16C784] px-4 py-2 text-sm font-semibold text-[#06130D]">Submit Credential</button>
+            <button type="submit" className="rounded-lg bg-[#E0A82E] px-4 py-2 text-sm font-semibold text-[#06130D]">Submit Credential</button>
           </div>
         </form>
         {creds.length === 0 ? (
@@ -330,7 +330,7 @@ export default function ValenceProPage() {
 
       <div className="mt-8 grid gap-6 lg:grid-cols-5">
         <div className="lg:col-span-3">
-          <h2 className="mb-4 flex items-center gap-2 font-semibold text-white"><Users className="h-4 w-4 text-[#16C784]" /> Verified Professionals</h2>
+          <h2 className="mb-4 flex items-center gap-2 font-semibold text-white"><Users className="h-4 w-4 text-[#E0A82E]" /> Verified Professionals</h2>
           {loading ? (
             <div className="p-8 text-center text-[#9AA4B2]"><Loader2 className="mx-auto h-6 w-6 animate-spin" /></div>
           ) : directory.length === 0 ? (
@@ -345,7 +345,7 @@ export default function ValenceProPage() {
         </div>
 
         <div className="lg:col-span-2">
-          <h2 className="mb-4 flex items-center gap-2 font-semibold text-white"><Briefcase className="h-4 w-4 text-[#16C784]" /> Your VALENCE PRO Hub</h2>
+          <h2 className="mb-4 flex items-center gap-2 font-semibold text-white"><Briefcase className="h-4 w-4 text-[#E0A82E]" /> Your VALENCE PRO Hub</h2>
           {user ? (
             <MyProHub />
           ) : (

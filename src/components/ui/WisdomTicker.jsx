@@ -91,9 +91,9 @@ export default function WisdomTicker() {
         key={`${prefix}-${entry.id}`}
         className="inline-flex items-center gap-2.5 pr-14 text-[11.5px] whitespace-nowrap"
       >
-        <span className="h-1.5 w-1.5 rounded-full bg-[#16C784] shrink-0" />
+        <span className="h-1.5 w-1.5 rounded-full bg-[#E0A82E] shrink-0" />
         {!entry.isQuote && entry.meta && (
-          <span className="rounded bg-[#16C784]/15 border border-[#16C784]/30 px-1.5 py-0.5 font-display text-[9.5px] font-bold uppercase tracking-wider text-[#16C784]">
+          <span className="rounded bg-[#E0A82E]/15 border border-[#E0A82E]/30 px-1.5 py-0.5 font-display text-[9.5px] font-bold uppercase tracking-wider text-[#E0A82E]">
             {entry.meta}
           </span>
         )}
@@ -101,7 +101,7 @@ export default function WisdomTicker() {
           {entry.isQuote ? `“${entry.text}”` : entry.text}
         </span>
         {entry.isQuote && entry.meta && (
-          <span className="font-display font-semibold text-[#16C784] text-[11px]">
+          <span className="font-display font-semibold text-[#E0A82E] text-[11px]">
             ({entry.meta})
           </span>
         )}
@@ -119,8 +119,8 @@ export default function WisdomTicker() {
     >
       <div className="flex h-8 items-center">
         <div className="shrink-0 z-10 flex h-full items-center gap-1.5 bg-[#06080A] pl-3 sm:pl-5 pr-3 border-r border-white/[0.08]">
-          <BadgeIcon className="h-3 w-3 text-[#16C784] shrink-0" />
-          <span className="font-display text-[10px] font-bold uppercase tracking-widest text-[#16C784] whitespace-nowrap">
+          <BadgeIcon className="h-3 w-3 text-[#E0A82E] shrink-0" />
+          <span className="font-display text-[10px] font-bold uppercase tracking-widest text-[#E0A82E] whitespace-nowrap">
             {badgeLabel}
           </span>
         </div>

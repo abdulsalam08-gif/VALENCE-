@@ -124,7 +124,7 @@ export default function TuitionCentresPage() {
                 }}
                 className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-display font-bold transition-all ${
                   directoryTab === 'centres'
-                    ? 'bg-[#16C784] text-[#06130D]'
+                    ? 'bg-[#E0A82E] text-[#06130D]'
                     : 'text-[#9AA4B2] hover:text-white'
                 }`}
               >
@@ -140,7 +140,7 @@ export default function TuitionCentresPage() {
                 }}
                 className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-display font-bold transition-all ${
                   directoryTab === 'textbooks'
-                    ? 'bg-[#16C784] text-[#06130D]'
+                    ? 'bg-[#E0A82E] text-[#06130D]'
                     : 'text-[#9AA4B2] hover:text-white'
                 }`}
               >
@@ -152,7 +152,7 @@ export default function TuitionCentresPage() {
 
             <Link
               to="/programmes"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#16C784] hover:underline"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#E0A82E] hover:underline"
             >
               <GraduationCap className="h-4 w-4" />
               Want Online Classes? Join In-App Verified Tutors <ArrowRight className="h-3.5 w-3.5" />
@@ -205,10 +205,10 @@ export default function TuitionCentresPage() {
           )}
 
           <div className="rounded-xl bg-[#11161C] border border-white/[0.07] p-3.5 flex items-start gap-2.5 text-xs text-[#9AA4B2]">
-            <ShieldAlert className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" />
+            <ShieldAlert className="h-4 w-4 text-[#E0A82E] shrink-0 mt-0.5" />
             <p>
               Zero placeholder listings: only real, Admin-verified partners appear here. Paid campaigns display <strong className="text-[#EA3943]">Sponsored</strong> or <strong className="text-[#EA3943]">Advertisement</strong> badges and comply with our{' '}
-              <Link to="/legal/advertising" className="text-[#16C784] hover:underline">
+              <Link to="/legal/advertising" className="text-[#E0A82E] hover:underline">
                 Advertising &amp; Anti-Piracy Policy
               </Link>
               .
@@ -237,32 +237,32 @@ export default function TuitionCentresPage() {
                     Showcase Your Accounting Textbooks or Bookshop Directly Inside VALENCE
                   </h2>
                   <p className="text-xs sm:text-sm text-[#9AA4B2] leading-relaxed">
-                    Verified accounting textbook authors and genuine textbook vendors can advertise directly in-app at {formatNaira(weeklyRate)}/week. Every verified listing comes with built-in <strong className="text-white">in-app student enquiries</strong> plus <strong className="text-[#16C784]">optional in-app Paystack checkout</strong> so students can discover, ask questions, and order genuine editions without leaving VALENCE.
+                    Verified accounting textbook authors and genuine textbook vendors can advertise directly in-app at {formatNaira(weeklyRate)}/week. Every verified listing comes with built-in <strong className="text-white">in-app student enquiries</strong> plus <strong className="text-[#E0A82E]">optional in-app Paystack checkout</strong> so students can discover, ask questions, and order genuine editions without leaving VALENCE.
                   </p>
                 </div>
               )}
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-xs">
                 <div className="rounded-xl bg-[#0B0E11] border border-white/[0.07] p-4 space-y-1.5">
-                  <CheckCircle2 className="h-4 w-4 text-[#16C784]" />
+                  <CheckCircle2 className="h-4 w-4 text-[#E0A82E]" />
                   <p className="font-display font-bold text-white">Admin Verification</p>
                   <p className="text-[#9AA4B2]">
                     Physical venue confirmation for centres; copyright &amp; zero-piracy checks for authors and vendors.
                   </p>
                 </div>
                 <div className="rounded-xl bg-[#0B0E11] border border-white/[0.07] p-4 space-y-1.5">
-                  <MessageSquare className="h-4 w-4 text-[#16C784]" />
+                  <MessageSquare className="h-4 w-4 text-[#E0A82E]" />
                   <p className="font-display font-bold text-white">In-App Student Enquiries</p>
                   <p className="text-[#9AA4B2]">
                     Students message and enquire directly inside VALENCE while you respond from your Advertiser Portal.
                   </p>
                 </div>
                 <div className="rounded-xl bg-[#0B0E11] border border-white/[0.07] p-4 space-y-1.5">
-                  <CreditCard className="h-4 w-4 text-[#16C784]" />
+                  <CreditCard className="h-4 w-4 text-[#E0A82E]" />
                   <p className="font-display font-bold text-white">Optional In-App Checkout</p>
                   <p className="text-[#9AA4B2]">
                     Textbook authors and vendors can opt in to Paystack checkout right on their VALENCE listing, or browse our{' '}
-                    <Link to="/store" className="text-[#16C784] underline">
+                    <Link to="/store" className="text-[#E0A82E] underline">
                       Study Store
                     </Link>
                     .
@@ -275,7 +275,7 @@ export default function TuitionCentresPage() {
                   <Megaphone className="h-4 w-4" /> Apply &amp; Book In-App ({formatNaira(weeklyRate)}/Wk)
                 </Link>
                 <Link to="/portal/advertiser?mode=register" className="v-btn-secondary text-xs">
-                  Create Advertiser Account <ArrowRight className="h-3.5 w-3.5 text-[#16C784]" />
+                  Create Advertiser Account <ArrowRight className="h-3.5 w-3.5 text-[#E0A82E]" />
                 </Link>
                 <Link to="/store" className="v-btn-secondary text-xs">
                   Visit VALENCE Study Materials Store
@@ -312,30 +312,30 @@ export default function TuitionCentresPage() {
                         {item.sponsored && <Badge variant="sponsored">{item.adLabel}</Badge>}
                       </div>
                       <div className="flex items-start gap-3">
-                        <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#0B0E11] border border-white/[0.08] text-[#16C784]">
+                        <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#0B0E11] border border-white/[0.08] text-[#E0A82E]">
                           <ItemIcon className="h-5 w-5" />
                         </span>
                         <div>
                           <h2 className="font-display text-lg font-bold text-white">{item.name}</h2>
                           {item.title && (
-                            <p className="text-xs font-semibold text-[#16C784] mt-0.5 leading-snug">
+                            <p className="text-xs font-semibold text-[#E0A82E] mt-0.5 leading-snug">
                               {item.title}
                             </p>
                           )}
                           <p className="text-xs text-[#9AA4B2] inline-flex items-center gap-1 mt-0.5">
-                            <MapPin className="h-3.5 w-3.5 text-[#16C784]" /> {item.location}
+                            <MapPin className="h-3.5 w-3.5 text-[#E0A82E]" /> {item.location}
                           </p>
                         </div>
                       </div>
                       <p className="text-xs leading-relaxed text-[#9AA4B2]">{item.description}</p>
                       {directoryTab === 'centres' && (
-                        <div className="rounded-xl bg-[#0B0E11] border border-[#16C784]/25 p-3 flex items-center justify-between gap-2 text-[11px]">
+                        <div className="rounded-xl bg-[#0B0E11] border border-[#E0A82E]/25 p-3 flex items-center justify-between gap-2 text-[11px]">
                           <span className="text-[#C2C9D4]">
                             Centre Cost Implication (set directly by {item.name})
                           </span>
                           <Link
                             to="/portal/student?apply=tuition"
-                            className="font-display font-bold text-[#16C784] hover:underline shrink-0"
+                            className="font-display font-bold text-[#E0A82E] hover:underline shrink-0"
                           >
                             Unlock (₦3,000) →
                           </Link>
@@ -348,7 +348,7 @@ export default function TuitionCentresPage() {
                         onClick={() => setEnquiryTarget(item)}
                         className="v-btn-secondary text-xs py-2 px-3"
                       >
-                        <MessageSquare className="h-3.5 w-3.5 text-[#16C784]" /> Enquire In-App
+                        <MessageSquare className="h-3.5 w-3.5 text-[#E0A82E]" /> Enquire In-App
                       </button>
                       {item.inAppCheckoutEnabled && item.price && (
                         <button
@@ -393,7 +393,7 @@ export default function TuitionCentresPage() {
                   {enquiryTarget.name}
                 </h3>
                 {enquiryTarget.title && (
-                  <p className="text-xs text-[#16C784]">{enquiryTarget.title}</p>
+                  <p className="text-xs text-[#E0A82E]">{enquiryTarget.title}</p>
                 )}
               </div>
               <button

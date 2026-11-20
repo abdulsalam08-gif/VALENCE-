@@ -166,7 +166,7 @@ export default function StudentPortalPage() {
       <header className="sticky top-0 z-30 bg-[#0B0F14]/85 backdrop-blur-md border-b border-white/[0.07]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
-            <div className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[#16C784] text-black font-bold text-sm">V</div>
+            <div className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[#E0A82E] text-black font-bold text-sm">V</div>
             <span className="text-sm font-bold text-white">VALENCE</span>
           </Link>
           <div className="flex items-center gap-2">
@@ -176,7 +176,7 @@ export default function StudentPortalPage() {
               to="/profile"
               className="flex items-center gap-2 rounded-lg px-2 py-1 hover:bg-white/[0.05] transition-colors"
             >
-              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#16C784]/20 text-[#16C784] text-xs font-bold">
+              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#E0A82E]/20 text-[#E0A82E] text-xs font-bold">
                 {displayName.charAt(0).toUpperCase()}
               </span>
               <span className="text-xs font-medium text-[#C2C9D4] hidden sm:block">{displayName}</span>
@@ -195,10 +195,10 @@ export default function StudentPortalPage() {
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Welcome banner */}
-        <div className="rounded-2xl bg-gradient-to-r from-[#16C784]/[0.10] to-transparent border border-[#16C784]/20 p-6 sm:p-7">
+        <div className="rounded-2xl bg-gradient-to-r from-[#E0A82E]/[0.10] to-transparent border border-[#E0A82E]/20 p-6 sm:p-7">
           <div className="flex items-start justify-between gap-4 flex-wrap">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-[#16C784]">Student Portal</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-[#E0A82E]">Student Portal</p>
               <h1 className="text-xl sm:text-2xl font-bold text-white mt-1">Welcome back, {displayName.split(' ')[0]}</h1>
               <p className="text-sm text-[#9AA4B2] mt-1">
                 {profile?.institution_name
@@ -207,7 +207,7 @@ export default function StudentPortalPage() {
               </p>
             </div>
             {profile?.onboarding_completed && (
-              <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#16C784]/10 border border-[#16C784]/20 px-3 py-1.5 text-xs font-semibold text-[#16C784]">
+              <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#E0A82E]/10 border border-[#E0A82E]/20 px-3 py-1.5 text-xs font-semibold text-[#E0A82E]">
                 <Check className="h-3.5 w-3.5" /> Onboarding complete
               </span>
             )}
@@ -223,7 +223,7 @@ export default function StudentPortalPage() {
               onClick={() => setActiveTab(link.key)}
               className={`inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-semibold whitespace-nowrap transition-colors ${
                 activeTab === link.key
-                  ? 'bg-[#16C784] text-black'
+                  ? 'bg-[#E0A82E] text-black'
                   : 'bg-white/[0.04] text-[#9AA4B2] hover:bg-white/[0.08] hover:text-white'
               }`}
             >
@@ -250,7 +250,7 @@ export default function StudentPortalPage() {
                 label="Study tools"
                 value="15"
                 sub="Free tools"
-                accent="#16C784"
+                accent="#E0A82E"
                 to="/learning"
               />
               <MetricCard
@@ -258,7 +258,7 @@ export default function StudentPortalPage() {
                 label="Community"
                 value="Active"
                 sub="Forums & groups"
-                accent="#16C784"
+                accent="#E0A82E"
                 to="/community"
               />
               <MetricCard
@@ -266,7 +266,7 @@ export default function StudentPortalPage() {
                 label="Streak"
                 value={profile?.study_streak ? `${profile.study_streak} days` : 'Start now'}
                 sub="Keep learning"
-                accent="#F5A623"
+                accent="#E0A82E"
                 to="/learning"
               />
             </div>
@@ -336,7 +336,7 @@ export default function StudentPortalPage() {
           <div className="mt-6 space-y-6 animate-fade-up">
             <div className="rounded-2xl bg-[#11161C] border border-white/[0.10] p-6 sm:p-8">
               <div className="flex items-center gap-2 mb-5">
-                <Unlock className="h-4.5 w-4.5 text-[#16C784]" />
+                <Unlock className="h-4.5 w-4.5 text-[#E0A82E]" />
                 <h2 className="text-sm font-bold text-white">Tuition Level Unlocks</h2>
                 <span className="text-xs text-[#667085]">₦3,000 per level · Paystack verified</span>
               </div>
@@ -355,7 +355,7 @@ export default function StudentPortalPage() {
                     <div key={lvl.id} className="rounded-xl bg-white/[0.02] border border-white/[0.06] p-4">
                       <div className="flex items-center justify-between mb-3">
                         <span className="text-xs font-bold text-white">{lvl.code}</span>
-                        <span className={`inline-flex items-center gap-1 text-xs font-semibold ${unlocked ? 'text-[#16C784]' : 'text-[#9AA4B2]'}`}>
+                        <span className={`inline-flex items-center gap-1 text-xs font-semibold ${unlocked ? 'text-[#E0A82E]' : 'text-[#9AA4B2]'}`}>
                           {unlocked ? <><Unlock className="h-3 w-3" /> Unlocked</> : <><Lock className="h-3 w-3" /> Locked</>}
                         </span>
                       </div>
@@ -368,16 +368,16 @@ export default function StudentPortalPage() {
                           </div>
                           <div className="flex justify-between text-[#9AA4B2]">
                             <span>Discount applied</span>
-                            <span className="text-[#16C784]">-{formatNaira(calc.discountAmount)}</span>
+                            <span className="text-[#E0A82E]">-{formatNaira(calc.discountAmount)}</span>
                           </div>
                           <div className="flex justify-between text-[#9AA4B2]">
                             <span>Unlock fee (paid)</span>
-                            <span className="text-[#16C784]">{formatNaira(calc.unlockFee)}</span>
+                            <span className="text-[#E0A82E]">{formatNaira(calc.unlockFee)}</span>
                           </div>
                         </div>
                       ) : (
                         <div className="space-y-2">
-                          <div className="rounded-lg bg-[#16C784]/[0.06] border border-[#16C784]/20 p-2.5 text-xs text-[#C2C9D4]">
+                          <div className="rounded-lg bg-[#E0A82E]/[0.06] border border-[#E0A82E]/20 p-2.5 text-xs text-[#C2C9D4]">
                             Unlock to reveal full cost implication: in-app online tuition, official exam fees, and physical centre rates.
                           </div>
                           <button
@@ -404,7 +404,7 @@ export default function StudentPortalPage() {
                     <div key={lvl.id} className="rounded-xl bg-white/[0.02] border border-white/[0.06] p-4">
                       <div className="flex items-center justify-between mb-3">
                         <span className="text-xs font-bold text-white">{lvl.shortName || lvl.code}</span>
-                        <span className={`inline-flex items-center gap-1 text-xs font-semibold ${unlocked ? 'text-[#16C784]' : 'text-[#9AA4B2]'}`}>
+                        <span className={`inline-flex items-center gap-1 text-xs font-semibold ${unlocked ? 'text-[#E0A82E]' : 'text-[#9AA4B2]'}`}>
                           {unlocked ? <><Unlock className="h-3 w-3" /> Unlocked</> : <><Lock className="h-3 w-3" /> Locked</>}
                         </span>
                       </div>
@@ -417,16 +417,16 @@ export default function StudentPortalPage() {
                           </div>
                           <div className="flex justify-between text-[#9AA4B2]">
                             <span>Discount applied</span>
-                            <span className="text-[#16C784]">-{formatNaira(calc.discountAmount)}</span>
+                            <span className="text-[#E0A82E]">-{formatNaira(calc.discountAmount)}</span>
                           </div>
                           <div className="flex justify-between text-[#9AA4B2]">
                             <span>Unlock fee (paid)</span>
-                            <span className="text-[#16C784]">{formatNaira(calc.unlockFee)}</span>
+                            <span className="text-[#E0A82E]">{formatNaira(calc.unlockFee)}</span>
                           </div>
                         </div>
                       ) : (
                         <div className="space-y-2">
-                          <div className="rounded-lg bg-[#16C784]/[0.06] border border-[#16C784]/20 p-2.5 text-xs text-[#C2C9D4]">
+                          <div className="rounded-lg bg-[#E0A82E]/[0.06] border border-[#E0A82E]/20 p-2.5 text-xs text-[#C2C9D4]">
                             Unlock to reveal full cost implication: in-app online tuition, official exam fees, and physical centre rates.
                           </div>
                           <button
@@ -444,7 +444,7 @@ export default function StudentPortalPage() {
               </div>
 
               {unlockLevelId && (
-                <div className="mt-5 rounded-xl bg-[#0B0E11] border border-[#16C784]/30 p-4 animate-fade-up">
+                <div className="mt-5 rounded-xl bg-[#0B0E11] border border-[#E0A82E]/30 p-4 animate-fade-up">
                   <p className="text-xs font-semibold text-white mb-1">Confirm unlock for {unlockLevelId}</p>
                   <p className="text-xs text-[#9AA4B2] mb-3">Pay the one-time ₦3,000 fee to permanently unlock this level's cost implication. Never charged twice.</p>
                   <div className="flex items-center gap-3">
@@ -481,14 +481,14 @@ export default function StudentPortalPage() {
           <div className="mt-6 space-y-6 animate-fade-up">
             <div className="rounded-2xl bg-[#11161C] border border-white/[0.10] p-6 sm:p-8">
               <div className="flex items-center gap-2 mb-5">
-                <FileText className="h-4.5 w-4.5 text-[#16C784]" />
+                <FileText className="h-4.5 w-4.5 text-[#E0A82E]" />
                 <h2 className="text-sm font-bold text-white">ATSWA Document Vault</h2>
                 <span className="text-xs text-[#667085]">Private storage · Admin-verified</span>
               </div>
 
               {/* Upload form */}
               <form onSubmit={handleUploadDocument} className="rounded-xl bg-white/[0.02] border border-white/[0.06] p-4 space-y-3 mb-6">
-                <p className="text-xs font-semibold text-[#16C784]">Upload ATSWA Document</p>
+                <p className="text-xs font-semibold text-[#E0A82E]">Upload ATSWA Document</p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
                     <label className="v-label">Document Type</label>
@@ -525,7 +525,7 @@ export default function StudentPortalPage() {
                       type="file"
                       name="docFile"
                       accept=".pdf,.png,.jpg,.jpeg"
-                      className="v-input text-xs file:mr-3 file:rounded-lg file:border-0 file:bg-[#16C784]/15 file:text-[#16C784] file:font-semibold file:px-3 file:py-1.5"
+                      className="v-input text-xs file:mr-3 file:rounded-lg file:border-0 file:bg-[#E0A82E]/15 file:text-[#E0A82E] file:font-semibold file:px-3 file:py-1.5"
                     />
                   </div>
                 </div>
@@ -544,7 +544,7 @@ export default function StudentPortalPage() {
                 <div className="space-y-2">
                   {documents.map((doc) => (
                     <div key={doc.id} className="flex items-center gap-3 rounded-xl bg-white/[0.02] border border-white/[0.06] px-4 py-3">
-                      <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-[#16C784]/10 text-[#16C784] shrink-0">
+                      <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-[#E0A82E]/10 text-[#E0A82E] shrink-0">
                         <FileText className="h-4 w-4" />
                       </span>
                       <div className="min-w-0 flex-1">
@@ -565,8 +565,8 @@ export default function StudentPortalPage() {
                 </div>
               )}
 
-              <div className="mt-4 flex items-center gap-2 rounded-lg bg-[#16C784]/[0.06] border border-[#16C784]/20 px-3 py-2.5 text-xs text-[#9AA4B2]">
-                <ShieldCheck className="h-3.5 w-3.5 text-[#16C784] shrink-0" />
+              <div className="mt-4 flex items-center gap-2 rounded-lg bg-[#E0A82E]/[0.06] border border-[#E0A82E]/20 px-3 py-2.5 text-xs text-[#9AA4B2]">
+                <ShieldCheck className="h-3.5 w-3.5 text-[#E0A82E] shrink-0" />
                 Documents are stored securely in Supabase private storage. Admins verify submissions during the ATSWA registration guidance process.
               </div>
             </div>
@@ -589,9 +589,9 @@ export default function StudentPortalPage() {
           <div className="mt-6">
             <Link
               to="/profile"
-              className="inline-flex items-center gap-2 rounded-xl bg-[#11161C] border border-white/[0.10] px-5 py-3 text-sm font-semibold text-white hover:border-[#16C784]/30 transition-colors"
+              className="inline-flex items-center gap-2 rounded-xl bg-[#11161C] border border-white/[0.10] px-5 py-3 text-sm font-semibold text-white hover:border-[#E0A82E]/30 transition-colors"
             >
-              <UserIcon className="h-4 w-4 text-[#16C784]" />
+              <UserIcon className="h-4 w-4 text-[#E0A82E]" />
               Go to profile & settings
               <ArrowUpRight className="h-4 w-4" />
             </Link>
@@ -645,7 +645,7 @@ function TuitionEnrolmentSection({ atswaLevels, icanLevels, isLevelUnlocked }) {
   return (
     <div className="mt-6 rounded-xl bg-[#11161C] border border-white/[0.10] p-5">
       <div className="flex items-center gap-2 mb-4">
-        <GraduationCap className="h-4 w-4 text-[#16C784]" />
+        <GraduationCap className="h-4 w-4 text-[#E0A82E]" />
         <h3 className="text-sm font-bold text-white">Tuition Enrolment</h3>
         <span className="text-xs text-[#667085]">Gated by the ₦3,000 level unlock</span>
       </div>
@@ -653,7 +653,7 @@ function TuitionEnrolmentSection({ atswaLevels, icanLevels, isLevelUnlocked }) {
       {enrolments.length > 0 && (
         <div className="space-y-2 mb-4">
           {enrolments.map((e) => (
-            <div key={e.id} className="rounded-lg bg-[#16C784]/[0.06] border border-[#16C784]/20 px-3 py-2 flex items-center justify-between">
+            <div key={e.id} className="rounded-lg bg-[#E0A82E]/[0.06] border border-[#E0A82E]/20 px-3 py-2 flex items-center justify-between">
               <div>
                 <p className="text-xs font-semibold text-white">{e.level_name || e.level_id}</p>
                 <p className="text-xs text-[#9AA4B2]">
@@ -721,9 +721,9 @@ function QuickAction({ icon: Icon, title, desc, to }) {
   return (
     <Link
       to={to}
-      className="group flex items-center gap-3 rounded-xl bg-white/[0.02] border border-white/[0.06] p-4 hover:border-[#16C784]/30 hover:bg-white/[0.04] transition-colors"
+      className="group flex items-center gap-3 rounded-xl bg-white/[0.02] border border-white/[0.06] p-4 hover:border-[#E0A82E]/30 hover:bg-white/[0.04] transition-colors"
     >
-      <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#16C784]/10 text-[#16C784] shrink-0">
+      <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#E0A82E]/10 text-[#E0A82E] shrink-0">
         <Icon className="h-5 w-5" />
       </span>
       <div className="min-w-0 flex-1">
@@ -738,7 +738,7 @@ function QuickAction({ icon: Icon, title, desc, to }) {
 function TabContent({ icon: Icon, title, to, children }) {
   return (
     <div className="mt-6 rounded-2xl bg-[#11161C] border border-white/[0.10] p-8 text-center animate-fade-up">
-      <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#16C784]/10 text-[#16C784] mb-4">
+      <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#E0A82E]/10 text-[#E0A82E] mb-4">
         <Icon className="h-6 w-6" />
       </span>
       <h2 className="text-lg font-bold text-white">{title}</h2>

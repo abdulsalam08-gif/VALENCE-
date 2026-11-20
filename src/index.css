@@ -10,7 +10,7 @@
     --bg-subtle: #1C2530;
     --border-subtle: rgba(255, 255, 255, 0.07);
     --border-strong: rgba(255, 255, 255, 0.14);
-    --accent-green: #16C784;
+    --accent-mustard: #E0A82E;
     --accent-red: #EA3943;
     --text-primary: #F4F6F9;
     --text-secondary: #9AA4B2;
@@ -60,7 +60,7 @@
   }
 
   .v-card-hover {
-    @apply v-card hover:border-[#16C784]/30 hover:bg-[#141A22];
+    @apply v-card hover:border-[#E0A82E]/30 hover:bg-[#141A22];
   }
 
   .v-glass {
@@ -78,11 +78,11 @@
   }
 
   .v-btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-[#16C784] px-5 py-2.5 text-sm font-semibold text-[#06130D] transition-all duration-200 hover:bg-[#1ED791] active:scale-[0.98] shadow-glow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#16C784] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B0E11] disabled:opacity-50 disabled:pointer-events-none;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-[#E0A82E] px-5 py-2.5 text-sm font-semibold text-[#06130D] transition-all duration-200 hover:bg-[#F2C668] active:scale-[0.98] shadow-glow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E0A82E] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B0E11] disabled:opacity-50 disabled:pointer-events-none;
   }
 
   .v-btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-[#161D26] border border-white/[0.1] px-5 py-2.5 text-sm font-medium text-[#F4F6F9] transition-all duration-200 hover:border-white/[0.2] hover:bg-[#1C2530] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#16C784] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B0E11];
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-[#161D26] border border-white/[0.1] px-5 py-2.5 text-sm font-medium text-[#F4F6F9] transition-all duration-200 hover:border-white/[0.2] hover:bg-[#1C2530] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E0A82E] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B0E11];
   }
 
   .v-btn-ghost {
@@ -94,7 +94,7 @@
   }
 
   .v-input {
-    @apply w-full rounded-xl bg-[#0F141A] border border-white/[0.09] px-4 py-2.5 text-sm text-[#F4F6F9] placeholder-[#667085] transition-colors duration-150 focus:border-[#16C784] focus:outline-none focus:ring-1 focus:ring-[#16C784]/40;
+    @apply w-full rounded-xl bg-[#0F141A] border border-white/[0.09] px-4 py-2.5 text-sm text-[#F4F6F9] placeholder-[#667085] transition-colors duration-150 focus:border-[#E0A82E] focus:outline-none focus:ring-1 focus:ring-[#E0A82E]/40;
   }
 
   .v-label {

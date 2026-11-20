@@ -31,9 +31,9 @@ function fmtDate(iso) {
 }
 
 const RANK_STYLE = {
-  1: { ring: 'border-[#FFD700]/50 text-[#FFD700] bg-[#FFD700]/10', icon: '🥇', label: '1st' },
+  1: { ring: 'border-[#E0A82E]/50 text-[#E0A82E] bg-[#E0A82E]/10', icon: '🥇', label: '1st' },
   2: { ring: 'border-[#C0C6CE]/50 text-[#C0C6CE] bg-white/[0.06]', icon: '🥈', label: '2nd' },
-  3: { ring: 'border-[#CD7F32]/50 text-[#CD7F32] bg-[#CD7F32]/10', icon: '🥉', label: '3rd' },
+  3: { ring: 'border-[#9AA4B2]/50 text-[#9AA4B2] bg-[#9AA4B2]/10', icon: '🥉', label: '3rd' },
 };
 
 /* ------------------------------------------------------------------ */
@@ -81,7 +81,7 @@ function ExamModal({ attemptId, questions, secondsLeft, onClose, onSubmitted }) 
       <div className="w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-2xl border border-white/10 bg-[#0B1117] shadow-2xl">
         <div className="sticky top-0 flex items-center justify-between border-b border-white/[0.08] bg-[#0B1117]/95 px-5 py-4 backdrop-blur">
           <h3 className="font-semibold text-white">VALENCE Challenge Exam</h3>
-          <div className={`flex items-center gap-2 rounded-full border px-3 py-1 font-mono font-bold ${timerRef.current < 60 ? 'border-[#EA3943]/50 text-[#EA3943]' : 'border-[#16C784]/40 text-[#16C784]'}`}>
+          <div className={`flex items-center gap-2 rounded-full border px-3 py-1 font-mono font-bold ${timerRef.current < 60 ? 'border-[#EA3943]/50 text-[#EA3943]' : 'border-[#E0A82E]/40 text-[#E0A82E]'}`}>
             <Clock className="h-4 w-4" /> {String(mm).padStart(2, '0')}:{String(ss).padStart(2, '0')}
           </div>
         </div>
@@ -89,7 +89,7 @@ function ExamModal({ attemptId, questions, secondsLeft, onClose, onSubmitted }) 
           {questions.map((q, i) => (
             <div key={q.id} className="mb-6">
               <div className="mb-2 flex gap-2">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-[#16C784]/15 text-xs font-bold text-[#16C784]">{i + 1}</span>
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-[#E0A82E]/15 text-xs font-bold text-[#E0A82E]">{i + 1}</span>
                 <p className="text-sm font-medium text-white">{q.question_text}</p>
               </div>
               <div className="ml-8 space-y-2">
@@ -100,9 +100,9 @@ function ExamModal({ attemptId, questions, secondsLeft, onClose, onSubmitted }) 
                       key={o.id}
                       type="button"
                       onClick={() => setAnswers((a) => ({ ...a, [q.id]: o.id }))}
-                      className={`w-full rounded-lg border px-3 py-2 text-left text-sm transition ${selected ? 'border-[#16C784] bg-[#16C784]/10 text-white' : 'border-white/[0.08] text-[#9AA4B2] hover:bg-white/[0.04]'}`}
+                      className={`w-full rounded-lg border px-3 py-2 text-left text-sm transition ${selected ? 'border-[#E0A82E] bg-[#E0A82E]/10 text-white' : 'border-white/[0.08] text-[#9AA4B2] hover:bg-white/[0.04]'}`}
                     >
-                      <span className="mr-2 font-mono text-[#16C784]">{String.fromCharCode(64 + o.order)}</span> {o.text}
+                      <span className="mr-2 font-mono text-[#E0A82E]">{String.fromCharCode(64 + o.order)}</span> {o.text}
                     </button>
                   );
                 })}
@@ -116,7 +116,7 @@ function ExamModal({ attemptId, questions, secondsLeft, onClose, onSubmitted }) 
           <button
             onClick={() => handleSubmit(false)}
             disabled={submitting}
-            className="rounded-lg bg-[#16C784] px-5 py-2 text-sm font-semibold text-[#06130D] transition hover:bg-[#18D891] disabled:opacity-50"
+            className="rounded-lg bg-[#E0A82E] px-5 py-2 text-sm font-semibold text-[#06130D] transition hover:bg-[#F2C668] disabled:opacity-50"
           >
             {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Submit Exam'}
           </button>
@@ -204,7 +204,7 @@ function MyParticipation({ competitionId, onStartExam }) {
             <button
               onClick={handleStart}
               disabled={hasOpenAttempt}
-              className="rounded-lg bg-[#16C784] px-5 py-2.5 text-sm font-semibold text-[#06130D] transition hover:bg-[#18D891] disabled:opacity-40"
+              className="rounded-lg bg-[#E0A82E] px-5 py-2.5 text-sm font-semibold text-[#06130D] transition hover:bg-[#F2C668] disabled:opacity-40"
             >
               {hasOpenAttempt ? 'Exam in progress' : 'Start Exam'}
             </button>
@@ -217,10 +217,10 @@ function MyParticipation({ competitionId, onStartExam }) {
       )}
 
       {score && (
-        <div className="rounded-2xl border border-[#16C784]/30 bg-[#16C784]/[0.06] p-5">
+        <div className="rounded-2xl border border-[#E0A82E]/30 bg-[#E0A82E]/[0.06] p-5">
           <h3 className="font-semibold text-white">Provisional Result</h3>
           <p className="mt-1 text-sm text-[#9AA4B2]">
-            You scored <span className="font-bold text-[#16C784]">{score.total_score}</span> marks · auto-marked
+            You scored <span className="font-bold text-[#E0A82E]">{score.total_score}</span> marks · auto-marked
             {score.auto_marked_questions} question(s). Final standing is confirmed once results are approved and published.
           </p>
         </div>
@@ -228,21 +228,21 @@ function MyParticipation({ competitionId, onStartExam }) {
 
       <div className="grid gap-6 md:grid-cols-2">
         <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
-          <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><ClipboardList className="h-4 w-4 text-[#16C784]" /> Results</h3>
+          <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><ClipboardList className="h-4 w-4 text-[#E0A82E]" /> Results</h3>
           {results.length === 0 ? <p className="text-sm text-[#9AA4B2]">No results yet.</p> : (
             <ul className="space-y-2">
               {results.map((r) => (
                 <li key={r.result_id} className="flex items-center justify-between rounded-lg border border-white/[0.06] px-3 py-2">
                   <div>
                     <span className="text-sm text-white">{r.total_score} marks</span>
-                    {r.rank_position ? <span className="ml-2 text-xs text-[#16C784]">rank #{r.rank_position}</span> : null}
+                    {r.rank_position ? <span className="ml-2 text-xs text-[#E0A82E]">rank #{r.rank_position}</span> : null}
                     <div className="text-[11px] text-[#9AA4B2]">
                       status: {r.status}
                       {r.approved_at ? ` · approved ${fmtDate(r.approved_at)}` : ''}
                     </div>
                   </div>
                   {['pending', 'marked', 'rejected'].includes(r.status) && (
-                    <button onClick={() => setAppealTarget(r.result_id)} className="text-xs font-medium text-[#16C784] hover:underline">
+                    <button onClick={() => setAppealTarget(r.result_id)} className="text-xs font-medium text-[#E0A82E] hover:underline">
                       Appeal
                     </button>
                   )}
@@ -253,13 +253,13 @@ function MyParticipation({ competitionId, onStartExam }) {
         </div>
 
         <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
-          <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><Banknote className="h-4 w-4 text-[#16C784]" /> Prizes & Awards</h3>
+          <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><Banknote className="h-4 w-4 text-[#E0A82E]" /> Prizes & Awards</h3>
           {rewards.length === 0 && awards.length === 0 && certificates.length === 0 ? (
             <p className="text-sm text-[#9AA4B2]">No awards yet. Place on the podium to win.</p>
           ) : (
             <ul className="space-y-2">
               {rewards.map((rw) => (
-                <li key={rw.reward_id} className="rounded-lg border border-[#16C784]/30 bg-[#16C784]/[0.05] px-3 py-2">
+                <li key={rw.reward_id} className="rounded-lg border border-[#E0A82E]/30 bg-[#E0A82E]/[0.05] px-3 py-2">
                   <div className="text-sm text-white">{RANK_STYLE[rw.placement_rank]?.label || `#${rw.placement_rank}`} place · {formatNaira(rw.prize_amount_ngn)}</div>
                   <div className="text-[11px] text-[#9AA4B2]">status: {rw.status}{rw.disbursed_at ? ` · disbursed ${fmtDate(rw.disbursed_at)}` : ''}</div>
                 </li>
@@ -272,7 +272,7 @@ function MyParticipation({ competitionId, onStartExam }) {
               ))}
               {certificates.map((c) => (
                 <li key={c.certificate_id} className="rounded-lg border border-white/[0.06] px-3 py-2">
-                  <div className="flex items-center gap-2 text-sm text-white"><ScrollText className="h-3.5 w-3.5 text-[#16C784]" /> {c.certificate_number}</div>
+                  <div className="flex items-center gap-2 text-sm text-white"><ScrollText className="h-3.5 w-3.5 text-[#E0A82E]" /> {c.certificate_number}</div>
                   <div className="text-[11px] text-[#9AA4B2]">{c.award_type} certificate · issued {fmtDate(c.issued_at)}</div>
                 </li>
               ))}
@@ -283,7 +283,7 @@ function MyParticipation({ competitionId, onStartExam }) {
 
       {appeals.length > 0 && (
         <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
-          <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><Flag className="h-4 w-4 text-[#16C784]" /> Appeals</h3>
+          <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><Flag className="h-4 w-4 text-[#E0A82E]" /> Appeals</h3>
           <ul className="space-y-2">
             {appeals.map((a) => (
               <li key={a.appeal_id} className="rounded-lg border border-white/[0.06] px-3 py-2">
@@ -308,7 +308,7 @@ function MyParticipation({ competitionId, onStartExam }) {
             />
             <div className="mt-4 flex justify-end gap-2">
               <button onClick={() => setAppealTarget(null)} className="rounded-lg border border-white/[0.1] px-4 py-2 text-sm text-[#9AA4B2]">Cancel</button>
-              <button onClick={() => handleAppeal(appealTarget)} className="rounded-lg bg-[#16C784] px-4 py-2 text-sm font-semibold text-[#06130D]">Submit Appeal</button>
+              <button onClick={() => handleAppeal(appealTarget)} className="rounded-lg bg-[#E0A82E] px-4 py-2 text-sm font-semibold text-[#06130D]">Submit Appeal</button>
             </div>
           </div>
         </div>
@@ -359,7 +359,7 @@ function Leaderboard({ competitionId }) {
           <button
             key={t.id}
             onClick={() => setType(t.id)}
-            className={`rounded-lg px-3.5 py-1.5 text-sm font-medium transition ${type === t.id ? 'bg-[#16C784] text-[#06130D]' : 'border border-white/[0.08] text-[#9AA4B2] hover:bg-white/[0.04]'}`}
+            className={`rounded-lg px-3.5 py-1.5 text-sm font-medium transition ${type === t.id ? 'bg-[#E0A82E] text-[#06130D]' : 'border border-white/[0.08] text-[#9AA4B2] hover:bg-white/[0.04]'}`}
           >
             {t.label}
           </button>
@@ -384,7 +384,7 @@ function Leaderboard({ competitionId }) {
                   <p className="truncate text-[11px] text-[#9AA4B2]">{r.institution_name || r.team_name || '—'}</p>
                 </div>
                 {r.verified ? <Badge variant="verified">Verified</Badge> : <Badge variant="neutral">Pending</Badge>}
-                <span className="font-mono font-bold text-[#16C784]">{r.score}</span>
+                <span className="font-mono font-bold text-[#E0A82E]">{r.score}</span>
               </li>
             );
           })}
@@ -432,7 +432,7 @@ export default function CompetitionPage() {
     return (
       <div className="mx-auto max-w-4xl px-6 py-20 text-center">
         <p className="text-[#EA3943]">{error}</p>
-        <Link to="/competitions" className="mt-4 inline-block text-[#16C784] hover:underline">← Back to competitions</Link>
+        <Link to="/competitions" className="mt-4 inline-block text-[#E0A82E] hover:underline">← Back to competitions</Link>
       </div>
     );
   }
@@ -459,7 +459,7 @@ export default function CompetitionPage() {
       </Link>
 
       {/* Hero */}
-      <div className="overflow-hidden rounded-3xl border border-white/[0.08] bg-gradient-to-br from-[#0F1D17] to-[#0B1117] p-8">
+      <div className="overflow-hidden rounded-3xl border border-white/[0.08] bg-gradient-to-br from-[#0F1620] to-[#0B1117] p-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <div className="mb-3 flex items-center gap-2">
@@ -478,24 +478,24 @@ export default function CompetitionPage() {
             { icon: ShieldCheck, label: 'Strictly 4 competitors per school', value: 'Cap enforced' },
           ].map((s) => (
             <div key={s.label} className="rounded-xl border border-white/[0.06] bg-black/20 p-4">
-              <s.icon className="h-4 w-4 text-[#16C784]" />
+              <s.icon className="h-4 w-4 text-[#E0A82E]" />
               <p className="mt-2 text-[11px] uppercase tracking-wide text-[#9AA4B2]">{s.label}</p>
               <p className="text-sm font-medium text-white">{s.value}</p>
             </div>
           ))}
         </div>
         <div className="mt-6 flex flex-wrap gap-3">
-          <div className="flex items-center gap-2 rounded-xl border border-[#FFD700]/25 bg-[#FFD700]/[0.06] px-4 py-3">
-            <Trophy className="h-5 w-5 text-[#FFD700]" />
-            <div><span className="text-[10px] uppercase text-[#9AA4B2]">1st</span><span className="ml-2 font-bold text-[#FFD700]">{formatNaira(prizes.first)}</span></div>
+          <div className="flex items-center gap-2 rounded-xl border border-[#E0A82E]/25 bg-[#E0A82E]/[0.06] px-4 py-3">
+            <Trophy className="h-5 w-5 text-[#E0A82E]" />
+            <div><span className="text-[10px] uppercase text-[#9AA4B2]">1st</span><span className="ml-2 font-bold text-[#E0A82E]">{formatNaira(prizes.first)}</span></div>
           </div>
           <div className="flex items-center gap-2 rounded-xl border border-[#C0C6CE]/25 bg-white/[0.04] px-4 py-3">
             <Medal className="h-5 w-5 text-[#C0C6CE]" />
             <div><span className="text-[10px] uppercase text-[#9AA4B2]">2nd</span><span className="ml-2 font-bold text-[#C0C6CE]">{formatNaira(prizes.second)}</span></div>
           </div>
-          <div className="flex items-center gap-2 rounded-xl border border-[#CD7F32]/25 bg-[#CD7F32]/[0.06] px-4 py-3">
-            <Medal className="h-5 w-5 text-[#CD7F32]" />
-            <div><span className="text-[10px] uppercase text-[#9AA4B2]">3rd</span><span className="ml-2 font-bold text-[#CD7F32]">{formatNaira(prizes.third)}</span></div>
+          <div className="flex items-center gap-2 rounded-xl border border-[#9AA4B2]/25 bg-[#9AA4B2]/[0.06] px-4 py-3">
+            <Medal className="h-5 w-5 text-[#9AA4B2]" />
+            <div><span className="text-[10px] uppercase text-[#9AA4B2]">3rd</span><span className="ml-2 font-bold text-[#9AA4B2]">{formatNaira(prizes.third)}</span></div>
           </div>
         </div>
       </div>
@@ -506,7 +506,7 @@ export default function CompetitionPage() {
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
-            className={`rounded-lg px-4 py-2 text-sm font-medium transition ${tab === t.id ? 'bg-[#16C784] text-[#06130D]' : 'border border-white/[0.08] text-[#9AA4B2] hover:bg-white/[0.04]'}`}
+            className={`rounded-lg px-4 py-2 text-sm font-medium transition ${tab === t.id ? 'bg-[#E0A82E] text-[#06130D]' : 'border border-white/[0.08] text-[#9AA4B2] hover:bg-white/[0.04]'}`}
           >
             {t.label}
           </button>
@@ -518,7 +518,7 @@ export default function CompetitionPage() {
           <div className="space-y-6">
             <div className="grid gap-6 md:grid-cols-2">
               <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
-                <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><School className="h-4 w-4 text-[#16C784]" /> Divisions</h3>
+                <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><School className="h-4 w-4 text-[#E0A82E]" /> Divisions</h3>
                 <ul className="space-y-2">
                   {(details.divisions || []).map((d) => (
                     <li key={d.id} className="rounded-lg border border-white/[0.06] px-3 py-2">
@@ -529,11 +529,11 @@ export default function CompetitionPage() {
                 </ul>
               </div>
               <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
-                <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><ClipboardList className="h-4 w-4 text-[#16C784]" /> Rounds</h3>
+                <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><ClipboardList className="h-4 w-4 text-[#E0A82E]" /> Rounds</h3>
                 <ol className="space-y-2">
                   {(details.rounds || []).map((r) => (
                     <li key={r.id} className="flex items-start gap-3 rounded-lg border border-white/[0.06] px-3 py-2">
-                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#16C784]/15 text-xs font-bold text-[#16C784]">{r.round_number}</span>
+                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#E0A82E]/15 text-xs font-bold text-[#E0A82E]">{r.round_number}</span>
                       <div>
                         <p className="text-sm font-medium text-white">{r.round_name}</p>
                         <p className="text-[11px] text-[#9AA4B2]">{r.description}</p>
@@ -546,7 +546,7 @@ export default function CompetitionPage() {
             </div>
 
             <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
-              <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><Users className="h-4 w-4 text-[#16C784]" /> Registered Schools & Teams</h3>
+              <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><Users className="h-4 w-4 text-[#E0A82E]" /> Registered Schools & Teams</h3>
               {((details.schools || []).length === 0 && (details.teams || []).length === 0) ? (
                 <p className="text-sm text-[#9AA4B2]">No schools have registered yet.</p>
               ) : (
@@ -568,7 +568,7 @@ export default function CompetitionPage() {
             </div>
 
             <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
-              <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><Award className="h-4 w-4 text-[#16C784]" /> Hall of Fame</h3>
+              <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><Award className="h-4 w-4 text-[#E0A82E]" /> Hall of Fame</h3>
               {hof.length === 0 ? (
                 <p className="text-sm text-[#9AA4B2]">The Hall of Fame opens after the first podium is approved.</p>
               ) : (
@@ -594,7 +594,7 @@ export default function CompetitionPage() {
 
         {tab === 'arena' && (
           <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
-            <h3 className="mb-1 flex items-center gap-2 font-semibold text-white"><Swords className="h-4 w-4 text-[#16C784]" /> Arena Matches · 1v1 & 2v2</h3>
+            <h3 className="mb-1 flex items-center gap-2 font-semibold text-white"><Swords className="h-4 w-4 text-[#E0A82E]" /> Arena Matches · 1v1 & 2v2</h3>
             <p className="mb-4 text-sm text-[#9AA4B2]">Head-to-head exhibition brackets between registered school teams.</p>
             {arena.length === 0 ? (
               <p className="text-sm text-[#9AA4B2]">No Arena matches scheduled yet.</p>
@@ -611,14 +611,14 @@ export default function CompetitionPage() {
                         <p className="text-sm font-medium text-white">{m.team_a.team_name}</p>
                         <p className="text-[11px] text-[#9AA4B2]">{m.team_a.institution_name}</p>
                       </div>
-                      <span className="font-mono text-[#16C784]">VS</span>
+                      <span className="font-mono text-[#E0A82E]">VS</span>
                       <div className="text-center">
                         <p className="text-sm font-medium text-white">{m.team_b.team_name}</p>
                         <p className="text-[11px] text-[#9AA4B2]">{m.team_b.institution_name}</p>
                       </div>
                     </div>
                     {m.winner_team_id && (
-                      <p className="mt-2 text-center text-xs text-[#16C784]">
+                      <p className="mt-2 text-center text-xs text-[#E0A82E]">
                         Winner: {m.winner_team_id === m.team_a.team_id ? m.team_a.team_name : m.team_b.team_name}
                       </p>
                     )}

@@ -83,7 +83,7 @@ function CertificateUploadCard({ certType, tutorProfileId, certificates, onAdded
       </p>
       {existing && (
         <div className="rounded-lg bg-[#0B0E11] border border-white/[0.08] p-3 flex items-center gap-2 text-[11px] text-[#C2C9D4]">
-          <FileText className="h-3.5 w-3.5 text-[#16C784] shrink-0" />
+          <FileText className="h-3.5 w-3.5 text-[#E0A82E] shrink-0" />
           <span className="truncate">
             {existing.certificate_name} · {existing.issuing_body || 'Issuing body not set'}
             {existing.certificate_number ? ` · #${existing.certificate_number}` : ''}
@@ -113,7 +113,7 @@ function CertificateUploadCard({ certType, tutorProfileId, certificates, onAdded
           onChange={(e) => setMeta({ ...meta, certificateNumber: e.target.value })}
         />
       </div>
-      <label className="inline-flex items-center gap-2 rounded-xl bg-[#11161C] border border-white/[0.08] px-3.5 py-2 text-xs font-semibold text-[#C2C9D4] cursor-pointer hover:border-[#16C784]/40 hover:text-white transition-colors">
+      <label className="inline-flex items-center gap-2 rounded-xl bg-[#11161C] border border-white/[0.08] px-3.5 py-2 text-xs font-semibold text-[#C2C9D4] cursor-pointer hover:border-[#E0A82E]/40 hover:text-white transition-colors">
         {uploading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
         {uploading ? 'Uploading…' : existing ? 'Replace certificate' : 'Upload certificate'}
         <input type="file" accept=".pdf,.jpg,.jpeg,.png" className="hidden" onChange={handleUpload} disabled={uploading} />
@@ -196,7 +196,7 @@ export default function TutorApplyPage() {
   if (loading) {
     return (
       <div className="bg-grid-fintech py-24 flex justify-center">
-        <Loader2 className="h-6 w-6 text-[#16C784] animate-spin" />
+        <Loader2 className="h-6 w-6 text-[#E0A82E] animate-spin" />
       </div>
     );
   }
@@ -214,7 +214,7 @@ export default function TutorApplyPage() {
         <div className="space-y-3">
           <Badge variant="green">MANUAL APPROVAL + QUALIFYING TEST</Badge>
           <div className="flex items-center gap-3">
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#16C784]/[0.12] border border-[#16C784]/30 text-[#16C784]">
+            <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E0A82E]/[0.12] border border-[#E0A82E]/30 text-[#E0A82E]">
               <BookOpenCheck className="h-6 w-6" />
             </div>
             <div>
@@ -232,7 +232,7 @@ export default function TutorApplyPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             <form onSubmit={handleSubmit} className="lg:col-span-7 space-y-6">
               <div className="v-card p-6 space-y-5">
-                <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">Application Details</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">Application Details</p>
                 <div>
                   <label className="v-label" htmlFor="track">Teaching Track Applied For</label>
                   <select id="track" className="v-input" value={track} onChange={(e) => setTrack(e.target.value)}>
@@ -288,7 +288,7 @@ export default function TutorApplyPage() {
               </div>
 
               <div className="v-card p-5 flex items-start gap-3 text-xs text-[#C2C9D4]">
-                <ShieldCheck className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" />
+                <ShieldCheck className="h-4 w-4 text-[#E0A82E] shrink-0 mt-0.5" />
                 <p>
                   Your application creates a private tutor profile. Submission is free. Verification and the 20-question / 45-minute qualifying test are the only gates to tutor delivery on VALENCE.
                 </p>
@@ -302,7 +302,7 @@ export default function TutorApplyPage() {
 
             <div className="lg:col-span-5 space-y-6">
               <div className="v-glass-card p-6 space-y-4">
-                <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">How Verification Works</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">How Verification Works</p>
                 <ol className="space-y-3 text-xs sm:text-sm text-[#D5DBE3]">
                   {[
                     'Submit your application with teaching track and expertise.',
@@ -312,7 +312,7 @@ export default function TutorApplyPage() {
                     'Pass 14/20 to become a verified VALENCE tutor with your workspace.',
                   ].map((step, i) => (
                     <li key={i} className="flex items-start gap-2.5">
-                      <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#16C784]/15 text-[10px] font-bold text-[#16C784] mt-0.5">
+                      <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#E0A82E]/15 text-[10px] font-bold text-[#E0A82E] mt-0.5">
                         {i + 1}
                       </span>
                       <span>{step}</span>
@@ -325,7 +325,7 @@ export default function TutorApplyPage() {
                 <ul className="space-y-1.5">
                   {Object.entries(TRACKS).map(([key, t]) => (
                     <li key={key} className="flex items-start gap-2">
-                      <ArrowRight className="h-3.5 w-3.5 text-[#16C784] shrink-0 mt-0.5" />
+                      <ArrowRight className="h-3.5 w-3.5 text-[#E0A82E] shrink-0 mt-0.5" />
                       <span><span className="font-semibold text-white">{t.label}:</span> {t.certificates.map((c) => CERT_LABELS[c]).join(' + ')}</span>
                     </li>
                   ))}
@@ -338,7 +338,7 @@ export default function TutorApplyPage() {
             <div className="lg:col-span-8 space-y-6">
               <div className="v-card p-6 flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#16C784]/[0.12] border border-[#16C784]/30 text-[#16C784]">
+                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#E0A82E]/[0.12] border border-[#E0A82E]/30 text-[#E0A82E]">
                     <CheckCircle2 className="h-5 w-5" />
                   </div>
                   <div>
@@ -352,7 +352,7 @@ export default function TutorApplyPage() {
               </div>
 
               <div className="space-y-4">
-                <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">
+                <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">
                   Certificate Uploads — {TRACKS[track]?.label || 'ATSWA / ICAN'}
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -378,7 +378,7 @@ export default function TutorApplyPage() {
             <div className="lg:col-span-4 space-y-4">
               <div className="v-glass-card p-5 space-y-3 text-xs text-[#C2C9D4]">
                 <p className="font-bold text-white inline-flex items-center gap-2">
-                  <ShieldCheck className="h-4 w-4 text-[#16C784]" /> Next Steps
+                  <ShieldCheck className="h-4 w-4 text-[#E0A82E]" /> Next Steps
                 </p>
                 <p>Upload every certificate required for your track. Admin verification opens the qualifying test automatically — no action needed from you once certificates are in.</p>
                 {certificates.length > 0 && (

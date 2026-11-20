@@ -96,7 +96,7 @@ export default function TutorWorkspacePage() {
   if (loading) {
     return (
       <div className="bg-grid-fintech py-24 flex justify-center">
-        <Loader2 className="h-6 w-6 text-[#16C784] animate-spin" />
+        <Loader2 className="h-6 w-6 text-[#E0A82E] animate-spin" />
       </div>
     );
   }
@@ -112,7 +112,7 @@ export default function TutorWorkspacePage() {
             </Link>
           </div>
           <div className="max-w-2xl mx-auto v-card p-10 text-center space-y-4">
-            <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[#16C784]/[0.12] border border-[#16C784]/30 text-[#16C784]">
+            <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[#E0A82E]/[0.12] border border-[#E0A82E]/30 text-[#E0A82E]">
               <BookOpenCheck className="h-7 w-7" />
             </div>
             <h1 className="font-display text-2xl font-bold text-white">No tutor application yet</h1>
@@ -150,7 +150,7 @@ export default function TutorWorkspacePage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#16C784]/[0.12] border border-[#16C784]/30 text-[#16C784]">
+          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E0A82E]/[0.12] border border-[#E0A82E]/30 text-[#E0A82E]">
             <BookOpenCheck className="h-6 w-6" />
           </div>
           <div>
@@ -163,21 +163,21 @@ export default function TutorWorkspacePage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <StatusCard
             icon={ShieldCheck}
-            tint="text-[#16C784]"
+            tint="text-[#E0A82E]"
             title="Verification"
             value={profile.verification_status}
             sub="Certificate review by VALENCE Admin"
           />
           <StatusCard
             icon={Award}
-            tint={assessment?.status === 'passed' ? 'text-[#16C784]' : 'text-[#F59E0B]'}
+            tint={assessment?.status === 'passed' ? 'text-[#E0A82E]' : 'text-[#9AA4B2]'}
             title="Qualifying Test"
             value={assessment ? `${aStyle.label}` : '—'}
             sub={assessment ? `20 questions · 45 minutes · pass ${assessment.pass_score}/20` : 'Opens after verification'}
           />
           <StatusCard
             icon={ListChecks}
-            tint="text-[#3B82F6]"
+            tint="text-[#9AA4B2]"
             title="Attempts"
             value={attempts.length}
             sub={attempts.length ? `Best score: ${attempts.reduce((m, a) => Math.max(m, a.score ?? 0), 0)}/20` : 'No attempts yet'}
@@ -187,7 +187,7 @@ export default function TutorWorkspacePage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Certificates */}
           <div className="v-card p-6 space-y-4">
-            <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">Certificates</p>
+            <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">Certificates</p>
             {certificates.length === 0 ? (
               <div className="rounded-xl bg-[#0B0E11] border border-white/[0.08] p-4 flex items-center gap-2 text-xs text-[#9AA4B2]">
                 <FileText className="h-4 w-4" />
@@ -198,7 +198,7 @@ export default function TutorWorkspacePage() {
                 {certificates.map((c) => (
                   <li key={c.id} className="rounded-xl bg-[#0B0E11] border border-white/[0.08] p-3.5 flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <FileText className="h-4 w-4 text-[#16C784] shrink-0" />
+                      <FileText className="h-4 w-4 text-[#E0A82E] shrink-0" />
                       <div className="min-w-0">
                         <p className="text-xs font-semibold text-white truncate">{c.certificate_type} — {c.certificate_name}</p>
                         <p className="text-[11px] text-[#667085] truncate">
@@ -224,10 +224,10 @@ export default function TutorWorkspacePage() {
 
           {/* Assessment */}
           <div className="v-card p-6 space-y-4">
-            <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">Qualification Assessment</p>
+            <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">Qualification Assessment</p>
             {assessment?.status === 'passed' ? (
-              <div className="rounded-xl bg-[#16C784]/10 border border-[#16C784]/30 p-4 space-y-2">
-                <div className="flex items-center gap-2 text-[#16C784]">
+              <div className="rounded-xl bg-[#E0A82E]/10 border border-[#E0A82E]/30 p-4 space-y-2">
+                <div className="flex items-center gap-2 text-[#E0A82E]">
                   <CheckCircle2 className="h-5 w-5" />
                   <p className="text-sm font-bold">Qualified — you're a verified VALENCE tutor</p>
                 </div>
@@ -238,7 +238,7 @@ export default function TutorWorkspacePage() {
             ) : examOpen ? (
               <div className="space-y-3">
                 <div className="rounded-xl bg-[#11161C] border border-white/[0.08] p-4 space-y-2 text-xs text-[#C2C9D4]">
-                  <p className="flex items-center gap-2"><Clock className="h-4 w-4 text-[#16C784]" /> 20 questions · 45-minute timer · auto-submit at zero</p>
+                  <p className="flex items-center gap-2"><Clock className="h-4 w-4 text-[#E0A82E]" /> 20 questions · 45-minute timer · auto-submit at zero</p>
                   <p>Pass mark: {assessment.pass_score} / 20. Unanswered questions score zero. The server enforces the time limit.</p>
                 </div>
                 <button onClick={() => navigate('/portal/tutor/exam')} className="v-btn-primary w-full py-3">
@@ -259,7 +259,7 @@ export default function TutorWorkspacePage() {
                   {attempts.map((a) => (
                     <li key={a.id} className="flex items-center justify-between rounded-lg bg-[#0B0E11] border border-white/[0.08] px-3 py-2 text-xs">
                       <span className="text-[#C2C9D4]">{new Date(a.submitted_at || a.started_at).toLocaleString()}</span>
-                      <span className={`font-semibold ${a.passed ? 'text-[#16C784]' : 'text-[#EA3943]'}`}>
+                      <span className={`font-semibold ${a.passed ? 'text-[#E0A82E]' : 'text-[#EA3943]'}`}>
                         {a.score}/20 · {a.passed ? 'Passed' : 'Failed'}
                       </span>
                     </li>
@@ -272,7 +272,7 @@ export default function TutorWorkspacePage() {
 
         {profile.verification_status === 'verified' && assessment?.status === 'passed' && (
           <div className="v-glass-card p-6 flex items-center gap-4">
-            <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#16C784]/15 border border-[#16C784]/30 text-[#16C784]">
+            <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#E0A82E]/15 border border-[#E0A82E]/30 text-[#E0A82E]">
               <Award className="h-5 w-5" />
             </div>
             <div className="flex-1">

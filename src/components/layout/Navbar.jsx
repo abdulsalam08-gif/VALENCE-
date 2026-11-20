@@ -85,7 +85,7 @@ const DROPDOWN_PANEL_CLASS =
   'rounded-2xl bg-[#0D1218] border border-white/[0.15] p-2.5 shadow-[0_24px_64px_rgba(0,0,0,0.95)] ring-1 ring-black z-[70] animate-fade-up';
 
 export default function Navbar() {
-  const { user, userRole, cartSummary, settings, universityCounts, handleSignOut, profile } = usePlatform();
+  const { user, cartSummary, settings, universityCounts, handleSignOut, profile } = usePlatform();
   const toast = useToast();
   const navigate = useNavigate();
   const location = useLocation();
@@ -121,7 +121,7 @@ export default function Navbar() {
   const navLinkClass = ({ isActive }) =>
     `px-3 py-2 rounded-lg text-[13px] font-medium transition-colors ${
       isActive
-        ? 'text-[#16C784] bg-[#16C784]/10'
+        ? 'text-[#E0A82E] bg-[#E0A82E]/10'
         : 'text-[#C2C9D4] hover:text-white hover:bg-white/[0.04]'
     }`;
 
@@ -137,10 +137,10 @@ export default function Navbar() {
       <div className="hidden lg:block border-b border-white/[0.05] bg-[#080B0E]">
         <div className="v-container flex h-8 items-center justify-between text-[11px] text-[#9AA4B2]">
           <div className="flex items-center gap-3">
-            <span className="italic text-[#16C784]">{settings.tagline}</span>
+            <span className="italic text-[#E0A82E]">{settings.tagline}</span>
             <span className="text-white/15">•</span>
             <Link to="/competitions" className="hover:text-white transition-colors">
-              National Inter-School Challenge: <strong className="text-[#16C784]">₦220,000 podium pool</strong> · only 4 competitors per school
+              National Inter-School Challenge: <strong className="text-[#E0A82E]">₦220,000 podium pool</strong> · only 4 competitors per school
             </Link>
           </div>
           <div className="flex items-center gap-4">
@@ -148,18 +148,18 @@ export default function Navbar() {
               to="/programmes/atswa"
               className="inline-flex items-center gap-1.5 hover:text-white transition-colors"
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-[#16C784]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[#E0A82E]" />
               <span>ATSWA: 23–24 Mar 2027</span>
             </Link>
             <Link
               to="/programmes/ican"
               className="inline-flex items-center gap-1.5 hover:text-white transition-colors"
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-[#16C784]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[#E0A82E]" />
               <span>ICAN: 4–6 May 2027</span>
             </Link>
             <span className="text-white/15">|</span>
-            <Link to="/advertise" className="hover:text-[#16C784] transition-colors">
+            <Link to="/advertise" className="hover:text-[#E0A82E] transition-colors">
               Advertise on VALENCE
             </Link>
             {settings.whatsappChannelUrl && (
@@ -167,7 +167,7 @@ export default function Navbar() {
                 href={settings.whatsappChannelUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 font-semibold text-[#16C784] hover:text-[#1ED791] transition-colors"
+                className="inline-flex items-center gap-1 font-semibold text-[#E0A82E] hover:text-[#F2C668] transition-colors"
               >
                 WhatsApp Channel
                 <ArrowUpRight className="h-3 w-3" />
@@ -177,7 +177,7 @@ export default function Navbar() {
               to="/portal/admin"
               className="inline-flex items-center gap-1 text-[#9AA4B2] hover:text-white transition-colors"
             >
-              <Shield className="h-3 w-3 text-[#16C784]" />
+              <Shield className="h-3 w-3 text-[#E0A82E]" />
               Admin Portal
             </Link>
           </div>
@@ -203,14 +203,14 @@ export default function Navbar() {
               aria-expanded={openDropdown === 'prog'}
               className={`inline-flex items-center gap-1 px-3 py-2 rounded-lg text-[13px] font-medium transition-colors ${
                 location.pathname.startsWith('/programmes')
-                  ? 'text-[#16C784] bg-[#16C784]/10'
+                  ? 'text-[#E0A82E] bg-[#E0A82E]/10'
                   : 'text-[#C2C9D4] hover:text-white hover:bg-white/[0.04]'
               }`}
             >
               Programmes
               <ChevronDown
                 className={`h-3.5 w-3.5 transition-transform ${
-                  openDropdown === 'prog' ? 'rotate-180 text-[#16C784]' : ''
+                  openDropdown === 'prog' ? 'rotate-180 text-[#E0A82E]' : ''
                 }`}
               />
             </button>
@@ -222,7 +222,7 @@ export default function Navbar() {
                     to={item.to}
                     className="flex flex-col rounded-xl px-3.5 py-2.5 hover:bg-[#161D26] transition-colors group"
                   >
-                    <span className="text-xs font-semibold text-[#F4F6F9] group-hover:text-[#16C784] flex items-center justify-between">
+                    <span className="text-xs font-semibold text-[#F4F6F9] group-hover:text-[#E0A82E] flex items-center justify-between">
                       {item.label}
                       <ArrowUpRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </span>
@@ -258,14 +258,14 @@ export default function Navbar() {
                   '/legal',
                   '/contact',
                 ].some((p) => location.pathname.startsWith(p))
-                  ? 'text-[#16C784] bg-[#16C784]/10'
+                  ? 'text-[#E0A82E] bg-[#E0A82E]/10'
                   : 'text-[#C2C9D4] hover:text-white hover:bg-white/[0.04]'
               }`}
             >
               Explore
               <ChevronDown
                 className={`h-3.5 w-3.5 transition-transform ${
-                  openDropdown === 'more' ? 'rotate-180 text-[#16C784]' : ''
+                  openDropdown === 'more' ? 'rotate-180 text-[#E0A82E]' : ''
                 }`}
               />
             </button>
@@ -277,7 +277,7 @@ export default function Navbar() {
                     to={item.to}
                     className="flex flex-col rounded-xl px-3.5 py-2.5 hover:bg-[#161D26] transition-colors group"
                   >
-                    <span className="text-xs font-semibold text-[#F4F6F9] group-hover:text-[#16C784]">
+                    <span className="text-xs font-semibold text-[#F4F6F9] group-hover:text-[#E0A82E]">
                       {item.label}
                     </span>
                     <span className="mt-0.5 text-[11px] text-[#9AA4B2]">{item.desc}</span>
@@ -297,9 +297,9 @@ export default function Navbar() {
                 type="button"
                 onClick={() => setOpenDropdown(openDropdown === 'account' ? null : 'account')}
                 aria-expanded={openDropdown === 'account'}
-                className="inline-flex items-center gap-2 rounded-xl border border-white/[0.12] bg-[#161D26] pl-1.5 pr-2.5 py-1.5 hover:border-[#16C784]/40 transition-colors"
+                className="inline-flex items-center gap-2 rounded-xl border border-white/[0.12] bg-[#161D26] pl-1.5 pr-2.5 py-1.5 hover:border-[#E0A82E]/40 transition-colors"
               >
-                <span className="inline-flex h-6 w-6 items-center justify-center rounded-lg bg-[#16C784]/20 text-[#16C784] text-xs font-bold">
+                <span className="inline-flex h-6 w-6 items-center justify-center rounded-lg bg-[#E0A82E]/20 text-[#E0A82E] text-xs font-bold">
                   {(profile?.full_name || user.email).charAt(0).toUpperCase()}
                 </span>
                 <span className="text-xs font-semibold text-[#F4F6F9] max-w-[120px] truncate">
@@ -307,7 +307,7 @@ export default function Navbar() {
                 </span>
                 <ChevronDown
                   className={`h-3.5 w-3.5 text-[#9AA4B2] transition-transform ${
-                    openDropdown === 'account' ? 'rotate-180 text-[#16C784]' : ''
+                    openDropdown === 'account' ? 'rotate-180 text-[#E0A82E]' : ''
                   }`}
                 />
               </button>
@@ -323,13 +323,13 @@ export default function Navbar() {
                   <div className="p-1.5 space-y-0.5">
                     <Link
                       to="/portal/student"
-                      className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-[#C2C9D4] hover:bg-[#18212C] hover:text-[#16C784] transition-colors"
+                      className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-[#C2C9D4] hover:bg-[#18212C] hover:text-[#E0A82E] transition-colors"
                     >
                       <GraduationCap className="h-4 w-4" /> My Portal
                     </Link>
                     <Link
                       to="/profile"
-                      className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-[#C2C9D4] hover:bg-[#18212C] hover:text-[#16C784] transition-colors"
+                      className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-[#C2C9D4] hover:bg-[#18212C] hover:text-[#E0A82E] transition-colors"
                     >
                       <UserIcon className="h-4 w-4" /> Profile &amp; Settings
                     </Link>
@@ -354,80 +354,14 @@ export default function Navbar() {
           <Link
             to="/store"
             aria-label="Open Store Cart"
-            className="relative inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#141A22] border border-white/[0.08] text-[#C2C9D4] hover:border-[#16C784]/40 hover:text-white transition-colors"
+            className="relative inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#141A22] border border-white/[0.08] text-[#C2C9D4] hover:border-[#E0A82E]/40 hover:text-white transition-colors"
           >
             <ShoppingBag className="h-4 w-4" />
             {cartSummary.totalQuantity > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 inline-flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#16C784] px-1 text-[10px] font-bold text-[#06130D] tabular-nums-display">
+              <span className="absolute -top-1.5 -right-1.5 inline-flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#E0A82E] px-1 text-[10px] font-bold text-[#06130D] tabular-nums-display">
                 {cartSummary.totalQuantity}
               </span>
             )}
-          </Link>
-
-          <div className="relative hidden sm:block">
-            <button
-              type="button"
-              onClick={() => setOpenDropdown(openDropdown === 'portals' ? null : 'portals')}
-              aria-expanded={openDropdown === 'portals'}
-              className={`inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-semibold transition-colors border ${
-                openDropdown === 'portals'
-                  ? 'bg-[#1A2330] border-[#16C784]/60 text-white'
-                  : 'bg-[#161D26] border-white/[0.12] text-[#F4F6F9] hover:border-white/[0.25]'
-              }`}
-            >
-              {user ? `${userRole || 'My'} Dashboard` : 'Portals'}
-              <ChevronDown
-                className={`h-3.5 w-3.5 text-[#9AA4B2] transition-transform ${
-                  openDropdown === 'portals' ? 'rotate-180 text-[#16C784]' : ''
-                }`}
-              />
-            </button>
-            {openDropdown === 'portals' && (
-              <div
-                style={{ backgroundColor: '#0D1218' }}
-                className={`absolute right-0 mt-2 w-[355px] ${DROPDOWN_PANEL_CLASS}`}
-              >
-                <div className="px-3 py-2 mb-1 border-b border-white/[0.08] text-[10px] font-semibold uppercase tracking-widest text-[#16C784]">
-                  VALENCE Portals &amp; Quick Actions
-                </div>
-                <div className="space-y-0.5">
-                  {PORTAL_ACTIONS.map((item) => {
-                    const Icon = item.icon;
-                    return (
-                      <Link
-                        key={item.label}
-                        to={item.to}
-                        className="flex items-start gap-3 rounded-xl px-3 py-2.5 bg-[#0D1218] hover:bg-[#18212C] transition-colors group"
-                      >
-                        <span
-                          className={`mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border ${
-                            item.accent
-                              ? 'bg-[#16C784]/15 border-[#16C784]/35 text-[#16C784]'
-                              : 'bg-[#141B24] border-white/[0.1] text-[#C2C9D4] group-hover:text-[#16C784] group-hover:border-[#16C784]/30'
-                          }`}
-                        >
-                          <Icon className="h-4 w-4" />
-                        </span>
-                        <span className="flex flex-col">
-                          <span className="text-xs font-semibold text-[#F4F6F9] group-hover:text-[#16C784]">
-                            {item.label}
-                          </span>
-                          <span className="text-[11px] text-[#9AA4B2]">{item.desc}</span>
-                        </span>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div>
-
-          <Link
-            to={user ? `/portal/${userRole || 'student'}` : '/portal/student'}
-            className="hidden md:inline-flex items-center gap-1.5 rounded-xl bg-[#16C784] px-4 py-2 text-xs font-bold text-[#06130D] hover:bg-[#1ED791] shadow-glow-sm transition-all"
-          >
-            <GraduationCap className="h-4 w-4" />
-            {user ? 'Open Portal' : 'Student Portal'}
           </Link>
 
           <button
@@ -450,7 +384,7 @@ export default function Navbar() {
         >
           <div className="v-container py-5 space-y-6">
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-[#16C784] mb-2.5">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-[#E0A82E] mb-2.5">
                 Portals &amp; Registration
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -462,8 +396,8 @@ export default function Navbar() {
                       to={p.to}
                       className={`flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-xs font-semibold border transition-colors ${
                         p.accent
-                          ? 'bg-[#16C784] text-[#06130D] border-[#16C784]'
-                          : 'bg-[#141A22] text-[#F4F6F9] border-white/[0.1] hover:border-[#16C784]/40'
+                          ? 'bg-[#E0A82E] text-[#06130D] border-[#E0A82E]'
+                          : 'bg-[#141A22] text-[#F4F6F9] border-white/[0.1] hover:border-[#E0A82E]/40'
                       }`}
                     >
                       <Icon className="h-4 w-4 shrink-0" />
@@ -487,7 +421,7 @@ export default function Navbar() {
                     className={({ isActive }) =>
                       `rounded-xl px-3 py-2.5 text-xs font-medium transition-colors ${
                         isActive
-                          ? 'bg-[#16C784]/15 text-[#16C784] border border-[#16C784]/30'
+                          ? 'bg-[#E0A82E]/15 text-[#E0A82E] border border-[#E0A82E]/30'
                           : 'bg-[#11161C] text-[#C2C9D4] border border-white/[0.07] hover:text-white'
                       }`
                     }
@@ -504,15 +438,15 @@ export default function Navbar() {
                   href={settings.whatsappChannelUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 font-semibold text-[#16C784] hover:underline"
+                  className="inline-flex items-center gap-1 font-semibold text-[#E0A82E] hover:underline"
                 >
                   Follow Official WhatsApp Channel <ArrowUpRight className="h-3.5 w-3.5" />
                 </a>
               ) : (
-                <span className="italic text-[#16C784]">{settings.tagline}</span>
+                <span className="italic text-[#E0A82E]">{settings.tagline}</span>
               )}
               <Link to="/programmes/ican/exemptions" className="inline-flex items-center gap-1 text-[#F4F6F9] font-medium">
-                <Scale className="h-3.5 w-3.5 text-[#16C784]" />
+                <Scale className="h-3.5 w-3.5 text-[#E0A82E]" />
                 Exemption Guide
               </Link>
             </div>

@@ -95,7 +95,7 @@ export default function StudyMaterialsPage() {
               rel="noopener noreferrer"
               className="v-btn-secondary text-xs"
             >
-              ICAN 2026 Official Syllabus PDF <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
+              ICAN 2026 Official Syllabus PDF <ExternalLink className="h-3.5 w-3.5 text-[#E0A82E]" />
             </a>
             <a
               href={settings.officialLinks.icanAccreditedInstitutions}
@@ -103,7 +103,7 @@ export default function StudyMaterialsPage() {
               rel="noopener noreferrer"
               className="v-btn-secondary text-xs"
             >
-              Accredited Institutions PDF <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
+              Accredited Institutions PDF <ExternalLink className="h-3.5 w-3.5 text-[#E0A82E]" />
             </a>
             <a
               href={settings.officialLinks.icanMcatiInstitutions}
@@ -111,7 +111,7 @@ export default function StudyMaterialsPage() {
               rel="noopener noreferrer"
               className="v-btn-secondary text-xs"
             >
-              MCATI Institutions PDF <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
+              MCATI Institutions PDF <ExternalLink className="h-3.5 w-3.5 text-[#E0A82E]" />
             </a>
             <a
               href={settings.officialLinks.icanExamDockets}
@@ -119,10 +119,10 @@ export default function StudyMaterialsPage() {
               rel="noopener noreferrer"
               className="v-btn-secondary text-xs"
             >
-              ICAN Exam Dockets <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
+              ICAN Exam Dockets <ExternalLink className="h-3.5 w-3.5 text-[#E0A82E]" />
             </a>
             <Link to="/store?enquiry=open" className="v-btn-secondary text-xs">
-              In-App Material &amp; Delivery Enquiry <ArrowRight className="h-3.5 w-3.5 text-[#16C784]" />
+              In-App Material &amp; Delivery Enquiry <ArrowRight className="h-3.5 w-3.5 text-[#E0A82E]" />
             </Link>
           </div>
         </div>
@@ -132,21 +132,21 @@ export default function StudyMaterialsPage() {
       <section className="py-12 bg-[#0D1116]">
         <div className="v-container grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="v-card p-5 space-y-2">
-            <FileText className="h-5 w-5 text-[#16C784]" />
+            <FileText className="h-5 w-5 text-[#E0A82E]" />
             <h3 className="font-display text-base font-bold text-white">Secure PDF Textbook Library</h3>
             <p className="text-xs text-[#9AA4B2]">
               Admin-curated textbooks, standards summaries and revision packs with authorised per-level download permissions.
             </p>
           </div>
           <div className="v-card p-5 space-y-2">
-            <Video className="h-5 w-5 text-[#16C784]" />
+            <Video className="h-5 w-5 text-[#E0A82E]" />
             <h3 className="font-display text-base font-bold text-white">Structured Video Lessons</h3>
             <p className="text-xs text-[#9AA4B2]">
               Organised by programme, examination level, course, verified tutor and syllabus topic with playlist progression.
             </p>
           </div>
           <div className="v-card p-5 space-y-2">
-            <ShoppingBag className="h-5 w-5 text-[#16C784]" />
+            <ShoppingBag className="h-5 w-5 text-[#E0A82E]" />
             <h3 className="font-display text-base font-bold text-white">Hard-Copy Study Packs &amp; PQs</h3>
             <p className="text-xs text-[#9AA4B2]">
               Past Questions deliver the same day within Lagos (free across 6 campus hubs) and in 1 day outside Lagos. Study Packs show live Admin-updated availability and ship when available.
@@ -167,7 +167,7 @@ export default function StudyMaterialsPage() {
                   onClick={() => setFilterProg(tab)}
                   className={`rounded-lg px-4 py-1.5 text-xs font-semibold transition-colors ${
                     filterProg === tab
-                      ? 'bg-[#16C784] text-[#06130D]'
+                      ? 'bg-[#E0A82E] text-[#06130D]'
                       : 'text-[#9AA4B2] hover:text-white'
                   }`}
                 >
@@ -251,7 +251,7 @@ export default function StudyMaterialsPage() {
                     </span>
                     <Link
                       to={`/store?q=${encodeURIComponent(item.code)}`}
-                      className="font-semibold text-[#16C784] hover:underline shrink-0"
+                      className="font-semibold text-[#E0A82E] hover:underline shrink-0"
                     >
                       Order Course →
                     </Link>

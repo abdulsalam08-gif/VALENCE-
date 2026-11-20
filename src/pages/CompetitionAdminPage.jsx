@@ -95,7 +95,7 @@ export default function CompetitionAdminPage() {
                 <button
                   key={c.id}
                   onClick={() => setSelected(c.id)}
-                  className="rounded-xl border border-white/[0.08] bg-white/[0.02] p-5 text-left transition hover:border-[#16C784]/40 hover:bg-[#16C784]/[0.04]"
+                  className="rounded-xl border border-white/[0.08] bg-white/[0.02] p-5 text-left transition hover:border-[#E0A82E]/40 hover:bg-[#E0A82E]/[0.04]"
                 >
                   <div className="flex items-center justify-between">
                     <Badge variant="official">{c.division}</Badge>
@@ -114,7 +114,7 @@ export default function CompetitionAdminPage() {
           <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <button onClick={() => setSelected(null)} className="text-xs text-[#16C784] hover:underline">← All competitions</button>
+                <button onClick={() => setSelected(null)} className="text-xs text-[#E0A82E] hover:underline">← All competitions</button>
                 <h2 className="mt-1 text-lg font-semibold text-white">{competition?.name}</h2>
                 <p className="text-xs text-[#9AA4B2]">
                   {competition?.division} · {competition?.status} · {competition?.duration_minutes} min exam
@@ -143,7 +143,7 @@ export default function CompetitionAdminPage() {
               <button
                 key={t.id}
                 onClick={() => setTab(t.id)}
-                className={`inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-medium transition ${tab === t.id ? 'bg-[#16C77A]/90 text-[#06130D]' : 'border border-white/[0.08] text-[#9AA4B2] hover:bg-white/[0.04]'}`}
+                className={`inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-medium transition ${tab === t.id ? 'bg-[#E0A82E]/90 text-[#06130D]' : 'border border-white/[0.08] text-[#9AA4B2] hover:bg-white/[0.04]'}`}
               >
                 <t.icon className="h-3.5 w-3.5" /> {t.label}
               </button>
@@ -211,7 +211,7 @@ function MarkingPanel({ competitionId, profileId, run }) {
   return (
     <div className="grid gap-6 md:grid-cols-2">
       <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
-        <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><ClipboardList className="h-4 w-4 text-[#16C784]" /> Marking Queue</h3>
+        <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><ClipboardList className="h-4 w-4 text-[#E0A82E]" /> Marking Queue</h3>
         {queue.length === 0 ? (
           <p className="text-sm text-[#9AA4B2]">No attempts awaiting manual marking.</p>
         ) : (
@@ -235,7 +235,7 @@ function MarkingPanel({ competitionId, profileId, run }) {
                     placeholder="Marks 0–100"
                     className="w-28 rounded-lg border border-white/[0.1] bg-[#0F1620] px-2 py-1.5 text-sm text-white"
                   />
-                  <button onClick={() => doMark(q)} className="rounded-lg bg-[#16C784] px-3 py-1.5 text-xs font-semibold text-[#06130D]">Mark</button>
+                  <button onClick={() => doMark(q)} className="rounded-lg bg-[#E0A82E] px-3 py-1.5 text-xs font-semibold text-[#06130D]">Mark</button>
                 </div>
               </li>
             ))}
@@ -244,7 +244,7 @@ function MarkingPanel({ competitionId, profileId, run }) {
       </div>
 
       <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
-        <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><CheckCircle2 className="h-4 w-4 text-[#16C784]" /> Results to Approve</h3>
+        <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><CheckCircle2 className="h-4 w-4 text-[#E0A82E]" /> Results to Approve</h3>
         {approvable.filter((r) => !approved.includes(r.id)).length === 0 ? (
           <p className="text-sm text-[#9AA4B2]">No marked results awaiting approval.</p>
         ) : (
@@ -258,11 +258,11 @@ function MarkingPanel({ competitionId, profileId, run }) {
                       <p className="text-sm font-medium text-white">Attempt #{String(r.attempt_id).slice(0, 8)}</p>
                       <p className="text-[11px] text-[#9AA4B2]">score {r.total_score} · {fmtDate(r.created_at)}</p>
                     </div>
-                    <span className="font-mono font-bold text-[#16C784]">{r.total_score}</span>
+                    <span className="font-mono font-bold text-[#E0A82E]">{r.total_score}</span>
                   </div>
                   <button
                     onClick={() => doApprove(r)}
-                    className="mt-3 w-full rounded-lg border border-[#16C784]/40 bg-[#16C784]/10 px-3 py-1.5 text-xs font-semibold text-[#16C784] hover:bg-[#16C784]/20"
+                    className="mt-3 w-full rounded-lg border border-[#E0A82E]/40 bg-[#E0A82E]/10 px-3 py-1.5 text-xs font-semibold text-[#E0A82E] hover:bg-[#E0A82E]/20"
                   >
                     Approve & Publish
                   </button>
@@ -299,7 +299,7 @@ function LeaderboardPanel({ competitionId, run }) {
 
   const renderTable = (title, rows) => (
     <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
-      <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><ListChecks className="h-4 w-4 text-[#16C784]" /> {title}</h3>
+      <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><ListChecks className="h-4 w-4 text-[#E0A82E]" /> {title}</h3>
       {rows.length === 0 ? (
         <p className="text-sm text-[#9AA4B2]">No entries yet.</p>
       ) : (
@@ -312,8 +312,8 @@ function LeaderboardPanel({ competitionId, run }) {
                   <td className="w-10 py-2 font-mono font-bold text-[#9AA4B2]">{r.rank_position ?? '—'}</td>
                   <td className="py-2 text-white">{name}</td>
                   <td className="py-2 text-xs text-[#9AA4B2]">{r.institution_name || r.team_name || '—'}</td>
-                  <td className="py-2 text-right font-mono font-bold text-[#16C784]">{r.score}</td>
-                  <td className="py-2 text-right">{r.verified ? <CheckCircle2 className="h-4 w-4 text-[#16C784]" /> : <Badge variant="neutral">pending</Badge>}</td>
+                  <td className="py-2 text-right font-mono font-bold text-[#E0A82E]">{r.score}</td>
+                  <td className="py-2 text-right">{r.verified ? <CheckCircle2 className="h-4 w-4 text-[#E0A82E]" /> : <Badge variant="neutral">pending</Badge>}</td>
                 </tr>
               );
             })}
@@ -378,7 +378,7 @@ function AppealsPanel({ competitionId, profileId, run }) {
                 placeholder="Decision notes (optional)"
                 className="flex-1 min-w-[200px] rounded-lg border border-white/[0.1] bg-[#0F1620] px-3 py-1.5 text-xs text-white"
               />
-              <button onClick={() => doReview(a, 'approved')} className="rounded-lg bg-[#16C784] px-3 py-1.5 text-xs font-semibold text-[#06130D]">Approve</button>
+              <button onClick={() => doReview(a, 'approved')} className="rounded-lg bg-[#E0A82E] px-3 py-1.5 text-xs font-semibold text-[#06130D]">Approve</button>
               <button onClick={() => doReview(a, 'rejected')} className="rounded-lg border border-[#EA3943]/40 bg-[#EA3943]/10 px-3 py-1.5 text-xs font-semibold text-[#EA3943]">Reject</button>
             </div>
           )}
@@ -417,7 +417,7 @@ function RewardsPanel({ competitionId, profileId, run }) {
         <div key={r.id} className="flex items-center justify-between rounded-xl border border-white/[0.06] p-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-bold text-[#FFD700]">#{r.placement_rank}</span>
+              <span className="font-bold text-[#E0A82E]">#{r.placement_rank}</span>
               <p className="text-sm font-medium text-white">{r.award_type || 'Podium Reward'}</p>
             </div>
             <p className="mt-1 text-xs text-[#9AA4B2]">
@@ -427,7 +427,7 @@ function RewardsPanel({ competitionId, profileId, run }) {
           <button
             onClick={() => doDisburse(r)}
             disabled={r.status === 'disbursed'}
-            className="rounded-lg bg-[#16C784] px-4 py-2 text-xs font-semibold text-[#06130D] disabled:opacity-40"
+            className="rounded-lg bg-[#E0A82E] px-4 py-2 text-xs font-semibold text-[#06130D] disabled:opacity-40"
           >
             <Banknote className="mr-1 inline h-3.5 w-3.5" />{r.status === 'disbursed' ? 'Disbursed' : 'Disburse'}
           </button>
@@ -475,7 +475,7 @@ function ArenaPanel({ competitionId, details, run }) {
   return (
     <div className="space-y-6">
       <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
-        <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><Swords className="h-4 w-4 text-[#16C784]" /> Schedule a Match</h3>
+        <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><Swords className="h-4 w-4 text-[#E0A82E]" /> Schedule a Match</h3>
         <div className="flex flex-wrap items-end gap-2">
           <label className="text-xs text-[#9AA4B2]">
             Team A
@@ -491,13 +491,13 @@ function ArenaPanel({ competitionId, details, run }) {
               {teams.map((t) => <option key={t.id} value={t.id}>{t.team_name}</option>)}
             </select>
           </label>
-          <button onClick={schedule} disabled={!teamA || !teamB || teamA === teamB} className="rounded-lg bg-[#16C784] px-4 py-1.5 text-xs font-semibold text-[#06130D] disabled:opacity-40">Schedule</button>
+          <button onClick={schedule} disabled={!teamA || !teamB || teamA === teamB} className="rounded-lg bg-[#E0A82E] px-4 py-1.5 text-xs font-semibold text-[#06130D] disabled:opacity-40">Schedule</button>
         </div>
         {teams.length < 2 && <p className="mt-2 text-xs text-[#9AA4B2]">At least 2 registered teams are required.</p>}
       </div>
 
       <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
-        <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><Trophy className="h-4 w-4 text-[#16C784]" /> Arena Matches</h3>
+        <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><Trophy className="h-4 w-4 text-[#E0A82E]" /> Arena Matches</h3>
         {matches.length === 0 ? (
           <p className="text-sm text-[#9AA4B2]">No matches scheduled.</p>
         ) : (
@@ -513,7 +513,7 @@ function ArenaPanel({ competitionId, details, run }) {
                     <p className="text-sm font-medium text-white">{m.team_a.team_name}</p>
                     <p className="text-[11px] text-[#9AA4B2]">{m.team_a.institution_name}</p>
                   </div>
-                  <span className="font-mono text-[#16C784]">VS</span>
+                  <span className="font-mono text-[#E0A82E]">VS</span>
                   <div className="text-center">
                     <p className="text-sm font-medium text-white">{m.team_b.team_name}</p>
                     <p className="text-[11px] text-[#9AA4B2]">{m.team_b.institution_name}</p>
@@ -530,11 +530,11 @@ function ArenaPanel({ competitionId, details, run }) {
                       <input type="radio" name={`w-${m.match_id}`} value={m.team_b.team_id} checked={winner[m.match_id] === m.team_b.team_id} onChange={() => setWinner((w) => ({ ...w, [m.match_id]: m.team_b.team_id }))} />
                       {m.team_b.team_name}
                     </label>
-                    <button onClick={() => finish(m)} className="rounded-lg bg-[#16C784] px-3 py-1.5 text-xs font-semibold text-[#06130D]">Complete Match</button>
+                    <button onClick={() => finish(m)} className="rounded-lg bg-[#E0A82E] px-3 py-1.5 text-xs font-semibold text-[#06130D]">Complete Match</button>
                   </div>
                 )}
                 {m.status === 'completed' && (
-                  <p className="mt-2 text-center text-xs text-[#16C784]">
+                  <p className="mt-2 text-center text-xs text-[#E0A82E]">
                     Winner: {m.winner_team_id === m.team_a.team_id ? m.team_a.team_name : m.team_b.team_name}
                   </p>
                 )}
