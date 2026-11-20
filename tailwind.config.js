@@ -15,9 +15,9 @@ export default {
           600: '#242E3B',
         },
         valence: {
-          green: '#16C784',
-          'green-bright': '#1ED791',
-          'green-dark': '#0FA36B',
+          mustard: '#E0A82E',
+          'mustard-bright': '#F2C668',
+          'mustard-dark': '#B8881E',
           red: '#EA3943',
           'red-bright': '#F25059',
           'red-dark': '#C92A33',
