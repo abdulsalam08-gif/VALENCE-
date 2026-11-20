@@ -1,12 +1,5 @@
-// Calls library: Google Meet external calls.
-//
-// Rewired from in-app WebRTC to external Google Meet. The call-control layer
-// (call_sessions + call_signals via Supabase Realtime) is unchanged — it still
-// handles ring / accept / decline / end coordination. The media now happens in
-// a Google Meet room: the caller creates a Meet link (via the Vercel serverless
-// endpoint /api/meet/create), the link rides in the ring signal payload, and
-// both parties open the Meet room externally in a new browser tab. No in-app
-// media, no WebRTC, no ICE/STUN/TURN.
+// WebRTC calls library: call sessions, signaling (ICE/STUN/TURN), ring/accept/
+// decline/end, call logs & TURN credentials.
 
 import { supabase } from './supabase.js';
 
@@ -16,35 +9,14 @@ function unwrap(result) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Google Meet link creation (Vercel serverless endpoint)              */
+/* RPCs                                                                */
 /* ------------------------------------------------------------------ */
 
-// POST /api/meet/create — creates a Google Meet room via the Calendar API
-// (works with a personal Gmail account; the Meet spaces.create API needs
-// Workspace). Returns { ok, meetUrl, meetCode, eventId, summary }.
-export async function createMeetLink(peerName, callType = 'audio') {
-  const res = await fetch('/api/meet/create', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ peerName, callType }),
-  });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok || !data.ok) {
-    throw new Error(data.error || `Failed to create Google Meet link (${res.status})`);
-  }
-  return data; // { meetUrl, meetCode, eventId, summary }
-}
-
-/* ------------------------------------------------------------------ */
-/* Call session RPCs (coordination — unchanged)                        */
-/* ------------------------------------------------------------------ */
-
-export async function createCallSession(conversationId, callType = 'one_to_one', mediaType = 'audio', meetUrl = null) {
+export async function createCallSession(conversationId, callType = 'one_to_one', mediaType = 'audio') {
   const { data, error } = await supabase.rpc('create_call_session', {
     p_conversation_id: conversationId,
     p_call_type: callType,
     p_media_type: mediaType,
-    p_meet_url: meetUrl,
   });
   if (error) throw new Error(error.message || 'Failed to start call');
   return data;
@@ -91,13 +63,19 @@ export async function fetchCallSignals(sessionId) {
   return data || [];
 }
 
+export async function getTurnCredentials() {
+  const { data, error } = await supabase.rpc('get_turn_credentials');
+  if (error) throw new Error(error.message || 'Failed to load TURN config');
+  return data || { configured: false };
+}
+
 /* ------------------------------------------------------------------ */
-/* Realtime signaling subscription (coordination — unchanged)          */
+/* Realtime signaling subscription                                     */
 /* ------------------------------------------------------------------ */
 
 // Subscribe to INSERT events on call_signals. Pass sessionId to filter to one
 // session, or null to receive all signals (filter in the handler). onSignal(newRow).
-// Falls back gracefully if Realtime is unavailable.
+// Falls back gracefully if Realtime is unavailable (polling still works).
 export function subscribeToCallSignals(sessionId, onSignal) {
   if (!supabase) return () => {};
   const filter = sessionId ? `session_id=eq.${sessionId}` : null;
@@ -117,4 +95,27 @@ export function subscribeToCallSignals(sessionId, onSignal) {
   return () => {
     try { supabase.removeChannel(channel); } catch (e) { /* ignore */ }
   };
+}
+
+/* ------------------------------------------------------------------ */
+/* WebRTC ICE server config                                             */
+/* ------------------------------------------------------------------ */
+
+// Build ICE servers: public STUN always; TURN added when configured server-side.
+export async function buildIceServers() {
+  const servers = [
+    { urls: 'stun:stun.l.google.com:19302' },
+    { urls: 'stun:stun1.l.google.com:19302' },
+  ];
+  try {
+    const turn = await getTurnCredentials();
+    if (turn && turn.configured && turn.turn_server_url) {
+      servers.push({
+        urls: turn.turn_server_url,
+        username: turn.turn_username || undefined,
+        credential: turn.turn_credential || undefined,
+      });
+    }
+  } catch (e) { /* STUN-only fallback */ }
+  return servers;
 }
