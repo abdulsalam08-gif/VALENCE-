@@ -414,7 +414,7 @@ export default function HomePage() {
                   Built for Discipline, Measurable Readiness & First-Sitting Passes.
                 </h2>
                 <p className="text-sm sm:text-base text-[#9AA4B2]">
-                  Track chapter progress, study hours, live Google Meet classes, official Central Examination Authority timetables, 7-day registration cutoffs and 30-day post-exam result countdowns in one cockpit.
+                  Track chapter progress, study hours, live in-app video classes, official Central Examination Authority timetables, 7-day registration cutoffs and 30-day post-exam result countdowns in one cockpit.
                 </p>
               </div>
 
@@ -437,7 +437,7 @@ export default function HomePage() {
                   <div className="flex items-center gap-1.5 text-xs text-[#9AA4B2]">
                     <Video className="h-4 w-4 text-[#16C784]" /> Live Classrooms
                   </div>
-                  <p className="mt-2 font-display text-lg font-bold text-white">Google Meet</p>
+                  <p className="mt-2 font-display text-lg font-bold text-white">In-App Video</p>
                   <p className="text-[11px] text-[#667085]">Enrolled access only</p>
                 </div>
               </div>

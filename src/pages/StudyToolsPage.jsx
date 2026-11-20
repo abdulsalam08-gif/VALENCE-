@@ -30,6 +30,7 @@ import {
   Flame,
   Clock,
   Trophy,
+  ExternalLink,
 } from 'lucide-react';
 import Badge from '../components/ui/Badge';
 import { useToast } from '../context/ToastContext';

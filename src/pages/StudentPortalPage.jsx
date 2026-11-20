@@ -312,7 +312,7 @@ export default function StudentPortalPage() {
               <div className="rounded-2xl bg-[#11161C] border border-white/[0.10] p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-sm font-bold text-white">Notifications</h2>
-                  <span className="text-[10px] font-bold text-[#EA3943]">{unread} unread</span>
+                  <span className="text-xs font-bold text-[#EA3943]">{unread} unread</span>
                 </div>
                 {userNotifications.length === 0 ? (
                   <p className="text-xs text-[#667085] py-6 text-center">No notifications yet.</p>
@@ -321,7 +321,7 @@ export default function StudentPortalPage() {
                     {userNotifications.slice(0, 5).map((n) => (
                       <div key={n.id} className="rounded-lg bg-white/[0.02] border border-white/[0.05] px-3 py-2">
                         <p className="text-xs font-semibold text-white truncate">{n.title}</p>
-                        <p className="text-[10px] text-[#667085] truncate">{n.body}</p>
+                        <p className="text-xs text-[#667085] truncate">{n.body}</p>
                       </div>
                     ))}
                   </div>
@@ -343,7 +343,7 @@ export default function StudentPortalPage() {
               <div className="flex items-center gap-2 mb-5">
                 <Unlock className="h-4.5 w-4.5 text-[#16C784]" />
                 <h2 className="text-sm font-bold text-white">Tuition Level Unlocks</h2>
-                <span className="text-[10px] text-[#667085]">₦3,000 per level · Paystack verified</span>
+                <span className="text-xs text-[#667085]">₦3,000 per level · Paystack verified</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -360,11 +360,11 @@ export default function StudentPortalPage() {
                     <div key={lvl.id} className="rounded-xl bg-white/[0.02] border border-white/[0.06] p-4">
                       <div className="flex items-center justify-between mb-3">
                         <span className="text-xs font-bold text-white">{lvl.code}</span>
-                        <span className={`inline-flex items-center gap-1 text-[10px] font-semibold ${unlocked ? 'text-[#16C784]' : 'text-[#9AA4B2]'}`}>
+                        <span className={`inline-flex items-center gap-1 text-xs font-semibold ${unlocked ? 'text-[#16C784]' : 'text-[#9AA4B2]'}`}>
                           {unlocked ? <><Unlock className="h-3 w-3" /> Unlocked</> : <><Lock className="h-3 w-3" /> Locked</>}
                         </span>
                       </div>
-                      <p className="text-[11px] text-[#667085] mb-3">{lvl.courses.length} courses · 25% off 2+ courses</p>
+                      <p className="text-xs text-[#667085] mb-3">{lvl.courses.length} courses · 25% off 2+ courses</p>
                       {unlocked ? (
                         <div className="space-y-1.5 text-xs">
                           <div className="flex justify-between text-[#9AA4B2]">
@@ -382,7 +382,7 @@ export default function StudentPortalPage() {
                         </div>
                       ) : (
                         <div className="space-y-2">
-                          <div className="rounded-lg bg-[#16C784]/[0.06] border border-[#16C784]/20 p-2.5 text-[11px] text-[#C2C9D4]">
+                          <div className="rounded-lg bg-[#16C784]/[0.06] border border-[#16C784]/20 p-2.5 text-xs text-[#C2C9D4]">
                             Unlock to reveal full cost implication: in-app online tuition, official exam fees, and physical centre rates.
                           </div>
                           <button
@@ -409,11 +409,11 @@ export default function StudentPortalPage() {
                     <div key={lvl.id} className="rounded-xl bg-white/[0.02] border border-white/[0.06] p-4">
                       <div className="flex items-center justify-between mb-3">
                         <span className="text-xs font-bold text-white">{lvl.shortName || lvl.code}</span>
-                        <span className={`inline-flex items-center gap-1 text-[10px] font-semibold ${unlocked ? 'text-[#16C784]' : 'text-[#9AA4B2]'}`}>
+                        <span className={`inline-flex items-center gap-1 text-xs font-semibold ${unlocked ? 'text-[#16C784]' : 'text-[#9AA4B2]'}`}>
                           {unlocked ? <><Unlock className="h-3 w-3" /> Unlocked</> : <><Lock className="h-3 w-3" /> Locked</>}
                         </span>
                       </div>
-                      <p className="text-[11px] text-[#667085] mb-3">{lvl.courses.length} courses · 25% off 3+ courses</p>
+                      <p className="text-xs text-[#667085] mb-3">{lvl.courses.length} courses · 25% off 3+ courses</p>
                       {unlocked ? (
                         <div className="space-y-1.5 text-xs">
                           <div className="flex justify-between text-[#9AA4B2]">
@@ -431,7 +431,7 @@ export default function StudentPortalPage() {
                         </div>
                       ) : (
                         <div className="space-y-2">
-                          <div className="rounded-lg bg-[#16C784]/[0.06] border border-[#16C784]/20 p-2.5 text-[11px] text-[#C2C9D4]">
+                          <div className="rounded-lg bg-[#16C784]/[0.06] border border-[#16C784]/20 p-2.5 text-xs text-[#C2C9D4]">
                             Unlock to reveal full cost implication: in-app online tuition, official exam fees, and physical centre rates.
                           </div>
                           <button
@@ -451,7 +451,7 @@ export default function StudentPortalPage() {
               {unlockLevelId && (
                 <div className="mt-5 rounded-xl bg-[#0B0E11] border border-[#16C784]/30 p-4 animate-fade-up">
                   <p className="text-xs font-semibold text-white mb-1">Confirm unlock for {unlockLevelId}</p>
-                  <p className="text-[11px] text-[#9AA4B2] mb-3">Pay the one-time ₦3,000 fee to permanently unlock this level's cost implication. Never charged twice.</p>
+                  <p className="text-xs text-[#9AA4B2] mb-3">Pay the one-time ₦3,000 fee to permanently unlock this level's cost implication. Never charged twice.</p>
                   <div className="flex items-center gap-3">
                     <button
                       type="button"
@@ -496,12 +496,12 @@ export default function StudentPortalPage() {
               <div className="flex items-center gap-2 mb-5">
                 <FileText className="h-4.5 w-4.5 text-[#16C784]" />
                 <h2 className="text-sm font-bold text-white">ATSWA Document Vault</h2>
-                <span className="text-[10px] text-[#667085]">Private storage · Admin-verified</span>
+                <span className="text-xs text-[#667085]">Private storage · Admin-verified</span>
               </div>
 
               {/* Upload form */}
               <form onSubmit={handleUploadDocument} className="rounded-xl bg-white/[0.02] border border-white/[0.06] p-4 space-y-3 mb-6">
-                <p className="text-[11px] font-semibold text-[#16C784]">Upload ATSWA Document</p>
+                <p className="text-xs font-semibold text-[#16C784]">Upload ATSWA Document</p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
                     <label className="v-label">Document Type</label>
@@ -562,7 +562,7 @@ export default function StudentPortalPage() {
                       </span>
                       <div className="min-w-0 flex-1">
                         <p className="text-xs font-semibold text-white truncate">{doc.file_name}</p>
-                        <p className="text-[10px] text-[#667085]">
+                        <p className="text-xs text-[#667085]">
                           {doc.document_type} · {doc.target_level || 'General'} · {doc.verified ? 'Verified' : 'Pending verification'}
                         </p>
                       </div>
@@ -578,7 +578,7 @@ export default function StudentPortalPage() {
                 </div>
               )}
 
-              <div className="mt-4 flex items-center gap-2 rounded-lg bg-[#16C784]/[0.06] border border-[#16C784]/20 px-3 py-2.5 text-[11px] text-[#9AA4B2]">
+              <div className="mt-4 flex items-center gap-2 rounded-lg bg-[#16C784]/[0.06] border border-[#16C784]/20 px-3 py-2.5 text-xs text-[#9AA4B2]">
                 <ShieldCheck className="h-3.5 w-3.5 text-[#16C784] shrink-0" />
                 Documents are stored securely in Supabase private storage. Admins verify submissions during the ATSWA registration guidance process.
               </div>
@@ -660,7 +660,7 @@ function TuitionEnrolmentSection({ atswaLevels, icanLevels, isLevelUnlocked }) {
       <div className="flex items-center gap-2 mb-4">
         <GraduationCap className="h-4 w-4 text-[#16C784]" />
         <h3 className="text-sm font-bold text-white">Tuition Enrolment</h3>
-        <span className="text-[10px] text-[#667085]">Gated by the ₦3,000 level unlock</span>
+        <span className="text-xs text-[#667085]">Gated by the ₦3,000 level unlock</span>
       </div>
       {error && <p className="text-xs text-[#EA3943] mb-3">{error}</p>}
       {enrolments.length > 0 && (
@@ -669,7 +669,7 @@ function TuitionEnrolmentSection({ atswaLevels, icanLevels, isLevelUnlocked }) {
             <div key={e.id} className="rounded-lg bg-[#16C784]/[0.06] border border-[#16C784]/20 px-3 py-2 flex items-center justify-between">
               <div>
                 <p className="text-xs font-semibold text-white">{e.level_name || e.level_id}</p>
-                <p className="text-[10px] text-[#9AA4B2]">
+                <p className="text-xs text-[#9AA4B2]">
                   {e.course_ids?.length || 0} courses · {e.status}
                 </p>
               </div>
@@ -692,7 +692,7 @@ function TuitionEnrolmentSection({ atswaLevels, icanLevels, isLevelUnlocked }) {
                   <button
                     onClick={() => handleEnrol(level)}
                     disabled={enrolling === level.key}
-                    className="v-btn-secondary !py-1 !px-2 text-[10px]"
+                    className="v-btn-secondary !py-1 !px-2 text-xs"
                   >
                     <Plus className="h-3 w-3" /> {enrolling === level.key ? '...' : 'Enrol'}
                   </button>
@@ -753,8 +753,8 @@ function LiveClassesSection({ atswaLevels, icanLevels, isLevelUnlocked, toast })
     <div className="mt-6 rounded-xl bg-[#11161C] border border-white/[0.10] p-5">
       <div className="flex items-center gap-2 mb-4">
         <Video className="h-4 w-4 text-[#16C784]" />
-        <h3 className="text-sm font-bold text-white">Live Classes (Google Meet)</h3>
-        <span className="text-[10px] text-[#667085]">Enrolled students, assigned tutors & admins</span>
+        <h3 className="text-sm font-bold text-white">Live Classes</h3>
+        <span className="text-xs text-[#667085]">In-app video classes, enrolled students & assigned tutors</span>
       </div>
       <div className="space-y-4">
         {allLevels.map((level) => {
@@ -768,14 +768,14 @@ function LiveClassesSection({ atswaLevels, icanLevels, isLevelUnlocked, toast })
                   <button
                     onClick={() => loadLevel(level)}
                     disabled={loadingLevel === level.key}
-                    className="text-[10px] text-[#16C784] hover:underline disabled:opacity-50"
+                    className="text-xs text-[#16C784] hover:underline disabled:opacity-50"
                   >
                     {loadingLevel === level.key ? 'Loading...' : sessions.length ? 'Refresh' : 'View sessions'}
                   </button>
                 )}
               </div>
               {unlocked && sessions.length === 0 && loadingLevel !== level.key && (
-                <p className="text-[10px] text-[#667085]">No live classes scheduled for this level.</p>
+                <p className="text-xs text-[#667085]">No live classes scheduled for this level.</p>
               )}
               {sessions.length > 0 && (
                 <div className="space-y-2">
@@ -785,7 +785,7 @@ function LiveClassesSection({ atswaLevels, icanLevels, isLevelUnlocked, toast })
                         <div>
                           <p className="text-xs font-semibold text-white">{s.title}</p>
                           {s.scheduled_at && (
-                            <p className="text-[10px] text-[#9AA4B2] flex items-center gap-1">
+                            <p className="text-xs text-[#9AA4B2] flex items-center gap-1">
                               <Clock className="h-3 w-3" />
                               {new Date(s.scheduled_at).toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' })}
                             </p>
@@ -794,12 +794,12 @@ function LiveClassesSection({ atswaLevels, icanLevels, isLevelUnlocked, toast })
                         <button
                           onClick={() => join(s)}
                           disabled={joining === s.id}
-                          className="v-btn-primary !py-1 !px-2 text-[10px] whitespace-nowrap"
+                          className="v-btn-primary !py-1 !px-2 text-xs whitespace-nowrap"
                         >
                           <ExternalLink className="h-3 w-3" /> {joining === s.id ? 'Opening...' : 'Join'}
                         </button>
                       </div>
-                      {s.description && <p className="text-[10px] text-[#9AA4B2] mt-1">{s.description}</p>}
+                      {s.description && <p className="text-xs text-[#9AA4B2] mt-1">{s.description}</p>}
                     </div>
                   ))}
                 </div>
@@ -827,9 +827,9 @@ function MetricCard({ icon: Icon, label, value, sub, accent, to }) {
         </span>
         <ArrowUpRight className="h-4 w-4 text-[#667085] group-hover:text-white transition-colors" />
       </div>
-      <p className="text-xs font-semibold text-[#9AA4B2] mt-3">{label}</p>
-      <p className="text-lg font-bold text-white mt-0.5">{value}</p>
-      <p className="text-[10px] text-[#667085] mt-0.5">{sub}</p>
+      <p className="text-sm font-semibold text-[#9AA4B2] mt-3">{label}</p>
+      <p className="text-xl font-bold text-white mt-0.5">{value}</p>
+      <p className="text-xs text-[#667085] mt-0.5">{sub}</p>
     </Link>
   );
 }
@@ -838,14 +838,14 @@ function QuickAction({ icon: Icon, title, desc, to }) {
   return (
     <Link
       to={to}
-      className="group flex items-center gap-3 rounded-xl bg-white/[0.02] border border-white/[0.06] p-3.5 hover:border-[#16C784]/30 hover:bg-white/[0.04] transition-colors"
+      className="group flex items-center gap-3 rounded-xl bg-white/[0.02] border border-white/[0.06] p-4 hover:border-[#16C784]/30 hover:bg-white/[0.04] transition-colors"
     >
-      <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-[#16C784]/10 text-[#16C784] shrink-0">
-        <Icon className="h-4.5 w-4.5" />
+      <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#16C784]/10 text-[#16C784] shrink-0">
+        <Icon className="h-5 w-5" />
       </span>
       <div className="min-w-0 flex-1">
-        <p className="text-xs font-semibold text-white">{title}</p>
-        <p className="text-[10px] text-[#667085] truncate">{desc}</p>
+        <p className="text-sm font-semibold text-white">{title}</p>
+        <p className="text-xs text-[#667085] truncate">{desc}</p>
       </div>
       <ArrowUpRight className="h-4 w-4 text-[#667085] group-hover:text-white transition-colors" />
     </Link>

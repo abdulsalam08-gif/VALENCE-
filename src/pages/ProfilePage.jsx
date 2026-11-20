@@ -77,8 +77,20 @@ export default function ProfilePage() {
     }
   }, [profile]);
 
+  // Normalize loaded privacy settings so toggle fields are real booleans
+  // (DB may return null/undefined/string for columns that don't exist yet).
+  const normalizePrivacy = (raw) => {
+    if (!raw) return raw;
+    const out = { ...raw };
+    for (const field of TOGGLE_FIELDS) {
+      const v = out[field.key];
+      out[field.key] = v === true || v === 'true' || v === 1 || v === '1';
+    }
+    return out;
+  };
+
   useEffect(() => {
-    if (privacySettings) setLocalPrivacy({ ...privacySettings });
+    if (privacySettings) setLocalPrivacy(normalizePrivacy(privacySettings));
   }, [privacySettings]);
 
   if (!user) return null;
