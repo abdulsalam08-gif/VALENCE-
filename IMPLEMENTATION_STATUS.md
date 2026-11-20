@@ -21,11 +21,11 @@
 | **Phase 9** | **Community features: discovery, follows, study groups, 12 subject forums, mentorship & events** | **Completed** |
 | **Phase 10** | **Official vs Community Announcements system (drafts, uploads, links, 7 backend-enforced audience visibility scopes, likes, comments, reposts, bookmarks, reporting & admin moderation)** | **Completed** |
 | **Phase 11** | **Direct 1:1 & group messaging (Supabase Realtime, attachments, voice notes, read receipts, mute, block & report)** | **Completed** |
-| **Phase 12** | **Real WebRTC direct audio & video calling (ICE/STUN/TURN signaling, ring/accept/decline/end, permission checks, privacy controls & call logs)** | **Completed** |
+| **Phase 12** | **Direct audio & video calling rewired to external Google Meet (replaced in-app WebRTC). Call coordination retained (Supabase `call_sessions` + `call_signals` ring/accept/decline/end Realtime). Caller triggers `/api/meet/create` (Vercel serverless → Google Calendar `events.insert` with `conferenceType: eventHangout`), the generated Meet URL rides in the ring payload, and BOTH parties open the real Google Meet room externally in a new tab on accept — no `RTCPeerConnection`/`getUserMedia`/ICE in the app. Requires Vercel env `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REFRESH_TOKEN` (scope `calendar.events`).** | **Completed** ✓ (code + deploy live; Meet-link creation activates once OAuth env vars are set) |
 | **Phase 13** | **Competition system: school registration across all Nigerian universities/polytechnics/centres, 6 divisions, configurable ATSWA & ICAN timed exams, auto + human rubric grading, 6 leaderboards, Monthly League, 1v1/2v2 Arena, certificates, appeals, Hall of Fame & audited ₦220,000 podium post-competition reward disbursement (₦100,000 / ₦70,000 / ₦50,000) with Top VALENCE Students school-profile display and the strictly-4-competitors-per-school cap** | **Completed** |
 | **Phase 14** | **Scholarships, internships, graduate jobs, CPE/CPD webinars & VALENCE PRO verified professional hub** | **Completed** |
 | **Phase 15** | **VALENCE ADVERTISE & Verified Partner Directory, strictly for (1) Physical Tuition Centres, (2) Accounting Textbook Authors, and (3) Verified Textbook Vendors at ₦10,000/week in-app with Paystack billing (online tuition delivered solely in-app by VALENCE-verified tutors), 9 `Sponsored`-labelled placements, anti-piracy/venue verification queue & live CTR analytics** | **Complete** |
-| **Phase 16** | **Full 8-role RBAC Admin Portal & Live Platform CMS (update all per-course store prices/discounts, delivery zones, ₦10,000/week ad rate, ATSWA guidance, in-app material/delivery & ad queues, Central Exam Authority date/timetable/result-delay console, ₦220,000 competition podium payout ledger, FAQs & announcements), verification queues, moderation, audit logs, security hardening, Google Workspace automation & Vercel deployment** | Pending |
+| **Phase 16** | **Full 8-role RBAC Admin Portal & Live Platform CMS (update all per-course store prices/discounts, delivery zones, ₦10,000/week ad rate, ATSWA guidance, in-app material/delivery & ad queues, Central Exam Authority date/timetable/result-delay console, ₦220,000 competition podium payout ledger, FAQs & announcements), verification queues, moderation, audit logs, security hardening, Google Workspace automation & Vercel deployment** | **Completed** |
 
 ---
 
@@ -40,7 +40,7 @@
 - `SUPABASE_SERVICE_ROLE_KEY`: Server-side privileged verification & webhook writes
 - `PAYSTACK_SECRET_KEY`: Server-side transaction verification & webhook HMAC validation
 - `OPENAI_API_KEY`: Server-side AI Accounting Tutor endpoint (Phase 7)
-- `TURN_SERVER_URL` / `TURN_USERNAME` / `TURN_CREDENTIAL`: Production NAT traversal relay for WebRTC voice/video calls (Phase 12)
+- `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REFRESH_TOKEN`: Server-side Google Meet room creation via Calendar API (Phase 12 rewire — `scope: https://www.googleapis.com/auth/calendar.events`)
 
 ---
 
