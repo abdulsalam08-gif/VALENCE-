@@ -27,6 +27,7 @@ import {
   ICAN_REGISTRATION_PROCESS,
   ICAN_COMPLETION_TIMELINES,
   EXEMPTION_RULES,
+  OTHER_BODIES,
   DISCUSSION_CATEGORIES,
   COMPETITION_DIVISIONS,
   COMPETITION_REWARD,
@@ -43,7 +44,7 @@ import {
 } from '../data/nigerianUniversities';
 import { calculateStoreCart } from '../lib/pricing';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
-import { formatReadableDate } from '../lib/examSchedule';
+import { formatReadableDate, mapExamSessionRow } from '../lib/examSchedule';
 import {
   signIn as authSignIn,
   signUp as authSignUp,
@@ -59,6 +60,10 @@ import {
 } from '../lib/auth';
 
 const PlatformContext = createContext(null);
+const AuthContext = createContext(null);
+const PublicDataContext = createContext(null);
+const CartContext = createContext(null);
+const UiContext = createContext(null);
 const CART_STORAGE_KEY = 'valence_cart_v1';
 
 // Map database store_products row to UI product model (preserving static enrichment where present)
@@ -80,7 +85,7 @@ function mapStoreProductRow(row) {
     price: Number(row.price_ngn ?? base.price ?? 0),
     imageUrl: row.image_url ?? base.imageUrl ?? null,
     colourBadge: base.colourBadge || row.colour_badge || '',
-    accentHex: base.accentHex || row.accent_hex || '#E0A82E',
+    accentHex: base.accentHex || row.accent_hex || '#16C784',
     editionLabel: base.editionLabel || row.edition_label || '',
     discountHint: base.discountHint || row.discount_hint || '',
     description: base.description || row.description || '',
@@ -243,61 +248,22 @@ function computeInstitutionCounts(list) {
   };
 }
 
-export function PlatformProvider({ children }) {
+/* ------------------------------------------------------------------ *
+ * AuthProvider — user session, profile, RBAC roles, level unlocks,
+ * privacy, notifications, in-app tickets & ATSWA documents.
+ * Consumers re-render only on auth-related changes.
+ * ------------------------------------------------------------------ */
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [userRole, setUserRole] = useState(null);
   const [adminRoles, setAdminRoles] = useState([]);
   const [unlockedLevelIds, setUnlockedLevelIds] = useState([]);
   const [unlockedCentreFees, setUnlockedCentreFees] = useState([]);
-  const [isHydrating, setIsHydrating] = useState(true);
-  const [dbStatus, setDbStatus] = useState(isSupabaseConfigured ? 'connecting' : 'local');
-
-  // Live Supabase-hydrated platform collections (seeded with exact Phase 1 baseline for instant render)
-  const [liveSettings, setLiveSettings] = useState(() => PLATFORM_SETTINGS);
-  const [catalogProducts, setCatalogProducts] = useState(() => STORE_PRODUCTS);
-  const [liveDeliveryZones, setLiveDeliveryZones] = useState(() => DELIVERY_ZONES);
-  const [liveQuotes, setLiveQuotes] = useState(() => MOTIVATIONAL_QUOTES);
-  const [livePageTickers, setLivePageTickers] = useState(() => PAGE_TICKER_NOTICES);
-  const [liveCentres, setLiveCentres] = useState(() => FEATURED_TUITION_CENTRES);
-  const [liveTextbookAdvertisers, setLiveTextbookAdvertisers] = useState(
-    () => FEATURED_TEXTBOOK_ADVERTISERS
-  );
-  const [liveTutors, setLiveTutors] = useState(() => FEATURED_TUTORS);
-  const [liveOpportunities, setLiveOpportunities] = useState(() => LATEST_OPPORTUNITIES);
-  const [liveEvents, setLiveEvents] = useState(() => UPCOMING_EVENTS);
-  const [liveAnnouncements, setLiveAnnouncements] = useState(() => ANNOUNCEMENTS_FEED);
-  const [liveFaqs, setLiveFaqs] = useState(() => FAQS);
-  const [liveCandidateFaqs, setLiveCandidateFaqs] = useState(() => ICAN_CANDIDATE_FAQS);
-  const [liveUniversities, setLiveUniversities] = useState(() => NIGERIAN_UNIVERSITIES);
-  const [liveUniversityCounts, setLiveUniversityCounts] = useState(() => UNIVERSITY_COUNTS);
-
-  // Phase 4: Live exam sessions, timetables, exemption rules & ATSWA documents
-  const [liveExamSessions, setLiveExamSessions] = useState(() => EXAMINATION_SESSIONS);
-  const [liveExamTimetables, setLiveExamTimetables] = useState({});
-  const [liveExemptionRules, setLiveExemptionRules] = useState(() => EXEMPTION_RULES);
-  const [atswaDocuments, setAtswaDocuments] = useState([]);
-
-  const [cart, setCart] = useState(() => {
-    try {
-      const saved = localStorage.getItem(CART_STORAGE_KEY);
-      if (!saved) return [];
-      const parsed = JSON.parse(saved);
-      const validIds = new Set(STORE_PRODUCTS.map((p) => p.id));
-      return Array.isArray(parsed) ? parsed.filter((item) => validIds.has(item.id)) : [];
-    } catch {
-      return [];
-    }
-  });
-  const [selectedZoneId, setSelectedZoneId] = useState(DELIVERY_ZONES[0].id);
+  const [privacySettings, setPrivacySettings] = useState(null);
+  const [userNotifications, setUserNotifications] = useState([]);
   const [inAppTickets, setInAppTickets] = useState([]);
-
-  const [whatsAppModal, setWhatsAppModal] = useState({
-    open: false,
-    category: 'General Support Enquiry',
-    programme: '',
-    level: '',
-  });
+  const [atswaDocuments, setAtswaDocuments] = useState([]);
 
   // Hydrate authenticated user profile, RBAC roles & server-verified level cost unlocks
   const hydrateAuthenticatedUser = useCallback(async (authUser) => {
@@ -364,6 +330,270 @@ export function PlatformProvider({ children }) {
     }
   }, []);
 
+  // Session hydration + auth state listener
+  useEffect(() => {
+    if (!supabase) return undefined;
+    supabase.auth.getSession().then(({ data }) => {
+      if (data?.session?.user) {
+        hydrateAuthenticatedUser(data.session.user);
+      }
+    });
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      hydrateAuthenticatedUser(session?.user || null);
+    });
+
+    return () => {
+      authListener?.subscription?.unsubscribe();
+    };
+  }, [hydrateAuthenticatedUser]);
+
+  const refreshUserData = useCallback(async (uid) => {
+    if (!supabase || !uid) return;
+    const [privacyRes, notifRes] = await Promise.all([
+      authFetchPrivacy(),
+      authFetchNotifications(),
+    ]);
+    if (privacyRes.data) setPrivacySettings(privacyRes.data);
+    if (Array.isArray(notifRes.data)) setUserNotifications(notifRes.data);
+  }, []);
+
+  const handleSignIn = useCallback(async (email, password) => {
+    const result = await authSignIn(email, password);
+    if (result.error) return { error: result.error };
+    if (result.data?.user) {
+      await hydrateAuthenticatedUser(result.data.user);
+      await refreshUserData(result.data.user.id);
+    }
+    return { error: null };
+  }, [hydrateAuthenticatedUser, refreshUserData]);
+
+  const handleSignUp = useCallback(async (payload) => {
+    const result = await authSignUp(payload);
+    if (result.error) return { error: result.error };
+    if (result.data?.user) {
+      // Auto-sign in after registration
+      await supabase.auth.signInWithPassword({ email: payload.email, password: payload.password }).catch(() => {});
+    }
+    return { error: null };
+  }, []);
+
+  const handleSignOut = useCallback(async () => {
+    await authSignOut();
+    setUser(null);
+    setProfile(null);
+    setUserRole(null);
+    setAdminRoles([]);
+    setUnlockedLevelIds([]);
+    setUnlockedCentreFees([]);
+    setUserNotifications([]);
+    setPrivacySettings(null);
+  }, []);
+
+  const handleUpdateProfile = useCallback(
+    async (updates) => {
+      const result = await authUpdateProfile(updates);
+      if (result.data && profile) {
+        setProfile({ ...profile, ...result.data });
+      }
+      return result;
+    },
+    [profile]
+  );
+
+  // Phase 4: Tuition level unlock
+  const handleUnlockLevel = useCallback(async (levelId, amountPaidNgn = 3000, paystackReference = null) => {
+    const result = await authUnlockLevel(levelId, amountPaidNgn, paystackReference);
+    if (!result.error && result.data) {
+      const newId = result.data.level_id;
+      setUnlockedLevelIds((prev) => (prev.includes(newId) ? prev : [...prev, newId]));
+    }
+    return result;
+  }, []);
+
+  // Phase 4: ATSWA document management
+  const handleFetchAtswaDocuments = useCallback(async () => {
+    const result = await authFetchAtswaDocuments();
+    if (Array.isArray(result.data)) setAtswaDocuments(result.data);
+    return result;
+  }, []);
+
+  // Phase 4: ATSWA guidance request submission
+  const handleSubmitAtswaGuidance = useCallback(async (payload) => {
+    const result = await authSubmitAtswaGuidance(payload);
+    return result;
+  }, []);
+
+  const isLevelUnlocked = (levelKey) => unlockedLevelIds.includes(levelKey);
+
+  // Persist in-app tickets & partner/store/ATSWA/ad requests directly to RLS-protected Supabase tables
+  const submitInAppTicket = useCallback(
+    (type, payload) => {
+      const cleanType = String(type || 'SUP')
+        .toUpperCase()
+        .replace(/[^A-Z0-9]/g, '');
+      const ref = `VAL-${cleanType}-${String(Date.now()).slice(-6)}`;
+      const record = {
+        id: ref,
+        type,
+        status: 'Submitted · Pending Admin Review',
+        persisted: false,
+        createdAt: new Date().toISOString(),
+        ...payload,
+      };
+      setInAppTickets((prev) => [record, ...prev]);
+
+      if (supabase) {
+        const uid = user?.id || null;
+        // Get profile_id for notifications (spec table)
+        const profileId = profile?.id || null;
+
+        // All enquiry types are persisted as notifications in the spec's
+        // `notifications` table for admin review. The spec's section 25
+        // database architecture does not include separate tables for
+        // support tickets, ATSWA guidance requests, store enquiries,
+        // or partner enquiries — these are stored as notifications.
+        const notifType = type === 'support' ? 'support_ticket'
+          : type === 'atswa' ? 'atswa_guidance_request'
+          : type === 'store' ? 'store_material_enquiry'
+          : type === 'book-enq' ? 'partner_enquiry'
+          : 'advertising_campaign_request';
+
+        let notifTitle = 'VALENCE Enquiry';
+        let notifMessage = '';
+
+        if (type === 'support') {
+          notifTitle = 'Support Ticket';
+          notifMessage = `${payload.fullName || 'Visitor'}: ${payload.message || ''} (${payload.category || 'General Support'})`;
+        } else if (type === 'atswa') {
+          notifTitle = 'ATSWA Registration Guidance Request';
+          notifMessage = `${payload.fullName || 'ATSWA Candidate'}: ${payload.question || ''} (Level: ${payload.level || 'ATS 1'})`;
+        } else if (type === 'store') {
+          notifTitle = 'Store Material Enquiry';
+          notifMessage = `${payload.fullName || 'Candidate'}: ${payload.topic || 'Store Enquiry'} — ${payload.message || ''}`;
+        } else if (type === 'book-enq') {
+          notifTitle = 'Partner Enquiry';
+          notifMessage = `${payload.studentName || 'Student'} → ${payload.partnerName || 'Partner'}: ${payload.message || ''}`;
+        } else if (type === 'advertise') {
+          notifTitle = 'Advertising Campaign Request';
+          notifMessage = `${payload.entityName || 'Applicant'}: ${payload.headline || ''} — ${payload.notes || ''}`;
+        }
+
+        const dbOp = supabase.from('notifications').insert({
+          profile_id: profileId,
+          notification_type: notifType,
+          title: notifTitle,
+          message: notifMessage,
+        });
+
+        if (dbOp) {
+          dbOp.then(({ error }) => {
+            if (!error) {
+              setInAppTickets((prev) =>
+                prev.map((t) =>
+                  t.id === ref
+                    ? { ...t, persisted: true, status: 'Saved in VALENCE · Pending Admin Review' }
+                    : t
+                )
+              );
+            }
+          });
+        }
+      }
+
+      return record;
+    },
+    [user, profile]
+  );
+
+  const authValue = useMemo(
+    () => ({
+      user,
+      setUser,
+      profile,
+      setProfile,
+      userRole,
+      setUserRole,
+      adminRoles,
+      unlockedLevelIds,
+      setUnlockedLevelIds,
+      unlockedCentreFees,
+      isLevelUnlocked,
+      handleSignIn,
+      handleSignUp,
+      handleSignOut,
+      handleUpdateProfile,
+      refreshUserData,
+      privacySettings,
+      setPrivacySettings,
+      userNotifications,
+      setUserNotifications,
+      inAppTickets,
+      submitInAppTicket,
+      handleUnlockLevel,
+      handleFetchAtswaDocuments,
+      handleSubmitAtswaGuidance,
+      atswaDocuments,
+    }),
+    [
+      user,
+      profile,
+      userRole,
+      adminRoles,
+      unlockedLevelIds,
+      unlockedCentreFees,
+      privacySettings,
+      userNotifications,
+      inAppTickets,
+      atswaDocuments,
+      handleSignIn,
+      handleSignUp,
+      handleSignOut,
+      handleUpdateProfile,
+      refreshUserData,
+      submitInAppTicket,
+      handleUnlockLevel,
+      handleFetchAtswaDocuments,
+      handleSubmitAtswaGuidance,
+    ]
+  );
+
+  return <AuthContext.Provider value={authValue}>{children}</AuthContext.Provider>;
+}
+
+/* ------------------------------------------------------------------ *
+ * PublicDataProvider — live Supabase-hydrated public CMS collections,
+ * exam sessions, products, settings, announcements etc. plus the
+ * Realtime channel. Consumers re-render only on public-data changes.
+ * ------------------------------------------------------------------ */
+export function PublicDataProvider({ children }) {
+  const [isHydrating, setIsHydrating] = useState(true);
+  const [dbStatus, setDbStatus] = useState(isSupabaseConfigured ? 'connecting' : 'local');
+
+  // Live Supabase-hydrated platform collections (seeded with exact Phase 1 baseline for instant render)
+  const [liveSettings, setLiveSettings] = useState(() => PLATFORM_SETTINGS);
+  const [catalogProducts, setCatalogProducts] = useState(() => STORE_PRODUCTS);
+  const [liveDeliveryZones, setLiveDeliveryZones] = useState(() => DELIVERY_ZONES);
+  const [liveQuotes, setLiveQuotes] = useState(() => MOTIVATIONAL_QUOTES);
+  const [livePageTickers, setLivePageTickers] = useState(() => PAGE_TICKER_NOTICES);
+  const [liveCentres, setLiveCentres] = useState(() => FEATURED_TUITION_CENTRES);
+  const [liveTextbookAdvertisers, setLiveTextbookAdvertisers] = useState(
+    () => FEATURED_TEXTBOOK_ADVERTISERS
+  );
+  const [liveTutors, setLiveTutors] = useState(() => FEATURED_TUTORS);
+  const [liveOpportunities, setLiveOpportunities] = useState(() => LATEST_OPPORTUNITIES);
+  const [liveEvents, setLiveEvents] = useState(() => UPCOMING_EVENTS);
+  const [liveAnnouncements, setLiveAnnouncements] = useState(() => ANNOUNCEMENTS_FEED);
+  const [liveFaqs, setLiveFaqs] = useState(() => FAQS);
+  const [liveCandidateFaqs, setLiveCandidateFaqs] = useState(() => ICAN_CANDIDATE_FAQS);
+  const [liveUniversities, setLiveUniversities] = useState(() => NIGERIAN_UNIVERSITIES);
+  const [liveUniversityCounts, setLiveUniversityCounts] = useState(() => UNIVERSITY_COUNTS);
+
+  // Phase 4: Live exam sessions, timetables, exemption rules
+  const [liveExamSessions, setLiveExamSessions] = useState(() => EXAMINATION_SESSIONS);
+  const [liveExamTimetables, setLiveExamTimetables] = useState({});
+  const [liveExemptionRules, setLiveExemptionRules] = useState(() => EXEMPTION_RULES);
+
   // Hydrate live public reference & CMS tables from Supabase
   const refreshPublicData = useCallback(async () => {
     if (!supabase) {
@@ -380,6 +610,7 @@ export function PlatformProvider({ children }) {
         annRes,
         eventsRes,
         exemptionRes,
+        examSessionsRes,
       ] = await Promise.all([
         // platform_settings: key-value store (all rows)
         supabase.from('platform_settings').select('*'),
@@ -422,6 +653,15 @@ export function PlatformProvider({ children }) {
           .from('exemption_guidelines')
           .select('*')
           .order('title', { ascending: true }),
+        // examination_sessions — Central Exam Authority content (admin-editable).
+        // Public SELECT policy is enabled, so the app reads live exam/diet data
+        // instead of the static EXAMINATION_SESSIONS seed.
+        supabase
+          .from('examination_sessions')
+          .select('*')
+          .eq('is_archived', false)
+          .order('year', { ascending: false })
+          .order('exam_starts', { ascending: true }),
       ]);
 
       // Settings: build from key-value rows
@@ -431,6 +671,37 @@ export function PlatformProvider({ children }) {
           settingsMap[row.setting_key] = row.setting_value;
         });
         setLiveSettings({ ...PLATFORM_SETTINGS, ...settingsMap });
+      }
+
+      // Exam sessions: map DB rows (admin-editable via the Examination Authority
+      // console) into the buildDietSession shape. The DB stores admin-controlled
+      // dates/status; the detailed day-by-day timetable is static reference content
+      // (not in the examination_sessions schema), so we merge the matching static
+      // session's timetable by programme + diet + year. Falls back to the static
+      // seed only when the table is empty or errors.
+      if (Array.isArray(examSessionsRes.data) && examSessionsRes.data.length > 0) {
+        const staticByKey = new Map(
+          EXAMINATION_SESSIONS.map((s) => [`${s.programme}|${s.diet}|${s.year}`, s])
+        );
+        const mappedSessions = examSessionsRes.data
+          .map((row) => {
+            const programme = /ATSWA/i.test(row.diet || '') || /ATSWA/i.test(row.name || '')
+              ? 'ATSWA'
+              : 'ICAN';
+            const monthMatch = (row.name || '').match(
+              /(March|May|September|November)/i
+            );
+            const diet = monthMatch ? monthMatch[1] : 'May';
+            const staticMatch = staticByKey.get(`${programme}|${diet}|${row.year}`);
+            return mapExamSessionRow(row, {
+              timetable: staticMatch?.timetable || [],
+            });
+          })
+          .filter(Boolean)
+          .sort((a, b) => (b.year || 0) - (a.year || 0));
+        if (mappedSessions.length > 0) {
+          setLiveExamSessions(mappedSessions);
+        }
       }
 
       // Products: merge spec-schema DB rows with the local catalogue metadata
@@ -460,10 +731,7 @@ export function PlatformProvider({ children }) {
           .filter(Boolean);
         setCatalogProducts(mapped);
         // Automatically drop any Study Packs that Admin marked unavailable while in cart
-        const unavailable = new Set(mapped.filter((p) => !p.isAvailable).map((p) => p.id));
-        if (unavailable.size > 0) {
-          setCart((prev) => prev.filter((item) => !unavailable.has(item.id)));
-        }
+        // (CartProvider reacts to the new products list and removes unavailable items.)
       }
 
       // Delivery zones: merge spec-schema DB rows with the local zone metadata by name
@@ -596,6 +864,7 @@ export function PlatformProvider({ children }) {
         }
       } catch (faqErr) {
         // keep static FAQS fallback
+        void faqErr;
       }
 
       // Non-spec tables (motivational quotes, page tickers, tuition centres,
@@ -619,17 +888,9 @@ export function PlatformProvider({ children }) {
 
     refreshPublicData();
 
-    supabase.auth.getSession().then(({ data }) => {
-      if (data?.session?.user) {
-        hydrateAuthenticatedUser(data.session.user);
-      }
-    });
-
-    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
-      hydrateAuthenticatedUser(session?.user || null);
-    });
-
-    // Live Realtime channel: Admin product availability toggles, settings updates & announcement inserts
+    // Live Realtime channel: Admin product availability toggles, settings updates,
+    // exam session edits & announcement inserts (cart cleanup reacts to the
+    // updated products list via CartProvider).
     const channel = supabase
       .channel('valence-live-sync')
       .on(
@@ -649,9 +910,6 @@ export function PlatformProvider({ children }) {
             priceNgn: 0,
           };
           setCatalogProducts((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
-          if (!updated.isAvailable) {
-            setCart((prev) => prev.filter((item) => item.id !== updated.id));
-          }
         }
       )
       .on(
@@ -662,6 +920,40 @@ export function PlatformProvider({ children }) {
             const settingsMap = {};
             settingsMap[payload.new.setting_key] = payload.new.setting_value;
             setLiveSettings((prev) => ({ ...prev, ...settingsMap }));
+          }
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'examination_sessions' },
+        (payload) => {
+          if (payload.eventType === 'DELETE') {
+            setLiveExamSessions((prev) =>
+              prev.filter((s) => s.id !== payload.old.id)
+            );
+            return;
+          }
+          if (payload.new) {
+            const programme = /ATSWA/i.test(payload.new.diet || '') || /ATSWA/i.test(payload.new.name || '')
+              ? 'ATSWA'
+              : 'ICAN';
+            const monthMatch = (payload.new.name || '').match(/(March|May|September|November)/i);
+            const diet = monthMatch ? monthMatch[1] : 'May';
+            const staticMatch = EXAMINATION_SESSIONS.find(
+              (s) => s.programme === programme && s.diet === diet && s.year === payload.new.year
+            );
+            const mapped = mapExamSessionRow(payload.new, {
+              timetable: staticMatch?.timetable || [],
+            });
+            if (mapped) {
+              setLiveExamSessions((prev) => {
+                const exists = prev.some((s) => s.id === mapped.id);
+                const next = exists
+                  ? prev.map((s) => (s.id === mapped.id ? mapped : s))
+                  : [...prev, mapped];
+                return next.sort((a, b) => (b.year || 0) - (a.year || 0));
+              });
+            }
           }
         }
       )
@@ -691,10 +983,9 @@ export function PlatformProvider({ children }) {
       .subscribe();
 
     return () => {
-      authListener?.subscription?.unsubscribe();
       supabase.removeChannel(channel);
     };
-  }, [hydrateAuthenticatedUser, refreshPublicData]);
+  }, [refreshPublicData]);
 
   // Admin live Study Pack availability updater (optimistic UI + persistent Supabase write for store_admin)
   const updateProductAvailability = useCallback(async (productId, isAvailable, customNote = '') => {
@@ -715,9 +1006,6 @@ export function PlatformProvider({ children }) {
           : p
       )
     );
-    if (!isAvailable) {
-      setCart((prev) => prev.filter((item) => item.id !== productId));
-    }
 
     if (supabase) {
       const { error } = await supabase
@@ -733,85 +1021,119 @@ export function PlatformProvider({ children }) {
     return { persisted: false, error: null };
   }, []);
 
-  // Persist in-app tickets & partner/store/ATSWA/ad requests directly to RLS-protected Supabase tables
-  const submitInAppTicket = useCallback(
-    (type, payload) => {
-      const cleanType = String(type || 'SUP')
-        .toUpperCase()
-        .replace(/[^A-Z0-9]/g, '');
-      const ref = `VAL-${cleanType}-${String(Date.now()).slice(-6)}`;
-      const record = {
-        id: ref,
-        type,
-        status: 'Submitted · Pending Admin Review',
-        persisted: false,
-        createdAt: new Date().toISOString(),
-        ...payload,
-      };
-      setInAppTickets((prev) => [record, ...prev]);
-
-      if (supabase) {
-        const uid = user?.id || null;
-        // Get profile_id for notifications (spec table)
-        const profileId = profile?.id || null;
-
-        // All enquiry types are persisted as notifications in the spec's
-        // `notifications` table for admin review. The spec's section 25
-        // database architecture does not include separate tables for
-        // support tickets, ATSWA guidance requests, store enquiries,
-        // or partner enquiries — these are stored as notifications.
-        const notifType = type === 'support' ? 'support_ticket'
-          : type === 'atswa' ? 'atswa_guidance_request'
-          : type === 'store' ? 'store_material_enquiry'
-          : type === 'book-enq' ? 'partner_enquiry'
-          : 'advertising_campaign_request';
-
-        let notifTitle = 'VALENCE Enquiry';
-        let notifMessage = '';
-
-        if (type === 'support') {
-          notifTitle = 'Support Ticket';
-          notifMessage = `${payload.fullName || 'Visitor'}: ${payload.message || ''} (${payload.category || 'General Support'})`;
-        } else if (type === 'atswa') {
-          notifTitle = 'ATSWA Registration Guidance Request';
-          notifMessage = `${payload.fullName || 'ATSWA Candidate'}: ${payload.question || ''} (Level: ${payload.level || 'ATS 1'})`;
-        } else if (type === 'store') {
-          notifTitle = 'Store Material Enquiry';
-          notifMessage = `${payload.fullName || 'Candidate'}: ${payload.topic || 'Store Enquiry'} — ${payload.message || ''}`;
-        } else if (type === 'book-enq') {
-          notifTitle = 'Partner Enquiry';
-          notifMessage = `${payload.studentName || 'Student'} → ${payload.partnerName || 'Partner'}: ${payload.message || ''}`;
-        } else if (type === 'advertise') {
-          notifTitle = 'Advertising Campaign Request';
-          notifMessage = `${payload.entityName || 'Applicant'}: ${payload.headline || ''} — ${payload.notes || ''}`;
-        }
-
-        const dbOp = supabase.from('notifications').insert({
-          profile_id: profileId,
-          notification_type: notifType,
-          title: notifTitle,
-          message: notifMessage,
-        });
-
-        if (dbOp) {
-          dbOp.then(({ error }) => {
-            if (!error) {
-              setInAppTickets((prev) =>
-                prev.map((t) =>
-                  t.id === ref
-                    ? { ...t, persisted: true, status: 'Saved in VALENCE · Pending Admin Review' }
-                    : t
-                )
-              );
-            }
-          });
-        }
-      }
-
-      return record;
-    },
-    [user]
+  const publicDataValue = useMemo(
+    () => ({
+      isHydrating,
+      dbStatus,
+      refreshPublicData,
+      settings: liveSettings,
+      sessions: liveExamSessions,
+      atswaLevels: ATSWA_LEVELS,
+      allAtswaCourses: ALL_ATSWA_COURSES,
+      atswaRegistrationGuide: ATSWA_APP_REGISTRATION_GUIDE,
+      icanLevels: ICAN_LEVELS,
+      allIcanCourses: ALL_ICAN_COURSES,
+      products: catalogProducts,
+      updateProductAvailability,
+      deliveryZones: liveDeliveryZones,
+      pillars: VALENCE_PILLARS,
+      tuitionCentres: liveCentres,
+      textbookAdvertisers: liveTextbookAdvertisers,
+      motivationalQuotes: liveQuotes,
+      pageTickerNotices: livePageTickers,
+      tutors: liveTutors,
+      opportunities: liveOpportunities,
+      events: liveEvents,
+      announcements: liveAnnouncements,
+      testimonials: TESTIMONIALS,
+      statistics: PLATFORM_STATISTICS,
+      faqs: liveFaqs,
+      candidateFaqs: liveCandidateFaqs,
+      atswaEntryPathways: ATSWA_ENTRY_PATHWAYS,
+      graduateEntryPathways: GRADUATE_ENTRY_PATHWAYS,
+      icanRegistrationProcess: ICAN_REGISTRATION_PROCESS,
+      completionTimelines: ICAN_COMPLETION_TIMELINES,
+      exemptionRules: liveExemptionRules,
+      otherBodies: OTHER_BODIES,
+      discussionCategories: DISCUSSION_CATEGORIES,
+      competitionDivisions: COMPETITION_DIVISIONS,
+      competitionReward: {
+        ...COMPETITION_REWARD,
+        amount: liveSettings.competitionFirstPrize,
+        firstPrize: liveSettings.competitionFirstPrize,
+        secondPrize: liveSettings.competitionSecondPrize,
+        thirdPrize: liveSettings.competitionThirdPrize,
+        totalPodiumPool:
+          liveSettings.competitionFirstPrize +
+          liveSettings.competitionSecondPrize +
+          liveSettings.competitionThirdPrize,
+        maxCompetitorsPerSchool: liveSettings.competitionMaxCompetitorsPerSchool,
+      },
+      competitionStructures: COMPETITION_STRUCTURES,
+      tertiaryDisciplines: TERTIARY_DISCIPLINES,
+      generalLearnerTracks: GENERAL_LEARNER_TRACKS,
+      professionalQualifications: PROFESSIONAL_QUALIFICATIONS,
+      universities: liveUniversities,
+      nigerianStates: NIGERIAN_STATES,
+      geopoliticalZones: GEOPOLITICAL_ZONES,
+      universityCounts: liveUniversityCounts,
+      liveExamSessions,
+      liveExamTimetables,
+      liveExemptionRules,
+    }),
+    [
+      isHydrating,
+      dbStatus,
+      refreshPublicData,
+      liveSettings,
+      liveExamSessions,
+      liveExamTimetables,
+      catalogProducts,
+      updateProductAvailability,
+      liveDeliveryZones,
+      liveCentres,
+      liveTextbookAdvertisers,
+      liveQuotes,
+      livePageTickers,
+      liveTutors,
+      liveOpportunities,
+      liveEvents,
+      liveAnnouncements,
+      liveFaqs,
+      liveCandidateFaqs,
+      liveExemptionRules,
+      liveUniversities,
+      liveUniversityCounts,
+    ]
   );
+
+  return (
+    <PublicDataContext.Provider value={publicDataValue}>
+      {children}
+    </PublicDataContext.Provider>
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ * CartProvider — cart state, delivery zone selection & cart summary.
+ * Consumers re-render only on cart changes. Removes cart items whose
+ * product is unavailable (loaded data, realtime updates, admin edits).
+ * ------------------------------------------------------------------ */
+export function CartProvider({ children }) {
+  const { products, deliveryZones } = usePublicData();
+
+  const [cart, setCart] = useState(() => {
+    try {
+      const saved = localStorage.getItem(CART_STORAGE_KEY);
+      if (!saved) return [];
+      const parsed = JSON.parse(saved);
+      const validIds = new Set(STORE_PRODUCTS.map((p) => p.id));
+      return Array.isArray(parsed) ? parsed.filter((item) => validIds.has(item.id)) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [selectedZoneId, setSelectedZoneId] = useState(DELIVERY_ZONES[0].id);
 
   useEffect(() => {
     try {
@@ -821,90 +1143,15 @@ export function PlatformProvider({ children }) {
     }
   }, [cart]);
 
-  // Phase 3: Auth state
-  const [privacySettings, setPrivacySettings] = useState(null);
-  const [userNotifications, setUserNotifications] = useState([]);
-
-  const refreshUserData = useCallback(async (uid) => {
-    if (!supabase || !uid) return;
-    const [privacyRes, notifRes] = await Promise.all([
-      authFetchPrivacy(),
-      authFetchNotifications(),
-    ]);
-    if (privacyRes.data) setPrivacySettings(privacyRes.data);
-    if (Array.isArray(notifRes.data)) setUserNotifications(notifRes.data);
-  }, []);
-
-  const handleSignIn = useCallback(async (email, password) => {
-    const result = await authSignIn(email, password);
-    if (result.error) return { error: result.error };
-    if (result.data?.user) {
-      await hydrateAuthenticatedUser(result.data.user);
-      await refreshUserData(result.data.user.id);
-    }
-    return { error: null };
-  }, [hydrateAuthenticatedUser, refreshUserData]);
-
-  const handleSignUp = useCallback(
-    async (payload) => {
-      const result = await authSignUp(payload);
-      if (result.error) return { error: result.error };
-      if (result.data?.user) {
-        // Auto-sign in after registration
-        await supabase.auth.signInWithPassword({ email: payload.email, password: payload.password }).catch(() => {});
-      }
-      return { error: null };
-    },
-    []
-  );
-
-  const handleSignOut = useCallback(async () => {
-    await authSignOut();
-    setUser(null);
-    setProfile(null);
-    setUserRole(null);
-    setAdminRoles([]);
-    setUnlockedLevelIds([]);
-    setUnlockedCentreFees([]);
-    setUserNotifications([]);
-    setPrivacySettings(null);
-  }, []);
-
-  const handleUpdateProfile = useCallback(
-    async (updates) => {
-      const result = await authUpdateProfile(updates);
-      if (result.data && profile) {
-        setProfile({ ...profile, ...result.data });
-      }
-      return result;
-    },
-    [profile]
-  );
-
-  // Phase 4: Tuition level unlock
-  const handleUnlockLevel = useCallback(async (levelId, amountPaidNgn = 3000, paystackReference = null) => {
-    const result = await authUnlockLevel(levelId, amountPaidNgn, paystackReference);
-    if (!result.error && result.data) {
-      const newId = result.data.level_id;
-      setUnlockedLevelIds((prev) => (prev.includes(newId) ? prev : [...prev, newId]));
-    }
-    return result;
-  }, []);
-
-  // Phase 4: ATSWA document management
-  const handleFetchAtswaDocuments = useCallback(async () => {
-    const result = await authFetchAtswaDocuments();
-    if (Array.isArray(result.data)) setAtswaDocuments(result.data);
-    return result;
-  }, []);
-
-  // Phase 4: ATSWA guidance request submission
-  const handleSubmitAtswaGuidance = useCallback(async (payload) => {
-    const result = await authSubmitAtswaGuidance(payload);
-    return result;
-  }, []);
-
-  const isLevelUnlocked = (levelKey) => unlockedLevelIds.includes(levelKey);
+  // Drop cart items whose product has become unavailable — covers DB load,
+  // Realtime product updates and Admin availability edits.
+  useEffect(() => {
+    const unavailable = new Set(
+      products.filter((p) => !p.isAvailable).map((p) => p.id)
+    );
+    if (unavailable.size === 0) return;
+    setCart((prev) => prev.filter((item) => !unavailable.has(item.id)));
+  }, [products]);
 
   const addToCart = (product, qty = 1) => {
     if (product.isAvailable === false) return false;
@@ -938,16 +1185,46 @@ export function PlatformProvider({ children }) {
 
   const selectedZone = useMemo(
     () =>
-      liveDeliveryZones.find((z) => z.id === selectedZoneId) ||
-      liveDeliveryZones[0] ||
+      deliveryZones.find((z) => z.id === selectedZoneId) ||
+      deliveryZones[0] ||
       DELIVERY_ZONES[0],
-    [liveDeliveryZones, selectedZoneId]
+    [deliveryZones, selectedZoneId]
   );
 
   const cartSummary = useMemo(
     () => calculateStoreCart(cart, selectedZone),
     [cart, selectedZone]
   );
+
+  const cartValue = useMemo(
+    () => ({
+      cart,
+      addToCart,
+      updateCartQty,
+      removeFromCart,
+      clearCart,
+      selectedZoneId,
+      setSelectedZoneId,
+      selectedZone,
+      cartSummary,
+    }),
+    [cart, selectedZone, selectedZoneId, cartSummary]
+  );
+
+  return <CartContext.Provider value={cartValue}>{children}</CartContext.Provider>;
+}
+
+/* ------------------------------------------------------------------ *
+ * UiProvider — UI-only state (WhatsApp modal). Consumers re-render
+ * only when the modal state changes.
+ * ------------------------------------------------------------------ */
+export function UiProvider({ children }) {
+  const [whatsAppModal, setWhatsAppModal] = useState({
+    open: false,
+    category: 'General Support Enquiry',
+    programme: '',
+    level: '',
+  });
 
   const openWhatsAppModal = (preset = {}) => {
     setWhatsAppModal({
@@ -962,109 +1239,62 @@ export function PlatformProvider({ children }) {
     setWhatsAppModal((prev) => ({ ...prev, open: false }));
   };
 
-  const value = {
-    user,
-    setUser,
-    profile,
-    userRole,
-    setUserRole,
-    adminRoles,
-    unlockedLevelIds,
-    setUnlockedLevelIds,
-    unlockedCentreFees,
-    isLevelUnlocked,
-    isHydrating,
-    dbStatus,
-    refreshPublicData,
-    settings: liveSettings,
-    sessions: liveExamSessions,
-    atswaLevels: ATSWA_LEVELS,
-    allAtswaCourses: ALL_ATSWA_COURSES,
-    atswaRegistrationGuide: ATSWA_APP_REGISTRATION_GUIDE,
-    icanLevels: ICAN_LEVELS,
-    allIcanCourses: ALL_ICAN_COURSES,
-    products: catalogProducts,
-    updateProductAvailability,
-    deliveryZones: liveDeliveryZones,
-    pillars: VALENCE_PILLARS,
-    tuitionCentres: liveCentres,
-    textbookAdvertisers: liveTextbookAdvertisers,
-    motivationalQuotes: liveQuotes,
-    pageTickerNotices: livePageTickers,
-    tutors: liveTutors,
-    opportunities: liveOpportunities,
-    events: liveEvents,
-    announcements: liveAnnouncements,
-    testimonials: TESTIMONIALS,
-    statistics: PLATFORM_STATISTICS,
-    faqs: liveFaqs,
-    candidateFaqs: liveCandidateFaqs,
-    atswaEntryPathways: ATSWA_ENTRY_PATHWAYS,
-    graduateEntryPathways: GRADUATE_ENTRY_PATHWAYS,
-    icanRegistrationProcess: ICAN_REGISTRATION_PROCESS,
-    completionTimelines: ICAN_COMPLETION_TIMELINES,
-    exemptionRules: liveExemptionRules,
-    discussionCategories: DISCUSSION_CATEGORIES,
-    competitionDivisions: COMPETITION_DIVISIONS,
-    competitionReward: {
-      ...COMPETITION_REWARD,
-      amount: liveSettings.competitionFirstPrize,
-      firstPrize: liveSettings.competitionFirstPrize,
-      secondPrize: liveSettings.competitionSecondPrize,
-      thirdPrize: liveSettings.competitionThirdPrize,
-      totalPodiumPool:
-        liveSettings.competitionFirstPrize +
-        liveSettings.competitionSecondPrize +
-        liveSettings.competitionThirdPrize,
-      maxCompetitorsPerSchool: liveSettings.competitionMaxCompetitorsPerSchool,
-    },
-    competitionStructures: COMPETITION_STRUCTURES,
-    tertiaryDisciplines: TERTIARY_DISCIPLINES,
-    generalLearnerTracks: GENERAL_LEARNER_TRACKS,
-    professionalQualifications: PROFESSIONAL_QUALIFICATIONS,
-    universities: liveUniversities,
-    nigerianStates: NIGERIAN_STATES,
-    geopoliticalZones: GEOPOLITICAL_ZONES,
-    universityCounts: liveUniversityCounts,
-    cart,
-    addToCart,
-    updateCartQty,
-    removeFromCart,
-    clearCart,
-    selectedZoneId,
-    setSelectedZoneId,
-    selectedZone,
-    cartSummary,
-    whatsAppModal,
-    openWhatsAppModal,
-    closeWhatsAppModal,
-    inAppTickets,
-    submitInAppTicket,
-    // Phase 3 auth
-    handleSignIn,
-    handleSignUp,
-    handleSignOut,
-    handleUpdateProfile,
-    refreshUserData,
-    privacySettings,
-    setPrivacySettings,
-    userNotifications,
-    setUserNotifications,
-    // Phase 4: Exam & tuition
-    liveExamSessions,
-    liveExamTimetables,
-    liveExemptionRules,
-    atswaDocuments,
-    handleUnlockLevel,
-    handleFetchAtswaDocuments,
-    handleSubmitAtswaGuidance,
-  };
+  const uiValue = useMemo(
+    () => ({ whatsAppModal, openWhatsAppModal, closeWhatsAppModal }),
+    [whatsAppModal]
+  );
 
-  return <PlatformContext.Provider value={value}>{children}</PlatformContext.Provider>;
+  return <UiContext.Provider value={uiValue}>{children}</UiContext.Provider>;
 }
 
-export function usePlatform() {
-  const ctx = useContext(PlatformContext);
-  if (!ctx) throw new Error('usePlatform must be used within PlatformProvider');
+/* ------------------------------------------------------------------ *
+ * Composition + hooks
+ * ------------------------------------------------------------------ */
+export function PlatformProvider({ children }) {
+  return (
+    <PublicDataProvider>
+      <AuthProvider>
+        <CartProvider>
+          <UiProvider>{children}</UiProvider>
+        </CartProvider>
+      </AuthProvider>
+    </PublicDataProvider>
+  );
+}
+
+export function useAuth() {
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error('useAuth must be used within AuthProvider');
   return ctx;
 }
+
+export function usePublicData() {
+  const ctx = useContext(PublicDataContext);
+  if (!ctx) throw new Error('usePublicData must be used within PublicDataProvider');
+  return ctx;
+}
+
+export function useCart() {
+  const ctx = useContext(CartContext);
+  if (!ctx) throw new Error('useCart must be used within CartProvider');
+  return ctx;
+}
+
+export function useUi() {
+  const ctx = useContext(UiContext);
+  if (!ctx) throw new Error('useUi must be used within UiProvider');
+  return ctx;
+}
+
+// Legacy merged hook — prefer the focused hooks (useAuth / usePublicData /
+// useCart / useUi) so components only re-render on their slice's changes.
+export function usePlatform() {
+  return {
+    ...useAuth(),
+    ...usePublicData(),
+    ...useCart(),
+    ...useUi(),
+  };
+}
+
+export { PlatformContext };

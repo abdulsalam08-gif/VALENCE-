@@ -18,7 +18,7 @@ import {
   ClipboardList,
   Sparkles,
 } from 'lucide-react';
-import { usePlatform } from '../context/PlatformContext';
+import { useAuth, useCart, usePublicData, useUi } from '../context/PlatformContext';
 import { useToast } from '../context/ToastContext';
 import Badge from '../components/ui/Badge';
 import CountdownTimer from '../components/ui/CountdownTimer';
@@ -33,19 +33,9 @@ import { formatReadableDate, getSessionLifecycle } from '../lib/examSchedule';
 export default function IcanPage() {
   const { levelSlug } = useParams();
   const navigate = useNavigate();
-  const {
-    icanLevels,
-    allIcanCourses,
-    exemptionRules,
-    candidateFaqs,
-    icanRegistrationProcess,
-    completionTimelines,
-    sessions,
-    settings,
-    isLevelUnlocked,
-    openWhatsAppModal,
-    handleUnlockLevel,
-  } = usePlatform();
+  const { isLevelUnlocked, handleUnlockLevel } = useAuth();
+  const { icanLevels, allIcanCourses, exemptionRules, candidateFaqs, icanRegistrationProcess, completionTimelines, sessions, settings } = usePublicData();
+  const { openWhatsAppModal } = useUi();
   const toast = useToast();
   const [unlocking, setUnlocking] = useState(false);
 
@@ -181,7 +171,7 @@ export default function IcanPage() {
                 rel="noopener noreferrer"
                 className="v-btn-secondary text-xs"
               >
-                2026 Syllabus PDF <ExternalLink className="h-3.5 w-3.5 text-[#E0A82E]" />
+                2026 Syllabus PDF <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
               </a>
               <a
                 href={settings.officialLinks.icanAccreditedInstitutions}
@@ -189,7 +179,7 @@ export default function IcanPage() {
                 rel="noopener noreferrer"
                 className="v-btn-secondary text-xs"
               >
-                Accredited Schools <ExternalLink className="h-3.5 w-3.5 text-[#E0A82E]" />
+                Accredited Schools <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
               </a>
               <a
                 href={settings.officialLinks.icanMcatiInstitutions}
@@ -197,7 +187,7 @@ export default function IcanPage() {
                 rel="noopener noreferrer"
                 className="v-btn-secondary text-xs"
               >
-                MCATI List <ExternalLink className="h-3.5 w-3.5 text-[#E0A82E]" />
+                MCATI List <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
               </a>
               <a
                 href={settings.officialLinks.icanExamDockets}
@@ -205,7 +195,7 @@ export default function IcanPage() {
                 rel="noopener noreferrer"
                 className="v-btn-secondary text-xs"
               >
-                Exam Dockets <ExternalLink className="h-3.5 w-3.5 text-[#E0A82E]" />
+                Exam Dockets <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
               </a>
             </div>
           </div>
@@ -219,7 +209,7 @@ export default function IcanPage() {
                 onClick={() => navigate(`/programmes/ican/${lvl.slug}`)}
                 className={`rounded-xl px-4 py-2.5 text-xs sm:text-sm font-display font-bold transition-all border ${
                   activeTab === lvl.slug
-                    ? 'bg-[#E0A82E] text-[#06130D] border-[#E0A82E] shadow-glow-sm'
+                    ? 'bg-[#16C784] text-[#06130D] border-[#16C784] shadow-glow-sm'
                     : 'bg-[#11161C] text-[#C2C9D4] border-white/[0.08] hover:border-white/[0.2]'
                 }`}
               >
@@ -231,7 +221,7 @@ export default function IcanPage() {
               onClick={() => navigate('/programmes/ican/exemptions')}
               className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-xs sm:text-sm font-display font-bold transition-all border ${
                 activeTab === 'exemptions'
-                  ? 'bg-[#E0A82E] text-[#06130D] border-[#E0A82E] shadow-glow-sm'
+                  ? 'bg-[#16C784] text-[#06130D] border-[#16C784] shadow-glow-sm'
                   : 'bg-[#11161C] text-[#C2C9D4] border-white/[0.08] hover:border-white/[0.2]'
               }`}
             >
@@ -243,7 +233,7 @@ export default function IcanPage() {
               onClick={() => navigate('/programmes/ican/guide')}
               className={`inline-flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-xs sm:text-sm font-display font-bold transition-all border ${
                 activeTab === 'guide'
-                  ? 'bg-[#E0A82E] text-[#06130D] border-[#E0A82E] shadow-glow-sm'
+                  ? 'bg-[#16C784] text-[#06130D] border-[#16C784] shadow-glow-sm'
                   : 'bg-[#11161C] text-[#C2C9D4] border-white/[0.08] hover:border-white/[0.2]'
               }`}
             >
@@ -278,7 +268,7 @@ export default function IcanPage() {
                           : activeLevel.courses.map((c) => c.id)
                       )
                     }
-                    className="text-xs font-semibold text-[#E0A82E] hover:underline"
+                    className="text-xs font-semibold text-[#16C784] hover:underline"
                   >
                     {selectedCourseIds.length === activeLevel.courses.length
                       ? 'Clear all'
@@ -296,7 +286,7 @@ export default function IcanPage() {
                         onClick={() => toggleCourse(c.id)}
                         className={`w-full flex items-center justify-between gap-4 rounded-xl border p-4 text-left transition-all ${
                           checked
-                            ? 'bg-[#E0A82E]/[0.08] border-[#E0A82E]/45'
+                            ? 'bg-[#16C784]/[0.08] border-[#16C784]/45'
                             : 'bg-[#0B0E11] border-white/[0.07] hover:border-white/[0.16]'
                         }`}
                       >
@@ -304,7 +294,7 @@ export default function IcanPage() {
                           <span
                             className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border ${
                               checked
-                                ? 'bg-[#E0A82E] border-[#E0A82E] text-[#06130D]'
+                                ? 'bg-[#16C784] border-[#16C784] text-[#06130D]'
                                 : 'border-white/20'
                             }`}
                           >
@@ -313,7 +303,7 @@ export default function IcanPage() {
                           <div>
                             <p className="text-sm font-semibold text-white">
                               {idx + 1}. {c.title}{' '}
-                              <span className="font-display text-xs text-[#E0A82E]">({c.code})</span>
+                              <span className="font-display text-xs text-[#16C784]">({c.code})</span>
                             </p>
                             <p className="text-[11px] text-[#9AA4B2]">
                               {c.topics} syllabus modules · Study Pack: {formatNaira(c.studyPackPrice)} · Past Question: ₦9,000/course (6% off 2+)
@@ -322,12 +312,12 @@ export default function IcanPage() {
                         </div>
                         <span className="shrink-0 text-[11px] text-[#9AA4B2] inline-flex items-center gap-1">
                           {unlocked ? (
-                            <span className="tabular-nums-display font-bold text-[#E0A82E]">
+                            <span className="tabular-nums-display font-bold text-[#16C784]">
                               {formatNaira(tuitionCalc.effectivePerCourse)}
                             </span>
                           ) : (
                             <>
-                              <Lock className="h-3 w-3 text-[#E0A82E]" /> Tuition locked
+                              <Lock className="h-3 w-3 text-[#16C784]" /> Tuition locked
                             </>
                           )}
                         </span>
@@ -359,7 +349,7 @@ export default function IcanPage() {
                   </div>
                   <div className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-3">
                     <span className="text-[10.5px] text-[#667085] block">Result Target (+30 Days)</span>
-                    <span className="font-semibold text-[#E0A82E]">
+                    <span className="font-semibold text-[#16C784]">
                       {activeDiet.expectedResultFormatted}
                     </span>
                   </div>
@@ -371,7 +361,7 @@ export default function IcanPage() {
                       key={slot.dayLabel}
                       className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-3 text-xs space-y-1"
                     >
-                      <div className="flex justify-between font-semibold text-[#E0A82E]">
+                      <div className="flex justify-between font-semibold text-[#16C784]">
                         <span>{slot.dayLabel}</span>
                         <span>{formatReadableDate(activeDiet.examDays[slot.dateIndex], false)}</span>
                       </div>
@@ -389,12 +379,12 @@ export default function IcanPage() {
               <div className="v-card p-6 space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <h3 className="font-display text-lg font-bold text-white flex items-center gap-2">
-                    <ClipboardList className="h-4 w-4 text-[#E0A82E]" /> ICAN Exam Registration Process
+                    <ClipboardList className="h-4 w-4 text-[#16C784]" /> ICAN Exam Registration Process
                   </h3>
                   <button
                     type="button"
                     onClick={() => navigate('/programmes/ican/guide')}
-                    className="text-xs font-semibold text-[#E0A82E] hover:underline"
+                    className="text-xs font-semibold text-[#16C784] hover:underline"
                   >
                     Read Full 10-FAQ Guide →
                   </button>
@@ -402,7 +392,7 @@ export default function IcanPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                   <div className="rounded-xl bg-[#0B0E11] border border-white/[0.07] p-4 space-y-2.5">
-                    <p className="font-display font-bold text-[#E0A82E]">For First-Time Students</p>
+                    <p className="font-display font-bold text-[#16C784]">For First-Time Students</p>
                     <ol className="space-y-2 text-[#C2C9D4]">
                       {icanRegistrationProcess.firstTime.map((s) => (
                         <li key={s.step}>
@@ -426,9 +416,9 @@ export default function IcanPage() {
                     </div>
                     <p className="text-[11px] text-[#9AA4B2] border-t border-white/[0.06] pt-2.5">
                       Typical completion without carryovers:{' '}
-                      <strong className="text-[#E0A82E]">~1.5 yrs</strong> from Foundation ·{' '}
-                      <strong className="text-[#E0A82E]">~1 yr</strong> from Skills ·{' '}
-                      <strong className="text-[#E0A82E]">~6–12 mos</strong> via MCATI.
+                      <strong className="text-[#16C784]">~1.5 yrs</strong> from Foundation ·{' '}
+                      <strong className="text-[#16C784]">~1 yr</strong> from Skills ·{' '}
+                      <strong className="text-[#16C784]">~6–12 mos</strong> via MCATI.
                     </p>
                   </div>
                 </div>
@@ -442,7 +432,7 @@ export default function IcanPage() {
                 </h3>
                 <p className="text-xs leading-relaxed text-[#9AA4B2]">
                   Official ICAN student registration, annual subscription, one-time development levy, exemption processing, and examination fee assistance are handled via prefilled WhatsApp support. All online tuition and level unlocks run strictly in-app via Paystack, while independent verified physical tuition centres are listed in our{' '}
-                  <Link to="/tuition-centres" className="text-[#E0A82E] underline">
+                  <Link to="/tuition-centres" className="text-[#16C784] underline">
                     Partner Directory
                   </Link>
                   .
@@ -458,13 +448,13 @@ export default function IcanPage() {
                           level: `ICAN ${activeLevel.shortName} Level`,
                         })
                       }
-                      className="flex items-center justify-between rounded-xl bg-[#0B0E11] border border-white/[0.09] hover:border-[#E0A82E]/45 px-4 py-3 text-xs font-semibold text-[#F4F6F9] transition-colors group"
+                      className="flex items-center justify-between rounded-xl bg-[#0B0E11] border border-white/[0.09] hover:border-[#16C784]/45 px-4 py-3 text-xs font-semibold text-[#F4F6F9] transition-colors group"
                     >
                       <span className="inline-flex items-center gap-2">
-                        <MessageCircle className="h-4 w-4 text-[#E0A82E]" />
+                        <MessageCircle className="h-4 w-4 text-[#16C784]" />
                         {btn.label}
                       </span>
-                      <ArrowRight className="h-3.5 w-3.5 text-[#667085] group-hover:text-[#E0A82E]" />
+                      <ArrowRight className="h-3.5 w-3.5 text-[#667085] group-hover:text-[#16C784]" />
                     </button>
                   ))}
                 </div>
@@ -506,7 +496,7 @@ export default function IcanPage() {
 
                 {dietLifecycle.countdownTarget && (
                   <div className="space-y-1.5">
-                    <p className="text-[11px] font-medium text-[#E0A82E] flex items-center gap-1">
+                    <p className="text-[11px] font-medium text-[#16C784] flex items-center gap-1">
                       <Clock className="h-3.5 w-3.5" /> {dietLifecycle.countdownLabel}
                     </p>
                     <CountdownTimer targetDate={dietLifecycle.countdownTarget} compact />
@@ -526,7 +516,7 @@ export default function IcanPage() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-[#9AA4B2]">Multi-Course Tuition Rule</span>
-                    <span className="font-semibold text-[#E0A82E]">
+                    <span className="font-semibold text-[#16C784]">
                       {selectedCourseIds.length >= 3
                         ? '25% Discount Eligible (3+ papers)'
                         : 'Select 3+ papers for 25% off'}
@@ -535,8 +525,8 @@ export default function IcanPage() {
                 </div>
 
                 {unlocked ? (
-                  <div className="rounded-xl bg-[#0B0E11] border border-[#E0A82E]/35 p-4 space-y-2 text-xs">
-                    <div className="flex items-center gap-1.5 text-[#E0A82E] font-semibold">
+                  <div className="rounded-xl bg-[#0B0E11] border border-[#16C784]/35 p-4 space-y-2 text-xs">
+                    <div className="flex items-center gap-1.5 text-[#16C784] font-semibold">
                       <Unlock className="h-3.5 w-3.5" /> {activeLevel.shortName} Cost Implication
                     </div>
                     <div className="flex justify-between text-[#9AA4B2]">
@@ -545,7 +535,7 @@ export default function IcanPage() {
                         {formatNaira(tuitionCalc.grossTuition)}
                       </span>
                     </div>
-                    <div className="flex justify-between text-[#E0A82E]">
+                    <div className="flex justify-between text-[#16C784]">
                       <span>Multi-Course Discount (25%)</span>
                       <span className="tabular-nums-display font-semibold">
                         −{formatNaira(tuitionCalc.discountAmount)}
@@ -553,15 +543,15 @@ export default function IcanPage() {
                     </div>
                     <div className="border-t border-white/[0.08] pt-2 flex justify-between text-sm font-bold text-white">
                       <span>Net Online Tuition</span>
-                      <span className="tabular-nums-display text-[#E0A82E]">
+                      <span className="tabular-nums-display text-[#16C784]">
                         {formatNaira(tuitionCalc.netTuition)}
                       </span>
                     </div>
                   </div>
                 ) : (
-                  <div className="rounded-2xl bg-gradient-to-b from-[#E0A82E]/[0.08] to-[#0B0E11] border border-[#E0A82E]/30 p-5 space-y-3">
+                  <div className="rounded-2xl bg-gradient-to-b from-[#16C784]/[0.08] to-[#0B0E11] border border-[#16C784]/30 p-5 space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#E0A82E]">
+                      <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#16C784]">
                         <Lock className="h-4 w-4" /> Tuition Cost Implication Locked
                       </span>
                       <span className="tabular-nums-display text-xl font-bold text-white">₦3,000</span>
@@ -588,7 +578,7 @@ export default function IcanPage() {
                 </button>
 
                 <p className="text-[11px] text-center text-[#667085] flex items-center justify-center gap-1.5">
-                  <ShieldCheck className="h-3.5 w-3.5 text-[#E0A82E]" />
+                  <ShieldCheck className="h-3.5 w-3.5 text-[#16C784]" />
                   Verified Paystack checkout only · Free to join VALENCE without tuition
                 </p>
               </div>
@@ -611,7 +601,7 @@ export default function IcanPage() {
               >
                 <div className="flex items-center justify-between">
                   <Badge variant="green">Official Exemption Portal</Badge>
-                  <ExternalLink className="h-4 w-4 text-[#E0A82E]" />
+                  <ExternalLink className="h-4 w-4 text-[#16C784]" />
                 </div>
                 <h3 className="font-display text-sm font-bold text-white">
                   4-Step Official ICAN Exemption Check
@@ -629,13 +619,13 @@ export default function IcanPage() {
               >
                 <div className="flex items-center justify-between">
                   <Badge variant="verified">Skills Entry · Accounting</Badge>
-                  <ExternalLink className="h-4 w-4 text-[#E0A82E]" />
+                  <ExternalLink className="h-4 w-4 text-[#16C784]" />
                 </div>
                 <h3 className="font-display text-sm font-bold text-white">
                   Check ICAN-Accredited Institutions (PDF)
                 </h3>
                 <p className="text-xs text-[#9AA4B2]">
-                  For Accounting graduates only: accredited graduates start at <strong className="text-[#E0A82E]">Skills Level</strong> (exempted from Foundation + AAF).
+                  For Accounting graduates only: accredited graduates start at <strong className="text-[#16C784]">Skills Level</strong> (exempted from Foundation + AAF).
                 </p>
               </a>
 
@@ -647,13 +637,13 @@ export default function IcanPage() {
               >
                 <div className="flex items-center justify-between">
                   <Badge variant="verified">Professional Entry · MCATI</Badge>
-                  <ExternalLink className="h-4 w-4 text-[#E0A82E]" />
+                  <ExternalLink className="h-4 w-4 text-[#16C784]" />
                 </div>
                 <h3 className="font-display text-sm font-bold text-white">
                   Check MCATI Partner Institutions (PDF)
                 </h3>
                 <p className="text-xs text-[#9AA4B2]">
-                  For Accounting graduates only: MCATI graduates start directly at <strong className="text-[#E0A82E]">Professional Level</strong>.
+                  For Accounting graduates only: MCATI graduates start directly at <strong className="text-[#16C784]">Professional Level</strong>.
                 </p>
               </a>
             </div>
@@ -746,7 +736,7 @@ export default function IcanPage() {
                           onClick={() => togglePriorPaper(c.code)}
                           className={`rounded-lg px-2.5 py-1 text-xs font-display font-semibold border transition-colors ${
                             active
-                              ? 'bg-[#E0A82E] text-[#06130D] border-[#E0A82E]'
+                              ? 'bg-[#16C784] text-[#06130D] border-[#16C784]'
                               : 'bg-[#0B0E11] text-[#9AA4B2] border-white/[0.08] hover:text-white'
                           }`}
                         >
@@ -778,7 +768,7 @@ export default function IcanPage() {
                 {!exResult ? (
                   <div className="v-card p-7 space-y-5">
                     <div className="flex items-center gap-3">
-                      <div className="h-11 w-11 rounded-2xl bg-[#E0A82E]/[0.12] border border-[#E0A82E]/25 flex items-center justify-center text-[#E0A82E] shrink-0">
+                      <div className="h-11 w-11 rounded-2xl bg-[#16C784]/[0.12] border border-[#16C784]/25 flex items-center justify-center text-[#16C784] shrink-0">
                         <FileCheck2 className="h-5 w-5" />
                       </div>
                       <div>
@@ -806,7 +796,7 @@ export default function IcanPage() {
                           className="rounded-xl bg-[#0B0E11] border border-white/[0.07] px-3.5 py-2.5 flex flex-wrap items-center justify-between gap-2"
                         >
                           <span className="text-[#D5DBE3] font-medium">{row.q}</span>
-                          <span className="font-display font-bold text-[#E0A82E]">{row.start}</span>
+                          <span className="font-display font-bold text-[#16C784]">{row.start}</span>
                         </div>
                       ))}
                     </div>
@@ -825,12 +815,12 @@ export default function IcanPage() {
                     </div>
 
                     {/* Recommended Starting Level & Completion Estimate */}
-                    <div className="rounded-2xl bg-[#E0A82E]/10 border border-[#E0A82E]/35 p-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div className="rounded-2xl bg-[#16C784]/10 border border-[#16C784]/35 p-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                       <div>
                         <span className="text-[10.5px] uppercase tracking-wider text-[#9AA4B2] block">
                           Recommended Starting Stage
                         </span>
-                        <span className="font-display text-sm font-bold text-[#E0A82E]">
+                        <span className="font-display text-sm font-bold text-[#16C784]">
                           {exResult.startingLevel}
                         </span>
                       </div>
@@ -854,8 +844,8 @@ export default function IcanPage() {
                     </div>
 
                     {exResult.isAtswaRoute ? (
-                      <div className="rounded-xl bg-[#0B0E11] border border-[#E0A82E]/25 p-4 space-y-2 text-xs">
-                        <p className="font-bold text-[#E0A82E]">ATSWA Entry Pathway</p>
+                      <div className="rounded-xl bg-[#0B0E11] border border-[#16C784]/25 p-4 space-y-2 text-xs">
+                        <p className="font-bold text-[#16C784]">ATSWA Entry Pathway</p>
                         <p className="text-[#D5DBE3]">
                           {exResult.atswaExemptedLevels.length > 0
                             ? `Potential ATSWA Exemptions: ${exResult.atswaExemptedLevels.join(', ')}. Complete remaining ATSWA level(s) to earn your AAT certificate, then advance to ICAN Skills & Professional.`
@@ -863,15 +853,15 @@ export default function IcanPage() {
                         </p>
                         <Link
                           to="/programmes/atswa"
-                          className="inline-flex items-center gap-1 font-semibold text-[#E0A82E] hover:underline pt-1"
+                          className="inline-flex items-center gap-1 font-semibold text-[#16C784] hover:underline pt-1"
                         >
                           Go to ATSWA Programme Page <ArrowRight className="h-3.5 w-3.5" />
                         </Link>
                       </div>
                     ) : (
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="rounded-xl bg-[#0B0E11] border border-[#E0A82E]/25 p-4 space-y-2.5">
-                          <p className="text-xs font-bold text-[#E0A82E]">
+                        <div className="rounded-xl bg-[#0B0E11] border border-[#16C784]/25 p-4 space-y-2.5">
+                          <p className="text-xs font-bold text-[#16C784]">
                             Potential Exemptions ({exResult.potentialExemptions.length})
                           </p>
                           {exResult.potentialExemptions.length === 0 ? (
@@ -883,7 +873,7 @@ export default function IcanPage() {
                               {exResult.potentialExemptions.map((c) => (
                                 <li key={c.code} className="flex items-center justify-between gap-2">
                                   <span className="truncate">{c.title}</span>
-                                  <span className="text-[#E0A82E] font-display font-semibold shrink-0">
+                                  <span className="text-[#16C784] font-display font-semibold shrink-0">
                                     {c.code}
                                   </span>
                                 </li>
@@ -913,7 +903,7 @@ export default function IcanPage() {
                       <ul className="space-y-1.5 text-xs text-[#9AA4B2]">
                         {exResult.conditions.map((cond) => (
                           <li key={cond} className="flex items-start gap-2">
-                            <CheckCircle2 className="h-3.5 w-3.5 text-[#E0A82E] shrink-0 mt-0.5" />
+                            <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784] shrink-0 mt-0.5" />
                             <span>{cond}</span>
                           </li>
                         ))}
@@ -949,7 +939,7 @@ export default function IcanPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {completionTimelines.map((item) => (
                 <div key={item.route} className="v-card p-5 space-y-2">
-                  <span className="font-display text-2xl font-bold text-[#E0A82E] tabular-nums-display">
+                  <span className="font-display text-2xl font-bold text-[#16C784] tabular-nums-display">
                     {item.estimate}
                   </span>
                   <h3 className="font-display text-sm font-bold text-white">{item.route}</h3>
@@ -993,7 +983,7 @@ export default function IcanPage() {
                         className="w-full flex items-center justify-between gap-4 p-5 text-left"
                       >
                         <div className="flex items-center gap-3">
-                          <span className="tabular-nums-display inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#E0A82E]/[0.12] border border-[#E0A82E]/30 text-xs font-bold text-[#E0A82E]">
+                          <span className="tabular-nums-display inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#16C784]/[0.12] border border-[#16C784]/30 text-xs font-bold text-[#16C784]">
                             {String(faq.num).padStart(2, '0')}
                           </span>
                           <span className="font-display text-sm sm:text-base font-bold text-white">
@@ -1002,7 +992,7 @@ export default function IcanPage() {
                         </div>
                         <ChevronDown
                           className={`h-4 w-4 shrink-0 text-[#9AA4B2] transition-transform ${
-                            isOpen ? 'rotate-180 text-[#E0A82E]' : ''
+                            isOpen ? 'rotate-180 text-[#16C784]' : ''
                           }`}
                         />
                       </button>
@@ -1015,7 +1005,7 @@ export default function IcanPage() {
                             <ul className="space-y-1.5">
                               {faq.bullets.map((b) => (
                                 <li key={b} className="flex items-start gap-2 text-xs sm:text-sm">
-                                  <CheckCircle2 className="h-4 w-4 text-[#E0A82E] shrink-0 mt-0.5" />
+                                  <CheckCircle2 className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" />
                                   <span>{b}</span>
                                 </li>
                               ))}
@@ -1030,7 +1020,7 @@ export default function IcanPage() {
                                   href={lnk.url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1.5 rounded-xl bg-[#0B0E11] border border-[#E0A82E]/35 hover:border-[#E0A82E] px-3.5 py-2 text-xs font-semibold text-[#E0A82E] transition-colors"
+                                  className="inline-flex items-center gap-1.5 rounded-xl bg-[#0B0E11] border border-[#16C784]/35 hover:border-[#16C784] px-3.5 py-2 text-xs font-semibold text-[#16C784] transition-colors"
                                 >
                                   {lnk.label} <ExternalLink className="h-3.5 w-3.5" />
                                 </a>
@@ -1039,7 +1029,7 @@ export default function IcanPage() {
                           )}
 
                           {faq.tagline && (
-                            <p className="font-display text-sm sm:text-base font-bold italic text-[#E0A82E] pt-1">
+                            <p className="font-display text-sm sm:text-base font-bold italic text-[#16C784] pt-1">
                               {faq.tagline}
                             </p>
                           )}
@@ -1052,9 +1042,9 @@ export default function IcanPage() {
             </div>
 
             {/* Closing Motivational Action Banner */}
-            <div className="v-glass-card p-6 sm:p-8 border-[#E0A82E]/35 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5">
+            <div className="v-glass-card p-6 sm:p-8 border-[#16C784]/35 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5">
               <div className="space-y-1.5">
-                <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#E0A82E]">
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#16C784]">
                   <Sparkles className="h-4 w-4" /> Start Your ACA Journey on VALENCE
                 </span>
                 <h3 className="font-display text-xl sm:text-2xl font-bold text-white">
@@ -1070,7 +1060,7 @@ export default function IcanPage() {
                   onClick={() => navigate('/programmes/ican/exemptions')}
                   className="v-btn-secondary text-xs"
                 >
-                  <Scale className="h-4 w-4 text-[#E0A82E]" /> Check My Starting Level
+                  <Scale className="h-4 w-4 text-[#16C784]" /> Check My Starting Level
                 </button>
                 <Link to="/portal/student?mode=register" className="v-btn-primary text-xs">
                   Join VALENCE Free <ArrowRight className="h-4 w-4" />

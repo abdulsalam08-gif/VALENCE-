@@ -27,10 +27,10 @@ function initials(name) {
 
 function Avatar({ src, name }) {
   if (src) {
-    return <img src={src} alt={name} className="inline-flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-[#1C2530] text-[#E0A82E] text-sm font-bold" />;
+    return <img src={src} alt={name} className="inline-flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-[#1C2530] text-[#16C784] text-sm font-bold" />;
   }
   return (
-    <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#E0A82E]/15 text-[#E0A82E] text-sm font-bold">
+    <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#16C784]/15 text-[#16C784] text-sm font-bold">
       {initials(name)}
     </span>
   );
@@ -49,7 +49,7 @@ function ProfileCard({ profile, onFollow, onBlock }) {
           <div className="font-semibold text-[#F4F6F9] truncate">{profile.display_name || profile.username}</div>
           <div className="text-xs text-[#9AA4B2]">{profile.user_category || 'Learner'}</div>
           {profile.examination_level && (
-            <span className="mt-1 inline-block rounded-md bg-[#E0A82E]/10 border border-[#E0A82E]/20 px-2 py-0.5 text-[11px] font-semibold text-[#E0A82E]">
+            <span className="mt-1 inline-block rounded-md bg-[#16C784]/10 border border-[#16C784]/20 px-2 py-0.5 text-[11px] font-semibold text-[#16C784]">
               {profile.examination_level}
             </span>
           )}
@@ -79,7 +79,7 @@ function GroupCard({ group, onJoin, onLeave }) {
   return (
     <div className="v-card p-5">
       <div className="flex items-start gap-3">
-        <div className="inline-flex h-12 w-12 flex-none items-center justify-center rounded-full bg-[#E0A82E]/10 text-xl">👥</div>
+        <div className="inline-flex h-12 w-12 flex-none items-center justify-center rounded-full bg-[#16C784]/10 text-xl">👥</div>
         <div className="min-w-0">
           <div className="font-semibold text-[#F4F6F9] truncate">{group.name}</div>
           <div className="text-xs text-[#9AA4B2]">{group.course || group.programme || 'General study group'}</div>
@@ -136,7 +136,7 @@ function EventCard({ event, onRegister }) {
   return (
     <div className="v-card p-5">
       <div className="flex items-start gap-3">
-        <div className="inline-flex h-12 w-12 flex-none items-center justify-center rounded-full bg-[#E0A82E]/10 text-xl">📅</div>
+        <div className="inline-flex h-12 w-12 flex-none items-center justify-center rounded-full bg-[#16C784]/10 text-xl">📅</div>
         <div className="min-w-0">
           <div className="font-semibold text-[#F4F6F9] truncate">{event.title}</div>
           <div className="text-xs text-[#9AA4B2]">{event.event_type}</div>
@@ -149,7 +149,7 @@ function EventCard({ event, onRegister }) {
         <span>👥 {event.registrations || 0}{event.capacity ? ` / ${event.capacity}` : ''}</span>
       </div>
       {event.meeting_link && (
-        <a href={event.meeting_link} target="_blank" rel="noreferrer" className="mt-2 inline-block text-xs text-[#E0A82E] hover:underline">
+        <a href={event.meeting_link} target="_blank" rel="noreferrer" className="mt-2 inline-block text-xs text-[#16C784] hover:underline">
           Join link ↗
         </a>
       )}
@@ -331,7 +331,7 @@ export default function CommunityPage() {
               onClick={() => { setTab(t.id); setActiveThread(null); }}
               className={`rounded-lg px-3.5 py-2 text-sm font-medium transition-colors ${
                 tab === t.id
-                  ? 'bg-[#E0A82E] text-[#06130D]'
+                  ? 'bg-[#16C784] text-[#06130D]'
                   : 'text-[#9AA4B2] hover:bg-white/[0.05] hover:text-[#F4F6F9]'
               }`}
             >
@@ -344,7 +344,7 @@ export default function CommunityPage() {
           <div className={`mb-5 rounded-xl border px-4 py-3 text-sm font-medium ${
             toast.isError
               ? 'border-[#EA3943]/30 bg-[#EA3943]/10 text-[#EA3943]'
-              : 'border-[#E0A82E]/30 bg-[#E0A82E]/10 text-[#E0A82E]'
+              : 'border-[#16C784]/30 bg-[#16C784]/10 text-[#16C784]'
           }`}>
             {toast.message}
           </div>
@@ -387,7 +387,7 @@ export default function CommunityPage() {
                   key={c.id}
                   onClick={() => { setActiveCategory(c.id); setActiveThread(null); }}
                   className={`flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-sm transition-colors ${
-                    activeCategory === c.id ? 'bg-[#E0A82E]/10 text-[#E0A82E]' : 'text-[#9AA4B2] hover:bg-white/[0.05] hover:text-[#F4F6F9]'
+                    activeCategory === c.id ? 'bg-[#16C784]/10 text-[#16C784]' : 'text-[#9AA4B2] hover:bg-white/[0.05] hover:text-[#F4F6F9]'
                   }`}
                 >
                   <span>{c.icon}</span>

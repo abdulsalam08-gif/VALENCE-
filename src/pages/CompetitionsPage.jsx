@@ -14,7 +14,7 @@ import {
   Medal,
   Star,
 } from 'lucide-react';
-import { usePlatform } from '../context/PlatformContext';
+import { useAuth, useCart, usePublicData, useUi } from '../context/PlatformContext';
 import { useToast } from '../context/ToastContext';
 import Badge from '../components/ui/Badge';
 import UniversitySelect from '../components/ui/UniversitySelect';
@@ -25,7 +25,7 @@ const ROUNDS = [
   { step: '02', title: 'Individual Qualifying Round', desc: 'Server-timed CBT examination paper testing breadth, accuracy and exam speed.' },
   { step: '03', title: 'Zonal / Regional Round', desc: 'Top-ranked individuals and school teams advance into regional brackets across Nigeria’s 6 geopolitical zones.' },
   { step: '04', title: 'National Semi-Finals', desc: 'Full professional standard case-study and multi-section theory evaluations.' },
-  { step: '05', title: 'National Grand Finale & Podium Payout', desc: 'Championship round followed by audited verification and the ₦100,000 / ₦70,000 / ₦50,000 podium cash prize disbursement to the top three winners.' },
+  { step: '05', title: 'National Grand Finale & Podium Payout', desc: 'Championship round followed by audited verification and the ₦250,000 / ₦150,000 / ₦100,000 podium cash prize disbursement to the top three winners.' },
 ];
 
 const PODIUM = [
@@ -35,12 +35,7 @@ const PODIUM = [
 ];
 
 export default function CompetitionsPage() {
-  const {
-    competitionDivisions,
-    competitionStructures,
-    competitionReward,
-    universityCounts,
-  } = usePlatform();
+  const { competitionDivisions, competitionStructures, competitionReward, universityCounts } = usePublicData();
   const toast = useToast();
   const [selectedStructure, setSelectedStructure] = useState('atswa');
   const [previewUniversity, setPreviewUniversity] = useState('');
@@ -54,7 +49,7 @@ export default function CompetitionsPage() {
           <div className="lg:col-span-7 space-y-5">
             <div className="flex flex-wrap items-center gap-2">
               <Badge variant="green">VALENCE COMPETE</Badge>
-              <Badge variant="verified">₦220,000 Podium Prize Pool Every Competition</Badge>
+              <Badge variant="verified">₦500,000 Podium Prize Pool Every Competition</Badge>
               <Badge variant="neutral">Only 4 Competitors Per School</Badge>
             </div>
             <h1 className="font-display text-3xl sm:text-5xl font-bold text-white leading-tight">
@@ -65,10 +60,10 @@ export default function CompetitionsPage() {
               <strong className="text-white">{universityCounts.total} accredited Nigerian universities, polytechnics and colleges</strong>, ATSWA candidates, ICAN candidates and private learners. Questions are rigorously structured across{' '}
               <strong className="text-white">accounting and related fields</strong> (financial &amp; corporate reporting, cost &amp; management accounting, auditing, taxation, finance, economics, business law, public sector accounting, quantitative methods, management and business ethics). Strictly only{' '}
               <strong className="text-white">4 students can compete in each school</strong>, and the top three winners earn a guaranteed{' '}
-              <strong className="text-[#E0A82E]">{formatNaira(competitionReward.totalPodiumPool)} podium prize pool</strong>{' · '}
-              <strong className="text-[#E0A82E]">{formatNaira(competitionReward.firstPrize)} for 1st</strong>,{' '}
-              <strong className="text-[#E0A82E]">{formatNaira(competitionReward.secondPrize)} for 2nd</strong> and{' '}
-              <strong className="text-[#E0A82E]">{formatNaira(competitionReward.thirdPrize)} for 3rd</strong> after every competition closes.
+              <strong className="text-[#16C784]">{formatNaira(competitionReward.totalPodiumPool)} podium prize pool</strong>{' · '}
+              <strong className="text-[#16C784]">{formatNaira(competitionReward.firstPrize)} for 1st</strong>,{' '}
+              <strong className="text-[#16C784]">{formatNaira(competitionReward.secondPrize)} for 2nd</strong> and{' '}
+              <strong className="text-[#16C784]">{formatNaira(competitionReward.thirdPrize)} for 3rd</strong> after every competition closes.
             </p>
             <div className="flex flex-wrap gap-3 pt-1">
               <Link to="/portal/school" className="v-btn-primary text-xs">
@@ -83,13 +78,13 @@ export default function CompetitionsPage() {
             </div>
           </div>
 
-          {/* ₦220,000 Podium Prize Spotlight Card */}
-          <div className="lg:col-span-5 v-glass-card p-6 sm:p-7 border-[#E0A82E]/35 space-y-4">
+          {/* ₦500,000 Podium Prize Spotlight Card */}
+          <div className="lg:col-span-5 v-glass-card p-6 sm:p-7 border-[#16C784]/35 space-y-4">
             <div className="flex items-center justify-between">
-              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#E0A82E]">
+              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#16C784]">
                 <Banknote className="h-4 w-4" /> Official Podium Prize Pool
               </span>
-              <Sparkles className="h-4 w-4 text-[#E0A82E]" />
+              <Sparkles className="h-4 w-4 text-[#16C784]" />
             </div>
             <div className="grid grid-cols-3 gap-2.5">
               {PODIUM.map((p) => {
@@ -97,10 +92,10 @@ export default function CompetitionsPage() {
                 return (
                   <div
                     key={p.rank}
-                    className="rounded-2xl bg-[#0B0E11] border border-[#E0A82E]/30 p-4 text-center space-y-1"
+                    className="rounded-2xl bg-[#0B0E11] border border-[#16C784]/30 p-4 text-center space-y-1"
                   >
-                    <Icon className="h-5 w-5 text-[#E0A82E] mx-auto" />
-                    <p className="font-display text-base font-bold text-[#E0A82E] tabular-nums-display">
+                    <Icon className="h-5 w-5 text-[#16C784] mx-auto" />
+                    <p className="font-display text-base font-bold text-[#16C784] tabular-nums-display">
                       {formatNaira(competitionReward[p.valueKey])}
                     </p>
                     <p className="text-[10px] font-semibold text-white">{p.rank}</p>
@@ -109,7 +104,7 @@ export default function CompetitionsPage() {
                 );
               })}
             </div>
-            <div className="rounded-xl bg-[#0B0E11] border border-[#E0A82E]/25 p-3 text-center">
+            <div className="rounded-xl bg-[#0B0E11] border border-[#16C784]/25 p-3 text-center">
               <p className="font-display text-lg font-bold text-white tabular-nums-display">
                 {formatNaira(competitionReward.totalPodiumPool)} Total Podium Pool
               </p>
@@ -119,7 +114,7 @@ export default function CompetitionsPage() {
             <ul className="space-y-1.5 text-[11.5px] text-[#9AA4B2]">
               {competitionReward.eligibilityRules.map((rule) => (
                 <li key={rule} className="flex items-start gap-2">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-[#E0A82E] shrink-0 mt-0.5" />
+                  <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784] shrink-0 mt-0.5" />
                   <span>{rule}</span>
                 </li>
               ))}
@@ -172,10 +167,10 @@ export default function CompetitionsPage() {
             {competitionDivisions.map((d, idx) => (
               <div key={d.id} className="v-card-hover p-5 space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <span className="tabular-nums-display text-xs font-bold text-[#E0A82E]">
+                  <span className="tabular-nums-display text-xs font-bold text-[#16C784]">
                     DIVISION 0{idx + 1}
                   </span>
-                  <Badge variant="green">₦220,000 Podium Eligible</Badge>
+                  <Badge variant="green">₦500,000 Podium Eligible</Badge>
                 </div>
                 <h3 className="font-display text-base font-bold text-white">{d.name}</h3>
                 <p className="text-xs text-[#9AA4B2]">Eligible: {d.level}</p>
@@ -195,7 +190,7 @@ export default function CompetitionsPage() {
               Authentic ATSWA & ICAN Paper Structures
             </h2>
             <p className="text-xs sm:text-sm text-[#9AA4B2]">
-              Server-enforced countdown timers, auto-saved answers, instant objective grading and blind rubric-based theory grading by qualified examiners before every post-competition podium prize disbursement (₦100,000 / ₦70,000 / ₦50,000).
+              Server-enforced countdown timers, auto-saved answers, instant objective grading and blind rubric-based theory grading by qualified examiners before every post-competition podium prize disbursement (₦250,000 / ₦150,000 / ₦100,000).
             </p>
 
             <div className="inline-flex rounded-xl bg-[#11161C] border border-white/[0.08] p-1">
@@ -203,7 +198,7 @@ export default function CompetitionsPage() {
                 type="button"
                 onClick={() => setSelectedStructure('atswa')}
                 className={`rounded-lg px-4 py-2 text-xs font-bold transition-colors ${
-                  selectedStructure === 'atswa' ? 'bg-[#E0A82E] text-[#06130D]' : 'text-[#9AA4B2]'
+                  selectedStructure === 'atswa' ? 'bg-[#16C784] text-[#06130D]' : 'text-[#9AA4B2]'
                 }`}
               >
                 ATSWA Format (100 Marks)
@@ -212,7 +207,7 @@ export default function CompetitionsPage() {
                 type="button"
                 onClick={() => setSelectedStructure('ican')}
                 className={`rounded-lg px-4 py-2 text-xs font-bold transition-colors ${
-                  selectedStructure === 'ican' ? 'bg-[#E0A82E] text-[#06130D]' : 'text-[#9AA4B2]'
+                  selectedStructure === 'ican' ? 'bg-[#16C784] text-[#06130D]' : 'text-[#9AA4B2]'
                 }`}
               >
                 ICAN Format (100 Marks)
@@ -224,7 +219,7 @@ export default function CompetitionsPage() {
                 <h3 className="font-display text-base font-bold text-white">
                   {activeStructure.name}
                 </h3>
-                <span className="tabular-nums-display text-xs font-bold text-[#E0A82E]">
+                <span className="tabular-nums-display text-xs font-bold text-[#16C784]">
                   Total: {activeStructure.totalMarks} Marks
                 </span>
               </div>
@@ -238,7 +233,7 @@ export default function CompetitionsPage() {
                       <p className="text-xs font-bold text-white">{sec.label}</p>
                       <p className="text-[11px] text-[#9AA4B2] mt-0.5">{sec.detail}</p>
                     </div>
-                    <span className="tabular-nums-display rounded-lg bg-[#E0A82E]/[0.12] border border-[#E0A82E]/25 px-2.5 py-1 text-xs font-bold text-[#E0A82E] shrink-0">
+                    <span className="tabular-nums-display rounded-lg bg-[#16C784]/[0.12] border border-[#16C784]/25 px-2.5 py-1 text-xs font-bold text-[#16C784] shrink-0">
                       {sec.marks} mks
                     </span>
                   </div>
@@ -255,7 +250,7 @@ export default function CompetitionsPage() {
             <div className="space-y-3">
               {ROUNDS.map((r) => (
                 <div key={r.step} className="v-card p-4 flex items-start gap-4">
-                  <span className="tabular-nums-display inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#E0A82E]/[0.12] border border-[#E0A82E]/30 text-xs font-bold text-[#E0A82E]">
+                  <span className="tabular-nums-display inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#16C784]/[0.12] border border-[#16C784]/30 text-xs font-bold text-[#16C784]">
                     {r.step}
                   </span>
                   <div>
@@ -275,8 +270,8 @@ export default function CompetitionsPage() {
           {[
             {
               icon: Banknote,
-              title: '₦220,000 Post-Competition Podium Pool',
-              desc: 'Direct podium cash prizes (₦100,000 / ₦70,000 / ₦50,000) paid to verified top three performers after final scores and appeals conclude.',
+              title: '₦500,000 Post-Competition Podium Pool',
+              desc: 'Direct podium cash prizes (₦250,000 / ₦150,000 / ₦100,000) paid to verified top three performers after final scores and appeals conclude.',
             },
             {
               icon: Clock,
@@ -286,7 +281,7 @@ export default function CompetitionsPage() {
             {
               icon: Swords,
               title: 'Monthly League & 1v1 / 2v2 Arena',
-              desc: 'Recurring monthly challenges, 1v1 quiz duels, 2v2 team battles, Campus Ambassadors and Hall of Fame.',
+              desc: 'The National Inter-School Challenge is held in the last week of every month, with 1v1 quiz duels, 2v2 team battles, Campus Ambassadors and Hall of Fame.',
             },
             {
               icon: ShieldCheck,
@@ -297,7 +292,7 @@ export default function CompetitionsPage() {
             const Icon = item.icon;
             return (
               <div key={item.title} className="v-card p-5 space-y-3">
-                <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#E0A82E]/[0.12] text-[#E0A82E]">
+                <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#16C784]/[0.12] text-[#16C784]">
                   <Icon className="h-4 w-4" />
                 </div>
                 <h3 className="font-display text-sm font-bold text-white">{item.title}</h3>
@@ -338,7 +333,7 @@ export default function CompetitionsPage() {
               {
                 icon: Award,
                 title: 'Verified Podium Record',
-                desc: 'The profile carries the audited competition record: 1st, 2nd or 3rd position, the ₦100,000 / ₦70,000 / ₦50,000 prize earned and the competition diet.',
+                desc: 'The profile carries the audited competition record: 1st, 2nd or 3rd position, the ₦250,000 / ₦150,000 / ₦100,000 prize earned and the competition diet.',
               },
               {
                 icon: Building2,
@@ -349,7 +344,7 @@ export default function CompetitionsPage() {
               const Icon = item.icon;
               return (
                 <div key={item.title} className="v-card p-6 space-y-3">
-                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#E0A82E]/[0.12] border border-[#E0A82E]/30 text-[#E0A82E]">
+                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#16C784]/[0.12] border border-[#16C784]/30 text-[#16C784]">
                     <Icon className="h-5 w-5" />
                   </div>
                   <h3 className="font-display text-base font-bold text-white">{item.title}</h3>
@@ -359,10 +354,10 @@ export default function CompetitionsPage() {
             })}
           </div>
 
-          <div className="v-glass-card p-6 sm:p-7 border-[#E0A82E]/25 space-y-3">
+          <div className="v-glass-card p-6 sm:p-7 border-[#16C784]/25 space-y-3">
             <div className="flex items-center gap-2">
-              <Trophy className="h-4 w-4 text-[#E0A82E]" />
-              <h3 className="font-display text-sm font-bold uppercase tracking-wider text-[#E0A82E]">
+              <Trophy className="h-4 w-4 text-[#16C784]" />
+              <h3 className="font-display text-sm font-bold uppercase tracking-wider text-[#16C784]">
                 How Top VALENCE Students Appear on School Profiles
               </h3>
             </div>
@@ -377,7 +372,7 @@ export default function CompetitionsPage() {
                   key={step}
                   className="flex items-start gap-3 rounded-xl bg-[#0B0E11] border border-white/[0.07] p-4"
                 >
-                  <span className="tabular-nums-display inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#E0A82E]/[0.12] border border-[#E0A82E]/30 text-[11px] font-bold text-[#E0A82E]">
+                  <span className="tabular-nums-display inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#16C784]/[0.12] border border-[#16C784]/30 text-[11px] font-bold text-[#16C784]">
                     {idx + 1}
                   </span>
                   <span className="text-[11.5px] leading-relaxed text-[#C2C9D4]">{step}</span>

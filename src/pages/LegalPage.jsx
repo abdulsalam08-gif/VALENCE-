@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Scale, ShieldCheck, CreditCard, Megaphone, Mail, Clock } from 'lucide-react';
-import { usePlatform } from '../context/PlatformContext';
+import { useAuth, useCart, usePublicData, useUi } from '../context/PlatformContext';
 import Badge from '../components/ui/Badge';
 
 const LEGAL_TABS = [
@@ -14,8 +14,7 @@ const LEGAL_TABS = [
 export default function LegalPage() {
   const { section } = useParams();
   const navigate = useNavigate();
-  const { settings } = usePlatform();
-
+  const { settings } = usePublicData();
   const initial = LEGAL_TABS.some((t) => t.id === section) ? section : 'terms';
   const [active, setActive] = useState(initial);
 
@@ -56,7 +55,7 @@ export default function LegalPage() {
                   onClick={() => selectTab(tab.id)}
                   className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-display font-bold border transition-all ${
                     isSelected
-                      ? 'bg-[#E0A82E] text-[#06130D] border-[#E0A82E]'
+                      ? 'bg-[#16C784] text-[#06130D] border-[#16C784]'
                       : 'bg-[#11161C] text-[#C2C9D4] border-white/[0.08] hover:text-white'
                   }`}
                 >
@@ -75,7 +74,7 @@ export default function LegalPage() {
             <article className="v-card p-6 sm:p-8 space-y-5 text-xs sm:text-sm leading-relaxed text-[#C2C9D4]">
               <h2 className="font-display text-2xl font-bold text-white">1. Terms of Service</h2>
               <div className="space-y-2">
-                <h3 className="font-display text-base font-bold text-[#E0A82E]">
+                <h3 className="font-display text-base font-bold text-[#16C784]">
                   1.1 Platform Independence &amp; Scope
                 </h3>
                 <p>
@@ -83,7 +82,7 @@ export default function LegalPage() {
                 </p>
               </div>
               <div className="space-y-2">
-                <h3 className="font-display text-base font-bold text-[#E0A82E]">
+                <h3 className="font-display text-base font-bold text-[#16C784]">
                   1.2 Free Membership &amp; In-App Online Tuition
                 </h3>
                 <p>
@@ -91,7 +90,7 @@ export default function LegalPage() {
                 </p>
               </div>
               <div className="space-y-2">
-                <h3 className="font-display text-base font-bold text-[#E0A82E]">
+                <h3 className="font-display text-base font-bold text-[#16C784]">
                   1.3 Examination Schedules, Exemption Estimates &amp; AI Tools
                 </h3>
                 <p>
@@ -99,19 +98,19 @@ export default function LegalPage() {
                 </p>
               </div>
               <div className="space-y-2">
-                <h3 className="font-display text-base font-bold text-[#E0A82E]">
-                  1.4 National Inter-School Challenge &amp; ₦220,000 Podium Cash Prizes
+                <h3 className="font-display text-base font-bold text-[#16C784]">
+                  1.4 National Inter-School Challenge &amp; ₦500,000 Podium Cash Prizes
                 </h3>
                 <p>
-                  The VALENCE National Inter-School Challenge and examination divisions (featuring questions drawn from accounting and related disciplines including finance, auditing, taxation, economics, business law, quantitative methods, and management) enforce timed submission rules, anti-malpractice verification, and moderator review. Strictly only 4 students can compete in each school. The ₦220,000 post-competition podium cash prizes (₦100,000 for 1st position, ₦70,000 for 2nd position and ₦50,000 for 3rd position) are disbursed to verified winning learners after official results and any appeals review close, and winning students are displayed on their respective school’s official VALENCE profile as Top VALENCE Students. Impersonation, collusion, or plagiarism leads to immediate disqualification.
+                  The VALENCE National Inter-School Challenge and examination divisions (featuring questions drawn from accounting and related disciplines including finance, auditing, taxation, economics, business law, quantitative methods, and management) enforce timed submission rules, anti-malpractice verification, and moderator review. Strictly only 4 students can compete in each school. The ₦500,000 post-competition podium cash prizes (₦250,000 for 1st position, ₦150,000 for 2nd position and ₦100,000 for 3rd position) are disbursed to verified winning learners after official results and any appeals review close, and winning students are displayed on their respective school’s official VALENCE profile as Top VALENCE Students. Impersonation, collusion, or plagiarism leads to immediate disqualification.
                 </p>
               </div>
               <div className="space-y-2">
-                <h3 className="font-display text-base font-bold text-[#E0A82E]">
+                <h3 className="font-display text-base font-bold text-[#16C784]">
                   1.5 Community Conduct &amp; Communications Safety
                 </h3>
                 <p>
-                  Users on VALENCE CONNECT, discussion forums, direct messaging, and WebRTC voice/video calls must uphold respectful professional conduct. Harassment, exam leakage, spam, unsolicited cold solicitation, and impersonation of verified professionals or institutions result in account suspension under the laws of the Federal Republic of Nigeria.
+                  Users on VALENCE, discussion forums, direct messaging, and voice/video calls must uphold respectful professional conduct. Harassment, exam leakage, spam, unsolicited cold solicitation, and impersonation of verified professionals or institutions result in account suspension under the laws of the Federal Republic of Nigeria.
                 </p>
               </div>
             </article>
@@ -123,7 +122,7 @@ export default function LegalPage() {
                 2. Privacy Policy (Nigeria Data Protection Act Aligned)
               </h2>
               <div className="space-y-2">
-                <h3 className="font-display text-base font-bold text-[#E0A82E]">
+                <h3 className="font-display text-base font-bold text-[#16C784]">
                   2.1 Information We Collect
                 </h3>
                 <p>
@@ -131,7 +130,7 @@ export default function LegalPage() {
                 </p>
               </div>
               <div className="space-y-2">
-                <h3 className="font-display text-base font-bold text-[#E0A82E]">
+                <h3 className="font-display text-base font-bold text-[#16C784]">
                   2.2 Private Storage &amp; Row-Level Security
                 </h3>
                 <p>
@@ -139,7 +138,7 @@ export default function LegalPage() {
                 </p>
               </div>
               <div className="space-y-2">
-                <h3 className="font-display text-base font-bold text-[#E0A82E]">
+                <h3 className="font-display text-base font-bold text-[#16C784]">
                   2.3 Zero Sale of Student Data to Advertisers
                 </h3>
                 <p>
@@ -147,12 +146,12 @@ export default function LegalPage() {
                 </p>
               </div>
               <div className="space-y-2">
-                <h3 className="font-display text-base font-bold text-[#E0A82E]">
+                <h3 className="font-display text-base font-bold text-[#16C784]">
                   2.4 Your NDPA Rights
                 </h3>
                 <p>
                   Under the Nigeria Data Protection Act (NDPA), you may request access to, correction of, export of, or deletion of your personal data, update profile and messaging privacy controls in your portal settings, or contact our Data &amp; Support Desk 24/7 at{' '}
-                  <a href={`mailto:${settings.email}`} className="text-[#E0A82E] underline">
+                  <a href={`mailto:${settings.email}`} className="text-[#16C784] underline">
                     {settings.email}
                   </a>
                   .
@@ -167,7 +166,7 @@ export default function LegalPage() {
                 3. Payments, Refunds &amp; Delivery Policy
               </h2>
               <div className="space-y-2">
-                <h3 className="font-display text-base font-bold text-[#E0A82E]">
+                <h3 className="font-display text-base font-bold text-[#16C784]">
                   3.1 Exclusive Paystack Online Checkout
                 </h3>
                 <p>
@@ -175,7 +174,7 @@ export default function LegalPage() {
                 </p>
               </div>
               <div className="space-y-2">
-                <h3 className="font-display text-base font-bold text-[#E0A82E]">
+                <h3 className="font-display text-base font-bold text-[#16C784]">
                   3.2 ₦3,000 Per-Level Tuition Application Unlock
                 </h3>
                 <p>
@@ -183,7 +182,7 @@ export default function LegalPage() {
                 </p>
               </div>
               <div className="space-y-2">
-                <h3 className="font-display text-base font-bold text-[#E0A82E]">
+                <h3 className="font-display text-base font-bold text-[#16C784]">
                   3.3 Online Tuition Refunds
                 </h3>
                 <p>
@@ -191,7 +190,7 @@ export default function LegalPage() {
                 </p>
               </div>
               <div className="space-y-2">
-                <h3 className="font-display text-base font-bold text-[#E0A82E]">
+                <h3 className="font-display text-base font-bold text-[#16C784]">
                   3.4 Study Materials Store, Per-Course Orders &amp; Delivery
                 </h3>
                 <p>
@@ -207,7 +206,7 @@ export default function LegalPage() {
                 4. Advertising, Author/Vendor Sales &amp; Anti-Piracy Policy
               </h2>
               <div className="space-y-2">
-                <h3 className="font-display text-base font-bold text-[#E0A82E]">
+                <h3 className="font-display text-base font-bold text-[#16C784]">
                   4.1 Eligible Advertisers (₦10,000/Week In-App)
                 </h3>
                 <p>
@@ -215,7 +214,7 @@ export default function LegalPage() {
                 </p>
               </div>
               <div className="space-y-2">
-                <h3 className="font-display text-base font-bold text-[#E0A82E]">
+                <h3 className="font-display text-base font-bold text-[#16C784]">
                   4.2 In-App Enquiries &amp; Optional In-App Paystack Checkout
                 </h3>
                 <p>
@@ -223,7 +222,7 @@ export default function LegalPage() {
                 </p>
               </div>
               <div className="space-y-2">
-                <h3 className="font-display text-base font-bold text-[#E0A82E]">
+                <h3 className="font-display text-base font-bold text-[#16C784]">
                   4.3 Zero-Piracy, Truthful Claims &amp; Sponsored Labelling
                 </h3>
                 <p>
@@ -242,12 +241,12 @@ export default function LegalPage() {
               <div className="flex flex-wrap items-center gap-4 text-[#9AA4B2]">
                 <a
                   href={`mailto:${settings.email}`}
-                  className="inline-flex items-center gap-1.5 text-[#E0A82E] hover:underline"
+                  className="inline-flex items-center gap-1.5 text-[#16C784] hover:underline"
                 >
                   <Mail className="h-3.5 w-3.5" /> {settings.email}
                 </a>
                 <span className="inline-flex items-center gap-1.5">
-                  <Clock className="h-3.5 w-3.5 text-[#E0A82E]" /> Operating hours: {settings.operatingHours}
+                  <Clock className="h-3.5 w-3.5 text-[#16C784]" /> Operating hours: {settings.operatingHours}
                 </span>
               </div>
             </div>

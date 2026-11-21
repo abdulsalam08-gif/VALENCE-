@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { usePlatform } from '../context/PlatformContext';
+import { useAuth, useCart, usePublicData, useUi } from '../context/PlatformContext';
 import { useToast } from '../context/ToastContext';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { ADMIN_ROLES } from '../lib/auth';
@@ -74,7 +74,8 @@ const SECTIONS = [
 const NOTIFICATION_TYPES = ['support', 'atswa', 'store', 'book-enq', 'advertise'];
 
 export default function AdminPortalPage() {
-  const { user, adminRoles, profile, handleSignOut, liveExamSessions } = usePlatform();
+  const { user, adminRoles, profile, handleSignOut } = useAuth();
+  const { liveExamSessions } = usePublicData();
   const toast = useToast();
   const navigate = useNavigate();
   const location = useLocation();
@@ -715,7 +716,7 @@ export default function AdminPortalPage() {
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E0A82E]/[0.12] border border-[#E0A82E]/30 text-[#E0A82E]">
+                <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#16C784]/[0.12] border border-[#16C784]/30 text-[#16C784]">
                   <ShieldCheck className="h-6 w-6" />
                 </div>
                 <div>
@@ -736,7 +737,7 @@ export default function AdminPortalPage() {
                 <p className="text-[11px] text-[#667085]">Signed in as</p>
                 <p className="text-xs font-semibold text-white">{user.email}</p>
                 {adminRoles.length > 0 && (
-                  <p className="text-[11px] text-[#E0A82E]">{adminRoles.map(roleLabel).join(', ')}</p>
+                  <p className="text-[11px] text-[#16C784]">{adminRoles.map(roleLabel).join(', ')}</p>
                 )}
               </div>
               <button onClick={handleSignOutClick} className="v-btn-secondary px-3 py-2">
@@ -757,7 +758,7 @@ export default function AdminPortalPage() {
                 onClick={() => setTab(s.key)}
                 className={`inline-flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold border transition-all ${
                   active
-                    ? 'bg-[#E0A82E] text-[#06130D] border-[#E0A82E] shadow-glow-sm'
+                    ? 'bg-[#16C784] text-[#06130D] border-[#16C784] shadow-glow-sm'
                     : 'bg-[#11161C] text-[#C2C9D4] border-white/[0.08] hover:border-white/[0.2] hover:text-white'
                 }`}
               >
@@ -778,10 +779,10 @@ export default function AdminPortalPage() {
           <div className="space-y-6">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
               {[
-                { label: 'Members', value: stats?.members, icon: Users, tint: 'text-[#E0A82E]' },
+                { label: 'Members', value: stats?.members, icon: Users, tint: 'text-[#16C784]' },
                 { label: 'Products', value: stats?.products, icon: Package, tint: 'text-[#9AA4B2]' },
                 { label: 'Orders', value: stats?.orders, icon: ShoppingBag, tint: 'text-[#C2C9D4]' },
-                { label: 'Revenue', value: stats ? formatNaira(stats.revenue) : '₦0', icon: ShoppingBag, tint: 'text-[#E0A82E]' },
+                { label: 'Revenue', value: stats ? formatNaira(stats.revenue) : '₦0', icon: ShoppingBag, tint: 'text-[#16C784]' },
                 { label: 'Enquiries', value: stats?.notifications, icon: Bell, tint: 'text-[#667085]' },
                 { label: 'Competitions', value: stats?.competitions, icon: Trophy, tint: 'text-[#9AA4B2]' },
               ].map((s) => {
@@ -802,19 +803,19 @@ export default function AdminPortalPage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="v-card p-6 space-y-4">
-                <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">System Status</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">System Status</p>
                 <ul className="space-y-2.5 text-xs sm:text-sm text-[#D5DBE3]">
                   <li className="flex items-center justify-between gap-3">
-                    <span className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-[#E0A82E]" /> Supabase Auth</span>
-                    <span className="text-[#E0A82E] font-semibold">{isSupabaseConfigured ? 'Connected' : 'Local mode'}</span>
+                    <span className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-[#16C784]" /> Supabase Auth</span>
+                    <span className="text-[#16C784] font-semibold">{isSupabaseConfigured ? 'Connected' : 'Local mode'}</span>
                   </li>
                   <li className="flex items-center justify-between gap-3">
-                    <span className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-[#E0A82E]" /> Row Level Security</span>
-                    <span className="text-[#E0A82E] font-semibold">Enabled (109 tables)</span>
+                    <span className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-[#16C784]" /> Row Level Security</span>
+                    <span className="text-[#16C784] font-semibold">Enabled (109 tables)</span>
                   </li>
                   <li className="flex items-center justify-between gap-3">
-                    <span className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-[#E0A82E]" /> RBAC (user_roles)</span>
-                    <span className="text-[#E0A82E] font-semibold">{adminRoles.length} role(s) assigned</span>
+                    <span className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-[#16C784]" /> RBAC (user_roles)</span>
+                    <span className="text-[#16C784] font-semibold">{adminRoles.length} role(s) assigned</span>
                   </li>
                   <li className="flex items-center justify-between gap-3">
                     <span className="inline-flex items-center gap-2"><ShieldAlert className="h-4 w-4 text-[#9AA4B2]" /> Admin access gate</span>
@@ -824,7 +825,7 @@ export default function AdminPortalPage() {
               </div>
 
               <div className="v-card p-6 space-y-4">
-                <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">Central Examination Authority</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">Central Examination Authority</p>
                 <ul className="space-y-2.5 text-xs sm:text-sm text-[#D5DBE3]">
                   {(liveExamSessions || []).slice(0, 6).map((s) => (
                     <li key={s.id || s.name} className="flex items-center justify-between gap-3">
@@ -840,7 +841,7 @@ export default function AdminPortalPage() {
             </div>
 
             <div className="v-card p-6 space-y-3">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">Admin Quick Actions</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">Admin Quick Actions</p>
               <div className="flex flex-wrap gap-2">
                 <button onClick={() => setTab('cms')} className="v-btn-secondary px-4 py-2">Manage Pricing &amp; Products</button>
                 <button onClick={() => setTab('queue')} className="v-btn-secondary px-4 py-2">Open Operations Queue</button>
@@ -857,7 +858,7 @@ export default function AdminPortalPage() {
           <div className="space-y-6">
             <div className="v-card p-6 space-y-4">
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">Platform Settings</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">Platform Settings</p>
                 <p className="text-[11px] text-[#667085] mt-0.5">Live values stored in the platform_settings table — updated instantly across the app.</p>
               </div>
               {settings.map((s) => (
@@ -887,7 +888,7 @@ export default function AdminPortalPage() {
 
             <div className="v-card p-6 space-y-4">
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">Store Products — Availability &amp; Notes</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">Store Products — Availability &amp; Notes</p>
                 <p className="text-[11px] text-[#667085] mt-0.5">Toggle product availability and set availability notes (products table).</p>
               </div>
               {products.map((p) => (
@@ -912,7 +913,7 @@ export default function AdminPortalPage() {
                       onClick={() => toggleProductAvailability(p)}
                       className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold border transition-colors ${
                         p.is_available
-                          ? 'border-[#E0A82E]/40 text-[#E0A82E] bg-[#E0A82E]/[0.08]'
+                          ? 'border-[#16C784]/40 text-[#16C784] bg-[#16C784]/[0.08]'
                           : 'border-white/[0.12] text-[#9AA4B2] bg-[#11161C]'
                       }`}
                     >
@@ -928,7 +929,7 @@ export default function AdminPortalPage() {
             <div className="v-card p-6 space-y-4">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">FAQ Manager (DB-backed)</p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">FAQ Manager (DB-backed)</p>
                   <p className="text-[11px] text-[#667085] mt-0.5">
                     Live FAQs served via the faqs table — shown on Home &amp; Contact pages immediately after save.
                   </p>
@@ -976,7 +977,7 @@ export default function AdminPortalPage() {
                         <label className="inline-flex items-center gap-1.5 text-[11px] text-[#9AA4B2]">
                           <input
                             type="checkbox"
-                            className="accent-[#E0A82E]"
+                            className="accent-[#16C784]"
                             checked={!!edit.is_active}
                             onChange={(e) => setFaqEdit((prev) => ({ ...prev, [f.id]: { ...prev[f.id], is_active: e.target.checked } }))}
                           />
@@ -997,7 +998,7 @@ export default function AdminPortalPage() {
 
             <div className="v-card p-6 space-y-4">
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">Delivery Zones</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">Delivery Zones</p>
                 <p className="text-[11px] text-[#667085] mt-0.5">
                   Store delivery zones &amp; fees (delivery_zones table) — used at checkout for study-material orders.
                 </p>
@@ -1033,7 +1034,7 @@ export default function AdminPortalPage() {
                       <label className="inline-flex items-center gap-1 text-[11px] text-[#9AA4B2] whitespace-nowrap">
                         <input
                           type="checkbox"
-                          className="accent-[#E0A82E]"
+                          className="accent-[#16C784]"
                           checked={!!edit.is_free}
                           onChange={(e) => setZoneEdit((prev) => ({ ...prev, [z.id]: { ...prev[z.id], is_free: e.target.checked } }))}
                         />
@@ -1060,7 +1061,7 @@ export default function AdminPortalPage() {
               <span className="text-xs font-semibold text-[#C2C9D4]">Filter:</span>
               <button
                 onClick={() => setQueueFilter('all')}
-                className={`rounded-lg px-3 py-1.5 text-xs font-semibold border transition-colors ${queueFilter === 'all' ? 'bg-[#E0A82E] text-[#06130D] border-[#E0A82E]' : 'bg-[#11161C] text-[#9AA4B2] border-white/[0.08]'}`}
+                className={`rounded-lg px-3 py-1.5 text-xs font-semibold border transition-colors ${queueFilter === 'all' ? 'bg-[#16C784] text-[#06130D] border-[#16C784]' : 'bg-[#11161C] text-[#9AA4B2] border-white/[0.08]'}`}
               >
                 All ({notifications.length})
               </button>
@@ -1068,7 +1069,7 @@ export default function AdminPortalPage() {
                 <button
                   key={t}
                   onClick={() => setQueueFilter(t)}
-                  className={`rounded-lg px-3 py-1.5 text-xs font-semibold border capitalize transition-colors ${queueFilter === t ? 'bg-[#E0A82E] text-[#06130D] border-[#E0A82E]' : 'bg-[#11161C] text-[#9AA4B2] border-white/[0.08]'}`}
+                  className={`rounded-lg px-3 py-1.5 text-xs font-semibold border capitalize transition-colors ${queueFilter === t ? 'bg-[#16C784] text-[#06130D] border-[#16C784]' : 'bg-[#11161C] text-[#9AA4B2] border-white/[0.08]'}`}
                 >
                   {t} ({notifications.filter((n) => n.notification_type === t).length})
                 </button>
@@ -1114,7 +1115,7 @@ export default function AdminPortalPage() {
             <div className="v-card p-6 space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">Official Examination Sessions</p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">Official Examination Sessions</p>
                   <p className="text-[11px] text-[#667085] mt-0.5">
                     Manage dates, timetables, result release & delay notices — stored in examination_sessions.
                   </p>
@@ -1227,7 +1228,7 @@ export default function AdminPortalPage() {
               </div>
             </div>
             <div className="v-card p-6">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">Result Release &amp; Delay Notices</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">Result Release &amp; Delay Notices</p>
               <p className="text-xs text-[#9AA4B2] mt-2">
                 Result release dates and 30-day delay notices for ATSWA (2-day) and ICAN (3-day) sessions are maintained here and
                 surfaced to candidates via countdown timers on their portals. Google Calendar sync marks each session as synced
@@ -1243,7 +1244,7 @@ export default function AdminPortalPage() {
             <div className="v-card p-6 space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">Podium Payout Ledger</p>
+                  <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">Podium Payout Ledger</p>
                   <p className="text-[11px] text-[#667085] mt-0.5">
                     Audited competition prize disbursements (competition_rewards) — server-authoritative amounts.
                   </p>
@@ -1267,7 +1268,7 @@ export default function AdminPortalPage() {
                   Ledger entries: <span className="text-white font-semibold">{podium.ledger.length}</span>
                 </div>
                 <div className="md:col-span-4 text-[#667085]">
-                  Total payout: <span className="text-[#E0A82E] font-semibold">{formatNaira((podium.ledger || []).reduce((s, r) => s + (r.prize_amount_ngn || 0), 0))}</span>
+                  Total payout: <span className="text-[#16C784] font-semibold">{formatNaira((podium.ledger || []).reduce((s, r) => s + (r.prize_amount_ngn || 0), 0))}</span>
                 </div>
               </div>
               <div className="overflow-x-auto">
@@ -1289,7 +1290,7 @@ export default function AdminPortalPage() {
                         <td className="py-2 pr-3 text-[#C2C9D4]">{r.display_name || '—'}</td>
                         <td className="py-2 pr-3 text-[#C2C9D4]">{r.institution_name || '—'}</td>
                         <td className="py-2 pr-3 text-[#C2C9D4]">{r.award_name || r.award_type || '—'}</td>
-                        <td className="py-2 pr-3 text-[#E0A82E] font-semibold">{formatNaira(r.prize_amount_ngn)}</td>
+                        <td className="py-2 pr-3 text-[#16C784] font-semibold">{formatNaira(r.prize_amount_ngn)}</td>
                         <td className="py-2 pr-3">
                           <Badge variant={r.status === 'disbursed' ? 'green' : 'neutral'}>{r.status}</Badge>
                         </td>
@@ -1309,7 +1310,7 @@ export default function AdminPortalPage() {
         {activeTab === 'moderation' && (
           <div className="space-y-6">
             <div className="v-card p-6 space-y-4">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">Content Moderation Queue ({modQueue.length})</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">Content Moderation Queue ({modQueue.length})</p>
               <p className="text-[11px] text-[#667085]">Pending content reports — uphold or dismiss. Upholding records the resolution in the audit log.</p>
               {modQueue.map((r) => (
                 <div key={r.id} className="rounded-xl bg-[#11161C] border border-white/[0.08] p-4 space-y-2">
@@ -1342,7 +1343,7 @@ export default function AdminPortalPage() {
               )}
             </div>
             <div className="v-card p-6 space-y-4">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">Announcement Moderation Queue ({annModQueue.length})</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">Announcement Moderation Queue ({annModQueue.length})</p>
               <p className="text-[11px] text-[#667085]">
                 Pending announcement reports — upholding a report also removes the offending announcement post.
               </p>
@@ -1378,14 +1379,14 @@ export default function AdminPortalPage() {
         {activeTab === 'audit' && (
           <div className="space-y-6">
             <div className="v-card p-6 space-y-4">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">Admin Audit Log</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">Admin Audit Log</p>
               <p className="text-[11px] text-[#667085]">
                 Every admin action is recorded server-side — role changes, settings, FAQs, exam edits, moderation resolutions.
               </p>
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => setAuditFilter('all')}
-                  className={`rounded-lg px-3 py-1.5 text-xs font-semibold border transition-colors ${auditFilter === 'all' ? 'bg-[#E0A82E] text-[#06130D] border-[#E0A82E]' : 'bg-[#11161C] text-[#9AA4B2] border-white/[0.08]'}`}
+                  className={`rounded-lg px-3 py-1.5 text-xs font-semibold border transition-colors ${auditFilter === 'all' ? 'bg-[#16C784] text-[#06130D] border-[#16C784]' : 'bg-[#11161C] text-[#9AA4B2] border-white/[0.08]'}`}
                 >
                   All ({auditLogs.length})
                 </button>
@@ -1393,7 +1394,7 @@ export default function AdminPortalPage() {
                   <button
                     key={a}
                     onClick={() => setAuditFilter(a)}
-                    className={`rounded-lg px-3 py-1.5 text-xs font-semibold border transition-colors ${auditFilter === a ? 'bg-[#E0A82E] text-[#06130D] border-[#E0A82E]' : 'bg-[#11161C] text-[#9AA4B2] border-white/[0.08]'}`}
+                    className={`rounded-lg px-3 py-1.5 text-xs font-semibold border transition-colors ${auditFilter === a ? 'bg-[#16C784] text-[#06130D] border-[#16C784]' : 'bg-[#11161C] text-[#9AA4B2] border-white/[0.08]'}`}
                   >
                     {a}
                   </button>
@@ -1438,7 +1439,7 @@ export default function AdminPortalPage() {
         {activeTab === 'users' && (
           <div className="space-y-6">
             <div className="v-card p-6 space-y-3">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">Members &amp; Role Management</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">Members &amp; Role Management</p>
               <p className="text-[11px] text-[#667085]">
                 Grant or revoke platform admin roles (stored in user_roles). Role changes take effect on the member's next sign-in.
               </p>
@@ -1455,7 +1456,7 @@ export default function AdminPortalPage() {
                       <span className="text-[11px] text-[#667085]">No roles</span>
                     ) : (
                       u.roles.map((r) => (
-                        <span key={r} className="inline-flex items-center gap-1 rounded-lg bg-[#E0A82E]/[0.12] border border-[#E0A82E]/30 text-[#E0A82E] text-[10px] font-semibold px-2 py-1">
+                        <span key={r} className="inline-flex items-center gap-1 rounded-lg bg-[#16C784]/[0.12] border border-[#16C784]/30 text-[#16C784] text-[10px] font-semibold px-2 py-1">
                           {roleLabel(r)}
                           <button onClick={() => revokeRole(u, r)} className="hover:text-[#EA3943]">
                             <XCircle className="h-3 w-3" />
@@ -1492,7 +1493,7 @@ export default function AdminPortalPage() {
         {activeTab === 'tutors' && (
           <div className="space-y-6">
             <div className="v-card p-6 space-y-3">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">Tutor Verification Queue</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">Tutor Verification Queue</p>
               <p className="text-[11px] text-[#667085]">
                 Manually verify tutor certificates. ATSWA tutors require AAT; ICAN tutors require AAT + ACA. Approving a tutor opens their 20-question / 45-minute qualifying test automatically.
               </p>
@@ -1514,15 +1515,15 @@ export default function AdminPortalPage() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                     <div className="rounded-xl bg-[#0B0E11] border border-white/[0.08] p-3 space-y-1">
-                      <p className="font-semibold text-[#E0A82E]">Qualifications</p>
+                      <p className="font-semibold text-[#16C784]">Qualifications</p>
                       <p className="text-[#C2C9D4]">{(tp.qualifications || []).join(', ') || '—'}</p>
                     </div>
                     <div className="rounded-xl bg-[#0B0E11] border border-white/[0.08] p-3 space-y-1">
-                      <p className="font-semibold text-[#E0A82E]">Expertise</p>
+                      <p className="font-semibold text-[#16C784]">Expertise</p>
                       <p className="text-[#C2C9D4]">{(tp.expertise || []).join(', ') || '—'}</p>
                     </div>
                     <div className="rounded-xl bg-[#0B0E11] border border-white/[0.08] p-3 space-y-1">
-                      <p className="font-semibold text-[#E0A82E]">Available hours</p>
+                      <p className="font-semibold text-[#16C784]">Available hours</p>
                       <p className="text-[#C2C9D4]">{tp.available_hours || '—'}</p>
                     </div>
                   </div>
@@ -1562,7 +1563,7 @@ export default function AdminPortalPage() {
                     <button
                       onClick={() => handleTutorVerify(tp.id, 'approve')}
                       disabled={tutorBusy === tp.id}
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-[#E0A82E]/15 border border-[#E0A82E]/40 px-3.5 py-2 text-xs font-semibold text-[#E0A82E] hover:bg-[#E0A82E]/25 transition-colors disabled:opacity-50"
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-[#16C784]/15 border border-[#16C784]/40 px-3.5 py-2 text-xs font-semibold text-[#16C784] hover:bg-[#16C784]/25 transition-colors disabled:opacity-50"
                     >
                       <CheckCircle2 className="h-3.5 w-3.5" />
                       {tutorBusy === tp.id ? 'Verifying…' : 'Approve & open test'}
@@ -1611,7 +1612,7 @@ export default function AdminPortalPage() {
           <div className="space-y-6">
             <div className="v-card p-6 space-y-3">
               <div className="flex items-center justify-between">
-                <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">Advertiser Verification Queue</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">Advertiser Verification Queue</p>
                 <Badge variant="neutral">{adVerifications.length} pending</Badge>
               </div>
               <p className="text-[11px] text-[#667085]">
@@ -1659,7 +1660,7 @@ export default function AdminPortalPage() {
                       <button
                         onClick={() => handleAdVerify(v.id, true)}
                         disabled={adBusy === v.id}
-                        className="inline-flex items-center gap-1.5 rounded-lg bg-[#E0A82E]/15 border border-[#E0A82E]/40 px-3.5 py-2 text-xs font-semibold text-[#E0A82E] hover:bg-[#E0A82E]/25 transition-colors disabled:opacity-50"
+                        className="inline-flex items-center gap-1.5 rounded-lg bg-[#16C784]/15 border border-[#16C784]/40 px-3.5 py-2 text-xs font-semibold text-[#16C784] hover:bg-[#16C784]/25 transition-colors disabled:opacity-50"
                       >
                         <CheckCircle2 className="h-3.5 w-3.5" />
                         {adBusy === v.id ? 'Processing…' : 'Approve & verify'}
@@ -1679,7 +1680,7 @@ export default function AdminPortalPage() {
             )}
 
             <div className="v-card p-6 space-y-3">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">Live Active Campaigns</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">Live Active Campaigns</p>
               <p className="text-[11px] text-[#667085]">{adCampaigns.length} active sponsored campaign(s).</p>
               {adCampaigns.length === 0 ? (
                 <p className="text-sm text-[#667085]">No active campaigns.</p>
@@ -1702,7 +1703,7 @@ export default function AdminPortalPage() {
         {activeTab === 'announcements' && (
           <div className="space-y-6">
             <div className="v-card p-6 space-y-3">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">Announcement Posts</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">Announcement Posts</p>
               <p className="text-[11px] text-[#667085]">Publish or unpublish official announcements (announcement_posts table).</p>
               {announcements.map((a) => (
                 <div key={a.id} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center pb-3 border-b border-white/[0.07] last:border-0 last:pb-0">
@@ -1723,7 +1724,7 @@ export default function AdminPortalPage() {
                       className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold border transition-colors ${
                         a.status === 'published'
                           ? 'border-[#EA3943]/40 text-[#EA3943] bg-[#EA3943]/[0.08]'
-                          : 'border-[#E0A82E]/40 text-[#E0A82E] bg-[#E0A82E]/[0.08]'
+                          : 'border-[#16C784]/40 text-[#16C784] bg-[#16C784]/[0.08]'
                       }`}
                     >
                       {a.status === 'published' ? <XCircle className="h-3.5 w-3.5" /> : <CheckCircle2 className="h-3.5 w-3.5" />}
@@ -1742,8 +1743,8 @@ export default function AdminPortalPage() {
 
         <div className="text-center">
           <p className="text-[11px] text-[#667085]">
-            VALENCE Admin Console · RBAC via <span className="text-[#E0A82E]">user_roles</span> · RLS protected ·
-            <Link to="/" className="text-[#E0A82E] hover:underline ml-1">Back to site</Link>
+            VALENCE Admin Console · RBAC via <span className="text-[#16C784]">user_roles</span> · RLS protected ·
+            <Link to="/" className="text-[#16C784] hover:underline ml-1">Back to site</Link>
           </p>
         </div>
       </div>

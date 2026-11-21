@@ -1,12 +1,12 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { usePlatform } from '../context/PlatformContext';
+import { useAuth, useCart, usePublicData, useUi } from '../context/PlatformContext';
 import PortalGatewayPage from './PortalGatewayPage';
 import AdvertiserHubPage from './AdvertiserHubPage';
 
 export default function AdvertiserHubRoute() {
-  const { user, isHydrating } = usePlatform();
-
+  const { user } = useAuth();
+  const { isHydrating } = usePublicData();
   if (isHydrating) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">

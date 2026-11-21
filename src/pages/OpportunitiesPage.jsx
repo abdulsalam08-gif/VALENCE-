@@ -90,7 +90,7 @@ function ApplyModal({ opportunity, onClose, onApplied }) {
           <button
             onClick={handleApply}
             disabled={submitting || !text.trim()}
-            className="rounded-lg bg-[#E0A82E] px-4 py-2 text-sm font-semibold text-[#06130D] disabled:opacity-40"
+            className="rounded-lg bg-[#16C784] px-4 py-2 text-sm font-semibold text-[#06130D] disabled:opacity-40"
           >
             {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Submit Application'}
           </button>
@@ -133,7 +133,7 @@ function MyApplications() {
 
   return (
     <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5">
-      <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><Inbox className="h-4 w-4 text-[#E0A82E]" /> My Applications</h3>
+      <h3 className="mb-3 flex items-center gap-2 font-semibold text-white"><Inbox className="h-4 w-4 text-[#16C784]" /> My Applications</h3>
       {loading ? (
         <Loader2 className="h-5 w-5 animate-spin text-[#9AA4B2]" />
       ) : apps.length === 0 ? (
@@ -220,7 +220,7 @@ export default function OpportunitiesPage() {
                 onClick={() => setCat(c)}
                 className={`rounded-xl px-3.5 py-2 text-xs font-semibold border transition-colors ${
                   cat === c
-                    ? 'bg-[#E0A82E] text-[#06130D] border-[#E0A82E]'
+                    ? 'bg-[#16C784] text-[#06130D] border-[#16C784]'
                     : 'bg-[#11161C] text-[#9AA4B2] border-white/[0.08] hover:text-white'
                 }`}
               >
@@ -243,9 +243,6 @@ export default function OpportunitiesPage() {
                     VALENCE never displays fake or expired placeholder jobs. Every scholarship, internship, audit trainee role, and workshop is verified by the Admin team before going live, with instant notifications to students and professionals.
                   </p>
                   <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-                    <Link to="/portal/professional" className="v-btn-primary text-xs">
-                      Post a Verified Opportunity <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
                     <Link to="/portal/student?mode=register" className="v-btn-secondary text-xs">
                       Join Free for Opportunity Alerts
                     </Link>
@@ -262,13 +259,13 @@ export default function OpportunitiesPage() {
                         </div>
                         <h2 className="font-display text-xl font-bold text-white">{opp.title}</h2>
                         <p className="text-xs font-medium text-[#C2C9D4] inline-flex items-center gap-1.5">
-                          <Building2 className="h-3.5 w-3.5 text-[#E0A82E]" /> {opp.organisation}
+                          <Building2 className="h-3.5 w-3.5 text-[#16C784]" /> {opp.organisation}
                         </p>
                         <p className="text-xs leading-relaxed text-[#9AA4B2]">
                           <strong className="text-[#F4F6F9]">Eligibility:</strong> {opp.eligibility}
                         </p>
                         {opp.amount_ngn != null && (
-                          <p className="text-xs inline-flex items-center gap-1.5 font-semibold text-[#E0A82E]">
+                          <p className="text-xs inline-flex items-center gap-1.5 font-semibold text-[#16C784]">
                             <Banknote className="h-3.5 w-3.5" /> {formatNaira(opp.amount_ngn)}
                           </p>
                         )}
@@ -286,7 +283,7 @@ export default function OpportunitiesPage() {
                         <button
                           type="button"
                           onClick={() => openDetail(opp)}
-                          className="inline-flex items-center gap-1 font-semibold text-[#E0A82E] hover:underline"
+                          className="inline-flex items-center gap-1 font-semibold text-[#16C784] hover:underline"
                         >
                           View Details <ArrowUpRight className="h-3.5 w-3.5" />
                         </button>
@@ -327,7 +324,7 @@ export default function OpportunitiesPage() {
               <p><strong className="text-white">Eligibility:</strong> <span className="text-[#9AA4B2]">{active.opportunity.eligibility}</span></p>
               {active.opportunity.application_link && (
                 <a href={active.opportunity.application_link} target="_blank" rel="noreferrer"
-                   className="inline-flex items-center gap-1 text-[#E0A82E] hover:underline">
+                   className="inline-flex items-center gap-1 text-[#16C784] hover:underline">
                   External application portal <ArrowUpRight className="h-3.5 w-3.5" />
                 </a>
               )}
@@ -355,7 +352,7 @@ export default function OpportunitiesPage() {
             <div className="mt-5 flex justify-end">
               <button
                 onClick={() => { setApplyTarget(active.opportunity); setActive(null); }}
-                className="rounded-lg bg-[#E0A82E] px-5 py-2 text-sm font-semibold text-[#06130D]"
+                className="rounded-lg bg-[#16C784] px-5 py-2 text-sm font-semibold text-[#06130D]"
               >
                 Apply Now
               </button>

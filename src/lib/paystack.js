@@ -1,15 +1,22 @@
 /**
  * VALENCE Paystack Checkout Helper (Phase 5)
  *
- * Loads the official Paystack inline.js SDK once and opens a secure embed
+ * Loads the official Paystack InlineJS v2 SDK once and opens a secure embed
  * checkout for a given amount (in NGN; converted to kobo for Paystack).
  *
  * The public key is exposed to the frontend via VITE_PAYSTACK_PUBLIC_KEY
  * (public keys are safe for client-side use). Payment success is confirmed
  * against the server via the store-verify-payment Edge Function.
+ *
+ * Uses the current InlineJS v2 API (https://js.paystack.co/v2/inline.js):
+ *   new PaystackPop().newTransaction({ key, email, amount, reference, ... })
+ * The legacy /v1/inline.js SDK (window.PaystackPop.setup + openIframe) is
+ * deprecated, and `Paystack.embedCheckout` never existed — the old loader
+ * resolved to an undefined `window.Paystack`, which made every checkout fail
+ * with "Paystack checkout failed to open".
  */
 
-const SDK_URL = 'https://js.paystack.co/v1/inline.js';
+const SDK_URL = 'https://js.paystack.co/v2/inline.js';
 
 let sdkPromise = null;
 
@@ -22,14 +29,17 @@ export function isPaystackConfigured() {
 }
 
 function loadSdk() {
-  if (typeof window !== 'undefined' && window.Paystack) {
-    return Promise.resolve(window.Paystack);
+  if (typeof window !== 'undefined' && window.PaystackPop) {
+    return Promise.resolve(window.PaystackPop);
   }
   if (sdkPromise) return sdkPromise;
   sdkPromise = new Promise((resolve, reject) => {
     const existing = document.getElementById('paystack-inline-js');
     if (existing) {
-      existing.addEventListener('load', () => resolve(window.Paystack));
+      existing.addEventListener('load', () => {
+        if (window.PaystackPop) resolve(window.PaystackPop);
+        else reject(new Error('Paystack SDK loaded but the PaystackPop global is missing.'));
+      });
       existing.addEventListener('error', () =>
         reject(new Error('Failed to load the Paystack SDK'))
       );
@@ -39,7 +49,10 @@ function loadSdk() {
     script.id = 'paystack-inline-js';
     script.src = SDK_URL;
     script.async = true;
-    script.onload = () => resolve(window.Paystack);
+    script.onload = () => {
+      if (window.PaystackPop) resolve(window.PaystackPop);
+      else reject(new Error('Paystack SDK loaded but the PaystackPop global is missing.'));
+    };
     script.onerror = () => reject(new Error('Failed to load the Paystack SDK'));
     document.body.appendChild(script);
   });
@@ -47,7 +60,7 @@ function loadSdk() {
 }
 
 /**
- * Open the Paystack embed checkout.
+ * Open the Paystack embed checkout using InlineJS v2.
  * @param {object} opts
  * @param {string} opts.email     Payer email (auth user email)
  * @param {string} opts.name      Payer name
@@ -67,25 +80,33 @@ export async function openPaystackCheckout({
   if (!isPaystackConfigured()) {
     throw new Error('Paystack is not configured (missing VITE_PAYSTACK_PUBLIC_KEY).');
   }
-  const Paystack = await loadSdk();
+  const PaystackPop = await loadSdk();
   const amountKobo = Math.round(Number(amountNgn) * 100);
   if (!amountKobo || amountKobo <= 0) {
     throw new Error('Invalid order amount for Paystack checkout.');
   }
-  const handler = Paystack.embedCheckout({
+
+  const popup = new PaystackPop();
+  popup.newTransaction({
     key: getPaystackPublicKey(),
     email,
     amount: amountKobo,
+    currency: 'NGN',
     reference,
     ...(name ? { name } : {}),
     onSuccess: (response) => {
       if (typeof onSuccess === 'function') onSuccess(response);
     },
-    onClose: () => {
+    onCancel: () => {
+      if (typeof onClose === 'function') onClose();
+    },
+    onError: (error) => {
+      // Surface popup-level failures (invalid key, network, declined init)
+      // by returning to the caller's close path so they can retry.
+      console.error('Paystack checkout error:', error);
       if (typeof onClose === 'function') onClose();
     },
   });
-  handler.open();
 }
 
 /** Generate a short, unique, Paystack-safe payment reference. */

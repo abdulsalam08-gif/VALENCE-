@@ -66,7 +66,7 @@ import {
   pickQuizQuestions,
 } from '../lib/studyTools';
 
-const GREEN = '#E0A82E';
+const GREEN = '#16C784';
 
 const TOOLS = [
   { id: 'flashcards', name: 'Flashcards', icon: Layers, desc: 'Build decks and flip-study terms & definitions' },
@@ -128,7 +128,7 @@ function ErrorNote({ message }) {
 function SuccessNote({ message }) {
   if (!message) return null;
   return (
-    <div className="rounded-xl border border-[#E0A82E]/40 bg-[#E0A82E]/10 px-4 py-3 text-sm text-[#E0A82E]">
+    <div className="rounded-xl border border-[#16C784]/40 bg-[#16C784]/10 px-4 py-3 text-sm text-[#16C784]">
       {message}
     </div>
   );
@@ -223,8 +223,8 @@ function FlashcardsTool({ onToast }) {
                     onClick={() => { setActiveDeck(d); setIdx(0); setFlipped(false); setKnown(new Set()); }}
                     className={`w-full text-left rounded-xl border px-4 py-3 transition ${
                       activeDeck?.id === d.id
-                        ? 'border-[#E0A82E]/60 bg-[#E0A82E]/10'
-                        : 'border-white/[0.10] hover:border-[#E0A82E]/40'
+                        ? 'border-[#16C784]/60 bg-[#16C784]/10'
+                        : 'border-white/[0.10] hover:border-[#16C784]/40'
                     }`}
                   >
                     <div className="flex items-center justify-between">
@@ -416,8 +416,8 @@ function QuizTool({ onToast }) {
                       onClick={() => setAnswers((a) => ({ ...a, [q.question]: j }))}
                       className={`text-left rounded-lg border px-3 py-2 text-sm transition ${
                         answers[q.question] === j
-                          ? 'border-[#E0A82E]/60 bg-[#E0A82E]/10 text-[#E0A82E]'
-                          : 'border-white/[0.10] text-[#C6CDD6] hover:border-[#E0A82E]/40'
+                          ? 'border-[#16C784]/60 bg-[#16C784]/10 text-[#16C784]'
+                          : 'border-white/[0.10] text-[#C6CDD6] hover:border-[#16C784]/40'
                       }`}
                     >
                       {String.fromCharCode(65 + j)}. {opt}
@@ -443,7 +443,7 @@ function QuizTool({ onToast }) {
         <SectionCard title="Your result" subtitle="Attempt recorded in your performance history">
           <div className="flex items-center gap-6">
             <div className="text-center">
-              <div className="text-4xl font-bold text-[#E0A82E]">{result.score}%</div>
+              <div className="text-4xl font-bold text-[#16C784]">{result.score}%</div>
               <p className="text-xs text-[#9AA4B2] mt-1">{result.correct}/{result.total} correct</p>
             </div>
             <div className="text-sm text-[#C6CDD6]">
@@ -605,7 +605,7 @@ function ProgressTool({ onToast }) {
       <ErrorNote message={error} />
       <SectionCard title="Syllabus progress" subtitle={`${done}/${items.length} topics completed · ${pct}%`}>
         <div className="h-2.5 rounded-full bg-white/[0.08] mb-4 overflow-hidden">
-          <div className="h-full rounded-full bg-[#E0A82E] transition-all" style={{ width: `${pct}%` }} />
+          <div className="h-full rounded-full bg-[#16C784] transition-all" style={{ width: `${pct}%` }} />
         </div>
         <form onSubmit={add} className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
           <Field label="Topic">
@@ -696,14 +696,14 @@ function ExamTool({ onToast }) {
       <SectionCard title="Exam Mode" subtitle="10 questions · 10 minutes · scored and recorded">
         {!started && (
           <div className="text-center py-6">
-            <GraduationCap size={32} className="mx-auto text-[#E0A82E] mb-3" />
+            <GraduationCap size={32} className="mx-auto text-[#16C784] mb-3" />
             <p className="text-sm text-[#C6CDD6] mb-4">Simulate exam conditions with a timed, scored practice paper.</p>
             <button onClick={start} className="v-btn-primary"><GraduationCap size={15} /> Start timed exam</button>
           </div>
         )}
         {started && !submitted && (
           <>
-            <div className={`flex items-center justify-center gap-2 mb-4 rounded-xl border px-4 py-2 w-fit ${seconds < 60 ? 'border-[#EA3943]/50 text-[#FF8A8A]' : 'border-white/[0.10] text-[#E0A82E]'}`}>
+            <div className={`flex items-center justify-center gap-2 mb-4 rounded-xl border px-4 py-2 w-fit ${seconds < 60 ? 'border-[#EA3943]/50 text-[#FF8A8A]' : 'border-white/[0.10] text-[#16C784]'}`}>
               <Clock size={15} /> {mm}:{ss}
             </div>
             <div className="space-y-4 max-h-[520px] overflow-y-auto pr-1">
@@ -717,8 +717,8 @@ function ExamTool({ onToast }) {
                         onClick={() => setAnswers((a) => ({ ...a, [q.question]: j }))}
                         className={`text-left rounded-lg border px-3 py-2 text-sm transition ${
                           answers[q.question] === j
-                            ? 'border-[#E0A82E]/60 bg-[#E0A82E]/10 text-[#E0A82E]'
-                            : 'border-white/[0.10] text-[#C6CDD6] hover:border-[#E0A82E]/40'
+                            ? 'border-[#16C784]/60 bg-[#16C784]/10 text-[#16C784]'
+                            : 'border-white/[0.10] text-[#C6CDD6] hover:border-[#16C784]/40'
                         }`}
                       >
                         {String.fromCharCode(65 + j)}. {opt}
@@ -736,8 +736,8 @@ function ExamTool({ onToast }) {
         {submitted && (
           <>
             <div className="text-center py-6">
-              <Trophy size={32} className="mx-auto text-[#E0A82E] mb-3" />
-              <div className="text-4xl font-bold text-[#E0A82E]">{submitted.score}%</div>
+              <Trophy size={32} className="mx-auto text-[#16C784] mb-3" />
+              <div className="text-4xl font-bold text-[#16C784]">{submitted.score}%</div>
               <p className="text-sm text-[#9AA4B2] mt-1">{submitted.correct}/{submitted.total} correct · attempt saved</p>
             </div>
             <div className="flex justify-center gap-3">
@@ -858,7 +858,7 @@ const TUTOR_SUGGESTIONS = [
   'Explain FIFO and LIFO inventory valuation.',
 ];
 
-const STEP_ICON_COLORS = ['#E0A82E', '#9AA4B2', '#C2C9D4', '#E0A82E', '#667085', '#EA3943', '#9AA4B2'];
+const STEP_ICON_COLORS = ['#16C784', '#3B82F6', '#8B5CF6', '#F5A623', '#16C784', '#EA3943', '#3B82F6'];
 
 function AiTutorTool({ onToast }) {
   const [conversations, setConversations] = useState([]);
@@ -950,8 +950,8 @@ function AiTutorTool({ onToast }) {
                     onClick={() => loadMessages(c.id)}
                     className={`w-full text-left rounded-xl border px-3 py-2 transition ${
                       activeConversationId === c.id
-                        ? 'border-[#E0A82E]/60 bg-[#E0A82E]/10'
-                        : 'border-white/[0.10] hover:border-[#E0A82E]/40'
+                        ? 'border-[#16C784]/60 bg-[#16C784]/10'
+                        : 'border-white/[0.10] hover:border-[#16C784]/40'
                     }`}
                   >
                     <p className="text-sm font-semibold text-white truncate">{c.title}</p>
@@ -994,7 +994,7 @@ function AiTutorTool({ onToast }) {
             )}
             {messages.map((m) => (
               <div key={m.id} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[85%] rounded-2xl px-4 py-3 ${m.role === 'user' ? 'bg-[#E0A82E] text-[#0E131A]' : 'bg-[#141A22] border border-white/[0.10] text-white'}`}>
+                <div className={`max-w-[85%] rounded-2xl px-4 py-3 ${m.role === 'user' ? 'bg-[#16C784] text-[#0E131A]' : 'bg-[#141A22] border border-white/[0.10] text-white'}`}>
                   <p className="text-sm whitespace-pre-wrap">{m.content}</p>
                 </div>
               </div>
@@ -1338,7 +1338,7 @@ function ResourcesTool() {
                 </div>
                 <p className="text-xs text-[#9AA4B2] mt-1">{r.resource_type}{r.access_permission ? ` · ${r.access_permission}` : ''}</p>
                 {r.file_url && (
-                  <a href={r.file_url} target="_blank" rel="noreferrer" className="text-xs text-[#E0A82E] hover:underline mt-2 inline-flex items-center gap-1">
+                  <a href={r.file_url} target="_blank" rel="noreferrer" className="text-xs text-[#16C784] hover:underline mt-2 inline-flex items-center gap-1">
                     Open resource <ExternalLink />
                   </a>
                 )}
@@ -1386,7 +1386,7 @@ function InsightsTool() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="v-card p-5">
           <p className="text-xs text-[#9AA4B2]">Average score</p>
-          <p className="text-2xl font-bold text-[#E0A82E] mt-1">{avg}%</p>
+          <p className="text-2xl font-bold text-[#16C784] mt-1">{avg}%</p>
         </div>
         <div className="v-card p-5">
           <p className="text-xs text-[#9AA4B2]">Best score</p>
@@ -1412,7 +1412,7 @@ function InsightsTool() {
                 <li key={a.id} className="flex items-center gap-3">
                   <span className="w-28 text-xs text-[#9AA4B2] truncate">{a.quiz_topic}</span>
                   <div className="flex-1 h-2.5 rounded-full bg-white/[0.08] overflow-hidden">
-                    <div className="h-full rounded-full bg-[#E0A82E]" style={{ width: `${a.score_percentage}%` }} />
+                    <div className="h-full rounded-full bg-[#16C784]" style={{ width: `${a.score_percentage}%` }} />
                   </div>
                   <span className="w-12 text-xs font-semibold text-white text-right">{a.score_percentage}%</span>
                   <button onClick={async () => { await deleteQuizAttempt(a.id); setAttempts((x) => x.filter((i) => i.id !== a.id)); }} className="text-[#EA3943] hover:text-[#FF8A8A]">
@@ -1478,7 +1478,7 @@ function GoalsTool({ onToast }) {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="v-card p-5">
           <p className="text-xs text-[#9AA4B2]">Active goals</p>
-          <p className="text-2xl font-bold text-[#E0A82E] mt-1">{active.length}</p>
+          <p className="text-2xl font-bold text-[#16C784] mt-1">{active.length}</p>
         </div>
         <div className="v-card p-5">
           <p className="text-xs text-[#9AA4B2]">Completed</p>
@@ -1517,7 +1517,7 @@ function GoalsTool({ onToast }) {
         ) : (
           <ul className="space-y-2">
             {completed.map((p) => (
-              <li key={p.id} className="flex items-center justify-between gap-3 rounded-xl border border-[#E0A82E]/20 bg-[#E0A82E]/5 px-4 py-3">
+              <li key={p.id} className="flex items-center justify-between gap-3 rounded-xl border border-[#16C784]/20 bg-[#16C784]/5 px-4 py-3">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 size={15} style={{ color: GREEN }} />
                   <span className="text-sm font-semibold text-white">{p.title}</span>
@@ -1529,7 +1529,7 @@ function GoalsTool({ onToast }) {
         )}
       </SectionCard>
       <p className="text-xs text-[#5A6472]">
-        Want more goals? Use the <span className="text-[#E0A82E] font-semibold">Study Planner</span> tool to create new plans with target dates.
+        Want more goals? Use the <span className="text-[#16C784] font-semibold">Study Planner</span> tool to create new plans with target dates.
       </p>
     </div>
   );
@@ -1590,7 +1590,7 @@ export default function StudyToolsPage() {
                 <ArrowLeft size={15} /> All 15 tools
               </button>
               <div className="flex items-center gap-3">
-                <span className="flex items-center justify-center w-11 h-11 rounded-xl bg-[#E0A82E]/10 border border-[#E0A82E]/30">
+                <span className="flex items-center justify-center w-11 h-11 rounded-xl bg-[#16C784]/10 border border-[#16C784]/30">
                   {tool && <tool.icon size={20} style={{ color: GREEN }} />}
                 </span>
                 <div>
@@ -1610,7 +1610,7 @@ export default function StudyToolsPage() {
                     className="v-card-hover p-5 text-left"
                   >
                     <div className="flex items-center justify-between mb-3">
-                      <span className="flex items-center justify-center w-11 h-11 rounded-xl bg-[#E0A82E]/10 border border-[#E0A82E]/30">
+                      <span className="flex items-center justify-center w-11 h-11 rounded-xl bg-[#16C784]/10 border border-[#16C784]/30">
                         <t.icon size={20} style={{ color: GREEN }} />
                       </span>
                       <ChevronRight size={16} className="text-[#5A6472]" />
@@ -1622,7 +1622,7 @@ export default function StudyToolsPage() {
               </div>
               <div className="mt-10 v-card p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <Flame size={20} style={{ color: '#E0A82E' }} />
+                  <Flame size={20} style={{ color: '#16C784' }} />
                   <p className="text-sm text-[#C6CDD6]">
                     <span className="font-semibold text-white">Tip:</span> Log daily revision sessions and take a quiz every day to build a strong study streak.
                   </p>

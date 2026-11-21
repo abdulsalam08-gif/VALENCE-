@@ -3,7 +3,6 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import {
   GraduationCap,
   BookOpenCheck,
-  Briefcase,
   Building2,
   Megaphone,
   ShieldCheck,
@@ -15,7 +14,7 @@ import {
   UserPlus,
 } from 'lucide-react';
 import { isSupabaseConfigured } from '../lib/supabase';
-import { usePlatform } from '../context/PlatformContext';
+import { useAuth, useCart, usePublicData, useUi } from '../context/PlatformContext';
 import { useToast } from '../context/ToastContext';
 import Badge from '../components/ui/Badge';
 import BrandLogo from '../components/ui/BrandLogo';
@@ -36,7 +35,7 @@ const PORTAL_META = {
       'In-app ATSWA document checklist, upload & registration guidance + in-app study material & delivery enquiries',
       'Optional ₦3,000 per-level Paystack registration exclusively when applying for tuition & cost implication',
       'Per-course past question & study pack orders (buy 1 course or all applicable) with automatic discounts up to 9%',
-      '15 study tools, WebRTC voice/video calling & National Competitions with ₦220,000 podium cash prizes',
+      '15 study tools, WebRTC voice/video calling & National Competitions with ₦500,000 podium cash prizes',
     ],
     needsInstitution: true,
     registerFields: [
@@ -71,32 +70,6 @@ const PORTAL_META = {
       ] },
     ],
   },
-  professional: {
-    key: 'professional',
-    label: 'Professional Portal',
-    badge: 'VALENCE PRO · VERIFIED CREDENTIALS',
-    icon: Briefcase,
-    headline: 'For Chartered Accountants, Finance Leaders & Practising Professionals',
-    summary:
-      'Join free as an ACA, FCA, ACCA, CPA, auditor, tax consultant, CFO or lecturer. Request official credential verification, mentor candidates, host CPD sessions and post opportunities.',
-    capabilities: [
-      'Verified Chartered Accountant & Verified Professional credential workflow',
-      'Mentor enrolment & structured mentee session approvals',
-      'Technical accounting discussions, standards commentary & CPE/CPD hosting',
-      'Community announcements with audience scoping, direct messaging & WebRTC calling',
-      'Publish verified internships, audit trainee openings & graduate accounting roles',
-    ],
-    needsInstitution: true,
-    registerFields: [
-      { name: 'credential', label: 'Primary Professional Designation', type: 'select', options: [
-        'ACA: Associate Chartered Accountant (ICAN)',
-        'FCA: Fellow Chartered Accountant (ICAN)',
-        'ACCA / FCCA',
-        'CPA / CIMA / CITN',
-        'Finance Manager / Auditor / Accounting Lecturer',
-      ] },
-    ],
-  },
   school: {
     key: 'school',
     label: 'School & Institution Portal',
@@ -104,12 +77,12 @@ const PORTAL_META = {
     icon: Building2,
     headline: 'Register Your Nigerian University, Polytechnic, College or Tuition Centre',
     summary:
-      'Select your institution from the embedded directory of all Nigerian universities, polytechnics and colleges, manage candidate squads (strictly only 4 competitors per school), appoint supervisors and track national rankings, Top VALENCE Students and ₦220,000 podium reward tracking.',
+      'Select your institution from the embedded directory of all Nigerian universities, polytechnics and colleges, manage candidate squads (strictly only 4 competitors per school), appoint supervisors and track national rankings, Top VALENCE Students and ₦500,000 podium reward tracking.',
     capabilities: [
       'Full Federal, State & Private Nigerian university directory + polytechnics & colleges',
       'Coordinator verification & official Verified Institution profile badge',
       'Multi-division competition team registration, roster locking & qualifying status',
-      'Realtime school leaderboard analytics, merit certificates, Top VALENCE Students spotlight & podium reward tracking (₦100,000 / ₦70,000 / ₦50,000)',
+      'Realtime school leaderboard analytics, merit certificates, Top VALENCE Students spotlight & podium reward tracking (₦250,000 / ₦150,000 / ₦100,000)',
     ],
     needsInstitution: true,
     registerFields: [
@@ -161,7 +134,7 @@ const PORTAL_META = {
       'Dynamic Platform & Pricing CMS: update per-course past question/study pack prices, discounts, delivery zones, tuition fees, ₦3,000 lock, ₦10,000/week ad rate, motivational quote pop-ups & FAQs anytime',
       'In-App Operations Queues: manage ATSWA document/registration guidance, study material & delivery enquiries, and VALENCE ADVERTISE campaign approvals & billing',
       'Central Examination Authority: update ATSWA (2-day) & ICAN (3-day) dates, paper timetables & 30-day result release / delay notices',
-      'Competition Manager: papers, timers, rubric grading, appeals & ₦100,000 / ₦70,000 / ₦50,000 podium post-competition reward disbursement logs',
+      'Competition Manager: papers, timers, rubric grading, appeals & ₦250,000 / ₦150,000 / ₦100,000 podium post-competition reward disbursement logs',
       'Verification, Finance & Moderation: tutor certificates (AAT / AAT + ACA), professionals, Nigerian institutions, Paystack audit logs & community safety',
     ],
     needsInstitution: false,
@@ -172,7 +145,8 @@ const PORTAL_META = {
 export default function PortalGatewayPage({ defaultPortal = 'student' }) {
   const { portalType } = useParams();
   const [searchParams] = useSearchParams();
-  const { universityCounts, handleSignIn, handleSignUp } = usePlatform();
+  const { handleSignIn, handleSignUp } = useAuth();
+  const { universityCounts } = usePublicData();
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -204,12 +178,12 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
   const Icon = meta.icon;
   const applyForTuition = searchParams.get('apply') === 'tuition';
 
-  // Map each portal to its post-login destination. Portals without a dedicated
-  // workspace (professional, school) use the student/learner portal.
+  // Map each portal to its own post-login destination — every portal lands on
+  // the portal it is meant to. general_learner uses the student/learner portal
+  // as its workspace; school gets its own gateway path.
   const portalRoute = {
     student: '/portal/student',
-    professional: '/portal/student',
-    school: '/portal/student',
+    school: '/portal/school',
     general_learner: '/portal/student',
     tutor: '/portal/tutor',
     advertiser: '/portal/advertiser',
@@ -240,9 +214,8 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
       toast.success('Signed in', `Welcome to ${meta.label}.`);
       navigate(portalRoute[selectedPortal] || '/portal/student');
     } else {
-      const accountType = selectedPortal === 'admin' ? 'admin' :
-        selectedPortal === 'school_rep' ? 'school_rep' :
-        selectedPortal === 'professional' ? 'professional' :
+        const accountType = selectedPortal === 'admin' ? 'admin' :
+        selectedPortal === 'school' ? 'school_rep' :
         selectedPortal === 'tutor' ? 'tutor' :
         selectedPortal === 'advertiser' ? 'advertiser' :
         selectedPortal === 'general_learner' ? 'general_learner' : 'student';
@@ -280,7 +253,7 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
                 onClick={() => handlePortalSwitch(p.key)}
                 className={`inline-flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold border transition-all ${
                   active
-                    ? 'bg-[#E0A82E] text-[#06130D] border-[#E0A82E] shadow-glow-sm'
+                    ? 'bg-[#16C784] text-[#06130D] border-[#16C784] shadow-glow-sm'
                     : 'bg-[#11161C] text-[#C2C9D4] border-white/[0.08] hover:border-white/[0.2] hover:text-white'
                 }`}
               >
@@ -297,7 +270,7 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
             <div className="space-y-4">
               <Badge variant="green">{meta.badge}</Badge>
               <div className="flex items-center gap-3">
-                <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E0A82E]/[0.12] border border-[#E0A82E]/30 text-[#E0A82E]">
+                <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#16C784]/[0.12] border border-[#16C784]/30 text-[#16C784]">
                   <Icon className="h-6 w-6" />
                 </div>
                 <h1 className="font-display text-2xl sm:text-3xl font-bold text-white">
@@ -311,8 +284,8 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
             </div>
 
             {applyForTuition && selectedPortal === 'student' && (
-              <div className="rounded-2xl bg-[#E0A82E]/10 border border-[#E0A82E]/35 p-4 text-xs text-[#E5E9F0] space-y-1">
-                <p className="font-bold text-[#E0A82E]">
+              <div className="rounded-2xl bg-[#16C784]/10 border border-[#16C784]/35 p-4 text-xs text-[#E5E9F0] space-y-1">
+                <p className="font-bold text-[#16C784]">
                   Tuition Application & Cost Implication Selected (₦3,000 One-Time Unlock)
                 </p>
                 <p className="text-[#C2C9D4]">
@@ -322,13 +295,13 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
             )}
 
             <div className="v-card p-6 space-y-3.5">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">
+              <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">
                 Included Portal Capabilities
               </p>
               <ul className="space-y-2.5 text-xs sm:text-sm text-[#D5DBE3]">
                 {meta.capabilities.map((cap) => (
                   <li key={cap} className="flex items-start gap-2.5">
-                    <CheckCircle2 className="h-4 w-4 text-[#E0A82E] shrink-0 mt-0.5" />
+                    <CheckCircle2 className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" />
                     <span>{cap}</span>
                   </li>
                 ))}
@@ -336,12 +309,12 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
             </div>
 
             {!isSupabaseConfigured && (
-              <div className="rounded-2xl bg-[#11161C] border border-[#E0A82E]/25 p-4 flex items-start gap-3 text-xs text-[#C2C9D4]">
-                <Database className="h-4 w-4 text-[#E0A82E] shrink-0 mt-0.5" />
+              <div className="rounded-2xl bg-[#11161C] border border-[#16C784]/25 p-4 flex items-start gap-3 text-xs text-[#C2C9D4]">
+                <Database className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" />
                 <div>
                   <p className="font-semibold text-white">Supabase Auth & Database Binding Ready</p>
                   <p className="text-[#9AA4B2] mt-0.5">
-                    Live database provisioning (including all {universityCounts.total} accredited Nigerian universities, polytechnics &amp; colleges, Central Exam Authority tables, ₦3,000 tuition unlock records &amp; ₦220,000 podium reward ledgers) connects directly in Phase 2 &amp; Phase 3.
+                    Live database provisioning (including all {universityCounts.total} accredited Nigerian universities, polytechnics &amp; colleges, Central Exam Authority tables, ₦3,000 tuition unlock records &amp; ₦500,000 podium reward ledgers) connects directly in Phase 2 &amp; Phase 3.
                   </p>
                 </div>
               </div>
@@ -358,7 +331,7 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
                     type="button"
                     onClick={() => setMode('signin')}
                     className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
-                      mode === 'signin' ? 'bg-[#E0A82E] text-[#06130D]' : 'text-[#9AA4B2]'
+                      mode === 'signin' ? 'bg-[#16C784] text-[#06130D]' : 'text-[#9AA4B2]'
                     }`}
                   >
                     <LogIn className="h-3.5 w-3.5" /> Sign In
@@ -367,7 +340,7 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
                     type="button"
                     onClick={() => setMode('register')}
                     className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
-                      mode === 'register' ? 'bg-[#E0A82E] text-[#06130D]' : 'text-[#9AA4B2]'
+                      mode === 'register' ? 'bg-[#16C784] text-[#06130D]' : 'text-[#9AA4B2]'
                     }`}
                   >
                     <UserPlus className="h-3.5 w-3.5" /> Register Free
@@ -465,7 +438,7 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
                       onClick={() =>
                         toast.info('Password Reset', 'Email recovery activates with Supabase Auth in Phase 3.')
                       }
-                      className="text-[11px] font-medium text-[#E0A82E] hover:underline"
+                      className="text-[11px] font-medium text-[#16C784] hover:underline"
                     >
                       Forgot password?
                     </button>
@@ -492,11 +465,11 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
               </button>
               <p className="text-[11px] text-center text-[#9AA4B2]">
                 By continuing, you agree to VALENCE&apos;s{' '}
-                <Link to="/legal/terms" className="text-[#E0A82E] hover:underline">
+                <Link to="/legal/terms" className="text-[#16C784] hover:underline">
                   Terms of Service
                 </Link>{' '}
                 and{' '}
-                <Link to="/legal/privacy" className="text-[#E0A82E] hover:underline">
+                <Link to="/legal/privacy" className="text-[#16C784] hover:underline">
                   NDPA Privacy Policy
                 </Link>
                 .
@@ -505,7 +478,7 @@ export default function PortalGatewayPage({ defaultPortal = 'student' }) {
 
             <div className="border-t border-white/[0.07] pt-4 flex items-center justify-between gap-2 text-[11px] text-[#667085]">
               <span className="inline-flex items-center gap-1.5">
-                <Lock className="h-3.5 w-3.5 text-[#E0A82E]" />
+                <Lock className="h-3.5 w-3.5 text-[#16C784]" />
                 Encrypted Supabase Auth · Role-Isolated RLS
               </span>
               <span>Zero Secrets in Client</span>

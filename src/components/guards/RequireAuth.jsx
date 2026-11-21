@@ -1,9 +1,10 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { usePlatform } from '../../context/PlatformContext';
+import { useAuth, useCart, usePublicData, useUi } from '../../context/PlatformContext';
 
 export function RequireAuth({ children }) {
-  const { user, isHydrating } = usePlatform();
+  const { user } = useAuth();
+  const { isHydrating } = usePublicData();
   const location = useLocation();
 
   if (isHydrating) {
@@ -27,8 +28,8 @@ export function RequireAuth({ children }) {
 }
 
 export function RequireRole({ roles, children, fallback = null }) {
-  const { user, adminRoles, isHydrating } = usePlatform();
-
+  const { user, adminRoles } = useAuth();
+  const { isHydrating } = usePublicData();
   if (isHydrating) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">

@@ -11,29 +11,17 @@ import {
   Building2,
   Calendar,
   Lock,
+  Info,
   ShieldCheck,
   ChevronDown,
 } from 'lucide-react';
-import { usePlatform } from '../context/PlatformContext';
+import { useAuth, useCart, usePublicData, useUi } from '../context/PlatformContext';
 import Badge from '../components/ui/Badge';
 import CountdownTimer from '../components/ui/CountdownTimer';
 import { formatReadableDate, getSessionLifecycle } from '../lib/examSchedule';
 
 export default function ProgrammesPage({ focusTertiary = false }) {
-  const {
-    sessions,
-    atswaLevels,
-    icanLevels,
-    atswaEntryPathways,
-    graduateEntryPathways,
-    tertiaryDisciplines,
-    generalLearnerTracks,
-    universities,
-    nigerianStates,
-    universityCounts,
-    settings,
-  } = usePlatform();
-
+  const { sessions, atswaLevels, icanLevels, atswaEntryPathways, graduateEntryPathways, tertiaryDisciplines, generalLearnerTracks, universities, nigerianStates, universityCounts, settings } = usePublicData();
   const [openTimetableId, setOpenTimetableId] = useState('atswa-mar-2027');
   const [uniSearch, setUniSearch] = useState('');
   const [uniCategory, setUniCategory] = useState('ALL');
@@ -68,7 +56,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
           </h1>
           <p className="text-sm sm:text-base text-[#9AA4B2] max-w-2xl">
             Browse ATSWA and ICAN syllabuses, exam timetables and exemption rules for free. Students pay the one-time{' '}
-            <strong className="text-[#E0A82E]">₦3,000 fee</strong> per level only when applying for tuition and unlocking full cost implications (in-app online tuition plus the verified tuition cost implications published by each physical tuition centre advertising on VALENCE).
+            <strong className="text-[#16C784]">₦3,000 fee</strong> per level only when applying for tuition and unlocking full cost implications (in-app online tuition plus the verified tuition cost implications published by each physical tuition centre advertising on VALENCE).
           </p>
           <div className="flex flex-wrap gap-3 pt-1">
             <Link to="/programmes/atswa" className="v-btn-primary text-xs">
@@ -78,7 +66,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
               ICAN (Foundation · Skills · Professional)
             </Link>
             <Link to="/programmes/ican/exemptions" className="v-btn-secondary text-xs">
-              <Scale className="h-4 w-4 text-[#E0A82E]" /> ICAN Exemption & Entry Tool
+              <Scale className="h-4 w-4 text-[#16C784]" /> ICAN Exemption & Entry Tool
             </Link>
             <Link to="/programmes/ican/guide" className="v-btn-secondary text-xs">
               Candidate Guide (10 FAQs)
@@ -101,7 +89,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
               </h2>
               <p className="text-xs sm:text-sm text-[#9AA4B2]">
                 <strong className="text-white">ATSWA (March & September):</strong> 2 days on the second-to-last Tuesday & Wednesday.{' '}
-                <strong className="text-white">ICAN (May & November):</strong> 3 days on the first Tuesday, Wednesday & Thursday. Exam registration closes <strong className="text-[#EA3943]">1 week before exams</strong>, and a <strong className="text-[#E0A82E]">30-day result countdown</strong> starts right after the final paper. Because the Institute occasionally adjusts exam or result dates, all entries below are managed live by VALENCE’s Central Examination Authority.
+                <strong className="text-white">ICAN (May & November):</strong> 3 days on the first Tuesday, Wednesday & Thursday. Exam registration closes <strong className="text-[#EA3943]">1 week before exams</strong>, and a <strong className="text-[#16C784]">30-day result countdown</strong> starts right after the final paper. Because the Institute occasionally adjusts exam or result dates, all entries below are managed live by VALENCE’s Central Examination Authority.
               </p>
             </div>
 
@@ -113,7 +101,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
                   <div
                     key={s.id}
                     className={`v-card p-6 space-y-4 ${
-                      lc.phase === 'awaiting_results' ? 'border-[#E0A82E]/40' : ''
+                      lc.phase === 'awaiting_results' ? 'border-[#16C784]/40' : ''
                     }`}
                   >
                     <div className="flex flex-wrap items-center justify-between gap-2">
@@ -133,7 +121,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
 
                     {lc.countdownTarget && (
                       <div className="space-y-1.5">
-                        <p className="text-[11px] font-semibold text-[#E0A82E]">
+                        <p className="text-[11px] font-semibold text-[#16C784]">
                           {lc.countdownLabel}
                         </p>
                         <CountdownTimer targetDate={lc.countdownTarget} compact />
@@ -153,7 +141,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
                       </div>
                       <div className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-2.5">
                         <span className="block text-[10px] text-[#667085]">Est. Results (+30 Days)</span>
-                        <span className="font-semibold text-[#E0A82E]">
+                        <span className="font-semibold text-[#16C784]">
                           {s.expectedResultFormatted}
                         </span>
                       </div>
@@ -164,15 +152,15 @@ export default function ProgrammesPage({ focusTertiary = false }) {
                       <button
                         type="button"
                         onClick={() => setOpenTimetableId(timetableOpen ? null : s.id)}
-                        className="w-full flex items-center justify-between text-xs font-semibold text-[#F4F6F9] hover:text-[#E0A82E] transition-colors"
+                        className="w-full flex items-center justify-between text-xs font-semibold text-[#F4F6F9] hover:text-[#16C784] transition-colors"
                       >
                         <span className="inline-flex items-center gap-1.5">
-                          <Calendar className="h-3.5 w-3.5 text-[#E0A82E]" />
+                          <Calendar className="h-3.5 w-3.5 text-[#16C784]" />
                           {timetableOpen ? 'Hide' : 'View'} {s.durationDays}-Day Examination Timetable
                         </span>
                         <ChevronDown
                           className={`h-4 w-4 transition-transform ${
-                            timetableOpen ? 'rotate-180 text-[#E0A82E]' : ''
+                            timetableOpen ? 'rotate-180 text-[#16C784]' : ''
                           }`}
                         />
                       </button>
@@ -184,7 +172,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
                               key={slot.dayLabel}
                               className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-3 text-[11.5px] space-y-1"
                             >
-                              <div className="flex justify-between font-semibold text-[#E0A82E]">
+                              <div className="flex justify-between font-semibold text-[#16C784]">
                                 <span>{slot.dayLabel}</span>
                                 <span>{formatReadableDate(s.examDays[slot.dateIndex], false)}</span>
                               </div>
@@ -217,7 +205,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
                 <div className="flex items-center justify-between gap-2">
                   <Badge variant="green">ATSWA · 2-Day Diet (Mar & Sep)</Badge>
                   <span className="text-xs text-[#9AA4B2] inline-flex items-center gap-1">
-                    <Lock className="h-3 w-3 text-[#E0A82E]" /> ₦3,000 for Tuition
+                    <Lock className="h-3 w-3 text-[#16C784]" /> ₦3,000 for Tuition
                   </span>
                 </div>
                 <h2 className="font-display text-2xl font-bold text-white">
@@ -229,7 +217,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
                 <div className="grid grid-cols-3 gap-2.5">
                   {atswaLevels.map((l) => (
                     <div key={l.id} className="rounded-xl bg-[#0B0E11] border border-white/[0.07] p-3">
-                      <p className="font-display text-sm font-bold text-[#E0A82E]">{l.code}</p>
+                      <p className="font-display text-sm font-bold text-[#16C784]">{l.code}</p>
                       <p className="text-[11px] text-[#9AA4B2] mt-0.5">{l.courses.length} courses</p>
                       <p className="text-[10.5px] text-[#667085] mt-1">
                         {l.courses.map((c) => c.code).join(' · ')}
@@ -258,7 +246,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
                 <div className="flex items-center justify-between gap-2">
                   <Badge variant="green">ICAN · 3-Day Diet (May & Nov)</Badge>
                   <span className="text-xs text-[#9AA4B2] inline-flex items-center gap-1">
-                    <Lock className="h-3 w-3 text-[#E0A82E]" /> ₦3,000 for Tuition
+                    <Lock className="h-3 w-3 text-[#16C784]" /> ₦3,000 for Tuition
                   </span>
                 </div>
                 <h2 className="font-display text-2xl font-bold text-white">
@@ -272,9 +260,9 @@ export default function ProgrammesPage({ focusTertiary = false }) {
                     <Link
                       key={l.id}
                       to={`/programmes/ican/${l.slug}`}
-                      className="rounded-xl bg-[#0B0E11] border border-white/[0.07] hover:border-[#E0A82E]/40 p-3 transition-colors"
+                      className="rounded-xl bg-[#0B0E11] border border-white/[0.07] hover:border-[#16C784]/40 p-3 transition-colors"
                     >
-                      <p className="font-display text-sm font-bold text-[#E0A82E]">{l.shortName}</p>
+                      <p className="font-display text-sm font-bold text-[#16C784]">{l.shortName}</p>
                       <p className="text-[11px] text-[#9AA4B2] mt-0.5">{l.courses.length} papers</p>
                       <p className="text-[10.5px] text-[#667085] mt-1 truncate">
                         {l.courses.map((c) => c.code).join(' · ')}
@@ -293,6 +281,84 @@ export default function ProgrammesPage({ focusTertiary = false }) {
                 <Link to="/programmes/ican/guide" className="v-btn-secondary text-xs">
                   10 Candidate FAQs
                 </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Other Professional Bodies: ACCA, CIBN, CITN, CIPM */}
+          <div className="v-container mt-10">
+            <div className="space-y-3 mb-6">
+              <Badge variant="green">OTHER PROFESSIONAL BODIES</Badge>
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-white">
+                ACCA, CIBN, CITN &amp; CIPM — Where to Start
+              </h2>
+              <p className="text-xs sm:text-sm text-[#9AA4B2] max-w-3xl">
+                VALENCE supports candidates across Nigeria's leading professional accounting bodies beyond ATSWA and ICAN. Browse each body's entry route, exemption guidance and cost implications below. VALENCE sells hard-copy materials only for ATSWA and ICAN — for ACCA, CIBN, CITN and CIPM, verified authors advertise on VALENCE and provide direct soft-copy download links you can access from their ad cards.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                {
+                  code: 'ACCA',
+                  bodyId: 'acca',
+                  name: 'Association of Chartered Certified Accountants',
+                  level: '9 Papers · 3 Stages',
+                  desc: 'World-recognised chartered accountancy qualification. Enter via ACCA Applied Knowledge or exemption from relevant prior qualifications.',
+                  cta: 'Explore ACCA',
+                },
+                {
+                  code: 'CIBN',
+                  bodyId: 'cibn',
+                  name: 'Chartered Institute of Bankers, Nigeria',
+                  level: 'CIBN Certification',
+                  desc: 'Banking and finance professional certification. Entry routes for graduates and bankers with relevant experience.',
+                  cta: 'Explore CIBN',
+                },
+                {
+                  code: 'CITN',
+                  bodyId: 'citn',
+                  name: 'Chartered Institute of Taxation, Nigeria',
+                  level: 'CITN (ACTI) Qualification',
+                  desc: 'Taxation profession qualification. Entry for accountants, law graduates and tax practitioners with relevant backgrounds.',
+                  cta: 'Explore CITN',
+                },
+                {
+                  code: 'CIPM',
+                  bodyId: 'cipm',
+                  name: 'Chartered Institute of Personnel Management',
+                  level: 'CIPM Certification',
+                  desc: 'Human resources and people management qualification. Entry routes for HR practitioners and management graduates.',
+                  cta: 'Explore CIPM',
+                },
+              ].map((body) => (
+                <div key={body.code} className="v-card-hover p-6 flex flex-col gap-4">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="h-11 w-11 rounded-xl bg-[#16C784]/15 border border-[#16C784]/30 flex items-center justify-center">
+                      <span className="font-display font-bold text-[#16C784] text-sm">{body.code}</span>
+                    </div>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-[#9AA4B2]">{body.level}</span>
+                  </div>
+                  <div>
+                    <h3 className="font-display text-sm font-bold text-white leading-tight">{body.name}</h3>
+                    <p className="text-[11px] text-[#9AA4B2] mt-1 leading-snug">{body.desc}</p>
+                  </div>
+                  <div className="mt-auto flex flex-wrap gap-2 pt-1">
+                    <Link to={`/programmes/other/${body.bodyId}`} className="v-btn-secondary text-[11px] py-1.5 px-3">
+                      Entry &amp; Exemptions
+                    </Link>
+                    <Link to="/tuition-centres" className="v-btn-primary text-[11px] py-1.5 px-3">
+                      Soft-Copy Materials
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="v-card p-5 mt-6 space-y-3">
+              <div className="flex items-start gap-2.5">
+                <Info className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" />
+                <div className="text-xs text-[#9AA4B2]">
+                  <strong className="text-white">How VALENCE supports these bodies:</strong> Online tuition with verified tutors (₦3,000 per-level unlock to view cost implications), official registration and exam-fee assistance via WhatsApp support, exemption guidance, and a marketplace where verified authors provide direct soft-copy download links on their ad cards. VALENCE does not sell hard-copy materials for these bodies — only ATSWA and ICAN.
+                </div>
               </div>
             </div>
           </div>
@@ -317,7 +383,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
                     rel="noopener noreferrer"
                     className="v-btn-secondary text-xs"
                   >
-                    Accredited Schools PDF <ExternalLink className="h-3.5 w-3.5 text-[#E0A82E]" />
+                    Accredited Schools PDF <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
                   </a>
                   <a
                     href={settings.officialLinks.icanMcatiInstitutions}
@@ -325,7 +391,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
                     rel="noopener noreferrer"
                     className="v-btn-secondary text-xs"
                   >
-                    MCATI Schools PDF <ExternalLink className="h-3.5 w-3.5 text-[#E0A82E]" />
+                    MCATI Schools PDF <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
                   </a>
                 </div>
               </div>
@@ -348,7 +414,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
                           <p className="font-semibold text-white">{item.qualification}</p>
                           <p className="text-[11px] text-[#9AA4B2]">{item.exemptions}</p>
                         </div>
-                        <span className="font-display font-bold text-[#E0A82E]">{item.startAt}</span>
+                        <span className="font-display font-bold text-[#16C784]">{item.startAt}</span>
                       </div>
                     ))}
                   </div>
@@ -373,7 +439,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
                             {item.exemptions} · {item.duration}
                           </p>
                         </div>
-                        <span className="font-display font-bold text-[#E0A82E] shrink-0">
+                        <span className="font-display font-bold text-[#16C784] shrink-0">
                           {item.startAt}
                         </span>
                       </div>
@@ -383,14 +449,14 @@ export default function ProgrammesPage({ focusTertiary = false }) {
               </div>
 
               <div className="flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-white/[0.06] text-xs">
-                <p className="font-display italic text-[#E0A82E]">
+                <p className="font-display italic text-[#16C784]">
                   “If I can, you CAN. That’s why it’s ICAN.”
                 </p>
                 <Link
                   to="/programmes/ican/guide"
-                  className="inline-flex items-center gap-1.5 font-semibold text-[#F4F6F9] hover:text-[#E0A82E] transition-colors"
+                  className="inline-flex items-center gap-1.5 font-semibold text-[#F4F6F9] hover:text-[#16C784] transition-colors"
                 >
-                  Read all 10 Prospective ICAN Candidate FAQs <ArrowRight className="h-3.5 w-3.5 text-[#E0A82E]" />
+                  Read all 10 Prospective ICAN Candidate FAQs <ArrowRight className="h-3.5 w-3.5 text-[#16C784]" />
                 </Link>
               </div>
             </div>
@@ -403,8 +469,8 @@ export default function ProgrammesPage({ focusTertiary = false }) {
         <div className="v-container grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-7 v-card p-7 space-y-5">
             <div className="flex items-center gap-2">
-              <GraduationCap className="h-5 w-5 text-[#E0A82E]" />
-              <span className="text-xs font-bold uppercase tracking-widest text-[#E0A82E]">
+              <GraduationCap className="h-5 w-5 text-[#16C784]" />
+              <span className="text-xs font-bold uppercase tracking-widest text-[#16C784]">
                 TERTIARY STUDENTS · FREE REGISTRATION
               </span>
             </div>
@@ -412,7 +478,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
               University, Polytechnic & College Accounting Community
             </h2>
             <p className="text-sm text-[#9AA4B2]">
-              Join free even if you are not yet an ICAN or ATSWA candidate. Access general accounting lessons, study groups, 12 subject forums, AI tutor support, verified mentorship, internships and inter-school competitions with the <strong className="text-[#E0A82E]">₦220,000 podium prize pool</strong> (₦100,000 / ₦70,000 / ₦50,000).
+              Join free even if you are not yet an ICAN or ATSWA candidate. Access general accounting lessons, study groups, 12 subject forums, AI tutor support, verified mentorship, internships and inter-school competitions with the <strong className="text-[#16C784]">₦500,000 podium prize pool</strong> (₦250,000 / ₦150,000 / ₦100,000).
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {tertiaryDisciplines.map((disc) => (
@@ -420,7 +486,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
                   key={disc}
                   className="flex items-center gap-2 rounded-xl bg-[#0B0E11] border border-white/[0.07] px-3 py-2 text-xs text-[#D5DBE3]"
                 >
-                  <CheckCircle2 className="h-3.5 w-3.5 text-[#E0A82E] shrink-0" />
+                  <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784] shrink-0" />
                   <span className="truncate">{disc}</span>
                 </div>
               ))}
@@ -430,8 +496,8 @@ export default function ProgrammesPage({ focusTertiary = false }) {
           <div className="lg:col-span-5 v-card p-7 flex flex-col justify-between gap-5">
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <BookOpen className="h-5 w-5 text-[#E0A82E]" />
-                <span className="text-xs font-bold uppercase tracking-widest text-[#E0A82E]">
+                <BookOpen className="h-5 w-5 text-[#16C784]" />
+                <span className="text-xs font-bold uppercase tracking-widest text-[#16C784]">
                   GENERAL ACCOUNTING LEARNERS
                 </span>
               </div>
@@ -441,7 +507,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
               <div className="space-y-2">
                 {generalLearnerTracks.map((t) => (
                   <div key={t.title} className="rounded-xl bg-[#0B0E11] border border-white/[0.07] p-3">
-                    <h4 className="text-xs font-bold text-[#E0A82E]">{t.title}</h4>
+                    <h4 className="text-xs font-bold text-[#16C784]">{t.title}</h4>
                     <p className="text-[11px] text-[#9AA4B2] mt-0.5">{t.desc}</p>
                   </div>
                 ))}
@@ -519,7 +585,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
                     {u.category} · {u.state} ({u.zone})
                   </p>
                 </div>
-                <span className="rounded-lg bg-[#E0A82E]/10 border border-[#E0A82E]/25 px-2 py-0.5 font-display text-[10.5px] font-bold text-[#E0A82E] shrink-0">
+                <span className="rounded-lg bg-[#16C784]/10 border border-[#16C784]/25 px-2 py-0.5 font-display text-[10.5px] font-bold text-[#16C784] shrink-0">
                   {u.shortName}
                 </span>
               </div>
@@ -533,7 +599,7 @@ export default function ProgrammesPage({ focusTertiary = false }) {
                 onClick={() => setShowAllUnis((v) => !v)}
                 className="v-btn-secondary text-xs"
               >
-                <Building2 className="h-4 w-4 text-[#E0A82E]" />
+                <Building2 className="h-4 w-4 text-[#16C784]" />
                 {showAllUnis
                   ? 'Show Fewer Universities'
                   : `Show All ${filteredUnis.length} Matching Universities`}

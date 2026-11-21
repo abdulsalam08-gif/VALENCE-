@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { usePlatform } from '../context/PlatformContext.jsx';
+import { useAuth, useCart, usePublicData, useUi } from '../context/PlatformContext';
 import {
   fetchConversations, fetchConversationMessages, fetchConversationMembers,
   sendMessage, markConversationRead, leaveConversation, toggleConversationMute,
@@ -43,7 +43,7 @@ function MessageBubble({ msg, mine, onReport }) {
   return (
     <div className={`flex ${mine ? 'justify-end' : 'justify-start'}`}>
       <div className={`max-w-[78%] rounded-2xl px-3.5 py-2 text-sm ${
-        mine ? 'bg-[#E0A82E] text-[#06130D]' : 'bg-[#1C2530] text-[#E4E9F0]'
+        mine ? 'bg-[#16C784] text-[#06130D]' : 'bg-[#1C2530] text-[#E4E9F0]'
       }`}>
         {!mine && <div className="text-[10px] font-semibold opacity-70 mb-0.5">{msg.sender_name}</div>}
         {msg.message_type === 'text' && <div className="whitespace-pre-wrap break-words">{msg.content}</div>}
@@ -104,12 +104,12 @@ function PickerModal({ title, onClose, onConfirm, confirmLabel }) {
               key={p.profile_id}
               onClick={() => toggle(p.profile_id)}
               className={`flex w-full items-center gap-3 rounded-xl border p-2.5 text-left transition-colors ${
-                selected.has(p.profile_id) ? 'border-[#E0A82E] bg-[#E0A82E]/10' : 'border-white/[0.08] hover:bg-white/[0.04]'
+                selected.has(p.profile_id) ? 'border-[#16C784] bg-[#16C784]/10' : 'border-white/[0.08] hover:bg-white/[0.04]'
               }`}
             >
-              <span className="inline-flex h-9 w-9 flex-none items-center justify-center rounded-full bg-[#E0A82E]/10 text-[#E0A82E] text-xs font-bold">{initials(p.display_name)}</span>
+              <span className="inline-flex h-9 w-9 flex-none items-center justify-center rounded-full bg-[#16C784]/10 text-[#16C784] text-xs font-bold">{initials(p.display_name)}</span>
               <span className="flex-1 truncate text-sm text-[#F4F6F9]">{p.display_name}</span>
-              <span className="text-xs text-[#E0A82E]">{selected.has(p.profile_id) ? '✓' : ''}</span>
+              <span className="text-xs text-[#16C784]">{selected.has(p.profile_id) ? '✓' : ''}</span>
             </button>
           ))}
         </div>
@@ -130,7 +130,7 @@ function PickerModal({ title, onClose, onConfirm, confirmLabel }) {
 /* ------------------------------------------------------------------ */
 
 export default function MessagingPage() {
-  const { user, profile } = usePlatform();
+  const { user, profile } = useAuth();
   const myProfileId = profile?.id;
   const [conversations, setConversations] = useState([]);
   const [activeId, setActiveId] = useState(null);
@@ -289,7 +289,7 @@ export default function MessagingPage() {
       <div className="mx-auto flex h-[calc(100vh-0px)] w-full max-w-6xl px-4 sm:px-6 py-4">
         {toast && (
           <div className={`absolute left-1/2 top-4 z-50 -translate-x-1/2 rounded-xl border px-4 py-2 text-sm font-medium ${
-            toast.isError ? 'border-[#EA3943]/30 bg-[#EA3943]/10 text-[#EA3943]' : 'border-[#E0A82E]/30 bg-[#E0A82E]/10 text-[#E0A82E]'
+            toast.isError ? 'border-[#EA3943]/30 bg-[#EA3943]/10 text-[#EA3943]' : 'border-[#16C784]/30 bg-[#16C784]/10 text-[#16C784]'
           }`}>{toast.msg}</div>
         )}
 
@@ -311,12 +311,12 @@ export default function MessagingPage() {
                   key={c.id}
                   onClick={() => setActiveId(c.id)}
                   className={`w-full rounded-xl p-3 text-left transition-colors ${
-                    activeId === c.id ? 'bg-[#E0A82E]/10' : 'hover:bg-white/[0.04]'
+                    activeId === c.id ? 'bg-[#16C784]/10' : 'hover:bg-white/[0.04]'
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-semibold text-[#F4F6F9] truncate">{c.conversation_type === 'group' ? '👥 ' : ''}{c.peer_name || c.last_sender_name || 'Conversation'}</span>
-                    {c.unread_count > 0 && !c.muted && <span className="flex-none rounded-full bg-[#E0A82E] px-1.5 py-0.5 text-[10px] font-bold text-[#06130D]">{c.unread_count}</span>}
+                    {c.unread_count > 0 && !c.muted && <span className="flex-none rounded-full bg-[#16C784] px-1.5 py-0.5 text-[10px] font-bold text-[#06130D]">{c.unread_count}</span>}
                   </div>
                   <div className="mt-0.5 truncate text-xs text-[#9AA4B2]">{c.last_message || 'No messages yet'}{c.muted ? ' · 🔕' : ''}</div>
                 </button>

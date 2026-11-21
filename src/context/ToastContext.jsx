@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useState } from 'react';
+import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import { CheckCircle2, AlertCircle, Info, AlertTriangle, X } from 'lucide-react';
 
 const ToastContext = createContext(null);
@@ -6,9 +6,9 @@ const ToastContext = createContext(null);
 const VARIANT_STYLES = {
   success: {
     icon: CheckCircle2,
-    border: 'border-[#E0A82E]/35',
-    iconColor: 'text-[#E0A82E]',
-    bar: 'bg-[#E0A82E]',
+    border: 'border-[#16C784]/35',
+    iconColor: 'text-[#16C784]',
+    bar: 'bg-[#16C784]',
   },
   error: {
     icon: AlertCircle,
@@ -25,8 +25,8 @@ const VARIANT_STYLES = {
   info: {
     icon: Info,
     border: 'border-white/[0.14]',
-    iconColor: 'text-[#E0A82E]',
-    bar: 'bg-[#E0A82E]/70',
+    iconColor: 'text-[#16C784]',
+    bar: 'bg-[#16C784]/70',
   },
 };
 
@@ -49,13 +49,18 @@ export function ToastProvider({ children }) {
     [dismiss]
   );
 
-  const toast = {
-    success: (title, message) => push('success', title, message),
-    error: (title, message) => push('error', title, message),
-    warning: (title, message) => push('warning', title, message),
-    info: (title, message) => push('info', title, message),
-    dismiss,
-  };
+  // Stable actions object — consumers never re-render when toasts change;
+  // only the toast viewport (rendered inside this provider) does.
+  const toast = useMemo(
+    () => ({
+      success: (title, message) => push('success', title, message),
+      error: (title, message) => push('error', title, message),
+      warning: (title, message) => push('warning', title, message),
+      info: (title, message) => push('info', title, message),
+      dismiss,
+    }),
+    [push, dismiss]
+  );
 
   return (
     <ToastContext.Provider value={toast}>

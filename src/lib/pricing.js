@@ -295,11 +295,16 @@ export function calculateAdCampaignCost(weeks = 1, weeklyRate = 10000, placement
   const safeWeeks = Math.max(1, Math.min(52, Math.floor(Number(weeks) || 1)));
   const safeSlots = Math.max(1, Math.min(9, Math.floor(Number(placementCount) || 1)));
   const safeRate = Math.max(0, Number(weeklyRate) || 10000);
-  const totalAmount = safeWeeks * safeSlots * safeRate;
+  // Tiered pricing: ₦10k/week, ₦15k/2 weeks (₦5k off per complete 2-week
+  // block), so 3 weeks = ₦25k, 4 weeks = ₦30k, etc.
+  const discount = (safeRate / 2) * Math.floor(safeWeeks / 2);
+  const weekTotal = safeWeeks * safeRate - discount;
+  const totalAmount = weekTotal * safeSlots;
   return {
     weeks: safeWeeks,
     placementCount: safeSlots,
     weeklyRate: safeRate,
+    discount,
     totalAmount,
   };
 }

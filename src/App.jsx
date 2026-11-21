@@ -11,14 +11,14 @@ const AboutPage = lazy(() => import('./pages/AboutPage'));
 const ProgrammesPage = lazy(() => import('./pages/ProgrammesPage'));
 const AtswaPage = lazy(() => import('./pages/AtswaPage'));
 const IcanPage = lazy(() => import('./pages/IcanPage'));
+const OtherBodiesPage = lazy(() => import('./pages/OtherBodiesPage'));
 const ServicesPage = lazy(() => import('./pages/ServicesPage'));
 const StudyMaterialsPage = lazy(() => import('./pages/StudyMaterialsPage'));
 const StorePage = lazy(() => import('./pages/StorePage'));
-const ConnectPage = lazy(() => import('./pages/ConnectPage'));
+
 const CompetitionsPage = lazy(() => import('./pages/CompetitionsPage'));
 const CompetitionPage = lazy(() => import('./pages/CompetitionPage'));
-const CpdWebinarsPage = lazy(() => import('./pages/CpdWebinarsPage'));
-const ValenceProPage = lazy(() => import('./pages/ValenceProPage'));
+
 const OpportunitiesPage = lazy(() => import('./pages/OpportunitiesPage'));
 const TuitionCentresPage = lazy(() => import('./pages/TuitionCentresPage'));
 const AdvertisePage = lazy(() => import('./pages/AdvertisePage'));
@@ -54,14 +54,15 @@ export default function App() {
                 <Route path="/programmes/atswa" element={<AtswaPage />} />
                 <Route path="/programmes/ican" element={<IcanPage />} />
                 <Route path="/programmes/ican/:levelSlug" element={<IcanPage />} />
+                <Route path="/programmes/other" element={<OtherBodiesPage />} />
+                <Route path="/programmes/other/:bodyId" element={<OtherBodiesPage />} />
                 <Route path="/services" element={<ServicesPage />} />
                 <Route path="/study-materials" element={<StudyMaterialsPage />} />
                 <Route path="/store" element={<StorePage />} />
-                <Route path="/connect" element={<ConnectPage />} />
+
                 <Route path="/competitions" element={<CompetitionsPage />} />
                 <Route path="/competitions/:id" element={<CompetitionPage />} />
-                <Route path="/cpd-webinars" element={<CpdWebinarsPage />} />
-                <Route path="/valence-pro" element={<ValenceProPage />} />
+
                 <Route path="/opportunities" element={<OpportunitiesPage />} />
                 <Route path="/tuition-centres" element={<TuitionCentresPage />} />
                 <Route path="/partners" element={<PartnersDirectoryPage />} />

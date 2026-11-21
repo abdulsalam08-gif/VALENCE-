@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
   ArrowUpRight,
   BookOpen,
-  Users,
   Trophy,
-  Briefcase,
   ShoppingBag,
   Megaphone,
   Sparkles,
@@ -32,7 +30,7 @@ import {
   Building2,
   Banknote,
 } from 'lucide-react';
-import { usePlatform } from '../context/PlatformContext';
+import { useAuth, useCart, usePublicData, useUi } from '../context/PlatformContext';
 import { useToast } from '../context/ToastContext';
 import AnimatedCounter from '../components/ui/AnimatedCounter';
 import CountdownTimer from '../components/ui/CountdownTimer';
@@ -43,9 +41,7 @@ import { getSessionLifecycle } from '../lib/examSchedule';
 
 const PILLAR_ICONS = {
   learn: BookOpen,
-  connect: Users,
   compete: Trophy,
-  professional: Briefcase,
   marketplace: ShoppingBag,
   advertise: Megaphone,
   opportunities: Sparkles,
@@ -62,31 +58,9 @@ const AI_TUTOR_STEPS = [
 ];
 
 export default function HomePage() {
-  const {
-    isHydrating,
-    settings,
-    sessions,
-    atswaLevels,
-    icanLevels,
-    products,
-    pillars,
-    tuitionCentres,
-    tutors,
-    opportunities,
-    events,
-    announcements,
-    testimonials,
-    statistics,
-    faqs,
-    candidateFaqs,
-    competitionDivisions,
-    tertiaryDisciplines,
-    generalLearnerTracks,
-    professionalQualifications,
-    universityCounts,
-    addToCart,
-    openWhatsAppModal,
-  } = usePlatform();
+  const { isHydrating, settings, sessions, atswaLevels, icanLevels, products, pillars, tuitionCentres, tutors, opportunities, events, announcements, testimonials, statistics, faqs, candidateFaqs, competitionDivisions, tertiaryDisciplines, generalLearnerTracks, universityCounts } = usePublicData();
+  const { addToCart } = useCart();
+  const { openWhatsAppModal } = useUi();
   const toast = useToast();
 
   // Sessions 0 (ATSWA Mar 2027), 1 (ICAN May 2027), 2 (ICAN Nov 2026 - live 30-day result countdown!)
@@ -100,18 +74,26 @@ export default function HomePage() {
   const activeSession = heroSessions[activeSessionIdx] || heroSessions[0];
   const lifecycle = getSessionLifecycle(activeSession);
 
-  const featuredProducts = [
-    products.find((p) => p.id === 'prod-ican-sp-fr'),
-    products.find((p) => p.id === 'prod-ican-pq-sbr'),
-    products.find((p) => p.id === 'prod-atswa-pq-ats1-baps'),
-    products.find((p) => p.id === 'prod-atswa-pq-ats2-fa'),
-  ].filter(Boolean);
+  const featuredProducts = useMemo(
+    () =>
+      [
+        products.find((p) => p.id === 'prod-ican-sp-fr'),
+        products.find((p) => p.id === 'prod-ican-pq-sbr'),
+        products.find((p) => p.id === 'prod-atswa-pq-ats1-baps'),
+        products.find((p) => p.id === 'prod-atswa-pq-ats2-fa'),
+      ].filter(Boolean),
+    [products]
+  );
 
-  const visibleAnnouncements = announcements.filter((a) => {
-    if (announcementFilter === 'official') return a.isOfficial;
-    if (announcementFilter === 'community') return !a.isOfficial;
-    return true;
-  });
+  const visibleAnnouncements = useMemo(
+    () =>
+      announcements.filter((a) => {
+        if (announcementFilter === 'official') return a.isOfficial;
+        if (announcementFilter === 'community') return !a.isOfficial;
+        return true;
+      }),
+    [announcements, announcementFilter]
+  );
 
   const handleBookmark = (ann) => {
     const exists = bookmarkedIds.includes(ann.id);
@@ -135,41 +117,41 @@ export default function HomePage() {
       <section className="relative overflow-hidden bg-grid-fintech pt-10 pb-16 sm:pt-16 sm:pb-24">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -top-36 left-1/2 -translate-x-1/2 h-[420px] w-[780px] rounded-full bg-[#E0A82E]/[0.12] blur-[130px]"
+          className="pointer-events-none absolute -top-36 left-1/2 -translate-x-1/2 h-[420px] w-[780px] rounded-full bg-[#16C784]/[0.12] blur-[130px]"
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute bottom-0 right-0 h-[260px] w-[380px] rounded-full bg-[#E0A82E]/[0.06] blur-[110px]"
+          className="pointer-events-none absolute bottom-0 right-0 h-[260px] w-[380px] rounded-full bg-[#16C784]/[0.06] blur-[110px]"
         />
 
         <div className="v-container relative">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
             <div className="lg:col-span-7 space-y-6 animate-fade-up">
-              <div className="inline-flex flex-wrap items-center gap-2 rounded-full bg-[#11161C] border border-[#E0A82E]/25 px-3.5 py-1.5 text-xs">
-                <span className="h-2 w-2 rounded-full bg-[#E0A82E] animate-pulse-soft" />
+              <div className="inline-flex flex-wrap items-center gap-2 rounded-full bg-[#11161C] border border-[#16C784]/25 px-3.5 py-1.5 text-xs">
+                <span className="h-2 w-2 rounded-full bg-[#16C784] animate-pulse-soft" />
                 <span className="font-display font-bold tracking-wider text-[#F4F6F9]">VALENCE</span>
                 <span className="text-white/20">•</span>
-                <span className="italic text-[#E0A82E]">{settings.tagline}</span>
+                <span className="italic text-[#16C784]">{settings.tagline}</span>
               </div>
 
               <h1 className="font-display text-3xl sm:text-5xl lg:text-[54px] font-bold leading-[1.08] tracking-tight text-white">
                 Your Learning. Your Connections.{' '}
-                <span className="text-[#E0A82E]">Your Competition.</span> Your Professional Future.
+                <span className="text-[#16C784]">Your Competition.</span> Your Professional Future.
               </h1>
 
               <p className="text-sm sm:text-base lg:text-[17px] leading-relaxed text-[#9AA4B2] max-w-2xl">
                 {settings.heroSubcopy}
               </p>
 
-              {/* Free Signup + ₦220k Podium Pool Callout Strip */}
+              {/* Free Signup + ₦500k Podium Pool Callout Strip */}
               <div className="flex flex-wrap gap-2 text-xs">
                 <span className="inline-flex items-center gap-1.5 rounded-xl bg-[#11161C] border border-white/[0.08] px-3 py-1.5 text-[#D5DBE3]">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-[#E0A82E]" />
+                  <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784]" />
                   Free Account · ₦3,000 only for tuition application
                 </span>
-                <span className="inline-flex items-center gap-1.5 rounded-xl bg-[#E0A82E]/10 border border-[#E0A82E]/30 px-3 py-1.5 text-[#E0A82E] font-semibold">
+                <span className="inline-flex items-center gap-1.5 rounded-xl bg-[#16C784]/10 border border-[#16C784]/30 px-3 py-1.5 text-[#16C784] font-semibold">
                   <Banknote className="h-3.5 w-3.5" />
-                  ₦220,000 Competition Podium Prize Pool
+                  ₦500,000 Competition Podium Prize Pool
                 </span>
               </div>
 
@@ -179,36 +161,28 @@ export default function HomePage() {
                   Student Portal
                   <ArrowRight className="h-4 w-4" />
                 </Link>
-                <Link to="/portal/professional" className="v-btn-secondary px-5 py-3">
-                  <Briefcase className="h-4 w-4 text-[#E0A82E]" />
-                  Professional Portal
-                </Link>
-                <Link to="/connect" className="v-btn-secondary px-5 py-3">
-                  <Users className="h-4 w-4 text-[#E0A82E]" />
-                  Join VALENCE Connect
-                </Link>
               </div>
 
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-1 text-xs font-medium text-[#9AA4B2]">
                 <Link
                   to="/competitions"
-                  className="inline-flex items-center gap-1.5 hover:text-[#E0A82E] transition-colors"
+                  className="inline-flex items-center gap-1.5 hover:text-[#16C784] transition-colors"
                 >
-                  <Trophy className="h-3.5 w-3.5 text-[#E0A82E]" />
+                  <Trophy className="h-3.5 w-3.5 text-[#16C784]" />
                   Register for Competitions
                 </Link>
                 <Link
                   to="/portal/tutor"
-                  className="inline-flex items-center gap-1.5 hover:text-[#E0A82E] transition-colors"
+                  className="inline-flex items-center gap-1.5 hover:text-[#16C784] transition-colors"
                 >
-                  <Award className="h-3.5 w-3.5 text-[#E0A82E]" />
+                  <Award className="h-3.5 w-3.5 text-[#16C784]" />
                   Apply as a Tutor
                 </Link>
                 <Link
                   to="/advertise"
-                  className="inline-flex items-center gap-1.5 hover:text-[#E0A82E] transition-colors"
+                  className="inline-flex items-center gap-1.5 hover:text-[#16C784] transition-colors"
                 >
-                  <Megaphone className="h-3.5 w-3.5 text-[#E0A82E]" />
+                  <Megaphone className="h-3.5 w-3.5 text-[#16C784]" />
                   Advertise Your Tuition Centre
                 </Link>
               </div>
@@ -240,7 +214,7 @@ export default function HomePage() {
                       onClick={() => setActiveSessionIdx(tab.idx)}
                       className={`rounded-lg px-2 py-2 text-[11px] font-semibold transition-all ${
                         activeSessionIdx === tab.idx
-                          ? 'bg-[#E0A82E] text-[#06130D] shadow-glow-sm'
+                          ? 'bg-[#16C784] text-[#06130D] shadow-glow-sm'
                           : 'text-[#9AA4B2] hover:text-white'
                       }`}
                     >
@@ -253,7 +227,7 @@ export default function HomePage() {
                   <h2 className="font-display text-base sm:text-lg font-bold text-white">
                     {activeSession.label}
                   </h2>
-                  <p className="text-[11px] text-[#E0A82E] font-medium mt-0.5 mb-2.5">
+                  <p className="text-[11px] text-[#16C784] font-medium mt-0.5 mb-2.5">
                     {lifecycle.countdownLabel}
                   </p>
                   {lifecycle.countdownTarget && (
@@ -282,7 +256,7 @@ export default function HomePage() {
                     <span className="text-[#667085] block text-[10.5px]">
                       Result Target (+30 Days)
                     </span>
-                    <span className="mt-0.5 block font-semibold text-[#E0A82E] text-[11.5px]">
+                    <span className="mt-0.5 block font-semibold text-[#EA3943] text-[11.5px]">
                       {activeSession.expectedResultFormatted}
                     </span>
                   </div>
@@ -323,7 +297,7 @@ export default function HomePage() {
           <div className="mt-14 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5">
             {statistics.map((stat) => (
               <div key={stat.id} className="v-card p-4 hover:border-white/[0.14]">
-                <div className="text-2xl sm:text-3xl font-bold text-[#E0A82E]">
+                <div className="text-2xl sm:text-3xl font-bold text-[#16C784]">
                   <AnimatedCounter value={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
                 </div>
                 <p className="mt-1 text-xs font-semibold text-[#F4F6F9]">{stat.label}</p>
@@ -339,14 +313,14 @@ export default function HomePage() {
         <div className="v-container space-y-10">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
             <div className="max-w-2xl space-y-2.5">
-              <span className="text-xs font-semibold uppercase tracking-widest text-[#E0A82E]">
+              <span className="text-xs font-semibold uppercase tracking-widest text-[#16C784]">
                 ABOUT VALENCE
               </span>
               <h2 className="font-display text-2xl sm:text-4xl font-bold text-white">
                 Seven Integrated Pillars. One Independent Accounting Ecosystem.
               </h2>
               <p className="text-sm sm:text-base text-[#9AA4B2]">
-                Guided by <span className="italic text-[#F4F6F9]">{settings.tagline}</span>, VALENCE unites professional exam tuition, intelligent AI assistance, academic networking, ₦220,000 podium competitions, verified tuition-centre discovery, study packs and finance careers across Nigeria.
+                Guided by <span className="italic text-[#F4F6F9]">{settings.tagline}</span>, VALENCE unites professional exam tuition, intelligent AI assistance, academic networking, ₦500,000 podium competitions, verified tuition-centre discovery, study packs and finance careers across Nigeria.
               </p>
             </div>
             <Link to="/about" className="v-btn-secondary self-start lg:self-auto shrink-0">
@@ -373,16 +347,16 @@ export default function HomePage() {
                   >
                     <div className="space-y-3">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#E0A82E]/[0.12] border border-[#E0A82E]/25 text-[#E0A82E]">
+                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#16C784]/[0.12] border border-[#16C784]/25 text-[#16C784]">
                           <Icon className="h-5 w-5" />
                         </span>
                         <Badge variant="neutral">{pillar.metric}</Badge>
                       </div>
                       <div>
-                        <p className="text-[11px] font-bold uppercase tracking-widest text-[#E0A82E]">
+                        <p className="text-[11px] font-bold uppercase tracking-widest text-[#16C784]">
                           {pillar.code}
                         </p>
-                        <h3 className="mt-1 font-display text-lg font-bold text-white group-hover:text-[#E0A82E] transition-colors">
+                        <h3 className="mt-1 font-display text-lg font-bold text-white group-hover:text-[#16C784] transition-colors">
                           {pillar.title}
                         </h3>
                       </div>
@@ -390,7 +364,7 @@ export default function HomePage() {
                         {pillar.description}
                       </p>
                     </div>
-                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#F4F6F9] group-hover:text-[#E0A82E] transition-colors">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#F4F6F9] group-hover:text-[#16C784] transition-colors">
                       Enter {pillar.code} <ArrowUpRight className="h-3.5 w-3.5" />
                     </span>
                   </Link>
@@ -407,7 +381,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
             <div className="lg:col-span-6 space-y-6">
               <div className="space-y-2.5">
-                <span className="text-xs font-semibold uppercase tracking-widest text-[#E0A82E]">
+                <span className="text-xs font-semibold uppercase tracking-widest text-[#16C784]">
                   VALENCE LEARN
                 </span>
                 <h2 className="font-display text-2xl sm:text-4xl font-bold text-white">
@@ -421,21 +395,21 @@ export default function HomePage() {
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 <div className="v-card p-4">
                   <div className="flex items-center gap-1.5 text-xs text-[#9AA4B2]">
-                    <Flame className="h-4 w-4 text-[#E0A82E]" /> Reading Streak
+                    <Flame className="h-4 w-4 text-[#16C784]" /> Reading Streak
                   </div>
                   <p className="mt-2 tabular-nums-display text-2xl font-bold text-white">18 Days</p>
-                  <p className="text-[11px] text-[#E0A82E]">+4.5 hrs this week</p>
+                  <p className="text-[11px] text-[#16C784]">+4.5 hrs this week</p>
                 </div>
                 <div className="v-card p-4">
                   <div className="flex items-center gap-1.5 text-xs text-[#9AA4B2]">
-                    <TrendingUp className="h-4 w-4 text-[#E0A82E]" /> Readiness Index
+                    <TrendingUp className="h-4 w-4 text-[#16C784]" /> Readiness Index
                   </div>
-                  <p className="mt-2 tabular-nums-display text-2xl font-bold text-[#E0A82E]">84%</p>
+                  <p className="mt-2 tabular-nums-display text-2xl font-bold text-[#16C784]">84%</p>
                   <p className="text-[11px] text-[#667085]">Educational indicator</p>
                 </div>
                 <div className="v-card p-4 col-span-2 sm:col-span-1">
                   <div className="flex items-center gap-1.5 text-xs text-[#9AA4B2]">
-                    <Video className="h-4 w-4 text-[#E0A82E]" /> Live Classrooms
+                    <Video className="h-4 w-4 text-[#16C784]" /> Live Classrooms
                   </div>
                   <p className="mt-2 font-display text-lg font-bold text-white">In-App Video</p>
                   <p className="text-[11px] text-[#667085]">Enrolled access only</p>
@@ -455,7 +429,7 @@ export default function HomePage() {
                     key={feat}
                     className="flex items-center gap-2 rounded-xl bg-[#11161C] border border-white/[0.06] px-3.5 py-2.5"
                   >
-                    <CheckCircle2 className="h-4 w-4 text-[#E0A82E] shrink-0" />
+                    <CheckCircle2 className="h-4 w-4 text-[#16C784] shrink-0" />
                     <span>{feat}</span>
                   </div>
                 ))}
@@ -479,7 +453,7 @@ export default function HomePage() {
                     7-Step Examination-Standard Workings
                   </h3>
                 </div>
-                <Sparkles className="h-6 w-6 text-[#E0A82E] shrink-0" />
+                <Sparkles className="h-6 w-6 text-[#16C784] shrink-0" />
               </div>
               <p className="text-xs sm:text-sm text-[#9AA4B2]">
                 Supports ATSWA, ICAN Foundation, Skills & Professional, university accounting and financial literacy, structured the exact way professional markers award scores.
@@ -490,7 +464,7 @@ export default function HomePage() {
                     key={item.step}
                     className="flex items-start gap-3 rounded-xl bg-[#0B0E11] border border-white/[0.06] px-3.5 py-2.5"
                   >
-                    <span className="tabular-nums-display text-xs font-bold text-[#E0A82E] bg-[#E0A82E]/10 border border-[#E0A82E]/25 rounded-lg px-2 py-0.5 mt-0.5">
+                    <span className="tabular-nums-display text-xs font-bold text-[#16C784] bg-[#16C784]/10 border border-[#16C784]/25 rounded-lg px-2 py-0.5 mt-0.5">
                       {item.step}
                     </span>
                     <div>
@@ -502,7 +476,7 @@ export default function HomePage() {
               </div>
               <Link
                 to="/services#ai-tutor"
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#E0A82E] hover:underline"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#16C784] hover:underline"
               >
                 See live IFRS working demonstration <ArrowRight className="h-3.5 w-3.5" />
               </Link>
@@ -525,12 +499,12 @@ export default function HomePage() {
               </h2>
               <p className="text-sm text-[#9AA4B2]">
                 Explore Foundation, Skills and Professional syllabuses and timetables freely. Students pay the one-time{' '}
-                <strong className="text-[#E0A82E]">₦3,000 registration</strong> per level only when ready to apply for tuition and unlock full cost implications (in-app online tuition with 25% off 3+ papers, plus the verified physical tuition cost implications set by tuition centres advertising on VALENCE).
+                <strong className="text-[#16C784]">₦3,000 registration</strong> per level only when ready to apply for tuition and unlock full cost implications (in-app online tuition with 25% off 3+ papers, plus the verified physical tuition cost implications set by tuition centres advertising on VALENCE).
               </p>
             </div>
             <div className="flex flex-wrap gap-2.5">
               <Link to="/programmes/ican/exemptions" className="v-btn-secondary text-xs">
-                <Scale className="h-4 w-4 text-[#E0A82E]" />
+                <Scale className="h-4 w-4 text-[#16C784]" />
                 Exemption Guidance
               </Link>
               <Link to="/programmes/ican" className="v-btn-primary text-xs">
@@ -544,7 +518,7 @@ export default function HomePage() {
               <div key={level.id} className="v-card-hover p-6 flex flex-col justify-between gap-5">
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold uppercase tracking-widest text-[#E0A82E]">
+                    <span className="text-xs font-bold uppercase tracking-widest text-[#16C784]">
                       {level.code}
                     </span>
                     <span className="text-xs text-[#9AA4B2] tabular-nums-display">
@@ -559,7 +533,7 @@ export default function HomePage() {
                     {level.courses.map((c) => (
                       <li key={c.id} className="flex items-center justify-between gap-2 text-xs">
                         <span className="text-[#D5DBE3]">{c.title}</span>
-                        <span className="font-display text-[11px] font-semibold text-[#E0A82E] bg-[#E0A82E]/10 px-2 py-0.5 rounded-md shrink-0">
+                        <span className="font-display text-[11px] font-semibold text-[#16C784] bg-[#16C784]/10 px-2 py-0.5 rounded-md shrink-0">
                           {c.code}
                         </span>
                       </li>
@@ -570,9 +544,9 @@ export default function HomePage() {
                 <div className="space-y-3 border-t border-white/[0.06] pt-4">
                   <div className="flex items-center justify-between text-xs rounded-xl bg-[#0B0E11] border border-white/[0.06] px-3 py-2">
                     <span className="text-[#9AA4B2] inline-flex items-center gap-1.5">
-                      <Lock className="h-3.5 w-3.5 text-[#E0A82E]" /> Tuition Cost Implication
+                      <Lock className="h-3.5 w-3.5 text-[#16C784]" /> Tuition Cost Implication
                     </span>
-                    <span className="text-[11px] font-semibold text-[#E0A82E]">₦3,000 Unlock</span>
+                    <span className="text-[11px] font-semibold text-[#16C784]">₦3,000 Unlock</span>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <Link
@@ -591,7 +565,7 @@ export default function HomePage() {
                       }
                       className="v-btn-secondary text-xs py-2 px-3"
                     >
-                      <MessageCircle className="h-3.5 w-3.5 text-[#E0A82E]" />
+                      <MessageCircle className="h-3.5 w-3.5 text-[#16C784]" />
                       Official Fees
                     </button>
                   </div>
@@ -615,7 +589,7 @@ export default function HomePage() {
               </h2>
               <p className="text-sm text-[#9AA4B2]">
                 Next sitting: <strong className="text-white">Tue 23 & Wed 24 March 2027</strong> (registration closes Tue 16 March 2027). ATSWA document checklist & registration guidance run directly inside VALENCE; pay the one-time{' '}
-                <strong className="text-[#E0A82E]">₦3,000 registration</strong> per level only when applying for tuition to unlock your full cost implication and 25% multi-course tuition discount (2+ courses).
+                <strong className="text-[#16C784]">₦3,000 registration</strong> per level only when applying for tuition to unlock your full cost implication and 25% multi-course tuition discount (2+ courses).
               </p>
             </div>
             <div className="flex flex-wrap gap-2.5">
@@ -625,7 +599,7 @@ export default function HomePage() {
                 rel="noopener noreferrer"
                 className="v-btn-secondary text-xs"
               >
-                ATSWA Soft-Copy Portal <ExternalLink className="h-3.5 w-3.5 text-[#E0A82E]" />
+                ATSWA Soft-Copy Portal <ExternalLink className="h-3.5 w-3.5 text-[#16C784]" />
               </a>
               <Link to="/programmes/atswa" className="v-btn-primary text-xs">
                 ATSWA Courses & Tuition <ArrowRight className="h-4 w-4" />
@@ -659,12 +633,12 @@ export default function HomePage() {
 
                 <Link
                   to="/programmes/atswa"
-                  className="rounded-xl bg-[#0B0E11] border border-white/[0.07] hover:border-[#E0A82E]/40 p-3.5 flex items-center justify-between text-xs transition-colors"
+                  className="rounded-xl bg-[#0B0E11] border border-white/[0.07] hover:border-[#16C784]/40 p-3.5 flex items-center justify-between text-xs transition-colors"
                 >
                   <span className="text-[#C2C9D4] inline-flex items-center gap-1.5">
-                    <Lock className="h-3.5 w-3.5 text-[#E0A82E]" /> Apply for Tuition & Cost Implication
+                    <Lock className="h-3.5 w-3.5 text-[#16C784]" /> Apply for Tuition & Cost Implication
                   </span>
-                  <span className="tabular-nums-display font-bold text-[#E0A82E]">₦3,000 →</span>
+                  <span className="tabular-nums-display font-bold text-[#16C784]">₦3,000 →</span>
                 </Link>
               </div>
             ))}
@@ -683,7 +657,7 @@ export default function HomePage() {
               Every University, Polytechnic & College in Nigeria Connected
             </h2>
             <p className="text-sm text-[#9AA4B2]">
-              Select your exact Nigerian university during registration to join campus study groups, compete for the <strong className="text-[#E0A82E]">₦100,000 / ₦70,000 / ₦50,000 podium prize pool</strong> (only 4 students can compete in each school), access practice questions, AI tutoring, ACA/FCA mentorship and internship opportunities, even if you are not yet writing ICAN or ATSWA.
+              Select your exact Nigerian university during registration to join campus study groups, compete for the <strong className="text-[#16C784]">₦250,000 / ₦150,000 / ₦100,000 podium prize pool</strong> (only 4 students can compete in each school), access practice questions, AI tutoring, ACA/FCA mentorship and internship opportunities, even if you are not yet writing ICAN or ATSWA.
             </p>
             <div className="flex flex-wrap gap-2">
               {tertiaryDisciplines.map((d) => (
@@ -709,7 +683,7 @@ export default function HomePage() {
               <div className="space-y-2.5">
                 {generalLearnerTracks.map((track) => (
                   <div key={track.title} className="rounded-xl bg-[#0B0E11] border border-white/[0.06] px-3.5 py-2.5">
-                    <p className="text-xs font-semibold text-[#E0A82E]">{track.title}</p>
+                    <p className="text-xs font-semibold text-[#16C784]">{track.title}</p>
                     <p className="text-[11px] text-[#9AA4B2] mt-0.5">{track.desc}</p>
                   </div>
                 ))}
@@ -722,16 +696,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 7 & 15. VALENCE CONNECT & ANNOUNCEMENTS */}
+      {/* 15. ANNOUNCEMENTS */}
       <section className="py-16 sm:py-22 bg-[#0D1116]">
         <div className="v-container space-y-8">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5">
             <div className="max-w-2xl space-y-2">
-              <span className="text-xs font-semibold uppercase tracking-widest text-[#E0A82E]">
-                VALENCE CONNECT & ANNOUNCEMENTS
+              <span className="text-xs font-semibold uppercase tracking-widest text-[#16C784]">
+                ANNOUNCEMENTS
               </span>
               <h2 className="font-display text-2xl sm:text-4xl font-bold text-white">
-                Where Every Member Connects, Shares Photos & Publishes Updates
+                Where Every Member Shares Photos & Publishes Updates
               </h2>
               <p className="text-sm text-[#9AA4B2]">
                 All registered members can upload profile & gallery pictures and publish community announcements, while official exam dates, timetables and policy notices remain strictly managed by VALENCE administrators.
@@ -749,7 +723,7 @@ export default function HomePage() {
                   onClick={() => setAnnouncementFilter(tab.id)}
                   className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
                     announcementFilter === tab.id
-                      ? 'bg-[#E0A82E] text-[#06130D]'
+                      ? 'bg-[#16C784] text-[#06130D]'
                       : 'text-[#9AA4B2] hover:text-white'
                   }`}
                 >
@@ -765,7 +739,7 @@ export default function HomePage() {
                 key={ann.id}
                 className={`v-card p-6 flex flex-col justify-between gap-4 ${
                   ann.isOfficial
-                    ? 'border-[#E0A82E]/40 bg-gradient-to-b from-[#E0A82E]/[0.06] to-[#11161C]'
+                    ? 'border-[#16C784]/40 bg-gradient-to-b from-[#16C784]/[0.06] to-[#11161C]'
                     : ''
                 }`}
               >
@@ -786,7 +760,7 @@ export default function HomePage() {
                     <div
                       className={`h-9 w-9 rounded-full flex items-center justify-center text-xs font-bold ${
                         ann.isOfficial
-                          ? 'bg-[#E0A82E]/20 text-[#E0A82E] border border-[#E0A82E]/40'
+                          ? 'bg-[#16C784]/20 text-[#16C784] border border-[#16C784]/40'
                           : 'bg-[#1B232D] text-[#F4F6F9] border border-white/[0.1]'
                       }`}
                     >
@@ -812,7 +786,7 @@ export default function HomePage() {
                 <div className="flex items-center justify-between border-t border-white/[0.06] pt-3 text-xs text-[#9AA4B2]">
                   <div className="flex items-center gap-4">
                     <span className="inline-flex items-center gap-1 tabular-nums-display">
-                      <Heart className="h-3.5 w-3.5 text-[#E0A82E]" /> {ann.likes}
+                      <Heart className="h-3.5 w-3.5 text-[#16C784]" /> {ann.likes}
                     </span>
                     <span className="inline-flex items-center gap-1 tabular-nums-display">
                       <MessageSquare className="h-3.5 w-3.5" /> {ann.comments}
@@ -823,7 +797,7 @@ export default function HomePage() {
                     onClick={() => handleBookmark(ann)}
                     className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 transition-colors ${
                       bookmarkedIds.includes(ann.id)
-                        ? 'text-[#E0A82E] bg-[#E0A82E]/[0.12]'
+                        ? 'text-[#16C784] bg-[#16C784]/[0.12]'
                         : 'hover:bg-white/[0.05] hover:text-white'
                     }`}
                   >
@@ -844,7 +818,7 @@ export default function HomePage() {
             <div className="space-y-2 max-w-2xl">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="live">National Flagship Tournament</Badge>
-                <Badge variant="green">₦220,000 Podium Pool Every Competition</Badge>
+                <Badge variant="green">₦500,000 Podium Pool Every Competition</Badge>
                 <Badge variant="neutral">Only 4 Competitors Per School</Badge>
               </div>
               <h2 className="font-display text-2xl sm:text-4xl font-bold text-white">
@@ -852,7 +826,7 @@ export default function HomePage() {
               </h2>
               <p className="text-sm text-[#9AA4B2]">
                 Uniting candidates across {universityCounts.total} Nigerian universities, polytechnics, colleges and ICAN/ATSWA divisions, featuring rigorous questions across <strong className="text-white">accounting and related fields</strong> (finance, taxation, auditing, economics, business law, costing &amp; management). Strictly only 4 students can compete in each school, and top podium winners earn verified{' '}
-                <strong className="text-[#E0A82E]">₦100,000 (1st), ₦70,000 (2nd) &amp; ₦50,000 (3rd)</strong> prizes · displayed on their school profiles as Top VALENCE Students · after every competition closes.
+                <strong className="text-[#16C784]">₦100,000 (1st), ₦70,000 (2nd) &amp; ₦50,000 (3rd)</strong> prizes · displayed on their school profiles as Top VALENCE Students · after every competition closes.
               </p>
             </div>
             <Link to="/competitions" className="v-btn-primary self-start lg:self-auto shrink-0">
@@ -865,7 +839,7 @@ export default function HomePage() {
             {competitionDivisions.map((div, idx) => (
               <div key={div.id} className="v-card-hover p-5 space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <span className="tabular-nums-display text-xs font-bold text-[#E0A82E]">
+                  <span className="tabular-nums-display text-xs font-bold text-[#16C784]">
                     DIVISION 0{idx + 1}
                   </span>
                   <Badge variant="green">{div.reward}</Badge>
@@ -881,41 +855,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 9 & 13. VALENCE PROFESSIONAL & FEATURED VERIFIED TUTORS */}
+      {/* 13. FEATURED VERIFIED TUTORS */}
       <section className="py-16 sm:py-22 bg-[#0D1116]">
         <div className="v-container space-y-12">
-          <div className="v-card p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-7 space-y-4">
-              <Badge variant="verified">VALENCE PROFESSIONAL</Badge>
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-white">
-                Executive Home for Chartered Accountants & Finance Leaders
-              </h2>
-              <p className="text-sm text-[#9AA4B2]">
-                Build a credential-verified professional profile, lead industry discussions, access CPD-related resources, mentor rising ICAN/ATSWA finalists, speak at webinars and apply for verified tutoring opportunities.
-              </p>
-              <div className="flex flex-wrap gap-3 pt-1">
-                <Link to="/portal/professional" className="v-btn-primary text-xs">
-                  Enter Professional Portal <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link to="/portal/tutor" className="v-btn-secondary text-xs">
-                  Apply as a Verified Tutor
-                </Link>
-              </div>
-            </div>
-            <div className="lg:col-span-5 grid grid-cols-2 gap-2.5">
-              {professionalQualifications.map((q) => (
-                <div key={q.code} className="rounded-xl bg-[#0B0E11] border border-white/[0.07] p-3.5">
-                  <span className="font-display text-base font-bold text-[#E0A82E]">{q.code}</span>
-                  <p className="mt-0.5 text-[11px] text-[#9AA4B2] leading-snug">{q.name}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
               <div>
-                <span className="text-xs font-semibold uppercase tracking-widest text-[#E0A82E]">
+                <span className="text-xs font-semibold uppercase tracking-widest text-[#16C784]">
                   VERIFIED FACULTY
                 </span>
                 <h3 className="mt-1 font-display text-2xl font-bold text-white">
@@ -951,12 +897,12 @@ export default function HomePage() {
                   <div key={t.id} className="v-card-hover p-5 flex flex-col justify-between gap-4">
                     <div className="space-y-3">
                       <div className="flex items-center gap-3">
-                        <div className="h-11 w-11 rounded-2xl bg-[#E0A82E]/15 border border-[#E0A82E]/30 flex items-center justify-center font-display text-sm font-bold text-[#E0A82E]">
+                        <div className="h-11 w-11 rounded-2xl bg-[#16C784]/15 border border-[#16C784]/30 flex items-center justify-center font-display text-sm font-bold text-[#16C784]">
                           {t.initials}
                         </div>
                         <div className="min-w-0">
                           <p className="text-sm font-bold text-white truncate">{t.name}</p>
-                          <p className="text-[11px] text-[#E0A82E]">{t.tier}</p>
+                          <p className="text-[11px] text-[#16C784]">{t.tier}</p>
                         </div>
                       </div>
                       <div className="flex flex-wrap gap-1.5">
@@ -1034,7 +980,7 @@ export default function HomePage() {
                     <span className="absolute top-2.5 left-2.5 inline-flex items-center gap-1.5 rounded-full bg-[#0B0E11]/85 backdrop-blur-md border border-white/[0.14] px-2.5 py-0.5 text-[10px] font-semibold text-white">
                       <span
                         className="h-2 w-2 rounded-full shrink-0"
-                        style={{ backgroundColor: prod.accentHex || '#E0A82E' }}
+                        style={{ backgroundColor: prod.accentHex || '#16C784' }}
                       />
                       {prod.colourBadge}
                     </span>
@@ -1043,7 +989,7 @@ export default function HomePage() {
                         {prod.programme} · {prod.level}
                       </Badge>
                       {prod.courseCode && (
-                        <span className="rounded-md bg-[#E0A82E] px-2 py-0.5 font-display text-[11px] font-bold text-[#06130D]">
+                        <span className="rounded-md bg-[#16C784] px-2 py-0.5 font-display text-[11px] font-bold text-[#06130D]">
                           {prod.courseCode}
                         </span>
                       )}
@@ -1051,7 +997,7 @@ export default function HomePage() {
                   </Link>
                   <div className="p-5 pb-3 space-y-2">
                     <div className="flex flex-wrap items-center justify-between gap-1 text-[10.5px]">
-                      <span className="font-semibold text-[#E0A82E]">{prod.discountHint}</span>
+                      <span className="font-semibold text-[#16C784]">{prod.discountHint}</span>
                       <span
                         className={`font-semibold ${
                           prod.isAvailable === false ? 'text-[#EA3943]' : 'text-[#C2C9D4]'
@@ -1078,7 +1024,7 @@ export default function HomePage() {
                     <button
                       type="button"
                       onClick={() => handleQuickAdd(prod)}
-                      className="inline-flex items-center gap-1 rounded-xl bg-[#E0A82E]/15 border border-[#E0A82E]/35 px-3 py-1.5 text-xs font-semibold text-[#E0A82E] hover:bg-[#E0A82E] hover:text-[#06130D] transition-all"
+                      className="inline-flex items-center gap-1 rounded-xl bg-[#16C784]/15 border border-[#16C784]/35 px-3 py-1.5 text-xs font-semibold text-[#16C784] hover:bg-[#16C784] hover:text-[#06130D] transition-all"
                     >
                       <Plus className="h-3.5 w-3.5" /> Add
                     </button>
@@ -1095,7 +1041,7 @@ export default function HomePage() {
         <div className="v-container space-y-8">
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5">
             <div className="space-y-2 max-w-2xl">
-              <span className="text-xs font-semibold uppercase tracking-widest text-[#E0A82E]">
+              <span className="text-xs font-semibold uppercase tracking-widest text-[#16C784]">
                 PHYSICAL CENTRES, TEXTBOOK AUTHORS &amp; BOOK VENDORS · VALENCE ADVERTISE
               </span>
               <h2 className="font-display text-2xl sm:text-3xl font-bold text-white">
@@ -1105,7 +1051,7 @@ export default function HomePage() {
                 Verified <strong className="text-white">physical (in-person) tuition centres</strong>,{' '}
                 <strong className="text-white">accounting textbook authors</strong> and{' '}
                 <strong className="text-white">verified textbook vendors</strong> advertise in-app at{' '}
-                <strong className="text-[#E0A82E]">₦10,000/week</strong> (all online tuition is taken directly in-app with VALENCE-verified tutors). Paid slots carry clear <strong className="text-[#EA3943]">Sponsored</strong> badges.
+                <strong className="text-[#16C784]">₦10,000/week</strong> (all online tuition is taken directly in-app with VALENCE-verified tutors). Paid slots carry clear <strong className="text-[#EA3943]">Sponsored</strong> badges.
               </p>
             </div>
             <div className="flex flex-wrap gap-2.5">
@@ -1145,7 +1091,7 @@ export default function HomePage() {
                   </div>
                   <Link
                     to="/advertise"
-                    className="inline-flex items-center gap-1 text-xs font-semibold text-[#E0A82E] hover:underline pt-2 border-t border-white/[0.06]"
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-[#16C784] hover:underline pt-2 border-t border-white/[0.06]"
                   >
                     Apply In-App (₦10,000/Week) <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
@@ -1165,13 +1111,13 @@ export default function HomePage() {
                       {centre.sponsored && <Badge variant="sponsored">{centre.adLabel}</Badge>}
                     </div>
                     <div className="flex items-start gap-3">
-                      <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#0B0E11] border border-white/[0.08] text-[#E0A82E]">
+                      <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#0B0E11] border border-white/[0.08] text-[#16C784]">
                         <Building2 className="h-5 w-5" />
                       </span>
                       <div>
                         <h3 className="font-display text-base font-bold text-white">{centre.name}</h3>
                         <p className="text-xs text-[#9AA4B2] inline-flex items-center gap-1">
-                          <MapPin className="h-3 w-3 text-[#E0A82E]" /> {centre.location}
+                          <MapPin className="h-3 w-3 text-[#16C784]" /> {centre.location}
                         </p>
                       </div>
                     </div>
@@ -1190,7 +1136,7 @@ export default function HomePage() {
                     </div>
                     <Link
                       to="/tuition-centres"
-                      className="text-xs font-semibold text-[#E0A82E] hover:underline"
+                      className="text-xs font-semibold text-[#16C784] hover:underline"
                     >
                       View Profile →
                     </Link>
@@ -1208,14 +1154,14 @@ export default function HomePage() {
           <div className="space-y-5">
             <div className="flex items-end justify-between gap-3">
               <div>
-                <span className="text-xs font-semibold uppercase tracking-widest text-[#E0A82E]">
+                <span className="text-xs font-semibold uppercase tracking-widest text-[#16C784]">
                   VALENCE OPPORTUNITIES
                 </span>
                 <h2 className="mt-1 font-display text-2xl font-bold text-white">
                   Scholarships, Internships & Careers
                 </h2>
               </div>
-              <Link to="/opportunities" className="text-xs font-semibold text-[#E0A82E] hover:underline">
+              <Link to="/opportunities" className="text-xs font-semibold text-[#16C784] hover:underline">
                 See all →
               </Link>
             </div>
@@ -1232,9 +1178,6 @@ export default function HomePage() {
                   <div className="flex flex-wrap gap-2.5 pt-1">
                     <Link to="/opportunities" className="v-btn-secondary text-xs py-2 px-3">
                       Explore Categories
-                    </Link>
-                    <Link to="/portal/professional" className="v-btn-primary text-xs py-2 px-3">
-                      Share a Verified Opportunity
                     </Link>
                   </div>
                 </div>
@@ -1259,14 +1202,14 @@ export default function HomePage() {
           <div className="space-y-5">
             <div className="flex items-end justify-between gap-3">
               <div>
-                <span className="text-xs font-semibold uppercase tracking-widest text-[#E0A82E]">
+                <span className="text-xs font-semibold uppercase tracking-widest text-[#16C784]">
                   ACADEMIC CALENDAR
                 </span>
                 <h2 className="mt-1 font-display text-2xl font-bold text-white">
                   Upcoming Classes, Webinars & Events
                 </h2>
               </div>
-              <Link to="/programmes" className="text-xs font-semibold text-[#E0A82E] hover:underline">
+              <Link to="/programmes" className="text-xs font-semibold text-[#16C784] hover:underline">
                 Diet timetables →
               </Link>
             </div>
@@ -1275,7 +1218,7 @@ export default function HomePage() {
                 <div key={ev.id} className="v-card p-4 space-y-2">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <Badge variant="neutral">{ev.type}</Badge>
-                    <span className="text-xs font-medium text-[#E0A82E] inline-flex items-center gap-1">
+                    <span className="text-xs font-medium text-[#16C784] inline-flex items-center gap-1">
                       <Calendar className="h-3.5 w-3.5" /> {ev.date}
                     </span>
                   </div>
@@ -1297,7 +1240,7 @@ export default function HomePage() {
       <section className="py-16 sm:py-20 bg-[#0D1116]">
         <div className="v-container space-y-8">
           <div className="max-w-xl">
-            <span className="text-xs font-semibold uppercase tracking-widest text-[#E0A82E]">
+            <span className="text-xs font-semibold uppercase tracking-widest text-[#16C784]">
               THE VALENCE STANDARD
             </span>
             <h2 className="mt-1 font-display text-2xl sm:text-3xl font-bold text-white">
@@ -1310,7 +1253,7 @@ export default function HomePage() {
                 <p className="text-sm leading-relaxed text-[#D5DBE3]">{item.quote}</p>
                 <div className="border-t border-white/[0.06] pt-3.5">
                   <p className="font-display text-sm font-bold text-white">{item.name}</p>
-                  <p className="text-xs text-[#E0A82E]">{item.role}</p>
+                  <p className="text-xs text-[#16C784]">{item.role}</p>
                 </div>
               </div>
             ))}
@@ -1322,7 +1265,7 @@ export default function HomePage() {
       <section id="faq" className="py-16 sm:py-22">
         <div className="v-container max-w-4xl space-y-8">
           <div className="text-center space-y-3">
-            <span className="text-xs font-semibold uppercase tracking-widest text-[#E0A82E]">
+            <span className="text-xs font-semibold uppercase tracking-widest text-[#16C784]">
               FREQUENTLY ASKED QUESTIONS
             </span>
             <h2 className="font-display text-2xl sm:text-4xl font-bold text-white">
@@ -1337,7 +1280,7 @@ export default function HomePage() {
                 }}
                 className={`rounded-xl px-4 py-2 text-xs font-display font-bold transition-all ${
                   faqTab === 'candidate'
-                    ? 'bg-[#E0A82E] text-[#06130D] shadow-glow-sm'
+                    ? 'bg-[#16C784] text-[#06130D] shadow-glow-sm'
                     : 'text-[#9AA4B2] hover:text-white'
                 }`}
               >
@@ -1351,7 +1294,7 @@ export default function HomePage() {
                 }}
                 className={`rounded-xl px-4 py-2 text-xs font-display font-bold transition-all ${
                   faqTab === 'platform'
-                    ? 'bg-[#E0A82E] text-[#06130D] shadow-glow-sm'
+                    ? 'bg-[#16C784] text-[#06130D] shadow-glow-sm'
                     : 'text-[#9AA4B2] hover:text-white'
                 }`}
               >
@@ -1375,7 +1318,7 @@ export default function HomePage() {
                       {item.num ? `${item.num}. ${item.q}` : item.q}
                     </span>
                     <ChevronDown
-                      className={`h-4 w-4 shrink-0 text-[#E0A82E] transition-transform duration-200 ${
+                      className={`h-4 w-4 shrink-0 text-[#16C784] transition-transform duration-200 ${
                         isOpen ? 'rotate-180' : ''
                       }`}
                     />
@@ -1387,7 +1330,7 @@ export default function HomePage() {
                         <ul className="space-y-1.5 text-[#D5DBE3]">
                           {item.bullets.map((b) => (
                             <li key={b} className="flex items-start gap-2 text-xs sm:text-sm">
-                              <CheckCircle2 className="h-4 w-4 text-[#E0A82E] shrink-0 mt-0.5" />
+                              <CheckCircle2 className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" />
                               <span>{b}</span>
                             </li>
                           ))}
@@ -1401,7 +1344,7 @@ export default function HomePage() {
                               href={lnk.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1.5 rounded-xl bg-[#0B0E11] border border-[#E0A82E]/35 hover:border-[#E0A82E] px-3.5 py-2 text-xs font-semibold text-[#E0A82E] transition-colors"
+                              className="inline-flex items-center gap-1.5 rounded-xl bg-[#0B0E11] border border-[#16C784]/35 hover:border-[#16C784] px-3.5 py-2 text-xs font-semibold text-[#16C784] transition-colors"
                             >
                               {lnk.label} <ExternalLink className="h-3.5 w-3.5" />
                             </a>
@@ -1409,7 +1352,7 @@ export default function HomePage() {
                         </div>
                       )}
                       {item.tagline && (
-                        <p className="font-display text-sm sm:text-base font-bold italic text-[#E0A82E] pt-1">
+                        <p className="font-display text-sm sm:text-base font-bold italic text-[#16C784] pt-1">
                           {item.tagline}
                         </p>
                       )}
@@ -1422,7 +1365,7 @@ export default function HomePage() {
 
           <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
             <Link to="/programmes/ican/guide" className="v-btn-secondary text-xs">
-              Open Full Candidate Guide Page <ArrowRight className="h-3.5 w-3.5 text-[#E0A82E]" />
+              Open Full Candidate Guide Page <ArrowRight className="h-3.5 w-3.5 text-[#16C784]" />
             </Link>
             <Link to="/programmes/ican/exemptions" className="v-btn-secondary text-xs">
               Check My Starting Level & Exemptions
@@ -1434,27 +1377,27 @@ export default function HomePage() {
       {/* 19. CONTACT & CTA */}
       <section className="py-16 sm:py-20 bg-[#0D1116]">
         <div className="v-container">
-          <div className="rounded-3xl bg-gradient-to-br from-[#131B23] via-[#11161C] to-[#0B0E11] border border-[#E0A82E]/25 p-7 sm:p-12 shadow-glow">
+          <div className="rounded-3xl bg-gradient-to-br from-[#131B23] via-[#11161C] to-[#0B0E11] border border-[#16C784]/25 p-7 sm:p-12 shadow-glow">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-7 space-y-4">
-                <p className="font-display text-xs italic text-[#E0A82E]">{settings.tagline}</p>
+                <p className="font-display text-xs italic text-[#16C784]">{settings.tagline}</p>
                 <h2 className="font-display text-2xl sm:text-4xl font-bold text-white">
                   Join VALENCE Free Today
                 </h2>
                 <p className="text-sm text-[#9AA4B2] max-w-xl">
-                  Connect with peers across {universityCounts.total}+ Nigerian universities, prepare for ATSWA March 2027 or ICAN May 2027, compete for the ₦220,000 podium prize pool, or unlock tuition whenever you’re ready.
+                  Connect with peers across {universityCounts.total}+ Nigerian universities, prepare for ATSWA March 2027 or ICAN May 2027, compete for the ₦500,000 podium prize pool, or unlock tuition whenever you’re ready.
                 </p>
                 <div className="flex flex-wrap gap-4 text-xs text-[#C2C9D4] pt-1">
                   <span className="inline-flex items-center gap-1.5">
-                    <MessageCircle className="h-4 w-4 text-[#E0A82E]" />
+                    <MessageCircle className="h-4 w-4 text-[#16C784]" />
                     {settings.whatsappNumber}
                   </span>
                   <span className="inline-flex items-center gap-1.5">
-                    <Clock className="h-4 w-4 text-[#E0A82E]" />
+                    <Clock className="h-4 w-4 text-[#16C784]" />
                     Hours: {settings.operatingHours}
                   </span>
                   <span className="inline-flex items-center gap-1.5">
-                    <ShieldCheck className="h-4 w-4 text-[#E0A82E]" />
+                    <ShieldCheck className="h-4 w-4 text-[#16C784]" />
                     {settings.email}
                   </span>
                 </div>
@@ -1473,7 +1416,7 @@ export default function HomePage() {
                     onClick={() => openWhatsAppModal({ category: 'General Support Enquiry' })}
                     className="v-btn-secondary py-2.5 text-xs"
                   >
-                    <MessageCircle className="h-3.5 w-3.5 text-[#E0A82E]" />
+                    <MessageCircle className="h-3.5 w-3.5 text-[#16C784]" />
                     WhatsApp Support
                   </button>
                 </div>

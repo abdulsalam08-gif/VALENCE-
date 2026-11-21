@@ -4,7 +4,6 @@ import {
   Video,
   Bot,
   ShoppingBag,
-  Users,
   Trophy,
   Building2,
   Briefcase,
@@ -12,7 +11,7 @@ import {
   MessageCircle,
   CalendarClock,
 } from 'lucide-react';
-import { usePlatform } from '../context/PlatformContext';
+import { useAuth, useCart, usePublicData, useUi } from '../context/PlatformContext';
 import Badge from '../components/ui/Badge';
 
 const SERVICES = [
@@ -42,9 +41,9 @@ const SERVICES = [
   },
   {
     icon: Trophy,
-    title: 'National Inter-School Challenge (₦220,000 Podium Pool)',
-    badge: '₦220,000 Podium Prizes',
-    desc: 'Five-round national championships across Nigerian universities, polytechnics, colleges and exam divisions, with questions drawn from accounting and related fields (finance, tax, audit, economics, business law & management) and a verified ₦220,000 podium prize pool (₦100,000 / ₦70,000 / ₦50,000) · strictly only 4 students can compete in each school.',
+    title: 'National Inter-School Challenge (₦500,000 Podium Pool)',
+    badge: '₦500,000 Podium Prizes',
+    desc: 'Five-round national championships across Nigerian universities, polytechnics, colleges and exam divisions, with questions drawn from accounting and related fields (finance, tax, audit, economics, business law & management) and a verified ₦500,000 podium prize pool (₦250,000 / ₦150,000 / ₦100,000) · strictly only 4 students can compete in each school.',
     cta: 'Enter Challenge',
     to: '/competitions',
   },
@@ -57,12 +56,6 @@ const SERVICES = [
     to: '/store',
   },
   {
-    icon: Users,
-    title: 'VALENCE CONNECT & Direct Calling',
-    badge: 'Realtime WebRTC',
-    desc: 'Direct/group messaging, real audio & video calls, community announcements with 7 audience scopes, 12 subject forums, study groups and verified mentorship.',
-    cta: 'Explore Connect',
-    to: '/connect',
   },
   {
     icon: Building2,
@@ -83,8 +76,7 @@ const SERVICES = [
 ];
 
 export default function ServicesPage() {
-  const { openWhatsAppModal } = usePlatform();
-
+  const { openWhatsAppModal } = useUi();
   return (
     <div className="divide-y divide-white/[0.06]">
       <section className="bg-grid-fintech py-14 sm:py-18">
@@ -94,7 +86,7 @@ export default function ServicesPage() {
             Comprehensive Educational, Competition & Career Services
           </h1>
           <p className="text-sm sm:text-base text-[#9AA4B2] max-w-2xl">
-            Every academic, networking, examination timetable, ₦220,000 competition podium pool, bookstore and advertising capability integrated in one neutral platform.
+            Every academic, networking, examination timetable, ₦500,000 competition podium pool, bookstore and advertising capability integrated in one neutral platform.
           </p>
         </div>
       </section>
@@ -107,7 +99,7 @@ export default function ServicesPage() {
               <div key={s.title} className="v-card-hover p-6 flex flex-col justify-between gap-5">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between gap-2">
-                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#E0A82E]/[0.12] border border-[#E0A82E]/25 text-[#E0A82E]">
+                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#16C784]/[0.12] border border-[#16C784]/25 text-[#16C784]">
                       <Icon className="h-5 w-5" />
                     </div>
                     <Badge variant="neutral">{s.badge}</Badge>
@@ -117,7 +109,7 @@ export default function ServicesPage() {
                 </div>
                 <Link
                   to={s.to}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#E0A82E] hover:underline"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#16C784] hover:underline"
                 >
                   {s.cta} <ArrowRight className="h-3.5 w-3.5" />
                 </Link>

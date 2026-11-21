@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { usePlatform } from '../context/PlatformContext.jsx';
+import { useAuth, useCart, usePublicData, useUi } from '../context/PlatformContext';
 import {
   fetchAnnouncements, fetchAnnouncementDetail, fetchAnnouncementComments,
   createAnnouncement, deleteAnnouncement,
@@ -33,7 +33,7 @@ function ScopeBadge({ audience }) {
 /* ------------------------------------------------------------------ */
 
 function Composer({ onCreated }) {
-  const { adminRoles } = usePlatform();
+  const { adminRoles } = useAuth();
   const isAdmin = adminRoles.length > 0;
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState('');
@@ -98,12 +98,12 @@ function Composer({ onCreated }) {
           </div>
           {isAdmin && (
             <label className="flex items-center gap-2 text-sm text-[#9AA4B2]">
-              <input type="checkbox" checked={isOfficial} onChange={(e) => setIsOfficial(e.target.checked)} className="accent-[#E0A82E]" />
+              <input type="checkbox" checked={isOfficial} onChange={(e) => setIsOfficial(e.target.checked)} className="accent-[#16C784]" />
               Mark as official (admin only)
             </label>
           )}
           {toast && (
-            <div className={`rounded-lg border px-3 py-2 text-xs font-medium ${toast.isError ? 'border-[#EA3943]/30 bg-[#EA3943]/10 text-[#EA3943]' : 'border-[#E0A82E]/30 bg-[#E0A82E]/10 text-[#E0A82E]'}`}>{toast.msg}</div>
+            <div className={`rounded-lg border px-3 py-2 text-xs font-medium ${toast.isError ? 'border-[#EA3943]/30 bg-[#EA3943]/10 text-[#EA3943]' : 'border-[#16C784]/30 bg-[#16C784]/10 text-[#16C784]'}`}>{toast.msg}</div>
           )}
           <button type="submit" disabled={busy} className="v-btn-primary px-4 py-2 text-xs">Publish</button>
         </form>
@@ -121,14 +121,14 @@ function AnnouncementCard({ ann, onOpen, onLike, onBookmark }) {
     <div onClick={() => onOpen(ann.id)} className="v-card-hover mb-3 cursor-pointer p-4">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
-          <span className="inline-flex h-9 w-9 flex-none items-center justify-center rounded-full bg-[#E0A82E]/10 text-[#E0A82E] text-xs font-bold">{initials(ann.author_name)}</span>
+          <span className="inline-flex h-9 w-9 flex-none items-center justify-center rounded-full bg-[#16C784]/10 text-[#16C784] text-xs font-bold">{initials(ann.author_name)}</span>
           <div className="min-w-0">
             <div className="text-sm font-semibold text-[#F4F6F9] truncate">{ann.author_name}</div>
             <div className="text-[11px] text-[#667085]">{new Date(ann.created_at).toLocaleString()}</div>
           </div>
         </div>
         <div className="flex flex-none items-center gap-1.5">
-          {ann.is_official && <span className="rounded-md bg-[#E0A82E]/15 border border-[#E0A82E]/30 px-2 py-0.5 text-[11px] font-semibold text-[#E0A82E]">OFFICIAL</span>}
+          {ann.is_official && <span className="rounded-md bg-[#16C784]/15 border border-[#16C784]/30 px-2 py-0.5 text-[11px] font-semibold text-[#16C784]">OFFICIAL</span>}
           <ScopeBadge audience={ann.audience} />
         </div>
       </div>
@@ -149,7 +149,7 @@ function AnnouncementCard({ ann, onOpen, onLike, onBookmark }) {
 /* ------------------------------------------------------------------ */
 
 export default function AnnouncementsPage() {
-  const { adminRoles } = usePlatform();
+  const { adminRoles } = useAuth();
   const isAdmin = adminRoles.length > 0;
   const [anns, setAnns] = useState([]);
   const [activeId, setActiveId] = useState(null);
@@ -225,7 +225,7 @@ export default function AnnouncementsPage() {
         </div>
 
         {toast && (
-          <div className={`mb-5 rounded-xl border px-4 py-3 text-sm font-medium ${toast.isError ? 'border-[#EA3943]/30 bg-[#EA3943]/10 text-[#EA3943]' : 'border-[#E0A82E]/30 bg-[#E0A82E]/10 text-[#E0A82E]'}`}>{toast.msg}</div>
+          <div className={`mb-5 rounded-xl border px-4 py-3 text-sm font-medium ${toast.isError ? 'border-[#EA3943]/30 bg-[#EA3943]/10 text-[#EA3943]' : 'border-[#16C784]/30 bg-[#16C784]/10 text-[#16C784]'}`}>{toast.msg}</div>
         )}
 
         <div className="mb-5">
@@ -239,14 +239,14 @@ export default function AnnouncementsPage() {
               <div className="v-card p-5 mb-4">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#E0A82E]/10 text-[#E0A82E] text-xs font-bold">{initials(detail.author_name)}</span>
+                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#16C784]/10 text-[#16C784] text-xs font-bold">{initials(detail.author_name)}</span>
                     <div>
                       <div className="text-sm font-semibold text-[#F4F6F9]">{detail.author_name}</div>
                       <div className="text-[11px] text-[#667085]">{new Date(detail.created_at).toLocaleString()}</div>
                     </div>
                   </div>
                   <div className="flex flex-none items-center gap-1.5">
-                    {detail.is_official && <span className="rounded-md bg-[#E0A82E]/15 border border-[#E0A82E]/30 px-2 py-0.5 text-[11px] font-semibold text-[#E0A82E]">OFFICIAL</span>}
+                    {detail.is_official && <span className="rounded-md bg-[#16C784]/15 border border-[#16C784]/30 px-2 py-0.5 text-[11px] font-semibold text-[#16C784]">OFFICIAL</span>}
                     <ScopeBadge audience={detail.audience} />
                   </div>
                 </div>
@@ -281,7 +281,7 @@ export default function AnnouncementsPage() {
                 ) : (
                   comments.map((c) => (
                     <div key={c.id} className="flex items-start gap-2">
-                      <span className="inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-[#E0A82E]/10 text-[#E0A82E] text-[10px] font-bold">{initials(c.author_name)}</span>
+                      <span className="inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-[#16C784]/10 text-[#16C784] text-[10px] font-bold">{initials(c.author_name)}</span>
                       <div className="min-w-0 flex-1">
                         <div className="text-xs font-semibold text-[#F4F6F9]">{c.author_name}</div>
                         <div className="text-sm text-[#C2C9D4]">{c.content}</div>

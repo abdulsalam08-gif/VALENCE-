@@ -18,7 +18,7 @@ import {
   Plus,
   RotateCcw,
 } from 'lucide-react';
-import { usePlatform } from '../context/PlatformContext';
+import { useAuth, useCart, usePublicData, useUi } from '../context/PlatformContext';
 import { useToast } from '../context/ToastContext';
 import Badge from '../components/ui/Badge';
 import { formatNaira } from '../lib/pricing';
@@ -57,7 +57,8 @@ const TABS = [
 ];
 
 export default function AdvertiserHubPage() {
-  const { user, settings } = usePlatform();
+  const { user } = useAuth();
+  const { settings } = usePublicData();
   const toast = useToast();
 
   const [tab, setTab] = useState('profile');
@@ -85,7 +86,7 @@ export default function AdvertiserHubPage() {
   });
   const [verifDetails, setVerifDetails] = useState('');
 
-  const [newCampaign, setNewCampaign] = useState({ name: '', weeks: 1, placements: ['featured-dir'] });
+  const [newCampaign, setNewCampaign] = useState({ name: '', weeks: 1, placements: ['featured-dir'], softcopyUrl: '' });
 
   const activePackage = useMemo(
     () => packages.find((p) => p.price_ngn === (settings.adWeeklyRate || 10000)) || packages[0] || null,
@@ -194,6 +195,7 @@ export default function AdvertiserHubPage() {
         advertiserId: advertiser.id,
         packageId: activePackage?.id,
         campaignName: newCampaign.name.trim(),
+        softcopyUrl: newCampaign.softcopyUrl || null,
         placements: newCampaign.placements,
         weeks: newCampaign.weeks,
       });
@@ -264,8 +266,8 @@ export default function AdvertiserHubPage() {
       <section className="bg-grid-fintech py-10 sm:py-14">
         <div className="v-container flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-2xl bg-[#E0A82E]/12 border border-[#E0A82E]/30 flex items-center justify-center">
-              <Megaphone className="h-6 w-6 text-[#E0A82E]" />
+            <div className="h-12 w-12 rounded-2xl bg-[#16C784]/12 border border-[#16C784]/30 flex items-center justify-center">
+              <Megaphone className="h-6 w-6 text-[#16C784]" />
             </div>
             <div>
               <h1 className="font-display text-2xl font-bold text-white">VALENCE Advertiser Hub</h1>
@@ -295,7 +297,7 @@ export default function AdvertiserHubPage() {
                     onClick={() => setTab(t.key)}
                     className={`flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-xs font-display font-bold transition-colors ${
                       active
-                        ? 'bg-[#E0A82E]/[0.12] text-[#E0A82E] border border-[#E0A82E]/30'
+                        ? 'bg-[#16C784]/[0.12] text-[#16C784] border border-[#16C784]/30'
                         : 'text-[#C2C9D4] border border-transparent hover:bg-white/[0.04]'
                     }`}
                   >
@@ -314,11 +316,11 @@ export default function AdvertiserHubPage() {
             {tab === 'profile' && (
               <>
                 {/* Verification status card */}
-                <div className={`v-card p-6 space-y-3 ${isVerified ? 'border-[#E0A82E]/40' : 'border-[#9AA4B2]/40'}`}>
+                <div className={`v-card p-6 space-y-3 ${isVerified ? 'border-[#16C784]/40' : 'border-[#9AA4B2]/40'}`}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       {isVerified ? (
-                        <ShieldCheck className="h-5 w-5 text-[#E0A82E]" />
+                        <ShieldCheck className="h-5 w-5 text-[#16C784]" />
                       ) : (
                         <ShieldAlert className="h-5 w-5 text-[#9AA4B2]" />
                       )}
@@ -380,7 +382,7 @@ export default function AdvertiserHubPage() {
                     </div>
                   </div>
                   <div>
-                    <label className="v-label flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 text-[#E0A82E]" /> Address / Coverage</label>
+                    <label className="v-label flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 text-[#16C784]" /> Address / Coverage</label>
                     <input
                       type="text"
                       value={form.address}
@@ -443,7 +445,7 @@ export default function AdvertiserHubPage() {
                 {/* New campaign */}
                 <form onSubmit={handleCreateCampaign} className="v-card p-6 space-y-4">
                   <h2 className="font-display text-lg font-bold text-white flex items-center gap-2">
-                    <Plus className="h-4 w-4 text-[#E0A82E]" /> New Campaign
+                    <Plus className="h-4 w-4 text-[#16C784]" /> New Campaign
                   </h2>
                   <div>
                     <label className="v-label">Campaign Headline</label>
@@ -455,6 +457,19 @@ export default function AdvertiserHubPage() {
                       placeholder="e.g. May 2027 ICAN Skills Physical Weekend Classes, Yaba"
                       className="v-input text-xs"
                     />
+                  </div>
+                  <div>
+                    <label className="v-label">Soft-Copy Download Link (optional)</label>
+                    <input
+                      type="url"
+                      value={newCampaign.softcopyUrl}
+                      onChange={(e) => setNewCampaign({ ...newCampaign, softcopyUrl: e.target.value })}
+                      placeholder="https://… direct link to your soft-copy materials"
+                      className="v-input text-xs"
+                    />
+                    <p className="text-[10px] text-[#9AA4B2] mt-1">
+                      For ACCA, CIBN, CITN &amp; CIPM authors: paste the direct link to your soft-copy materials. Displayed on your ad card for students to download.
+                    </p>
                   </div>
                   <div className="flex items-center gap-3">
                     <label className="v-label mb-0 whitespace-nowrap">Duration (weeks)</label>
@@ -478,7 +493,7 @@ export default function AdvertiserHubPage() {
                             type="button"
                             onClick={() => togglePlacement(pl.id)}
                             className={`rounded-xl border px-3 py-2 text-left ${
-                              active ? 'bg-[#E0A82E]/[0.12] border-[#E0A82E]/50 text-white' : 'bg-[#0B0E11] border-white/[0.07] text-[#C2C9D4]'
+                              active ? 'bg-[#16C784]/[0.12] border-[#16C784]/50 text-white' : 'bg-[#0B0E11] border-white/[0.07] text-[#C2C9D4]'
                             }`}
                           >
                             {pl.label}
@@ -487,11 +502,11 @@ export default function AdvertiserHubPage() {
                       })}
                     </div>
                   </div>
-                  <div className="flex items-center justify-between rounded-xl bg-[#0B0E11] border border-[#E0A82E]/30 p-3">
+                  <div className="flex items-center justify-between rounded-xl bg-[#0B0E11] border border-[#16C784]/30 p-3">
                     <span className="text-xs text-[#9AA4B2]">
                       {newCampaign.weeks} week(s) × {newCampaign.placements.length} slot(s) × {formatNaira(activePackage?.price_ngn || settings.adWeeklyRate)}
                     </span>
-                    <span className="font-display text-lg font-bold text-[#E0A82E]">{formatNaira(cost)}</span>
+                    <span className="font-display text-lg font-bold text-[#16C784]">{formatNaira(cost)}</span>
                   </div>
                   <button type="submit" disabled={savingCampaign} className="v-btn-primary text-xs">
                     {savingCampaign ? <Loader2 className="h-4 w-4 animate-spin" /> : <Megaphone className="h-4 w-4" />} Create Campaign
@@ -538,7 +553,7 @@ export default function AdvertiserHubPage() {
                           </div>
                           <div className="rounded-lg bg-white/[0.03] p-2">
                             <p className="text-[10px] text-[#667085]">CTR</p>
-                            <p className="font-display text-sm font-bold text-[#E0A82E] tabular-nums">{c.ctr || 0}%</p>
+                            <p className="font-display text-sm font-bold text-[#16C784] tabular-nums">{c.ctr || 0}%</p>
                           </div>
                         </div>
                         {c.status === 'pending_payment' && (
@@ -569,7 +584,7 @@ export default function AdvertiserHubPage() {
                   {[
                     { label: 'Total Impressions', value: analytics.totals.impressions, color: 'text-white' },
                     { label: 'Total Clicks', value: analytics.totals.clicks, color: 'text-white' },
-                    { label: 'Click-through Rate', value: `${analytics.totals.ctr || 0}%`, color: 'text-[#E0A82E]' },
+                    { label: 'Click-through Rate', value: `${analytics.totals.ctr || 0}%`, color: 'text-[#16C784]' },
                     { label: 'Enquiries', value: analytics.totals.enquiries, color: 'text-white' },
                   ].map((s) => (
                     <div key={s.label} className="v-card p-5">
@@ -601,7 +616,7 @@ export default function AdvertiserHubPage() {
                               <td className="py-2.5 pr-3 text-[#9AA4B2]">{c.status}</td>
                               <td className="py-2.5 pr-3 text-right tabular-nums">{c.impressions || 0}</td>
                               <td className="py-2.5 pr-3 text-right tabular-nums">{c.clicks || 0}</td>
-                              <td className="py-2.5 pr-3 text-right text-[#E0A82E] tabular-nums">{c.ctr || 0}%</td>
+                              <td className="py-2.5 pr-3 text-right text-[#16C784] tabular-nums">{c.ctr || 0}%</td>
                             </tr>
                           ))}
                         </tbody>

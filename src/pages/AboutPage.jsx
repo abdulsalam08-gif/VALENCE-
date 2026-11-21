@@ -9,7 +9,7 @@ import {
   Banknote,
   Building2,
 } from 'lucide-react';
-import { usePlatform } from '../context/PlatformContext';
+import { useAuth, useCart, usePublicData, useUi } from '../context/PlatformContext';
 import Badge from '../components/ui/Badge';
 
 const COMMUNITIES_SERVED = [
@@ -33,8 +33,7 @@ const COMMUNITY_STANDARDS = [
 ];
 
 export default function AboutPage() {
-  const { settings, pillars, universityCounts } = usePlatform();
-
+  const { settings, pillars, universityCounts } = usePublicData();
   return (
     <div className="divide-y divide-white/[0.06]">
       <section className="relative overflow-hidden bg-grid-fintech py-14 sm:py-20">
@@ -44,21 +43,21 @@ export default function AboutPage() {
             <h1 className="font-display text-3xl sm:text-5xl font-bold text-white leading-tight">
               Academic Excellence, Professional Growth & Institutional Neutrality.
             </h1>
-            <p className="font-display text-lg italic text-[#E0A82E]">
+            <p className="font-display text-lg italic text-[#16C784]">
               “{settings.tagline}” ({settings.taglineTranslation})
             </p>
             <p className="text-sm sm:text-base leading-relaxed text-[#9AA4B2] max-w-3xl">
-              <strong className="text-white">VALENCE</strong> is Nigeria’s complete accounting education, professional networking, inter-school competition, marketplace, tuition-centre directory and career development ecosystem. Membership is free for students, professionals and learners, with a one-time ₦3,000 registration required only when applying for tuition and viewing personalised cost implications, and a verified <strong className="text-[#E0A82E]">₦220,000 podium prize pool</strong> celebrating top learners (1st ₦100,000 · 2nd ₦70,000 · 3rd ₦50,000) after every competition closes.
+              <strong className="text-white">VALENCE</strong> is Nigeria’s complete accounting education, professional networking, inter-school competition, marketplace, tuition-centre directory and career development ecosystem. Membership is free for students, professionals and learners, with a one-time ₦3,000 registration required only when applying for tuition and viewing personalised cost implications, and a verified <strong className="text-[#16C784]">₦500,000 podium prize pool</strong> celebrating top learners (1st ₦250,000 · 2nd ₦150,000 · 3rd ₦100,000) after every competition closes.
             </p>
           </div>
 
           <div className="lg:col-span-4 v-glass-card p-6 sm:p-8 text-center space-y-4">
-            <div className="mx-auto h-24 w-24 rounded-3xl bg-[#0B0E11] border border-[#E0A82E]/35 flex items-center justify-center shadow-glow">
+            <div className="mx-auto h-24 w-24 rounded-3xl bg-[#0B0E11] border border-[#16C784]/35 flex items-center justify-center shadow-glow">
               <img src="/valence-mark.png" alt="VALENCE official emblem" className="h-16 w-16 object-contain" />
             </div>
             <div>
               <h2 className="font-display text-2xl font-bold tracking-wider text-white">VALENCE</h2>
-              <p className="text-xs italic text-[#E0A82E] mt-1.5">{settings.tagline}</p>
+              <p className="text-xs italic text-[#16C784] mt-1.5">{settings.tagline}</p>
             </div>
             <div className="grid grid-cols-2 gap-2 pt-2 text-left text-xs">
               <div className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-3">
@@ -69,7 +68,7 @@ export default function AboutPage() {
               </div>
               <div className="rounded-xl bg-[#0B0E11] border border-white/[0.06] p-3">
                 <span className="text-[#667085] block text-[10px] uppercase">Podium Award</span>
-                <span className="tabular-nums-display font-bold text-[#E0A82E]">₦220,000</span>
+                <span className="tabular-nums-display font-bold text-[#16C784]">₦500,000</span>
               </div>
             </div>
           </div>
@@ -80,7 +79,7 @@ export default function AboutPage() {
       <section className="py-16">
         <div className="v-container space-y-8">
           <div className="max-w-2xl space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-widest text-[#E0A82E]">
+            <span className="text-xs font-semibold uppercase tracking-widest text-[#16C784]">
               WHO WE SERVE
             </span>
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-white">
@@ -90,7 +89,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {COMMUNITIES_SERVED.map((c) => (
               <div key={c.num} className="v-card p-5 space-y-2.5">
-                <span className="tabular-nums-display text-xs font-bold text-[#E0A82E]">{c.num}</span>
+                <span className="tabular-nums-display text-xs font-bold text-[#16C784]">{c.num}</span>
                 <h3 className="font-display text-base font-bold text-white">{c.title}</h3>
                 <p className="text-xs leading-relaxed text-[#9AA4B2]">{c.desc}</p>
               </div>
@@ -103,7 +102,7 @@ export default function AboutPage() {
       <section className="py-16 bg-[#0D1116]">
         <div className="v-container space-y-8">
           <div className="max-w-2xl space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-widest text-[#E0A82E]">
+            <span className="text-xs font-semibold uppercase tracking-widest text-[#16C784]">
               PLATFORM ARCHITECTURE
             </span>
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-white">
@@ -119,7 +118,7 @@ export default function AboutPage() {
               >
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#16C784]">
                       {p.code}
                     </span>
                     <Badge variant="neutral">{p.metric}</Badge>
@@ -127,7 +126,7 @@ export default function AboutPage() {
                   <h3 className="font-display text-base font-bold text-white">{p.title}</h3>
                   <p className="text-xs text-[#9AA4B2] leading-relaxed">{p.description}</p>
                 </div>
-                <ArrowRight className="h-4 w-4 shrink-0 text-[#E0A82E] mt-1" />
+                <ArrowRight className="h-4 w-4 shrink-0 text-[#16C784] mt-1" />
               </Link>
             ))}
           </div>
@@ -138,7 +137,7 @@ export default function AboutPage() {
       <section className="py-16">
         <div className="v-container grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="v-card p-6 sm:p-8 space-y-5">
-            <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#E0A82E]/15 text-[#E0A82E]">
+            <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#16C784]/15 text-[#16C784]">
               <BadgeCheck className="h-5 w-5" />
             </div>
             <h3 className="font-display text-2xl font-bold text-white">
@@ -163,7 +162,7 @@ export default function AboutPage() {
           </div>
 
           <div className="v-card p-6 sm:p-8 space-y-5">
-            <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#E0A82E]/15 text-[#E0A82E]">
+            <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#16C784]/15 text-[#16C784]">
               <ShieldCheck className="h-5 w-5" />
             </div>
             <h3 className="font-display text-2xl font-bold text-white">
@@ -172,7 +171,7 @@ export default function AboutPage() {
             <ul className="space-y-2.5 text-xs sm:text-sm text-[#C2C9D4]">
               {COMMUNITY_STANDARDS.map((rule) => (
                 <li key={rule} className="flex items-start gap-2.5">
-                  <Lock className="h-4 w-4 text-[#E0A82E] shrink-0 mt-0.5" />
+                  <Lock className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" />
                   <span>{rule}</span>
                 </li>
               ))}

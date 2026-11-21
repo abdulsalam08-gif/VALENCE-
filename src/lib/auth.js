@@ -2,7 +2,6 @@ import { supabase, isSupabaseConfigured } from './supabase';
 
 export const USER_TYPES = [
   { value: 'student', label: 'Student & Learner', icon: 'GraduationCap' },
-  { value: 'professional', label: 'Professional (ACA / FCA / ACCA / CPA)', icon: 'Briefcase' },
   { value: 'tutor', label: 'Accounting Tutor', icon: 'BookOpenCheck' },
   { value: 'school_rep', label: 'School / Institution Representative', icon: 'Building2' },
   { value: 'advertiser', label: 'Advertiser (Centre / Author / Vendor)', icon: 'Megaphone' },
@@ -19,6 +18,26 @@ export const ADMIN_ROLES = [
   { value: 'competition_admin', label: 'Competition Admin' },
   { value: 'ads_finance_admin', label: 'Ads & Finance Admin' },
 ];
+
+// Map an account_type to its intended portal route. Every portal must land on
+// the portal it is meant to — schools on the school portal, etc. General
+// learners use the student/learner portal as their workspace.
+export function portalPathForAccountType(accountType) {
+  switch (accountType) {
+    case 'school_rep':
+      return '/portal/school';
+    case 'tutor':
+      return '/portal/tutor';
+    case 'advertiser':
+      return '/portal/advertiser';
+    case 'admin':
+      return '/portal/admin';
+    case 'general_learner':
+      return '/portal/student';
+    default:
+      return '/portal/student';
+  }
+}
 
 export function isSupabaseReady() {
   return isSupabaseConfigured && supabase;

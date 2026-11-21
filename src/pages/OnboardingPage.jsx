@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { usePlatform } from '../context/PlatformContext';
+import { useAuth, useCart, usePublicData, useUi } from '../context/PlatformContext';
 import { useToast } from '../context/ToastContext';
 import UniversitySelect from '../components/ui/UniversitySelect';
-import { USER_TYPES } from '../lib/auth';
+import { USER_TYPES, portalPathForAccountType } from '../lib/auth';
 import {
   GraduationCap,
-  Briefcase,
   BookOpen,
   School,
   Megaphone,
@@ -21,7 +20,6 @@ import {
 
 const TYPE_ICONS = {
   student: GraduationCap,
-  professional: Briefcase,
   tutor: BookOpen,
   school_rep: School,
   advertiser: Megaphone,
@@ -30,7 +28,7 @@ const TYPE_ICONS = {
 };
 
 export default function OnboardingPage() {
-  const { handleSignUp, user } = usePlatform();
+  const { handleSignUp, user } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -126,8 +124,9 @@ export default function OnboardingPage() {
     }
 
     toast.success('Account created', 'Welcome to VALENCE. Your account is ready.');
-    // Small delay to let auth state propagate
-    setTimeout(() => navigate('/portal/student', { replace: true }), 500);
+    // Small delay to let auth state propagate — land on the portal the
+    // account type is meant for, not always the student portal.
+    setTimeout(() => navigate(portalPathForAccountType(form.accountType), { replace: true }), 500);
   };
 
   const totalSteps = 3;
@@ -143,7 +142,7 @@ export default function OnboardingPage() {
                 <div
                   className={`inline-flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-all ${
                     step >= s
-                      ? 'bg-[#E0A82E] text-black'
+                      ? 'bg-[#16C784] text-black'
                       : 'bg-white/[0.06] text-[#667085]'
                   }`}
                 >
@@ -154,7 +153,7 @@ export default function OnboardingPage() {
                 </span>
               </div>
               {s < 3 && (
-                <div className={`h-px flex-1 mx-2 ${step > s ? 'bg-[#E0A82E]' : 'bg-white/[0.08]'}`} />
+                <div className={`h-px flex-1 mx-2 ${step > s ? 'bg-[#16C784]' : 'bg-white/[0.08]'}`} />
               )}
             </React.Fragment>
           ))}
@@ -227,16 +226,16 @@ export default function OnboardingPage() {
                 <label className="v-label">I am a</label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                   {USER_TYPES.map((t) => {
-                    const Icon = TYPE_ICONS[t.key] || User;
-                    const active = form.accountType === t.key;
+                    const Icon = TYPE_ICONS[t.value] || User;
+                    const active = form.accountType === t.value;
                     return (
                       <button
-                        key={t.key}
+                        key={t.value}
                         type="button"
-                        onClick={() => update('accountType', t.key)}
+                        onClick={() => update('accountType', t.value)}
                         className={`flex items-center gap-2 rounded-xl border px-3 py-3 text-left transition-all ${
                           active
-                            ? 'border-[#E0A82E] bg-[#E0A82E]/[0.08] text-white'
+                            ? 'border-[#16C784] bg-[#16C784]/[0.08] text-white'
                             : 'border-white/[0.08] bg-white/[0.02] text-[#9AA4B2] hover:border-white/20'
                         }`}
                       >
@@ -313,7 +312,7 @@ export default function OnboardingPage() {
             <div className="mt-6 space-y-3 animate-fade-up">
               <ReviewRow label="Name" value={form.fullName} />
               <ReviewRow label="Email" value={form.email} />
-              <ReviewRow label="Account type" value={USER_TYPES.find((t) => t.key === form.accountType)?.label || form.accountType} />
+              <ReviewRow label="Account type" value={USER_TYPES.find((t) => t.value === form.accountType)?.label || form.accountType} />
               <ReviewRow
                 label="Institution"
                 value={
@@ -352,7 +351,7 @@ export default function OnboardingPage() {
               <button
                 type="button"
                 onClick={nextStep}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-[#E0A82E] px-5 py-2.5 text-sm font-bold text-black hover:bg-[#F2C668] transition-colors"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-[#16C784] px-5 py-2.5 text-sm font-bold text-black hover:bg-[#1ED791] transition-colors"
               >
                 Continue <ArrowRight className="h-4 w-4" />
               </button>
@@ -361,7 +360,7 @@ export default function OnboardingPage() {
                 type="button"
                 onClick={submitOnboarding}
                 disabled={loading}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-[#E0A82E] px-5 py-2.5 text-sm font-bold text-black hover:bg-[#F2C668] transition-colors disabled:opacity-60"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-[#16C784] px-5 py-2.5 text-sm font-bold text-black hover:bg-[#1ED791] transition-colors disabled:opacity-60"
               >
                 {loading ? (
                   <>
@@ -382,7 +381,7 @@ export default function OnboardingPage() {
           <button
             type="button"
             onClick={() => navigate('/signin')}
-            className="font-semibold text-[#E0A82E] hover:underline"
+            className="font-semibold text-[#16C784] hover:underline"
           >
             Sign in
           </button>

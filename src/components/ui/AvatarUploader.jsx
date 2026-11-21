@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react';
-import { usePlatform } from '../../context/PlatformContext';
+import { useAuth, useCart, usePublicData, useUi } from '../../context/PlatformContext';
 import { useToast } from '../../context/ToastContext';
 import { uploadAvatar } from '../../lib/auth';
 import { Camera, Loader2, Check, X } from 'lucide-react';
 
 export default function AvatarUploader({ currentUrl, size = 'md' }) {
-  const { user, setUser, profile, setProfile } = usePlatform();
+  const { user, setUser, profile, setProfile } = useAuth();
   const toast = useToast();
   const fileInputRef = useRef(null);
   const [processing, setProcessing] = useState(false);
@@ -75,7 +75,7 @@ export default function AvatarUploader({ currentUrl, size = 'md' }) {
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={processing}
-          className="absolute -bottom-1 -right-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#E0A82E] text-[#06130D] border-2 border-[#0B0E11] hover:scale-105 transition-transform disabled:opacity-50"
+          className="absolute -bottom-1 -right-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#16C784] text-[#06130D] border-2 border-[#0B0E11] hover:scale-105 transition-transform disabled:opacity-50"
           aria-label="Change avatar"
         >
           {processing ? (

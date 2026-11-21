@@ -19,7 +19,7 @@ import {
   ShieldAlert,
   RotateCcw,
 } from 'lucide-react';
-import { usePlatform } from '../context/PlatformContext';
+import { useAuth, useCart, usePublicData, useUi } from '../context/PlatformContext';
 import { useToast } from '../context/ToastContext';
 import Badge from '../components/ui/Badge';
 import { calculateAdCampaignCost, formatNaira } from '../lib/pricing';
@@ -79,7 +79,8 @@ const VERIFICATION_TYPES = [
 ];
 
 export default function AdvertisePage() {
-  const { user, settings, handleSignIn } = usePlatform();
+  const { user, handleSignIn } = useAuth();
+  const { settings } = usePublicData();
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -303,7 +304,7 @@ export default function AdvertisePage() {
             </div>
             <h1 className="font-display text-3xl sm:text-5xl font-bold text-white leading-tight">
               Advertise Physical Centres, Author Textbooks &amp; Bookshops for{' '}
-              <span className="text-[#E0A82E]">{formatNaira(weeklyRate)}/Week</span>
+              <span className="text-[#16C784]">{formatNaira(weeklyRate)}/Week</span>
             </h1>
             <p className="text-sm sm:text-base text-[#9AA4B2]">
               Reach ATSWA, ICAN and university accounting students nationwide, open to verified{' '}
@@ -316,7 +317,7 @@ export default function AdvertisePage() {
                 <Megaphone className="h-4 w-4" /> Book In-App Ad ({formatNaira(weeklyRate)}/wk)
               </a>
               <Link to="/partners" className="v-btn-secondary text-xs">
-                Browse Verified Partners <ArrowRight className="h-3.5 w-3.5 text-[#E0A82E]" />
+                Browse Verified Partners <ArrowRight className="h-3.5 w-3.5 text-[#16C784]" />
               </Link>
               <Link to="/tuition-centres" className="v-btn-secondary text-xs">
                 Browse Centres, Authors &amp; Vendors
@@ -324,32 +325,35 @@ export default function AdvertisePage() {
             </div>
           </div>
 
-          <div className="lg:col-span-5 v-glass-card p-6 sm:p-7 border-[#E0A82E]/35 space-y-4">
+          <div className="lg:col-span-5 v-glass-card p-6 sm:p-7 border-[#16C784]/35 space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#16C784]">
                 Official In-App Ad Rate
               </span>
               <Badge variant="verified">Paystack Verified</Badge>
             </div>
-            <div className="rounded-2xl bg-[#0B0E11] border border-[#E0A82E]/30 p-5 text-center space-y-1">
-              <p className="font-display text-4xl sm:text-5xl font-bold text-[#E0A82E] tabular-nums-display">
+            <div className="rounded-2xl bg-[#0B0E11] border border-[#16C784]/30 p-5 text-center space-y-1">
+              <p className="font-display text-4xl sm:text-5xl font-bold text-[#16C784] tabular-nums-display">
                 {formatNaira(weeklyRate)}
               </p>
               <p className="text-xs font-semibold text-white">
                 Per Week · Centres, Textbook Authors &amp; Vendors
               </p>
+              <p className="text-[11px] text-[#9AA4B2] pt-1">
+                2 weeks for {formatNaira(weeklyRate + (weeklyRate / 2))} — ₦5,000 off every complete 2-week block
+              </p>
             </div>
             <ul className="space-y-1.5 text-xs text-[#C2C9D4]">
               <li className="flex items-start gap-2">
-                <CheckCircle2 className="h-3.5 w-3.5 text-[#E0A82E] shrink-0 mt-0.5" />
+                <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784] shrink-0 mt-0.5" />
                 <span><strong>Physical Tuition Centres:</strong> Verified bricks-and-mortar in-person lecture venues only</span>
               </li>
               <li className="flex items-start gap-2">
-                <CheckCircle2 className="h-3.5 w-3.5 text-[#E0A82E] shrink-0 mt-0.5" />
+                <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784] shrink-0 mt-0.5" />
                 <span><strong>Textbook Authors:</strong> Promote original accounting, IFRS, tax, audit &amp; syllabus books you sell</span>
               </li>
               <li className="flex items-start gap-2">
-                <CheckCircle2 className="h-3.5 w-3.5 text-[#E0A82E] shrink-0 mt-0.5" />
+                <CheckCircle2 className="h-3.5 w-3.5 text-[#16C784] shrink-0 mt-0.5" />
                 <span><strong>Textbook Authors &amp; Vendors:</strong> Built-in in-app student enquiries plus optional in-app Paystack checkout so students stay inside VALENCE</span>
               </li>
             </ul>
@@ -387,7 +391,7 @@ export default function AdvertisePage() {
               <div
                 className={`v-card p-5 space-y-2 ${
                   isVerified
-                    ? 'border-[#E0A82E]/40'
+                    ? 'border-[#16C784]/40'
                     : verificationStatus === 'rejected'
                     ? 'border-[#EA3943]/40'
                     : 'border-[#9AA4B2]/40'
@@ -396,7 +400,7 @@ export default function AdvertisePage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     {isVerified ? (
-                      <ShieldCheck className="h-5 w-5 text-[#E0A82E]" />
+                      <ShieldCheck className="h-5 w-5 text-[#16C784]" />
                     ) : (
                       <ShieldAlert className={`h-5 w-5 ${verificationStatus === 'rejected' ? 'text-[#EA3943]' : 'text-[#9AA4B2]'}`} />
                     )}
@@ -417,7 +421,7 @@ export default function AdvertisePage() {
                 </p>
                 {isVerified && (
                   <Link to="/portal/advertiser" className="v-btn-secondary text-xs">
-                    Open Advertiser Hub <ArrowRight className="h-3.5 w-3.5 text-[#E0A82E]" />
+                    Open Advertiser Hub <ArrowRight className="h-3.5 w-3.5 text-[#16C784]" />
                   </Link>
                 )}
               </div>
@@ -452,13 +456,13 @@ export default function AdvertisePage() {
                         onClick={() => setAdvertiserType(cat.id)}
                         className={`rounded-xl border p-3.5 text-left transition-all space-y-1.5 ${
                           active
-                            ? 'bg-[#E0A82E]/[0.12] border-[#E0A82E] text-white'
+                            ? 'bg-[#16C784]/[0.12] border-[#16C784] text-white'
                             : 'bg-[#0B0E11] border-white/[0.08] text-[#C2C9D4] hover:border-white/[0.2]'
                         }`}
                       >
                         <div className="flex items-center justify-between">
-                          <CIcon className="h-4 w-4 text-[#E0A82E]" />
-                          {active && <Check className="h-3.5 w-3.5 text-[#E0A82E]" />}
+                          <CIcon className="h-4 w-4 text-[#16C784]" />
+                          {active && <Check className="h-3.5 w-3.5 text-[#16C784]" />}
                         </div>
                         <p className="font-display text-xs font-bold text-white">{cat.label}</p>
                         <p className="text-[10.5px] leading-snug text-[#9AA4B2]">{cat.shortDesc}</p>
@@ -471,7 +475,7 @@ export default function AdvertisePage() {
               {/* Step 2: Duration */}
               <div className="space-y-2">
                 <label className="v-label flex items-center gap-1.5" htmlFor="ad-weeks">
-                  <Calendar className="h-3.5 w-3.5 text-[#E0A82E]" /> Campaign Duration (Weeks)
+                  <Calendar className="h-3.5 w-3.5 text-[#16C784]" /> Campaign Duration (Weeks)
                 </label>
                 <div className="flex flex-wrap items-center gap-2">
                   {QUICK_DURATIONS.map((w) => (
@@ -481,7 +485,7 @@ export default function AdvertisePage() {
                       onClick={() => setWeeks(w)}
                       className={`rounded-xl px-3.5 py-2 text-xs font-display font-bold border transition-colors ${
                         weeks === w
-                          ? 'bg-[#E0A82E] text-[#06130D] border-[#E0A82E]'
+                          ? 'bg-[#16C784] text-[#06130D] border-[#16C784]'
                           : 'bg-[#0B0E11] text-[#C2C9D4] border-white/[0.08] hover:border-white/[0.2]'
                       }`}
                     >
@@ -513,13 +517,13 @@ export default function AdvertisePage() {
                         onClick={() => togglePlacement(pl.id)}
                         className={`rounded-xl border px-3.5 py-2.5 text-left transition-all ${
                           active
-                            ? 'bg-[#E0A82E]/[0.12] border-[#E0A82E]/50 text-white'
+                            ? 'bg-[#16C784]/[0.12] border-[#16C784]/50 text-white'
                             : 'bg-[#0B0E11] border-white/[0.07] text-[#C2C9D4] hover:border-white/[0.18]'
                         }`}
                       >
                         <span className="flex items-center justify-between gap-2">
                           <span className="font-medium">{pl.label}</span>
-                          {active && <Check className="h-3.5 w-3.5 text-[#E0A82E] shrink-0" />}
+                          {active && <Check className="h-3.5 w-3.5 text-[#16C784] shrink-0" />}
                         </span>
                         <span className="text-[10.5px] text-[#9AA4B2]">{pl.location}</span>
                       </button>
@@ -567,7 +571,7 @@ export default function AdvertisePage() {
 
               <div>
                 <label className="v-label flex items-center gap-1.5" htmlFor="ad-addr">
-                  <MapPin className="h-3.5 w-3.5 text-[#E0A82E]" />
+                  <MapPin className="h-3.5 w-3.5 text-[#16C784]" />
                   {advertiserType === 'physical_centre'
                     ? 'Full Physical Lecture Venue Address (Required)'
                     : advertiserType === 'textbook_author'
@@ -707,7 +711,7 @@ export default function AdvertisePage() {
                   type="checkbox"
                   checked={policyConfirmed}
                   onChange={(e) => setPolicyConfirmed(e.target.checked)}
-                  className="mt-0.5 h-4 w-4 accent-[#E0A82E] rounded shrink-0"
+                  className="mt-0.5 h-4 w-4 accent-[#16C784] rounded shrink-0"
                 />
                 <span>
                   {advertiserType === 'physical_centre' ? (
@@ -727,7 +731,7 @@ export default function AdvertisePage() {
               </label>
 
               {/* Live cost summary */}
-              <div className="rounded-2xl bg-[#0B0E11] border border-[#E0A82E]/30 p-4 flex flex-wrap items-center justify-between gap-3">
+              <div className="rounded-2xl bg-[#0B0E11] border border-[#16C784]/30 p-4 flex flex-wrap items-center justify-between gap-3">
                 <div className="text-xs">
                   <p className="text-[#9AA4B2]">
                     {selectedCategory.label} · {cost.weeks} {cost.weeks === 1 ? 'week' : 'weeks'} × {placementCount} slot(s) × {formatNaira(cost.weeklyRate)}/week
@@ -736,21 +740,21 @@ export default function AdvertisePage() {
                     Server-verified Paystack checkout inside VALENCE
                   </p>
                 </div>
-                <span className="tabular-nums-display font-display text-2xl font-bold text-[#E0A82E]">
+                <span className="tabular-nums-display font-display text-2xl font-bold text-[#16C784]">
                   {formatNaira(cost.totalAmount)}
                 </span>
               </div>
 
               {/* Booked confirmation */}
               {booked && (
-                <div className="rounded-xl bg-[#E0A82E]/10 border border-[#E0A82E]/35 p-4 text-xs text-[#E5E9F0] space-y-1">
-                  <p className="font-bold text-[#E0A82E] flex items-center gap-1.5">
+                <div className="rounded-xl bg-[#16C784]/10 border border-[#16C784]/35 p-4 text-xs text-[#E5E9F0] space-y-1">
+                  <p className="font-bold text-[#16C784] flex items-center gap-1.5">
                     <CheckCircle2 className="h-4 w-4" /> Campaign Active
                   </p>
                   <p className="text-[#C2C9D4]">
                     {formatNaira(booked.payment.amount_ngn)} · reference {booked.payment.reference} ·{' '}
                     {booked.server_verified ? 'Paystack-verified' : 'payment pending'}. View live analytics in your{' '}
-                    <Link to="/portal/advertiser" className="text-[#E0A82E] underline font-semibold">Advertiser Hub</Link>.
+                    <Link to="/portal/advertiser" className="text-[#16C784] underline font-semibold">Advertiser Hub</Link>.
                   </p>
                 </div>
               )}
@@ -785,7 +789,7 @@ export default function AdvertisePage() {
           {/* Right: governance + analytics */}
           <div className="lg:col-span-5 space-y-5 lg:sticky lg:top-28">
             <div className="v-card p-6 sm:p-7 space-y-4">
-              <div className="flex items-center gap-2 text-[#E0A82E]">
+              <div className="flex items-center gap-2 text-[#16C784]">
                 <BarChart3 className="h-5 w-5" />
                 <h2 className="font-display text-xl font-bold text-white">
                   VALENCE ADVERTISE Rules &amp; Analytics
@@ -803,7 +807,7 @@ export default function AdvertisePage() {
                   'Teach online instead? Apply as an in-app VALENCE-verified tutor via the Tutor Portal.',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-[#E0A82E] shrink-0 mt-0.5" />
+                    <CheckCircle2 className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -811,14 +815,14 @@ export default function AdvertisePage() {
             </div>
 
             <div className="v-card p-5 flex items-start gap-3 text-xs text-[#9AA4B2]">
-              <ShieldCheck className="h-5 w-5 text-[#E0A82E] shrink-0 mt-0.5" />
+              <ShieldCheck className="h-5 w-5 text-[#16C784] shrink-0 mt-0.5" />
               <p>
                 Already verified? Sign in to the{' '}
-                <Link to="/portal/advertiser" className="text-[#E0A82E] font-semibold hover:underline">
+                <Link to="/portal/advertiser" className="text-[#16C784] font-semibold hover:underline">
                   VALENCE Advertiser Hub
                 </Link>{' '}
                 to extend running weeks, update creatives, view live CTR or download Paystack invoices. Review our{' '}
-                <Link to="/legal/advertising" className="text-[#E0A82E] hover:underline">
+                <Link to="/legal/advertising" className="text-[#16C784] hover:underline">
                   Advertising &amp; Anti-Piracy Policy
                 </Link>
                 .

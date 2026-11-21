@@ -10,7 +10,7 @@ import {
   ArrowRight,
   ShieldCheck,
 } from 'lucide-react';
-import { usePlatform } from '../context/PlatformContext';
+import { useAuth, useCart, usePublicData, useUi } from '../context/PlatformContext';
 import { useToast } from '../context/ToastContext';
 import Badge from '../components/ui/Badge';
 import BrandLogo from '../components/ui/BrandLogo';
@@ -31,7 +31,7 @@ function formatTime(totalSeconds) {
 }
 
 export default function TutorExamPage() {
-  const { user } = usePlatform();
+  const { user } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -139,7 +139,7 @@ export default function TutorExamPage() {
   if (loading) {
     return (
       <div className="bg-grid-fintech py-24 flex justify-center">
-        <Loader2 className="h-6 w-6 text-[#E0A82E] animate-spin" />
+        <Loader2 className="h-6 w-6 text-[#16C784] animate-spin" />
       </div>
     );
   }
@@ -156,7 +156,7 @@ export default function TutorExamPage() {
 
         {phase !== 'running' && (
           <div className="flex items-center gap-3">
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E0A82E]/[0.12] border border-[#E0A82E]/30 text-[#E0A82E]">
+            <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#16C784]/[0.12] border border-[#16C784]/30 text-[#16C784]">
               <BookOpenCheck className="h-6 w-6" />
             </div>
             <div>
@@ -174,9 +174,9 @@ export default function TutorExamPage() {
                 The qualifying test covers accounting fundamentals, ATSWA/ICAN knowledge, taxation and financial reporting. Select the best answer for each of the 20 questions.
               </p>
               <ul className="space-y-2 text-xs sm:text-sm text-[#D5DBE3]">
-                <li className="flex items-start gap-2.5"><Clock className="h-4 w-4 text-[#E0A82E] shrink-0 mt-0.5" /> The timer runs for exactly 45 minutes and your answers submit automatically at zero.</li>
-                <li className="flex items-start gap-2.5"><ShieldCheck className="h-4 w-4 text-[#E0A82E] shrink-0 mt-0.5" /> Answers are scored server-side against the question bank — results are final.</li>
-                <li className="flex items-start gap-2.5"><CheckCircle2 className="h-4 w-4 text-[#E0A82E] shrink-0 mt-0.5" /> You need {assessment.pass_score} correct answers out of 20 to qualify.</li>
+                <li className="flex items-start gap-2.5"><Clock className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" /> The timer runs for exactly 45 minutes and your answers submit automatically at zero.</li>
+                <li className="flex items-start gap-2.5"><ShieldCheck className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" /> Answers are scored server-side against the question bank — results are final.</li>
+                <li className="flex items-start gap-2.5"><CheckCircle2 className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" /> You need {assessment.pass_score} correct answers out of 20 to qualify.</li>
               </ul>
             </div>
             <button onClick={startExam} className="v-btn-primary w-full py-3" disabled={submitting}>
@@ -226,7 +226,7 @@ export default function TutorExamPage() {
                         key={i}
                         className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-sm cursor-pointer transition-colors ${
                           selected
-                            ? 'bg-[#E0A82E]/10 border-[#E0A82E]/50 text-white'
+                            ? 'bg-[#16C784]/10 border-[#16C784]/50 text-white'
                             : 'bg-[#11161C] border-white/[0.08] text-[#C2C9D4] hover:border-white/[0.2]'
                         }`}
                       >
@@ -235,7 +235,7 @@ export default function TutorExamPage() {
                           name={q.id}
                           checked={selected}
                           onChange={() => setAnswers({ ...answers, [q.id]: i })}
-                          className="accent-[#E0A82E]"
+                          className="accent-[#16C784]"
                         />
                         <span className="font-mono text-xs text-[#667085]">{String.fromCharCode(65 + i)}</span>
                         <span>{opt}</span>
@@ -262,8 +262,8 @@ export default function TutorExamPage() {
 
         {phase === 'result' && result && (
           <div className="max-w-3xl space-y-6">
-            <div className={`v-card p-8 text-center space-y-3 border ${result.passed ? 'border-[#E0A82E]/40' : 'border-[#EA3943]/40'}`}>
-              <div className={`inline-flex h-14 w-14 items-center justify-center rounded-2xl ${result.passed ? 'bg-[#E0A82E]/15 text-[#E0A82E]' : 'bg-[#EA3943]/15 text-[#EA3943]'}`}>
+            <div className={`v-card p-8 text-center space-y-3 border ${result.passed ? 'border-[#16C784]/40' : 'border-[#EA3943]/40'}`}>
+              <div className={`inline-flex h-14 w-14 items-center justify-center rounded-2xl ${result.passed ? 'bg-[#16C784]/15 text-[#16C784]' : 'bg-[#EA3943]/15 text-[#EA3943]'}`}>
                 {result.passed ? <CheckCircle2 className="h-7 w-7" /> : <XCircle className="h-7 w-7" />}
               </div>
               <h2 className="font-display text-2xl font-bold text-white">
@@ -273,7 +273,7 @@ export default function TutorExamPage() {
                 Your score: <span className="font-bold text-white">{result.score}/{result.total_questions}</span> — pass mark {result.pass_score}.
               </p>
               {result.passed && (
-                <p className="text-xs text-[#E0A82E]">You are now a verified VALENCE tutor. Visit your workspace for status.</p>
+                <p className="text-xs text-[#16C784]">You are now a verified VALENCE tutor. Visit your workspace for status.</p>
               )}
               <Link to="/portal/tutor" className="v-btn-primary px-5 py-2.5 text-sm inline-flex">
                 Back to workspace <ArrowRight className="h-4 w-4" />
@@ -281,7 +281,7 @@ export default function TutorExamPage() {
             </div>
 
             <div className="v-card p-6 space-y-4">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#E0A82E]">Answer Review</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-[#16C784]">Answer Review</p>
               <ul className="space-y-3">
                 {questions.map((q, idx) => {
                   const userAnswer = answers[q.id];

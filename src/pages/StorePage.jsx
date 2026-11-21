@@ -22,7 +22,7 @@ import {
   Clock,
   Package,
 } from 'lucide-react';
-import { usePlatform } from '../context/PlatformContext';
+import { useAuth, useCart, usePublicData, useUi } from '../context/PlatformContext';
 import { useToast } from '../context/ToastContext';
 import Badge from '../components/ui/Badge';
 import { formatNaira } from '../lib/pricing';
@@ -56,23 +56,9 @@ const COLOUR_LEGEND = [
 
 export default function StorePage() {
   const [searchParams] = useSearchParams();
-  const {
-    user,
-    profile,
-    products,
-    deliveryZones,
-    cart,
-    addToCart,
-    updateCartQty,
-    removeFromCart,
-    clearCart,
-    selectedZoneId,
-    setSelectedZoneId,
-    selectedZone,
-    cartSummary,
-    inAppTickets,
-    submitInAppTicket,
-  } = usePlatform();
+  const { user, profile, inAppTickets, submitInAppTicket } = useAuth();
+  const { products, deliveryZones } = usePublicData();
+  const { cart, addToCart, updateCartQty, removeFromCart, clearCart, selectedZoneId, setSelectedZoneId, selectedZone, cartSummary } = useCart();
   const toast = useToast();
 
   const [activeCategory, setActiveCategory] = useState(
@@ -343,7 +329,7 @@ export default function StorePage() {
               onClick={handleViewOrders}
               className="v-btn-secondary text-xs self-start shrink-0"
             >
-              <Package className="h-4 w-4 text-[#E0A82E]" />
+              <Package className="h-4 w-4 text-[#16C784]" />
               My Orders & Receipts
             </button>
             <button
@@ -351,10 +337,10 @@ export default function StorePage() {
               onClick={() => setEnquiryOpen(true)}
               className="v-btn-secondary text-xs self-start shrink-0"
             >
-              <HelpCircle className="h-4 w-4 text-[#E0A82E]" />
+              <HelpCircle className="h-4 w-4 text-[#16C784]" />
               In-App Material & Delivery Enquiry
               {storeTickets.length > 0 && (
-                <span className="ml-1 rounded-full bg-[#E0A82E] px-2 py-0.5 text-[10px] font-bold text-[#06130D]">
+                <span className="ml-1 rounded-full bg-[#16C784] px-2 py-0.5 text-[10px] font-bold text-[#06130D]">
                   {storeTickets.length}
                 </span>
               )}
@@ -406,14 +392,14 @@ export default function StorePage() {
                     className="h-16 w-12 shrink-0 rounded-lg object-cover border border-white/[0.1]"
                   />
                 ) : (
-                  <div className="h-16 w-12 shrink-0 rounded-lg bg-[#0B0E11] border border-white/[0.1] flex items-center justify-center text-[#E0A82E]">
+                  <div className="h-16 w-12 shrink-0 rounded-lg bg-[#0B0E11] border border-white/[0.1] flex items-center justify-center text-[#16C784]">
                     <BookOpen className="h-5 w-5" />
                   </div>
                 )}
                 <div className="min-w-0 space-y-0.5">
                   <p className="text-[11px] font-semibold text-[#C2C9D4] truncate">{card.title}</p>
                   <p className="tabular-nums-display text-sm font-bold text-white">{card.price}</p>
-                  <p className="text-[10.5px] text-[#E0A82E] leading-snug">{card.rule}</p>
+                  <p className="text-[10.5px] text-[#16C784] leading-snug">{card.rule}</p>
                 </div>
               </button>
             ))}
@@ -421,19 +407,19 @@ export default function StorePage() {
 
           {/* Delivery Timeline & Live Study Pack Availability Banner */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1 text-xs">
-            <div className="rounded-xl bg-[#11161C] border border-[#E0A82E]/30 p-3.5 flex items-start gap-2.5">
-              <Truck className="h-4 w-4 text-[#E0A82E] shrink-0 mt-0.5" />
+            <div className="rounded-xl bg-[#11161C] border border-[#16C784]/30 p-3.5 flex items-start gap-2.5">
+              <Truck className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" />
               <p className="text-[#C2C9D4] leading-relaxed">
                 <strong className="text-white">All Past Questions Delivery:</strong>{' '}
-                <strong className="text-[#E0A82E]">Same-day delivery within Lagos</strong> (FREE to LASU, Ojo, UNILAG, YABATECH, FCE &amp; Yaba) and{' '}
-                <strong className="text-[#E0A82E]">1-day (next-day) delivery outside Lagos</strong> nationwide.
+                <strong className="text-[#16C784]">Same-day delivery within Lagos</strong> (FREE to LASU, Ojo, UNILAG, YABATECH, FCE &amp; Yaba) and{' '}
+                <strong className="text-[#16C784]">1-day (next-day) delivery outside Lagos</strong> nationwide.
               </p>
             </div>
             <div className="rounded-xl bg-[#11161C] border border-white/[0.1] p-3.5 flex items-start gap-2.5">
-              <CheckCircle2 className="h-4 w-4 text-[#E0A82E] shrink-0 mt-0.5" />
+              <CheckCircle2 className="h-4 w-4 text-[#16C784] shrink-0 mt-0.5" />
               <p className="text-[#C2C9D4] leading-relaxed">
                 <strong className="text-white">Study Packs Availability &amp; Delivery:</strong> Every Study Pack displays a live{' '}
-                <strong className="text-[#E0A82E]">Available / Unavailable</strong> badge updated directly by Admin, and Study Packs are delivered when available.
+                <strong className="text-[#16C784]">Available / Unavailable</strong> badge updated directly by Admin, and Study Packs are delivered when available.
               </p>
             </div>
           </div>
@@ -474,7 +460,7 @@ export default function StorePage() {
                   onClick={() => setActiveCategory(t.id)}
                   className={`rounded-xl px-3.5 py-2 text-xs font-semibold border transition-colors ${
                     activeCategory === t.id
-                      ? 'bg-[#E0A82E] text-[#06130D] border-[#E0A82E]'
+                      ? 'bg-[#16C784] text-[#06130D] border-[#16C784]'
                       : 'bg-[#11161C] text-[#9AA4B2] border-white/[0.08] hover:text-white'
                   }`}
                 >
@@ -490,7 +476,7 @@ export default function StorePage() {
               <div className="rounded-2xl bg-[#11161C] border border-white/[0.08] p-3.5 space-y-2">
                 <div className="flex flex-wrap items-center justify-between gap-2 text-[11px]">
                   <span className="font-semibold text-white inline-flex items-center gap-1.5">
-                    <Layers className="h-3.5 w-3.5 text-[#E0A82E]" />
+                    <Layers className="h-3.5 w-3.5 text-[#16C784]" />
                     Past Questions: Pick Individual Courses Below, or Add a Full Level Set:
                   </span>
                   <span className="text-[#9AA4B2]">
@@ -505,7 +491,7 @@ export default function StorePage() {
                       key={`${b.category}-${b.level}`}
                       type="button"
                       onClick={() => handleAddLevelPqs(b)}
-                      className="inline-flex items-center gap-1 rounded-lg bg-[#0B0E11] border border-[#E0A82E]/30 hover:border-[#E0A82E] px-2.5 py-1.5 text-[11px] font-semibold text-[#E0A82E] transition-colors"
+                      className="inline-flex items-center gap-1 rounded-lg bg-[#0B0E11] border border-[#16C784]/30 hover:border-[#16C784] px-2.5 py-1.5 text-[11px] font-semibold text-[#16C784] transition-colors"
                     >
                       <Plus className="h-3 w-3" /> {b.label}
                     </button>
@@ -586,11 +572,11 @@ export default function StorePage() {
                               <span className="inline-flex items-center gap-1.5 rounded-full bg-[#0B0E11]/90 backdrop-blur-md border border-white/[0.14] px-2.5 py-1 text-[10.5px] font-semibold text-white">
                                 <span
                                   className="h-2 w-2 rounded-full shrink-0"
-                                  style={{ backgroundColor: prod.accentHex || '#E0A82E' }}
+                                  style={{ backgroundColor: prod.accentHex || '#16C784' }}
                                 />
                                 {prod.colourBadge}
                               </span>
-                              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#0B0E11]/80 backdrop-blur-md border border-white/[0.12] text-[#C2C9D4] group-hover:text-[#E0A82E] transition-colors">
+                              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#0B0E11]/80 backdrop-blur-md border border-white/[0.12] text-[#C2C9D4] group-hover:text-[#16C784] transition-colors">
                                 <ZoomIn className="h-3.5 w-3.5" />
                               </span>
                             </div>
@@ -600,7 +586,7 @@ export default function StorePage() {
                                 {prod.programme} · {prod.level} · {isPq ? 'Past Questions' : 'Study Pack'}
                               </Badge>
                               {prod.courseCode && (
-                                <span className="rounded-lg bg-[#E0A82E] px-2.5 py-0.5 font-display text-xs font-bold text-[#06130D] shadow shrink-0">
+                                <span className="rounded-lg bg-[#16C784] px-2.5 py-0.5 font-display text-xs font-bold text-[#06130D] shadow shrink-0">
                                   {prod.courseCode}
                                 </span>
                               )}
@@ -615,7 +601,7 @@ export default function StorePage() {
                             <span className="inline-flex items-center gap-1.5 rounded-full bg-[#0B0E11] border border-white/[0.1] px-2.5 py-1 text-[10.5px] font-semibold text-[#D5DBE3]">
                               <span
                                 className="h-2 w-2 rounded-full shrink-0"
-                                style={{ backgroundColor: prod.accentHex || '#E0A82E' }}
+                                style={{ backgroundColor: prod.accentHex || '#16C784' }}
                               />
                               Study Pack
                             </span>
@@ -626,8 +612,8 @@ export default function StorePage() {
                           {/* Live Admin-Updated Availability & Delivery Timeline Row */}
                           {isPq ? (
                             <div className="flex flex-wrap items-center gap-1.5 text-[10.5px]">
-                              <span className="inline-flex items-center gap-1 rounded-full bg-[#E0A82E]/15 border border-[#E0A82E]/35 px-2.5 py-0.5 font-semibold text-[#E0A82E]">
-                                <span className="h-1.5 w-1.5 rounded-full bg-[#E0A82E]" />
+                              <span className="inline-flex items-center gap-1 rounded-full bg-[#16C784]/15 border border-[#16C784]/35 px-2.5 py-0.5 font-semibold text-[#16C784]">
+                                <span className="h-1.5 w-1.5 rounded-full bg-[#16C784]" />
                                 Available Now
                               </span>
                               <span className="text-[#C2C9D4]">
@@ -636,8 +622,8 @@ export default function StorePage() {
                             </div>
                           ) : prod.isAvailable !== false ? (
                             <div className="flex flex-wrap items-center gap-1.5 text-[10.5px]">
-                              <span className="inline-flex items-center gap-1 rounded-full bg-[#E0A82E]/15 border border-[#E0A82E]/35 px-2.5 py-0.5 font-semibold text-[#E0A82E]">
-                                <span className="h-1.5 w-1.5 rounded-full bg-[#E0A82E]" />
+                              <span className="inline-flex items-center gap-1 rounded-full bg-[#16C784]/15 border border-[#16C784]/35 px-2.5 py-0.5 font-semibold text-[#16C784]">
+                                <span className="h-1.5 w-1.5 rounded-full bg-[#16C784]" />
                                 {prod.availabilityNote || 'Available · Admin Updated'}
                               </span>
                               <span className="text-[#9AA4B2]">Delivered when available</span>
@@ -658,7 +644,7 @@ export default function StorePage() {
                           <p className="text-xs text-[#9AA4B2] leading-relaxed">
                             {prod.description}
                           </p>
-                          <p className="text-[11px] font-medium text-[#E0A82E] inline-flex items-center gap-1">
+                          <p className="text-[11px] font-medium text-[#16C784] inline-flex items-center gap-1">
                             <Tag className="h-3 w-3" /> {prod.discountHint}
                           </p>
                         </div>
@@ -699,7 +685,7 @@ export default function StorePage() {
                               <Plus className="h-3.5 w-3.5" /> {isPq ? 'Add Course' : 'Add Pack'}
                             </button>
                           ) : (
-                            <div className="inline-flex items-center gap-2 rounded-xl bg-[#0B0E11] border border-[#E0A82E]/40 px-2 py-1">
+                            <div className="inline-flex items-center gap-2 rounded-xl bg-[#0B0E11] border border-[#16C784]/40 px-2 py-1">
                               <button
                                 type="button"
                                 onClick={() => updateCartQty(prod.id, qty - 1)}
@@ -708,14 +694,14 @@ export default function StorePage() {
                               >
                                 <Minus className="h-3 w-3" />
                               </button>
-                              <span className="tabular-nums-display text-xs font-bold text-[#E0A82E] w-5 text-center">
+                              <span className="tabular-nums-display text-xs font-bold text-[#16C784] w-5 text-center">
                                 {qty}
                               </span>
                               <button
                                 type="button"
                                 onClick={() => updateCartQty(prod.id, qty + 1)}
                                 aria-label="Increase quantity"
-                                className="h-6 w-6 rounded-lg bg-[#E0A82E] flex items-center justify-center text-[#06130D]"
+                                className="h-6 w-6 rounded-lg bg-[#16C784] flex items-center justify-center text-[#06130D]"
                               >
                                 <Plus className="h-3 w-3" />
                               </button>
@@ -734,7 +720,7 @@ export default function StorePage() {
           <aside className="lg:col-span-4 v-card p-6 space-y-5 lg:sticky lg:top-28">
             <div className="flex items-center justify-between">
               <h2 className="font-display text-lg font-bold text-white inline-flex items-center gap-2">
-                <ShoppingBag className="h-5 w-5 text-[#E0A82E]" /> Checkout Cart ({cartSummary.totalQuantity})
+                <ShoppingBag className="h-5 w-5 text-[#16C784]" /> Checkout Cart ({cartSummary.totalQuantity})
               </h2>
               {cart.length > 0 && (
                 <button
@@ -768,13 +754,13 @@ export default function StorePage() {
                         className="h-12 w-9 shrink-0 rounded-md object-cover border border-white/[0.1]"
                       />
                     ) : (
-                      <div className="h-12 w-9 shrink-0 rounded-md bg-[#161D26] border border-white/[0.1] flex items-center justify-center text-[#E0A82E]">
+                      <div className="h-12 w-9 shrink-0 rounded-md bg-[#161D26] border border-white/[0.1] flex items-center justify-center text-[#16C784]">
                         <BookOpen className="h-4 w-4" />
                       </div>
                     )}
                     <div className="min-w-0 flex-1 space-y-0.5">
                       <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] font-bold uppercase text-[#E0A82E]">
+                        <span className="text-[10px] font-bold uppercase text-[#16C784]">
                           {item.programme} {item.level}
                           {item.courseCode ? ` · ${item.courseCode}` : ''}
                         </span>
@@ -826,7 +812,7 @@ export default function StorePage() {
             {/* Delivery Zone Selector */}
             <div>
               <label className="v-label flex items-center gap-1.5" htmlFor="delivery-zone">
-                <Truck className="h-3.5 w-3.5 text-[#E0A82E]" /> Delivery Zone (Admin-Updated)
+                <Truck className="h-3.5 w-3.5 text-[#16C784]" /> Delivery Zone (Admin-Updated)
               </label>
               <select
                 id="delivery-zone"
@@ -842,7 +828,7 @@ export default function StorePage() {
               </select>
               <div className="mt-2 rounded-xl bg-[#0B0E11] border border-white/[0.07] p-3 space-y-1 text-[11px]">
                 <p className="text-[#C2C9D4]">
-                  <strong className="text-[#E0A82E]">Past Questions ETA:</strong>{' '}
+                  <strong className="text-[#16C784]">Past Questions ETA:</strong>{' '}
                   {selectedZone.pqEta ||
                     (selectedZone.regionType === 'lagos'
                       ? 'Same-day delivery'
@@ -869,7 +855,7 @@ export default function StorePage() {
               </div>
 
               {cartSummary.appliedDiscounts.map((d) => (
-                <div key={d.id} className="flex justify-between gap-2 text-[#E0A82E]">
+                <div key={d.id} className="flex justify-between gap-2 text-[#16C784]">
                   <span className="inline-flex items-center gap-1">
                     <CheckCircle2 className="h-3.5 w-3.5 shrink-0" /> {d.label}
                   </span>
@@ -883,7 +869,7 @@ export default function StorePage() {
                 <span>Delivery Fee</span>
                 <span
                   className={`tabular-nums-display font-semibold ${
-                    cartSummary.deliveryFee === 0 ? 'text-[#E0A82E]' : 'text-white'
+                    cartSummary.deliveryFee === 0 ? 'text-[#16C784]' : 'text-white'
                   }`}
                 >
                   {cart.length === 0
@@ -896,7 +882,7 @@ export default function StorePage() {
 
               <div className="border-t border-white/[0.08] pt-3 flex items-baseline justify-between">
                 <span className="text-sm font-bold text-white">Final Total</span>
-                <span className="tabular-nums-display text-2xl font-bold text-[#E0A82E]">
+                <span className="tabular-nums-display text-2xl font-bold text-[#16C784]">
                   {formatNaira(cartSummary.finalTotal)}
                 </span>
               </div>
@@ -911,13 +897,13 @@ export default function StorePage() {
               onClick={() => setEnquiryOpen(true)}
               className="v-btn-secondary w-full py-2.5 text-xs"
             >
-              <HelpCircle className="h-3.5 w-3.5 text-[#E0A82E]" />
+              <HelpCircle className="h-3.5 w-3.5 text-[#16C784]" />
               Ask About Materials or Delivery In-App
             </button>
 
             <p className="text-[10.5px] text-center text-[#667085]">
               All orders verify server-side via Paystack; see our{' '}
-              <Link to="/legal/refunds" className="text-[#E0A82E] hover:underline">
+              <Link to="/legal/refunds" className="text-[#16C784] hover:underline">
                 Refund &amp; Delivery Policy
               </Link>
               .
@@ -941,7 +927,7 @@ export default function StorePage() {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-xl rounded-t-3xl sm:rounded-2xl bg-[#11161C] border border-[#E0A82E]/25 p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto animate-fade-up"
+            className="w-full max-w-xl rounded-t-3xl sm:rounded-2xl bg-[#11161C] border border-[#16C784]/25 p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto animate-fade-up"
           >
             <div className="flex items-start justify-between gap-3">
               <div>
@@ -973,19 +959,19 @@ export default function StorePage() {
 
             {checkoutPhase === 'done' && receipt ? (
               <div className="space-y-4">
-                <div className="rounded-2xl bg-[#E0A82E]/10 border border-[#E0A82E]/40 p-5 text-center">
-                  <CheckCircle2 className="h-10 w-10 text-[#E0A82E] mx-auto" />
+                <div className="rounded-2xl bg-[#16C784]/10 border border-[#16C784]/40 p-5 text-center">
+                  <CheckCircle2 className="h-10 w-10 text-[#16C784] mx-auto" />
                   <p className="mt-2 font-display text-lg font-bold text-white">
                     Payment Successful
                   </p>
-                  <p className="text-sm text-[#E0A82E] font-semibold">
+                  <p className="text-sm text-[#16C784] font-semibold">
                     {formatNaira(receipt.amount_ngn)} paid via Paystack
                   </p>
                 </div>
                 <div className="rounded-xl bg-[#0B0E11] border border-white/[0.08] p-4 space-y-2 text-xs">
                   <div className="flex justify-between">
                     <span className="text-[#9AA4B2]">Receipt Number</span>
-                    <span className="font-display font-bold text-[#E0A82E]">
+                    <span className="font-display font-bold text-[#16C784]">
                       {receipt.receipt_number}
                     </span>
                   </div>
@@ -1006,7 +992,7 @@ export default function StorePage() {
                     <span className="text-white text-right">{receipt.zoneName}</span>
                   </div>
                   {receipt.server_verified ? (
-                    <div className="flex items-center gap-1.5 text-[#E0A82E]">
+                    <div className="flex items-center gap-1.5 text-[#16C784]">
                       <ShieldCheck className="h-3.5 w-3.5" />
                       Server-verified against Paystack
                     </div>
@@ -1019,7 +1005,7 @@ export default function StorePage() {
                 </div>
                 <div className="rounded-xl bg-[#0B0E11] border border-white/[0.08] p-4 space-y-1.5 text-xs">
                   <p className="font-semibold text-white inline-flex items-center gap-1.5">
-                    <Receipt className="h-3.5 w-3.5 text-[#E0A82E]" /> Your Items
+                    <Receipt className="h-3.5 w-3.5 text-[#16C784]" /> Your Items
                   </p>
                   {(receipt.items || []).map((it) => (
                     <div key={it.product_id} className="flex justify-between gap-3">
@@ -1060,7 +1046,7 @@ export default function StorePage() {
                 {/* Server-verified order summary */}
                 <div className="rounded-xl bg-[#0B0E11] border border-white/[0.08] p-4 space-y-2 text-xs">
                   <p className="font-semibold text-white inline-flex items-center gap-1.5">
-                    <Package className="h-3.5 w-3.5 text-[#E0A82E]" /> Order Summary
+                    <Package className="h-3.5 w-3.5 text-[#16C784]" /> Order Summary
                   </p>
                   {(activeOrder ? activeOrder.items : cart).map((it) => (
                     <div key={it.product_id || it.id} className="flex justify-between gap-3">
@@ -1074,7 +1060,7 @@ export default function StorePage() {
                   ))}
                   <div className="border-t border-white/[0.08] pt-2 space-y-1">
                     {activeOrder && activeOrder.discount_ngn > 0 && (
-                      <div className="flex justify-between text-[#E0A82E]">
+                      <div className="flex justify-between text-[#16C784]">
                         <span>Automatic discounts</span>
                         <span className="tabular-nums-display">
                           −{formatNaira(activeOrder.discount_ngn)}
@@ -1089,7 +1075,7 @@ export default function StorePage() {
                     </div>
                     <div className="flex justify-between items-baseline border-t border-white/[0.08] pt-2">
                       <span className="text-sm font-bold text-white">Payable Total</span>
-                      <span className="tabular-nums-display text-xl font-bold text-[#E0A82E]">
+                      <span className="tabular-nums-display text-xl font-bold text-[#16C784]">
                         {formatNaira(activeOrder ? activeOrder.total_ngn : cartSummary.finalTotal)}
                       </span>
                     </div>
@@ -1133,21 +1119,21 @@ export default function StorePage() {
 
                 {checkoutPhase === 'creating' && (
                   <div className="flex items-center justify-center gap-2 py-4 text-xs text-[#9AA4B2]">
-                    <Loader2 className="h-4 w-4 animate-spin text-[#E0A82E]" />
+                    <Loader2 className="h-4 w-4 animate-spin text-[#16C784]" />
                     Creating your server-verified order...
                   </div>
                 )}
 
                 {checkoutPhase === 'paying' && (
                   <div className="flex items-center justify-center gap-2 py-4 text-xs text-[#9AA4B2]">
-                    <Loader2 className="h-4 w-4 animate-spin text-[#E0A82E]" />
+                    <Loader2 className="h-4 w-4 animate-spin text-[#16C784]" />
                     Secure Paystack checkout is opening — complete your payment there...
                   </div>
                 )}
 
                 {checkoutPhase === 'processing' && (
                   <div className="flex items-center justify-center gap-2 py-4 text-xs text-[#9AA4B2]">
-                    <Loader2 className="h-4 w-4 animate-spin text-[#E0A82E]" />
+                    <Loader2 className="h-4 w-4 animate-spin text-[#16C784]" />
                     Confirming your payment & generating receipt server-side...
                   </div>
                 )}
@@ -1215,7 +1201,7 @@ export default function StorePage() {
 
             {ordersLoading ? (
               <div className="flex items-center justify-center gap-2 py-8 text-xs text-[#9AA4B2]">
-                <Loader2 className="h-4 w-4 animate-spin text-[#E0A82E]" />
+                <Loader2 className="h-4 w-4 animate-spin text-[#16C784]" />
                 Loading your orders...
               </div>
             ) : myOrders.length === 0 ? (
@@ -1233,7 +1219,7 @@ export default function StorePage() {
                       <span
                         className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-semibold ${{
                           pending: 'border-[#9AA4B2]/40 text-[#9AA4B2]',
-                          paid: 'border-[#E0A82E]/40 text-[#E0A82E]',
+                          paid: 'border-[#16C784]/40 text-[#16C784]',
                         }[o.status] || 'border-white/15 text-[#9AA4B2]'}`}
                       >
                         {o.status === 'paid' ? (
@@ -1322,8 +1308,8 @@ export default function StorePage() {
             </div>
 
             {lastEnquiryRef && (
-              <div className="rounded-xl bg-[#E0A82E]/10 border border-[#E0A82E]/35 p-3.5 text-xs text-[#E5E9F0]">
-                <strong className="text-[#E0A82E]">Ticket {lastEnquiryRef} received in-app.</strong>{' '}
+              <div className="rounded-xl bg-[#16C784]/10 border border-[#16C784]/35 p-3.5 text-xs text-[#E5E9F0]">
+                <strong className="text-[#16C784]">Ticket {lastEnquiryRef} received in-app.</strong>{' '}
                 Store administrators respond directly inside your VALENCE account notifications & order centre.
               </div>
             )}
@@ -1474,7 +1460,7 @@ export default function StorePage() {
                 <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#C2C9D4]">
                   <span
                     className="h-2.5 w-2.5 rounded-full"
-                    style={{ backgroundColor: previewProduct.accentHex || '#E0A82E' }}
+                    style={{ backgroundColor: previewProduct.accentHex || '#16C784' }}
                   />
                   {previewProduct.colourBadge}
                 </span>
@@ -1484,13 +1470,13 @@ export default function StorePage() {
                 <p className="text-xs text-[#9AA4B2] leading-relaxed">
                   {previewProduct.description}
                 </p>
-                <p className="text-xs font-semibold text-[#E0A82E]">
+                <p className="text-xs font-semibold text-[#16C784]">
                   {previewProduct.discountHint}
                 </p>
                 <div className="rounded-lg bg-[#0B0E11] border border-white/[0.08] px-3 py-2 text-[11px] space-y-0.5">
                   <p
                     className={`font-semibold ${
-                      previewProduct.isAvailable === false ? 'text-[#EA3943]' : 'text-[#E0A82E]'
+                      previewProduct.isAvailable === false ? 'text-[#EA3943]' : 'text-[#16C784]'
                     }`}
                   >
                     {previewProduct.isStudyPack

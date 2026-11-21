@@ -163,6 +163,80 @@ export function buildDietSession({
 }
 
 /**
+ * Convert a Postgres timestamptz string ("2027-03-23 00:00:00+00") to a YYYY-MM-DD ISO date.
+ * Returns null for null/empty values.
+ */
+function pgToIsoDate(ts) {
+  if (!ts) return null;
+  const s = String(ts);
+  // Handle both "2027-03-23 00:00:00+00" and ISO "2027-03-23T00:00:00.000Z"
+  const m = s.match(/(\d{4})-(\d{2})-(\d{2})/);
+  return m ? `${m[1]}-${m[2]}-${m[3]}` : null;
+}
+
+/**
+ * Map a raw `examination_sessions` DB row into the buildDietSession-compatible
+ * shape the app renders (homepage hero card, programmes page, lifecycle engine).
+ *
+ * DB column notes:
+ *   - `diet` column actually stores the programme ("ATSWA" / "ICAN");
+ *     the calendar month is embedded in `name` (e.g. "ATSWA May 2027 Diet").
+ *   - Explicit timestamps take precedence as Central Academic Authority overrides.
+ */
+export function mapExamSessionRow(row, { timetable = [] } = {}) {
+  const name = row.name || '';
+  const programme = /ATSWA/i.test(row.diet || '') || /ATSWA/i.test(name) ? 'ATSWA' : 'ICAN';
+
+  const monthMatch = name.match(
+    /(January|February|March|April|May|June|July|August|September|October|November|December)/i
+  );
+  // Normalize to a valid ICAN/ATSWA diet month so buildDietSession's default
+  // calendar computation stays valid even for unusual row names.
+  const VALID_MONTHS = ['March', 'May', 'September', 'November'];
+  const parsedMonth = monthMatch ? monthMatch[1] : 'May';
+  const diet = VALID_MONTHS.includes(parsedMonth) ? parsedMonth : 'May';
+  const year = row.year || new Date().getUTCFullYear();
+
+  // Build the examDays array from exam_starts .. exam_ends (inclusive).
+  let examDays = [];
+  const start = pgToIsoDate(row.exam_starts);
+  const end = pgToIsoDate(row.exam_ends);
+  if (start) {
+    let cur = start;
+    const stop = end || start;
+    while (cur <= stop) {
+      examDays.push(cur);
+      cur = addDaysIso(cur, 1);
+    }
+  }
+
+  const resultReleaseDate = pgToIsoDate(row.result_release_date);
+  const isPublished = row.status !== 'archived' && !row.is_archived;
+
+  const overrides = {
+    ...(examDays.length ? { examDays } : {}),
+    ...(row.registration_closes ? { registrationClose: pgToIsoDate(row.registration_closes) } : {}),
+    ...(resultReleaseDate ? { expectedResultDate: resultReleaseDate } : {}),
+    ...(row.result_delay_notice ? { resultDelayNotice: row.result_delay_notice } : {}),
+    ...(resultReleaseDate && new Date(`${resultReleaseDate}T00:00:00Z`) < new Date()
+      ? { resultsReleased: true }
+      : {}),
+    isPublished,
+    ...(row.mock_exam_date ? { mockExamDate: pgToIsoDate(row.mock_exam_date) } : {}),
+  };
+
+  return buildDietSession({
+    id: row.id,
+    programme,
+    diet,
+    year,
+    tuitionCommencement: row.tuition_commencement ? pgToIsoDate(row.tuition_commencement) : undefined,
+    timetable,
+    overrides,
+  });
+}
+
+/**
  * Determine the real-time operational phase and active countdown target for any diet session.
  */
 export function getSessionLifecycle(session, nowMs = Date.now()) {
